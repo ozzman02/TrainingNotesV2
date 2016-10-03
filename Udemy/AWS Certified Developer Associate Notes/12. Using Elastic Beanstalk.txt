@@ -1,0 +1,36 @@
+12. Using Elastic Beanstalk
+
+	With Elastic Beanstalk, you can quickly deploy and manage applications in the AWS cloud without 
+	worrying about the infrastructure that runs those applications. AWS Elastic Beanstalk reduces management 
+	complexity without restricting choice or control. You simply upload your application, and Elastic Beanstalk 
+	automatically handles the details of capacity provisioning, load balancing, scaling, and application health monitoring. 
+	Elastic Beanstalk uses highly reliable and scalable services that are available in the AWS Free Usage Tier.
+
+Preconfiguration
+
+	Preconfigured
+	
+	- IIS
+	- Node.js
+	- PHP
+	- Python
+	- Ruby
+	- Tomcat
+	
+	Preconfigured - Docker
+	
+		- GlassFish
+		- Python
+		
+	Generic
+	
+		Docker
+		
+	
+	
+	Elastic Beanstalk is free but you pay for the resources it uses.
+	
+	
+	Elastic Beanstalk is object based storage. False
+	What languages and development stacks is NOT supported by AWS Elastic Beanstalk? Jetty for Jbos applications
+	Unlike Cloud Formation, Elastic Beanstalk itself is not free free AND you must also pay for the resources it provisions. False

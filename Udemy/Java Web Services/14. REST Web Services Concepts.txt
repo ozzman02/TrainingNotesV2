@@ -1,0 +1,54 @@
+14. REST Web Services Concepts
+
+	Representational State Transfer
+	
+	Uniform interface and easy access to provide CRUD (Create Read Update Delete) operations
+	
+		HTTP Methods
+		
+			POST
+			GET
+			PUT
+			Delete
+		
+		URI: /patients (Easy access)
+		
+		Multiple formats
+		
+			XML
+			JSON
+			
+		Statelessness: Allows scalability
+		
+Advantages
+
+	Single interface
+	Easy to access
+	Interoperable & Multiple Formats
+	Stateless: State will be maintain in the client. (browser)
+	Scalability
+	
+When to use
+
+	No formal contract
+	Multiple data formats
+	Bandwidth and Memory
+	No overhead
+	Stateless
+	Caching
+	Existing logic can be exposed easily
+	
+Which of the following is not a good candidate for using REST ?
+
+	Formal Contract needs to be defined
+	
+Desing Steps
+
+	Identify the resources
+	Create URIs to access those resources
+	Assign HTTO methods
+	Choose the data format
+	
+
+
+	

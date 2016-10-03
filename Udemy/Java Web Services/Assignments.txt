@@ -1,0 +1,8 @@
+Assignments:
+
+Section 8 - Implement delete order method.	
+Section 10 - Create a SOAP UI project and test.
+Section 13 - Code the getHeaders() method of SiteHandlder. http://www.w3schools.com/xml/xml_soap.asp The mustUnderstand Attribute
+Section 16 - lecture 115: Code the put method.
+Section 19 - Code the delete call from the client.
+

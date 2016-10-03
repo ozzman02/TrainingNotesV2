@@ -1,0 +1,19 @@
+Tableau Course: Download Practice Datasets
+	
+	http://superdatascience.com/tableau/
+	
+Course Visuals
+
+	https://public.tableau.com/profile/kirill.eremenko#!/
+	
+
+Challenge (Data Source: OfficeSupplies.xlsx)
+
+It's EOFY and means time for annual bonuses!
+The store operates in three regions and only the top-performing
+employee in each region qualifies for a bonus. Find out which
+three employees are eligible to get bonuses for this year.
+
+Employees are measured on total sales ($$) 
+
+

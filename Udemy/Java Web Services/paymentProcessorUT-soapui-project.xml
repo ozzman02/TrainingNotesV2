@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="paymentProcessorUT" resourceRoot="" soapui-version="5.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="PaymentProcessorSoapBinding" type="wsdl" bindingName="{http://soap.ws.trainings.com/}PaymentProcessorSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/javafirstwsut/services/paymentProcessor?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/javafirstwsut/services/paymentProcessor?wsdl"><con:part><con:url>http://localhost:8080/javafirstwsut/services/paymentProcessor?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="PaymentProcessor" targetNamespace="http://soap.ws.trainings.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://soap.ws.trainings.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://soap.ws.trainings.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="processPayment" type="tns:processPayment"/>
+      <xs:element name="processPaymentResponse" type="tns:processPaymentResponse"/>
+      <xs:complexType name="processPayment">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PaymentProcessorRequest" type="tns:PaymentProcessorRequest"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PaymentProcessorRequest">
+        <xs:sequence>
+          <xs:element name="creditCardInfo" type="tns:CreditCardInfo"/>
+          <xs:element minOccurs="0" name="amount" type="xs:double"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CreditCardInfo">
+        <xs:sequence>
+          <xs:element name="cardNumber" type="xs:string"/>
+          <xs:element name="expirtyDate" type="xs:dateTime"/>
+          <xs:element name="firstName" type="xs:string"/>
+          <xs:element name="lastName" type="xs:string"/>
+          <xs:element name="secCode" type="xs:string"/>
+          <xs:element name="Address" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="processPaymentResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="response" type="tns:PaymentProcessorResponse"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="PaymentProcessorResponse">
+        <xs:sequence>
+          <xs:element name="result" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="processPaymentResponse">
+    <wsdl:part element="tns:processPaymentResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="processPayment">
+    <wsdl:part element="tns:processPayment" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PaymentProcessor">
+    <wsdl:operation name="processPayment">
+      <wsdl:input message="tns:processPayment" name="processPayment"></wsdl:input>
+      <wsdl:output message="tns:processPaymentResponse" name="processPaymentResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PaymentProcessorSoapBinding" type="tns:PaymentProcessor">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="processPayment">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="processPayment">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="processPaymentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PaymentProcessor">
+    <wsdl:port binding="tns:PaymentProcessorSoapBinding" name="PaymentProcessorPort">
+      <soap:address location="http://localhost:8080/javafirstwsut/services/paymentProcessor"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/javafirstwsut/services/paymentProcessor</con:endpoint></con:endpoints><con:operation isOneWay="false" action="" name="processPayment" bindingOperationName="processPayment" type="Request-Response" outputName="processPaymentResponse" inputName="processPayment" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/javafirstwsut/services/paymentProcessor</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.ws.trainings.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soap:processPayment>
+         <!--Optional:-->
+         <PaymentProcessorRequest>
+            <creditCardInfo>
+               <cardNumber>?</cardNumber>
+               <expirtyDate>?</expirtyDate>
+               <firstName>?</firstName>
+               <lastName>?</lastName>
+               <secCode>?</secCode>
+               <Address>?</Address>
+            </creditCardInfo>
+            <!--Optional:-->
+            <amount>?</amount>
+         </PaymentProcessorRequest>
+      </soap:processPayment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://soap.ws.trainings.com/PaymentProcessor/processPayment"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite name="PaymentProcessorSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="processPayment TestCase" searchProperties="true"><con:settings/><con:testStep type="request" name="processPayment"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>PaymentProcessorSoapBinding</con:interface><con:operation>processPayment</con:operation><con:request name="processPayment"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/javafirstwsut/services/paymentProcessor</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.ws.trainings.com/">
+
+ <soapenv:Header>
+  <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" soapenv:mustUnderstand="1">
+  <wsse:UsernameToken xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+  <wsse:Username xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">Bharath</wsse:Username>
+  <wsse:Password xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">Bharath</wsse:Password>
+  </wsse:UsernameToken>
+  </wsse:Security>
+   </soapenv:Header>
+   
+   <soapenv:Body>
+      <soap:processPayment>
+         <!--Optional:-->
+         <PaymentProcessorRequest>
+            <creditCardInfo>
+               <cardNumber>123</cardNumber>
+               <expirtyDate>2002-05-30T09:00:00</expirtyDate>
+               <firstName>bharath</firstName>
+               <lastName>thippireddy</lastName>
+               <secCode>123</secCode>
+               <Address>USA</Address>
+            </creditCardInfo>
+            <!--Optional:-->
+            <amount>123</amount>
+         </PaymentProcessorRequest>
+      </soap:processPayment>
+   </soapenv:Body>
+</soapenv:Envelope>
+]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig action="http://soap.ws.trainings.com/PaymentProcessor/processPayment" mustUnderstand="NONE" version="200508"/><con:wsrmConfig version="1.2"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>

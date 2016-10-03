@@ -1,0 +1,11 @@
+20. JAX-RS Injection
+
+	@PathParam int id: Retrieve the value from the url
+	
+	@QueryParam String name: Retrieve HTTP GET or POST parameters
+	
+	@HeaderParam: Retrieve HTTP headers
+	
+	@CookieParam: Get the cookies out
+	
+	@FormParam: Retrieve the values that are submitted from a HTML form

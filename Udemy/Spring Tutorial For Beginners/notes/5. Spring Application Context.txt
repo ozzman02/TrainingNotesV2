@@ -1,0 +1,29 @@
+5. Spring Application Context
+
+package com.in28minutes.example.spring.business.examples;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/TestContext.xml" })
+public class DependencyInjectionExamples {
+	@Autowired
+	GoodMorningService service;
+	
+	@Test
+	public void dummyTest() {
+		System.out.println(service.sayHi());
+	}
+}
+
+// 1. Who is creating Spring?
+// 		In this case the @RunWith Annotation is telling the program to use the Spring Framework.
+//      It uses @ContextConfiguration to define the xml file to launch the beans.
+
+// 2. How does Spring know where to search for Components or Beans?
+//		It will search in the xml file, component-scan has the package name.
+ 
+@Component
+class GoodMorningService {
+	public String sayHi() {
+		return "Hi"
+	}
+}

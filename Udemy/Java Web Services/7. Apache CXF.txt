@@ -1,0 +1,36 @@
+7. Apache CXF
+
+Why CXF ?
+
+	SOAP / REST Engine : Supports JAX-WS and JAX-RS
+	
+		Serialize and De Serialize
+		
+		Publish and Dispatch
+		
+		
+		XML message ------> Soap/Rest Engine ------> Java Object ------> WS Endpoint Method
+					<------					 <------			 <------
+					
+		
+		
+		Web Service standards
+		
+			WS Security
+			WS Policy
+			
+			
+		Tools
+		
+			wsdl2java generate code from wsdl file
+			java2wsdl code first development
+		
+		Spring Configuration
+		
+		Extend and Customize
+		
+			Interceptors and Handler
+		
+		Documentation and samples
+		
+		

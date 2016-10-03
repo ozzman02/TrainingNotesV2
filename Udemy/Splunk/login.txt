@@ -1,0 +1,11 @@
+http://www.splunk.com/en_us/download/
+
+Account:
+User: ozzman02
+Password: Canela02!
+-----------------------------------------------
+
+http://localhost:8000/en-US/account/login
+
+user: admin
+password: canela02

@@ -1,0 +1,100 @@
+Singleton: Create only one object at runtime.
+
+	Intent: Ensure a class only has one instance, and provide a global point of access to it.
+	
+	Apply when:
+			
+		Only one instance of class required.
+		Must be one access point.
+		Need to manage object instances.
+
+	Benefits
+		
+		Controlled Access to one instance.
+		Reduce name space -> Avoid global variables.
+		The ability to subclass the singleton class.
+		Configure the number of instances you need.
+		
+	Drawbacks
+		
+		State of the singleton must be shareable between program executions.
+		
+
+Builder: Build complex objects. Defines a way to build them.
+
+	Intent: Separate the construction of a complex object from its representation so that 
+	the same construction process can create different representations.
+	
+	Apply when:
+	
+		Separate construction with internal representation.
+		One process -> multiple object representation.
+		Object construction <> object assembling.
+	
+	Benefits
+	
+		Uniform production creation process via an interface.
+		Abstract building process.
+		Loose coupling:
+			- Construction
+			- Representation
+		Finer control on the build process -> Allow multiple steps
+
+Factory Method: Delegate object creation at runtime.
+
+	Intent: Define an interface for creating an object but let subclasses decide which class to instantiate.
+	Factory Method lets a class defer instantiation to subclasses.
+	
+	Apply When:
+		
+		Class can't expect the type of object it must create.
+		Subclasses must decide what types of objects are created.
+	
+	Benefits:
+	
+		Delegate object creation
+		Hooks for subclasses
+		Base class can provide a default implementation
+		
+
+
+Abstract Factory: Create object families.
+
+	Intent: Provide an interface for creating families of related or dependent objects without specifying their concrete classes.
+	
+	Apply when:
+		
+		Creation of products independent from the application.
+		Configuration of product families is required.
+		Hide product implementation ---> only provide interface.
+		
+	Benefits:
+	
+		Control the classes of object to be created.
+		Exchanging product families easy.
+		Promote consistency among products.
+		
+	Drawbacks:
+	
+		Addition of new products is difficult ---> extend factory interface
+		
+Prototype: Clone objects.
+
+	Intent: Specify the kinds of objects to create using a prototypical instance, and create new objects by copying this prototype.
+	
+	Apply when: 
+	
+		Classes to instantiate are specific at run-time.
+		Avoid building class hierarchies.
+		A class can have multiple instances of state.
+		
+	Benefits:
+	
+		Add/Remove products at runtime.
+		Reduce sub classing.
+		Configure application dynamically.
+		Different values for new objects.
+		
+	Drawbacks:
+	
+		Requires to create prototypes before other object creation.

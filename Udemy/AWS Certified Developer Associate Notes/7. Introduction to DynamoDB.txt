@@ -1,0 +1,316 @@
+7. Introduction to DynamoDB
+
+DynamoDB: Is a fast and flexible NoSQL database service for all applications that need consistent, single digit millisecond
+latency at any scale. It is a fully managed database and supports both document and key value data models. Its flexible
+data model and reliable performance make it a great fit for mobile, web, gaming, ad-tech, loT, and many other apps.
+
+Configuration
+
+- Stored on SSD Storage (Solid state drive)
+
+- Spread across 3 geographical distinct data centres.
+
+	- Eventual Consistent Reads (default): Consistency across all copies of data is usually reached within a second. Repeating
+		a read after a short time should return the updated data. (Best read performance)
+	
+	- Strongly Consistent Reads: A strongly consistent read returns a result that reflects all writes that received a successful
+		response prior to the read.
+
+Pricing
+
+- Provisioned Throughput capacity
+
+	Throughput: (is the rate of production or the rate at which something can be processed)
+	
+	Write throughput $0.0065 per hour for every 10 units
+	Read throughput $0.0065 per hour for every 50 units
+
+- Storage costs of $0.25Gb per month
+
+- Example: Let's assume that your application needs to perform 1 million writes and 1 million reads per day while storing 
+	3gb of data.
+	
+	First you need to calculate how many writes and reads per second you need. 1 million evenly spread writes per day
+	is equivalent to 1,000,000 (writes) / 24 (hours) / 60 (minutes) / 60 (seconds) = 11.6 writes per second.
+	
+	A DynamoDB Write Capacity Unit can handle 1 write per second, so you need 12 Write capacity units. Similary,
+	to handle 1 million strongly consistent reads per day you need 12 Read Capacity Units.
+	
+	Using on demand pricing in the US East Region, 12 Write Capacity Units would cost $0.1872 per day and 12 Read Capacity 
+	Units would cost $0.0374 per day. So your total cost of provisioned throughput capacity is $0.1872 + $0.0374 = $0.2246
+	per day. Storage costs $0.25Gb per month
+	
+	Assuming a 30 day month your 3GB would cost you 3 x $0.25 / 30 = $0.025 per day. Combining these numbers, the total cost
+	of your DynamoDB table would be $0.2246 (for provisioned throughput capacity) + $0.025 (for storage) = $0.2496 per day
+	or $7.50 per month.
+	
+Primary Keys
+
+	- Hash
+		- Unordered index on Hash Primary Key
+	
+	-Hash and range
+		- Unordered index on Hash Primary Key and sorted index on range primary key
+		
+		
+Secondary Index Types
+	
+	- Local secondary index
+		- Has the same hash key, different range key
+		- Can only be created when creating a table. They cannot be removed or modified later.
+		
+	- Global secondary index
+		- Has different hash key and different range key
+		- Can be created at table creation or added later
+	
+	* You can have 5 local secondary indexes per table and 5 global secondary indexes per table
+	* 64k of data per attribute
+
+Query vs Scan
+
+	Query: 	A query operation finds items in a table using only primary key attribute values.
+			You must provide a hash key attribute name and a distinct value to search for.
+			
+			You can optionally provide a range key attribute name and value and use a comparison
+			operator to refine the search results
+			
+			By default a query returns all of the data attributes for items with the specified
+			primary keys; however, you can use the ProyectionExpression parameter so that the 
+			query only returns some of the attributes, rather than all of them.
+			
+			Query results are always sorted by the range key. If the data type of the range key is
+			Number, the results are returned in numeric order; otherwise, the results are returned
+			in order of ASCII character code values. By default, the sort order is ascending.
+			To reverse the order, set the ScanIndexFordward parameter to false.
+			
+			By default is eventually consistent but can be changed to be strongly consistent.
+			
+			
+	Scan:	Examines every item in the table. By default a scan returns all of the data attributes
+			for every item; however, you can use the ProyectionExpression parameter so that the 
+			Scan only returns some of the attributes, rather than all of them.
+			
+			
+			
+			
+	* Generally a query operation is more efficient than a Scan operation.
+	
+	* A Scan operation always scans the entire table, then filters out values to provide the desired result
+	essentially adding the extra step of removing data from the result set. Avoiding using a Scan operation
+	on a large table with a filter that removes many results, if possible. Also, as a table grows, the Scan operation
+	slows. The scan operation examines every item for the requested values, and can use up the provisioned
+	throughput for a large table in a single operation. For a quicker response times, design your tables in
+	a way that can use the Query, Get, or BatchGetItem APIs, instead. Alternatively, design your application
+	to use Scan operations in a way that minimizes the impact on your table's request rate.
+	
+Provisioned Throughput
+
+- Unit of Read provisioned throughput
+	- All reads are 4KB
+	- Eventually Consistent Reads (default) consist of 2 reads per second.
+	- Strongly Consistent Reads consist of 1 read per second.
+	
+- Unit of Write Provisioned throughput
+	- All writes are 1 kb
+	- All writes consist of 1 write per second
+	
+Examples
+
+You have an application that requires to read 10 items of 1kb per second using eventual consistency. What should you set the read throughput?
+
+- First we calculate how many read units we need
+- 1kb / 4kb (divide by 4 because all reads are 4KB) = 0.25
+- 0.25 Rounded up to nearest whole number = 1 read unit per item
+- 1 X 10 read items = 10
+- Using eventual consistency 10 / 2 (divide by 2 since Eventually Consistent Reads (default) consist of 2 reads per second) = 5
+- Answer is 5 units of read throughput
+
+	Formula: 
+		- (Size of read / 4kb) Rounded up x no of items = read throughput
+		- Divide by 2 if eventually consistent
+
+You have an application that requires to read 10 items of 6kb per second using eventual consistency. What should you set the read throughput?
+
+	Read units = 6kb / 4kb = 1.5
+	Rounded up: 2
+	Rounded up x number of items: 2 x 10 = 20
+	Using eventual consistency: 20 / 2 = 10
+	Answer is 10 units of read throughput
+		
+You have an application that requires to read 5 items of 10kb per second using eventual consistency. What should you set the read throughput?
+
+	Read units: 10kb / 4kb = 2.5
+	Rounded up: 3
+	Rounded up x number of items: 3 x 5 = 15
+	Using eventual consistency: 15 / 2 = 7.5
+	Answer is 8 (rounded up) units of read throughput
+
+You have an application that requires to read 5 items of 10kb per second using strongly consistent. What should you set the read throughput?
+	
+	Read units: 10kb / 4kb = 2.5
+	Rounded up: 3
+	Rounded up x number of items: 3 x 5 = 15
+	Using eventual consistency: 15 (no need to divide by 2 since Strongly Consistent Reads consist of 1 read per second) 
+	Answer is 15 units of read throughput
+
+You have an application that requires to write 5 items of 10kb per second. What should you set the write throughput?
+	
+	Each write consist of 1kb of data, you need to write 5 items per second using 10kb of data per write.
+	
+	5 x 10 = 50
+	You need a write throughput of 50 units.
+	
+You have an application that requires to write 5 items of 10.5kb per second. What should you set the write throughput?
+
+	Each write consist of 1kb of data, you need to write 5 items per second using 10.5kb of data per write.
+	Rounded up: 10.5 = 11
+	5 x 11 = 55
+	You need a write throughput of 55 units.
+
+	
+API Error code
+
+	What happens when you exceed your write or read throughput
+	
+	400 HTTP Status Code: ProvisionedThroughputExceededException
+	
+		You exceeded your maximum allowed provisioned throughput for a table or for one or more global secondary indexes.
+	
+Web Identity Providers
+
+	You can authenticate users using web identity providers (such as Facebook, Google, Amazon or any other Open-ID Connect-compatible Identity Provider)
+	This is done using AssumeRoleWithWebIdentity API
+	
+	- User authenticates with id provider (such as facebook)
+	- They are passed a token by their id provider
+	- Your code calls AssumeRoleWithWebIdentity API and provides the providers token and specifies the ARN for the IAM role
+	- APP can now access Dynamodb from between 15 minutes to 1 hour (default is one hour)
+	
+
+Conditional writes
+
+	Conditional writes are idempotent. This means that you can send the same conditional write request multiple times, but it will have no
+	further effect on the item after the first time DynamoDB performs the specified update.
+	
+	Example: You issue a request to update the price of a book item by 10% with the expectation that the price is currently $20.
+			 However, before you get a response, a network error occurs and you dont know whether your request was successful 
+			 or not. Because a conditional update is an idempotent operation, you can send the same request again and DynamoDB
+			 will update the price only if the current price is still $20.
+			 
+Atomic Counters
+	
+	DynamoDB supports atomic counters, where you use the UpdateItem operation to increment or decrement the value of an existing
+	attribute without interfering with other write requests. (All write requests are applied in the order in which they were received)
+		
+	Example: A web application might want to maintain a counter per visitor to their site. In this case, the application would need to
+	increment this counter regardless of its current value.
+		
+	Atomic counter updates are not idempotent. This means that the counter will increment each time you call UpdateItem. If you suspect
+	that a previous request was unsuccessful, your application could retry the UpdateItem operation; however, this would risk
+	updating the counter twice. This might be acceptable for a web site counter, because you can tolerate with sightly over - or under -
+	counting the visitors. However, in a banking application, it would be safer to use a conditional update rather than an atomic counter.
+
+Batch Operations
+
+		If your application needs to read multiple items, you can use the BatchGetItem API. A single BatchGetItem request can retrieve up to
+		1 MB of data, which can contain as many as 100 items. In addition, a single BatchGetItem request can retrieve items for multiple tables.
+		
+Export data
+
+	You can export data from DynamoDB from the management console.
+	
+	
+Summary
+	
+	Configuration
+		- Stored on SSD Storage 
+		- Spread across 3 geographical distinct data centres
+			Eventual Consistent Reads (default)
+				- Consistency across all copies of data is usually reached within a second. 
+					Repeating a read after a short time should return the updated data. (Best read performance)
+			Strongly Consistent Reads
+				- A strongly consistent read returns a result that reflects all writes that received a successful response prior to the read.
+				
+				
+				
+	Query: 
+	
+		- Finds items in a table using only primary key attribute values. 
+		
+		- You must provide a hash key attribute name and a distinct value to search for.
+		
+		- You can optionally provide a range key attribute name and value, and use a comparison operator to refine the search results.
+		
+		- By default a query returns all of the data attributes for items with the specified primary key(s) however, you can use the
+			ProjectionExpression parameter so that the query only returns some of the attributes, rather than all of them.
+		
+		- Query results are always sorted by the range key. If the data type of the key range key is Number, the results are returned 
+			in numeric order; otherwise, the results are returned in order of ASCII character code values. By default, the sort order
+			is ascending. To reverse the order, set the ScanIndexFordward parameter to false.
+		
+		- By default is eventually consistent but can be changed to be strongly consistent.
+			
+	Scan: 
+	
+		- Examines every item in the table. By default, a scan returns all of the data attributes for every item; however, you can
+			use the ProjectionExpression parameter so that the Scan only returns some of the attributes, rather than all of them.
+			
+	Provisioned Throughput
+	
+		- Unit of read provisioned throughput
+			All reads are 4kb
+			Eventually Consistent Reads (default) consist of 2 reads per second.
+			Strongly Consistent Reads consist of 1 read per second.
+			
+		- Unit of Write provisioned throughput
+			All writes are 1KB
+			All writes consist of 1 write per second.
+			
+	Conditional Writes
+	
+	Atomic Counters
+	
+	Batch Operations
+	
+	Steps for Web Identity Providers
+	
+	
+Quiz
+
+You have a motion sensor which writes 600 items of data every minute. Each item consists of 5kb. Your application uses eventually consistent reads. 
+What should you set the read throughput to?
+
+	600 / 60 = 10 items per second. 5kb rounded to nearest 4kb chunk is 8kb. 8 / 4 = 2. 
+	This means you need 2 reads per item. 2 x 10 = 20 reads per second. As the reads are EVENTUALLY consistent, 20 / 2 = 10.
+
+
+You have a motion sensor which writes 600 items of data every minute. Each item consists of 5kb. What should you set the write throughput to?
+
+	600 / 60 = 10 items per second. You are using 5kb per write and writes are measured in 1kb per write. 
+	This means that you need 5 writes per item, 5 x 10 = 50 writes per second.
+
+What is the API call to retrieve multiple items from a DynamoDB table?
+
+	BatchGetItem
+
+You have a motion sensor which writes 600 items of data every minute. Each item consists of 5kb. 
+Your application uses strongly consistent reads. What should you set the read throughput to?	
+
+	600 / 60 = 10 items per second. 5kb rounded to nearest 4kb chunk is 8kb. 8 / 4 = 2. This means you need 2 reads per item. 2 x 10 = 20 reads per second. 
+	As the reads are Strongly consistent, you do not need to divide by 2. So the answer is 20.
+
+Using the AWS portal, you are trying to Scale DynamoDB past its preconfigured maximums. Which service can you increase by raising a ticket to AWS support?
+
+	Provisioned throughput limits
+
+You have an application that needs to read 25 items of 13kb in size per second. Your application uses eventually consistent reads. 
+What should you set the read throughput to?
+
+	Your application reads 13kb per item. Round up to the nearest 4kb chunk = 16kb. 16kb / 4kb = 4 reads per item. 
+	You have 25 items so 25 x 4 = 100. Your application requires eventually consistent reads which means you divide by 2. 100/2 = 50.
+	
+You have an application that needs to read 25 items of 13kb in size per second. Your application uses strongly consistent reads. 
+What should you set the read throughput to?
+
+	Your application reads 13kb per item. Round up to the nearest 4kb chunk = 16kb. 16kb / 4kb = 4 reads per item. You have 25 items so 25 x 4 = 100. 
+	Your application requires strongly consistent reads which means you do not need to divide by 2. Answer = 100

@@ -1,0 +1,30 @@
+4. First Spring example
+
+Spring IOC Container (IOC stands for Inversion Of Control): It handles the beans
+The GoodMorningService is a dependency. We let Spring to take care of the dependencies.
+We do not instantiate the GoodMorningService. Spring must have to do it for us.
+
+@Component: Annotation that tells to Spring to handle a bean. In this case GoodMorningService is a bean.
+@Autowired: Annotation that tells to Spring to inject the dependency.
+
+package com.in28minutes.example.spring.business.examples;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/TestContext.xml" })
+public class DependencyInjectionExamples {
+	@Autowired
+	GoodMorningService service;
+	
+	@Test
+	public void dummyTest() {
+		System.out.println(service.sayHi());
+	}
+}
+
+@Component
+class GoodMorningService {
+	public String sayHi() {
+		return "Hi"
+	}
+}
+

@@ -1,0 +1,31 @@
+9. Other Spring Modules
+
+Data Access/Integration
+	- JDBC	Java DataBase Connectivity
+	- ORM	Object Relational Mapping
+	- OXM	Object XML Mapping
+	- JMS	Java Message Service
+	- Transactions
+	
+Web 
+	- WebSocket
+	- Servlet
+	- Web
+	- Portlet
+	
+Core Container
+	- Beans
+	- Core
+	- Context
+	- SpEL
+	
+- Test
+
+- AOP
+
+- Aspects
+
+- Instrumentation
+
+- Messaging
+

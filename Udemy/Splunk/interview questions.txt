@@ -1,0 +1,378 @@
+100+ Interview Questions
+Section 9, Lecture 38
+1) Where Splunk stores the data ?
+
+Ans: Splunk has its own database and stores data in flat files.
+
+2) How much disc space is required to store data in splunk ?
+
+Ans: Splunk stores data in 2 type of files/directories  1) actual data in zip files takes ~15% of file size  2) index files takes ~35% of file size  So around 50% of files size require to store that file and  other than this space is required to store search results.
+
+3)How the indexer stores indexes ?
+
+Ans: As the indexer indexes your data, it creates a number of files.  These files contain two types of data:  The raw data in compressed form (rawdata)  Indexes that point to the raw data, plus some metadata files (index files)  Together, these files constitute the Splunk Enterprise index.
+
+4) What is bucket ? How data ages in Splunk ?
+
+Ans: An index directory is called a bucket.  A bucket moves through several stages as it ages:  hot  warm  cold  frozen  thawed
+
+5) What are components of splunk/splunk architecture?
+
+Ans: Splunk Components are: 1) Search head - Front end and provides GUI for searching 2) Indexer - indexes logs/machine data 3) Forwarder -Forwards logs/data to Indexer 4) Deployment server -Manages splunk components in distributed environment
+
+6) What is Splunk?
+
+Ans: Splunk is a software or tool used to monitor, report, analyze machine data
+
+7) What is default index in Splunk ?
+
+Ans: main, If you do not assign any index to data/log then this log/data goes  to default index main.
+
+8) What are common port numbers used by Splunk?
+
+Ans: Below are common port numbers used by splunk,however you can change them if required 1) Service Port number Used
+
+2) Splunk Web Port: 8000 3) Splunk Management Port: 8089 4) Splunk Indexing Port: 9997 5) Splunk Index Replication Port 8080 6) Splunk network port: 514 (Used to get data in from netwok port i.e. UDP data) 7) KV store 8191
+
+9) Which is latest splunk version in use?
+
+Ans: splunk 6.4
+
+10) What is splunk indexer?What are stages of splunk indexing?
+
+Ans: The indexer is the Splunk Enterprise component that creates and manages indexes. The primary functions of an indexer are:  1) Indexing incoming data. 2) Searching the indexed data.
+
+11) What are types of splunk forwarder?
+Ans: There are two types of splunk forwarders:  a) universal forwarder(UF) -Splunk agent installed on non-Splunk system to  gather data locally, can’t parse or index data b) Heavy weight forwarder(HWF) - full instance of splunk with advance functionality. - Generally works as a remote collector, intermediate forwarder, and possible  data filter because they parse data, they are not recommended for production systems
+
+12) what are most important configuration files of splunk?
+
+
+Ans: 1) inputs.conf 2) outputs.conf 3) props.conf 4) indexes.conf 5) transforms.conf 6) server.conf
+
+
+
+13)What is the function of props.conf and transforms.conf files?
+Ans: props.conf: you can create fields, event break,line break for multiline events, assign timestamp, event segmentation transforms.conf: you can create fields,Anonymizing data, index-time field extractions, Configuring regex-based  host and source type overrides, Routing specific events to a particular index
+
+14) What are types of splunk licenses?
+
+
+Ans: 1) Enterprise license 2) Free license, expires in 60 days and 500MB per day 3) Forwarder license 4) Beta license 5) Licenses for search heads (for distributed search) 6) Licenses for cluster members (for index replication)
+
+
+
+
+15) What are diffrence between splunk app and splunk add-on?
+Ans:  splunk app is container/directory of configurations,searches,dashboards etc. in splunk where you can create dashboard, report etc. splunk add-on is used to define the data, field extractions and does  not have gui.
+
+16) How you can assign index to a log file ?
+Ans: In inputs.conf under file monitor stanza write this: index= your index name
+
+17) what happens if the license master is unreachable?
+Ans: license slave will start a 24-hour timer, after which search will be blocked on the license slave (though indexing continues). users will not be able to search data in that slave until it can reach license master again
+
+18) what is summary index in splunk?
+Ans: Summary index is used to give fast result of report/dashboard. You can store any cron/save  search result in summary index so that you can reduce the data in summary index.
+
+19) What is splunk DB connect?
+
+
+Ans: Splunk DB Connect is an splunk app (generic SQL database plugin that allows you to easily  integrate database information with Splunk queries and reports.
+
+
+
+20) Can you write down a general regular expression for extracting ip address from logs?
+Ans: There are multiple ways we can extract ip address from logs.Below are few examples. Regular Expression for extarcting ip address:  rex field=_raw "(?\d+\.\d+\.\d+\.\d+)"  OR rex field=_raw "(?([0-9]{1,3}[\.]){3}[0-9]{1,3})" 
+
+21) What is difference between stats vs transaction command?
+
+
+Ans: The transaction command is most useful in two specific cases: Unique id (from one or more fields) alone is not sufficient to discriminate between  two transactions. This is the case when the identifier is reused, for example  web sessions identified by cookie/client IP. In this case, time span or pauses are also used  to segment the data into transactions. In other cases when an identifier is reused, say in DHCP logs, a particular message may identify the beginning or end of a transaction. When it is desirable to see the raw text of the events combined rather than analysis on  the constituent fields of the events.  In other cases, it's usually better to use stats as the performance is higher, especially in a  distributed search environment. Often there is a unique id and stats can be used.
+
+
+
+22) How to troubleshoot splunk performance issues?
+Ans: Answer to this question would be very wide but basically interviewer would be looking for  following keywords in intreview: -Check splunkd.log for any errors -Check server performance issues i.e. cpu/memory usag,disk i/o etc -Install SOS (Splunk on splunk) app and check for warning and errors in dashboard -check number of saved searches currently running and their system resources consumption - install Firebug, which is a firefox extension. After it's installed and enabled, log into  splunk (using firefox), open firebug's panels, switch to the 'Net' panel (you will have to enable it). The Net panel will show you the HTTP requests and responses along with the time spent in each. This will give you a lot of information quickly over which requests are hanging splunk for a few seconds, and which are blameless. etc..
+
+23) What are buckets? explain splunk bucket lifecycle?
+
+
+Ans: Splunk places indexed data in directories, called as "buckets".  It is physically a directory containing events of a certain period.A bucket moves through several stages as it ages: Hot - Contains newly indexed data. Open for writing. One or more hot buckets for each index. Warm - Data rolled from hot. There are many warm buckets. Colld - Data rolled from warm. There are many cold buckets. Frozen - Data rolled from cold. The indexer deletes frozen data by default, but you can also archive it. Archived data can later be thawed (Data in frozenbuckets is not searchable) By default, your buckets are located in $SPLUNK_HOME/var/lib/splunk/defaultdb/db. You should see the hot-db there, and any warm buckets you have.By default, Splunk sets  the bucket size to 10GB for 64bit systems and 750MB on 32bit systems.
+
+
+
+24) What is the different between stats and eventstats commands?
+Ans: Stats command generate summary statistics of all existing fields in your search results  and save them as values in new fields. Eventstats is similar to the stats command,  except that aggregation results are added inline to each event and only if the aggregation  is pertinent to that event. eventstats computes the requested  statistics like stats, but aggregates them to the original raw data.
+
+25) Who are the biggest direct competitors to Splunk?
+Ans: ELK(Elasticsearch,logstash,Kibana), Loggly, Loglogic,sumo logic etc..
+
+26) splunk licenses specify what ?
+Ans: how much data you can index per calendar day
+
+27) how does splunk determine 1 day, from a licensing perspective ?
+Ans: midnight to midnight on the clock of the license master
+
+28) how are forwarder licenses purchased ?
+Ans: They are included with splunk, no need to purchase separately
+
+29) What is command for restarting just the splunk webserver?
+
+
+Ans: splunk start splunkweb
+
+
+
+30) What is command for restarting just the splunk daemon?
+Ans: splunk start splunkd
+
+31) What is command to check for running splunk processes on unix/Linux ?
+Ans: ps aux | grep splunk
+
+32) What is Command to enable splunk to boot start?
+Ans: $SPLUNK_HOME/bin/splunk enable boot-start
+
+33) How to disable splunk boot start?
+Ans: $SPLUNK_HOME/bin/splunk disable boot-start
+
+34) What is sourcetype in splunk?
+Ans: Sourcetype is splunk way of identifying data
+
+35) How to reset splunk admin password?
+
+
+Ans: To reset your password log in to server on which splunk is installed and rename passwd file  at below location and then restart splunk.After restart you can login using default username:admin password:changeme  $splunk-home\etc\passwd
+
+
+
+35) How to reset splunk admin password?
+Ans: To reset your password log in to server on which splunk is installed and rename passwd file  at below location and then restart splunk.After restart you can login using default username:admin password:changeme  $splunk-home\etc\passwd
+
+36) How to disable splunk launch message?
+Ans: Set value OFFENSIVE=Less in splunk_launch.conf
+
+37) How to clear splunk search history?
+Ans: Delete following file on splunk server $splunk_home/var/log/splunk/searches.log
+
+38) What is btool or how will you troubleshoot splunk configuration files?
+
+
+Ans: splunk btool is a command line tool that helps us to troubleshoot configuration file issues or  just see what values are being used by your Splunk Enterprise installation in existing environment
+
+
+
+39) What is difference between splunk app and splunk add on?
+Ans: Basiclly both contains preconfigured configuration and reports etc but splunk add on do not  have visual app. Splunk apps have preconfigured visual app
+
+40) What is .conf files precedence in splunk?
+Ans: File precedence is as follows: System local directory -- highest priority App local directories App default directories System default directory -- lowest priority
+
+41) what is fishbucket or what is fishbucket index?
+Ans: Its a directory or index at default location /opt/splunk/var/lib/splunk . It contains seek pointers and CRCs for the files you are indexing, so splunkd can tell if it has read them already.We can access it through GUI by seraching for “index=_thefishbucket”
+
+42) How do i exclude some events from being indexed by Splunk?
+Ans : This can be done by defining a regex to match the necessary event(s) and send everything else to nullqueue. Here is a basic example that will drop everything except events that contain the string error.  
+
+In props.conf:  
+
+[source::/var/log/foo]
+
+TRANSFORMS-set = setnull,setparsing
+
+In transforms.conf 
+
+ [setnull] 
+
+REGEX = .  
+
+DEST_KEY = queue 
+
+FORMAT = nullQueue
+
+[setparsing] 
+
+REGEX = error 
+
+DEST_KEY = queue 
+
+FORMAT = indexQueue 
+
+43) How can i tell when splunk is finished indexing a log file?
+
+
+Ans: By watching data from splunk's metrics log in real-time.  index="_internal" source="*metrics.log" group="per_sourcetype_thruput"  series="<your_sourcetype_here>" | eval MB=kb/1024 | chart sum(MB)  or to watch everything happening split by sourcetype....  index="_internal" source="*metrics.log" group="per_sourcetype_thruput" | eval MB=kb/1024 | chart sum(MB) avg(eps) over series  And if you're having trouble with a data input and you want a way to troubleshoot it, particularly if your whitelist/blacklist rules arent working the way you expect, go to this URL:  https://yoursplunkhost:8089/services/admin/inputstatus
+
+
+
+44) How to set the default search time in Splunk 6?
+Ans: To do this in Splunk Enterprise 6.0, use ui-prefs.conf. If you set the value in $SPLUNK_HOME/etc/system/local, all your users should see it as the default setting. For example, if your $SPLUNK_HOME/etc/system/local/ui-prefs.conf file includes: 1. [search] 2. dispatch.earliest_time = @d 3. dispatch.latest_time = now The default time range that all users will see in the search app will be today.
+
+45) What is dispatch directory?
+Ans: $SPLUNK_HOME/var/run/splunk/dispatch contains a directory for each search that is running or has completed. For example, a directory named 1434308943.358 will contain a CSV file of its search results, a search.log  with details about the search execution, and other stuff. Using the defaults (which you can override  in limits.conf), these directories will be deleted 10 minutes after the search completes - unless the user saves the search results, in which case the results will be deleted after 7 days.
+
+46) What is difference between search head pooling and search head clustering?
+Ans: Both are features provided splunk for high availability of splunk search head in case any one  search head goes down.Search head cluster is newly introduced and search head pooling will be removed in next  upcoming versions.Search head cluster is managed by captain and captain controls its slaves. Search head cluster is more reliable and efficient than search head pooling.
+
+47) If I want to add/onboard folder access logs from a windows machine to splunk how can I add same?
+Ans: Below are steps to add folder access logs to splunk 1.Enable Object Access Audit through group policy on windows machine on which folder is located 2. Enable auditing on specific folder for which you want to monitor logs 3.Install splunk universal forwarder on windows machine 4.Configure universal forwarder to send security logs to splunk indexer
+
+48) How would you handle/troubleshoot splunk license violation warning error?
+
+
+Ans: License violation warning means splunk has indexed more data than our purchased license quota. We have to identify which index/sourcetype has received more data recently than usual daily data volumr. We can check on splunk license master pool wise available quota and identify the pool for which violation is occuring. Once we know the pool for which we are receiving more data then we have to identify  top sourcetype for which we are receiving more data than usual data.Once sourcetype is  identified then we have to find out source machine which is sending huge number of logs and  root cause for the same and troubleshoot accordingly.
+
+
+
+49) What is mapreduce algorithm?
+Ans: Maprduce algorithm is secret behind splunk fast data searching speed. It's an algorithm typically used for batch based large scale parallelization. It's inspired by functional programming's map() and redce () functions.
+
+50) How splunk avoids duplicate indexing of logs ?
+Ans: At indexer splunk keeps track of indexed events in a directory called fish buckets (default location /opt/splunk/var/lib/splunk). It contains seek pointers and CRCs for the files you are indexing, so splunkd can tell if it has read them already.
+
+51) Where Hunk stores the data ?
+Ans: Hunk does not have its own data , its uses Hadoop or NoSQL data to analyze.
+
+52) What is Virtual index ?
+Ans: Its data container, and contain information about files or directories in Hadoop.
+
+53)What is ERP ?
+Ans: in ERP you can provide hadoop enviornment information. ERP takes the request from search head and execute map-reduce job in Hadoop.
+
+54) Can I use splunk and hunk in same instance ?
+Ans: yes, with different License (hunk and splunk enterprise).
+
+
+
+55) Can I read Hunk archived data exported in Hadoop by using pig or hive?
+Ans: Yes, you can read but you need to use bucket reader.
+
+56) Splunk can be replaced by Hunk ?
+Ans: No, Hunk is used for Hadoop, NoSQL data analysis.
+
+57) How Hunk search head cluster is different than Enterprise Splunk search head cluster?
+Ans: It is same as Enterprise search head cluster.
+
+58) What customers are using Hunk ?
+Ans: Yahoo, Comcast, Ericsson and many more...
+
+59) Can we archive all Splunk buckets in Hadoop by using Hunk?
+
+
+Ans: No, We can archive only warm and cold buckets.
+
+
+
+60) Can we archive some search result/data from splunk in Hadoop by using Hunk?
+Ans: No, you can not archive splunk search output/result in Hadoop by using Hunk.  You have to archive all index data(cold,warm buckets) in Hadoop.
+
+61) What is datamodel ? Have you created any datamodel? Explain?
+
+62) What is pivot
+
+63) Dashboard vs form
+
+64) chart vs timechart
+
+65) What are the methods to improve dashboard performance?
+
+Optimize search, datamodel acceleration, post processing, summary indexeing, report acceleration
+
+66) What is postprocessing?
+
+Postprocess is a mechanism where one main/base search runs and it shows different panel chart , It improves the performance of the dashboard.
+
+67)What is lookup table ?
+
+68) What is timebased lookup ?
+
+69) tag vs eventtype
+
+70) Summary indexing vs data model acceleration
+
+71) ELK vs Splunk
+
+72) how you can assign index to a log file?
+
+In inputs.conf file under file monitor stanza
+
+index=<index name>
+
+73) stats vs eventstats vs streamstats
+
+74) How you can drop INFO, DEBUG events before indexing.
+
+[source::/var/log/foo]
+
+TRANSFORMS-set = setnull
+
+In transforms.conf 
+
+ [setnull] 
+
+REGEX = . (INFO|DEBUG) 
+
+DEST_KEY = queue 
+
+FORMAT = nullQueue
+
+
+
+
+75) How you can perform load balancing in forwarder?
+
+76) How you can send same data to different indexer for High Availability?
+
+77) How you can send data to selective indexes?
+
+78) How you can filter out files from directory to monitor?
+
+79) How you can create index time field?
+
+80) Index vs search time field extraction
+
+81) fast mode vs verbose mode vs smart mode for search
+
+82) How LDAP authentication works ?
+
+83) How you can assign indexes to users so that they only can search those indexes data?
+
+84) What are the config files to implement authentication?
+
+authentication.conf
+
+85) What is the deployment server ?
+
+86) Gui changes vs config files changes
+
+87) How can I create an alert that should not run again in next 1 hour?
+
+88) What are common log files to debug the splunk issues?
+
+89) What is indexer cluster ?
+
+90) What is search head cluster ?
+
+91) What is replication factor?
+
+92) What is search factor?
+
+93) search head cluster vs search head pool
+
+94) What is the role of master node in indexer cluster?
+
+95) What is the role of deployer in search head cluster?
+
+96) Why it is not recommended to use deployment manager to manage indexer cluster nodes?
+
+97) What is the role of captain in search head cluster ?
+
+98) How to change timezone in events coming into splunk?
+
+In props.conf use TZ =<timezone>
+
+99) I am getting search reached maximum error/warning, How can I fix this issue?
+
+100) My data size reached beyond my splunk license limit. Can I search the data or data is indexed in splunk ?
+
+101) what are the steps required for data onboarding in splunk ? 

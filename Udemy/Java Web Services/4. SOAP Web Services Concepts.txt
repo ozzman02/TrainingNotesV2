@@ -1,0 +1,98 @@
+SOAP Web Services Concepts
+
+<customerName>Bharath</customerName>
+metadata		data
+
+
+Pros
+
+	Platform Independent
+		HTTP = Transport independent
+		XML =  Data independent
+		
+	Application Tailoring/Customization
+		Customer can customize or extend the product
+	
+	Legacy Applications 
+	
+	New revenue/Profit channels
+	
+	Firewalls like webservices
+	
+Cons
+
+	Ambiguous Web Services Standards
+	Performance impact due to Serialization and Deserialization
+	
+
+When to use web services
+
+	- Formal contract is required ---------> WSDL
+	- Non functional requirements
+		Security
+		Transaction Management
+	- Reliable Asynchronous Processing
+
+SOAP (Simple Object Access Protocol)
+
+	W3C Specification
+
+WDSL Web services Description Language
+
+	What this web service provides
+	How it provides it and how you can consume it
+	
+	Abstract/What
+	
+		definitions	
+			types
+			messages
+			operation
+			porttype
+		
+	Physical/How
+	
+		binding
+		service
+		
+		
+<soap:binding>
+	
+	<binding style="document/literal">
+	
+	Binding impacts:
+	
+		SOAP Payload
+		Validation
+		Operation Name SOAP Message
+
+
+Which style of WSDL should I use? https://www.ibm.com/developerworks/library/ws-whichwsdl/
+		
+		RPC/encoded
+		RPC/literal
+		Document/encoded
+		Document/literal
+		
+Which WSDL Element connects the abstract and concrete sections of a WSDL?: Porttype		
+The WSDL element that wraps all the operations is: porttype
+Which element in the WSDL is equivalent to method parameters in programming?: messages
+
+
+SOAP
+
+	envelope
+	header
+	body
+	fault 
+	
+WDSL
+
+	definitions
+	messages: input output parameters
+	operations: use the parameters
+	porttype: container of the operations
+	binding: defines how the soap messages should look like
+	service: tells how this particular web service can be consumed
+	
+		

@@ -1,0 +1,33 @@
+Instructor: Bharath Thippireddy
+
+
+Apache Tomcat
+
+Important folders
+
+bin: Contains the scripts to start and stopt tomcat
+conf: Here we have all the configuration files. Important are tomcat-users.xml y server.xml
+webapps: Here is where we deploy apps
+
+1. Add a Tomcat server in eclipse
+2. Create a new Dynamic Web Project
+
+
+For the course:
+
+Import the projects into eclipse by selecting an existing maven project
+Do Maven clean
+Do Maven install
+Run it on server
+
+Troubleshooting
+
+Project properties
+
+Check Targeted Runtimes
+Check Java Compiler
+Check Java BuildPath
+Check Deployment Assembly
+	Check for Maven Dependencies. 
+	If not there, click on add, Java BuildPath Entries
+
