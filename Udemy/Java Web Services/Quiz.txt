@@ -354,3 +354,16 @@ Which method on the AsyncResponse class can be used to communicate response or e
 
 	resume
 	
+Which method returns a Asyncinvoker that can then be used to make Async Calls?
+
+	async
+
+Which class from the java concurrency package is the key for handling asynchronous response?
+
+	Future
+	
+Which interface should be implemented by a Async client callback?
+
+	InvocationCallback
+	
+
