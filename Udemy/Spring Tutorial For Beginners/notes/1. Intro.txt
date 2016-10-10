@@ -1,2 +1,5 @@
-Repository: https://github.com/in28minutes/SpringIn28Minutes
+Repository: 
 
+	https://github.com/in28minutes/SpringIn28Minutes
+
+	https://github.com/in28minutes/JavaWebApplicationStepByStep
