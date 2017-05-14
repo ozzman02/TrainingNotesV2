@@ -4,3 +4,18 @@
 	Web Applications		Method Level
 		Authentication		Object Level
 		Authorization
+		
+		
+	1. Add dependencies
+	
+		spring-security-core
+		spring-security-config
+		spring-security-web
+		
+	2. Configure DelegatingProxyFilter in web.xml
+	
+	3. Configure security.xml
+	
+	4. Map the methods with @Secure annotation
+	
+	
