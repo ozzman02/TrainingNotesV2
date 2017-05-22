@@ -31,7 +31,7 @@ BEGIN
   --Retrieve the first worker
   SELECT essn
   INTO WorkerList(1)
-  FROM works_on
+  FROM WORKS_ON
   WHERE hours IS NOT NULL
   AND ROWNUM <= 1
   AND essn NOT IN (ManagementList(1), ManagementList(2));
@@ -39,7 +39,7 @@ BEGIN
   --Retrieve the second worker
   SELECT essn
   INTO WorkerList(2)
-  FROM works_on
+  FROM WORKS_ON
   WHERE hours IS NOT NULL
   AND ROWNUM <= 1
   AND essn NOT IN (ManagementList(1), ManagementList(2), WorkerList(1));
