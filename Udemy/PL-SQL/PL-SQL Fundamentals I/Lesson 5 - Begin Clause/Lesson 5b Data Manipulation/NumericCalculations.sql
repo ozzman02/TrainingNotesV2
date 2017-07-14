@@ -14,8 +14,9 @@ DECLARE
 BEGIN
 
 	--Set the variables
-	EmpSalary := 50000;
-	EmpRaisePct := 10;
+	--EmpSalary := 50000;
+	EmpSalary := &enter_salary;
+    EmpRaisePct := 10;
 	
 	--Display the starting salary
 	dbms_output.put_line('Current Salary: ' || EmpSalary);

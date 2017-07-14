@@ -1,0 +1,3 @@
+node -v
+npm install http-server -g
+http-server C:\git\TrainingNotes\Udemy\Javascript\Javascript -p 8081
