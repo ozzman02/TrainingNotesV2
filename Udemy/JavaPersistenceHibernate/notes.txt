@@ -42,7 +42,7 @@ A component has no database identity.
 
 Associations
 
-	Cascading the Persist Operation = Transitiv Persistance
+	Cascading the Persist Operation = Transitive Persistance
 	If the association is bidirectional, one of the sides (and only one) has to be the owner of the relationship - The owner of the relationship is responsible for the association column(s) update.
 	Many side in a OneToMany bidirectional relationship is (almost) always the owner side. In this case the One side is called inverse end.
 	In a bidirectional OneToOne relationship to declare a side as not responsible for the relationship, the attribute mappedBy is used.
