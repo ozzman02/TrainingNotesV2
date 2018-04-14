@@ -67,7 +67,12 @@ JPA
 	JPA is a Java specification for accessing, persisting, and managing data between Java Objects and a relational database.
 	JPA provides guidelines that a framework can implement to be considered JPA compatible.
 	In addition to its own "native" API, Hibernate is also an implementation of the Java Persistence API (JPA) specification.
+	
+	<persistence-unit name="hibernate-jpa" transaction-type="RESOURCE_LOCAL">
 
+		transaction-type="RESOURCE_LOCAL": You are responsible for creating an EntityManager
+		transaction-type="JTA": An EntityManager can be supplied to you by EJB container of an application server (Glassfish for example)
+		
 Working with objects
 
 	Transiency object: State is transient which means that is not associated with any database. It's state is going to be lost as soon as it's no longer referenced by any other object.
@@ -106,7 +111,9 @@ SQL Joins
 		
 Lazy Fetching
 	
-	A collection is fetched when the application invokes an operation upon that collection. By default, collection associations (@OneToMany and @ManyToMany) are lazily fetched.
+	A collection is fetched when the application invokes an operation upon that collection. By default, collection associations 
+	(@OneToMany and @ManyToMany) are lazily fetched.
+	
 	It is not going to work outside of the scope of an entity manager.
 	
 Eager Fetching
@@ -119,14 +126,22 @@ Equals and Hashcode
 	
 	Whenever you implement equals(Object), you must also implement hashcode()
 	
-JPQL
+JPQL (Java Persistence Query Language)
 
 	Queries entities.
 	Case sensitive.
 	A JPQL query is always a valid HQL query, the reverse is not true however.
 	
+SQL is case insensitive
+	
+	Guide=guide=GUIDE=Guide
+	guide.id=guide.Id=guide.ID
+	
 HQL (Hibernate Query Language)
-
+	
+	You can use it when you are are using native Hibernate API
+	You can also use it when you are using Hibernate as a JPA provider
+	
 
 Inheritance Mapping and Polymorphic Queries
 	

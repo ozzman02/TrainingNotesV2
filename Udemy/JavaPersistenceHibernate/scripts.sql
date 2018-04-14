@@ -21,6 +21,8 @@ ALTER TABLE friend_nickname ADD primary key(friend_id, nickname);
 
 ALTER TABLE friend_address ADD primary key(friend_id, address_city, address_street, address_zipcode);
 
+ALTER TABLE animal AUTO_INCREMENT = 1;
+
 /* ----------------------- Select statements ----------------------- */
 select * from guide;
 
@@ -48,6 +50,14 @@ select * from parent;
 
 select * from child;
 
+select * from animal;
+
+select * from animal2;
+
+select * from cat2;
+
+select * from dog2;
+
 /* ----------------------- Delete statements ----------------------- */
 delete from guide;
 
@@ -74,3 +84,7 @@ delete from friend_address;
 delete from parent;
 
 delete from child;
+
+delete from animal;
+
+delete from animal2;
