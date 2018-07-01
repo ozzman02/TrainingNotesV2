@@ -1,0 +1,11 @@
+mvn spring-boot:run 
+
+http://localhost:8080/product/new
+http://localhost:8080/product/list
+
+
+
+docker stop 1d8e834f3ac6
+docker ps
+docker run -p 27017:27017 -d mongo
+docker logs -f 1d8e834f3ac6
