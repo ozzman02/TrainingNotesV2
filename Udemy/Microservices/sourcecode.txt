@@ -1,0 +1,3 @@
+https://github.com/springmicro/springmicroservices
+
+https://github.com/springmicro/config-repo
