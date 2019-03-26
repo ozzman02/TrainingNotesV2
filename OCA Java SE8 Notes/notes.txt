@@ -1,0 +1,32 @@
+Java Basics
+
+1.1 The structures of a Java class and a source code file
+
+	1.1.1 Structure of a Java class
+	
+		Package statement
+		Import statement
+		Comments
+		Class declaration {
+			Variables
+			Comments
+			Constructors
+			Methods
+			Nested classes
+			Nested interfaces
+			Enum
+		}
+
+
+		Class declaration: The declaration of a class consist of the following parts:
+		
+			- Access Modifiers
+			- Nonaccess Modifiers
+			- Class name (mandatory)
+			- Name of the base class (mandatory), if the class is extending another class
+			- All implemented interfaces, if the class is implementing any interfaces
+			- Class body (class fields, methods, constructors), included within a pair of curly braces, {} (mandatory)
+			
+	1.1.2 Structure and components of a Java source code file
+	
+	
