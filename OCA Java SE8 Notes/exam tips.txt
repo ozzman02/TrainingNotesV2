@@ -1,0 +1,9 @@
+Exam Tips
+
+- The classes and interfaces can be defined in any order of occurrence in a Java source code file.
+
+- Classes and interfaces defined in the same Java source code file can’t be defined in separate packages. Classes and interfaces imported using the import 
+	statement are available to all the classes and interfaces defined in the same Java source code file.
+	
+- The method parameters that are passed to the main method are also called command-line parameters or command-line values. As the name
+	implies, these values are passed to a method from the command line.
