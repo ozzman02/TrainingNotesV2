@@ -147,8 +147,127 @@ Java Basics
 		Method parameter and local variables 	✗ 			✗ 				✗
 		
 
-1.5 Nonaccess modifiers	
+1.5 Nonaccess modifiers
+
+	Access modifiers control the accessibility of your class and its members outside the class and the package. 
+	Nonaccess modifiers change the default behavior of a Java class and its members.
+	
+	- abstract
+	
+		When added to the definition of a class, interface, or method, the abstract modifier changes its default behavior.
 		
+		Abstract class
+			
+			An abstract class can’t be instantiated.
+			
+		Abstract interface
+		
+			An interface is an abstract entity by default.
+			
+		Abstract method
+			
+			An abstract method doesn’t have a body. Usually, an abstract method is implemented by a derived class.
+			
+	- static
+	
+		The nonaccess modifier static can be applied to the declarations of variables, methods, classes, and interfaces.
+		
+		static variables 
+		
+			- belong to a class.
+			- They’re common to all instances of a class and aren’t unique to any instance of a class
+			- static attributes exist independently of any instances of a class and may be accessed even when no instances of the class have been created.
+			- You can compare a static variable with a shared variable. 
+			- A static variable is shared by all the objects of a class. 
+			- A class and an interface can declare static variables
+			
+		static methods
+		
+			- static methods aren’t associated with objects and can’t use any of the instance variables of a class. 
+			- You can define static methods to access or manipulate static variables
+			- The nonprivate static variables and methods are inherited by derived classes
+			- The static members aren’t involved in runtime polymorphism.
+			- You can’t override the static members in a derived class, but you can redefine them
+			- Neither static methods nor static variables can access the non-static variables and methods of a class.
+			- Non-static variables and methods can access static variables and methods because the static members of a class exist even if no
+				instances of the class exist.
+			- Because static variables and methods belong to a class and not to an instance, you can access them using variables, 
+				which are initialized to null	
+
+
+				class Emp {
+					String name;
+					static int bankVault;
+					static int getBankVaultValue() {
+						return bankVault;
+					}
+				}
+				
+				class Office {
+					public static void main(String[] args) {
+						Emp emp = null;
+						System.out.println(emp.bankVault);
+						System.out.println(emp.getBankVaultValue());
+					}
+				}
+		
+			
+	
+	- final
+	
+		The keyword final can be used with the declaration of a class, variable, or method. It can’t be used with the declaration of an interface.
+		
+		final class
+			
+			A class that’s marked final can’t be extended by another class.
+			
+		final variable
+				
+			A final variable can’t be reassigned a value. It can be assigned a value only once.
+			
+			It’s easy to confuse reassigning a value to a final variable with calling a method on a final variable, 
+			which might change the state of the object that it refers to.
+		
+			If a reference variable is defined as a final variable, you can’t reassign another object to it, but you can call methods 
+			on this variable (that modify its state)
+			
+			class Person {
+				final StringBuilder name = new StringBuilder("Sh");
+				Person() {
+					name.append("reya"); // Can call methods on a final variable that change its state
+					name = new StringBuilder(); // Won’t compile. You can’t reassign another object to a final variable.
+				}
+			}
+			
+		final method
+		
+			A final method defined in a base class can’t be overridden by a derived class.
+			
+	- synchronized
+	
+		A synchronized method can’t be accessed by multiple threads concurrently. You can’t mark classes, interfaces, or variables with this modifier.
+		
+	- native
+	
+		A native method calls and makes use of libraries and methods implemented in other programming languages such as C or C++. You can’t mark
+		classes, interfaces, or variables with this modifier.
+
+	- strictfp
+	
+		Classes, interfaces, and methods defined using this keyword ensure that calculations using floating-point numbers are identical on all platforms.
+		This modifier can’t be used with variables.
+		
+	- transient
+	
+		A transient variable isn’t serialized when the corresponding object is serialized. The transient modifier can’t be applied to classes, 
+		interfaces, or methods.
+
+	- volatile
+	
+		A volatile variable’s value can be safely modified by different threads. Classes, interfaces, and methods can’t use this modifier.
+	
+	
+1.6 Features and components of Java
 		
 		
 		

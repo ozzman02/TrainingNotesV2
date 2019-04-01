@@ -7,3 +7,35 @@ Exam Tips
 	
 - The method parameters that are passed to the main method are also called command-line parameters or command-line values. As the name
 	implies, these values are passed to a method from the command line.
+
+- You don’t need an explicit import statement to use members from the java.lang package. Classes and interfaces in this package are automatically
+	imported in all other Java classes, interfaces, or enums.
+
+- Members of a named package can’t access classes and interfaces defined in the default package.
+
+- Static imports is a Java feature, but the syntax is import static.
+	
+- A derived class can inherit and access protected members of its base class, regardless of the package in which it’s defined. 
+
+- A derived class in a separate package can’t access protected members of its base class using reference variables.
+
+- Default access can be compared to package-private (accessible only within a package), and protected access can be compared to 
+	package private + kids (“kids” refer to derived classes). Kids can access protected methods only by inheritance and not 
+	by reference (accessing members by using the dot operator on an object).
+
+- Watch out for invalid combinations of a Java entity and an access modifier. Such code won’t compile
+
+- An abstract class may or may not define an abstract method. But a concrete class can’t define an abstract method.
+
+- A method with an empty body isn’t an abstract method.
+
+- Don’t be tricked by code that tries to apply the nonaccess modifier abstract to a variable. Such code won’t compile.
+
+- Even though you can use an object reference variable to access static members, it’s not advisable to do so. Because static members belong
+	to a class and not to individual objects, using object reference variables to access static members may make them appear to belong to an object. 
+	The preferred way to access them is by using the class name. The static and final nonaccess modifiers can be used together to define 
+	constants (variables whose value can’t change).
+
+- static methods and variables can’t access the instance members of a class.
+
+- You can access static variables and methods using a null reference
