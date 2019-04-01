@@ -51,22 +51,104 @@ Java Basics
 		
 		Valid signatures:
 		
-			public static void main(String args[]) {
-			}
+			public static void main(String args[]) {}
 		
-			public static void main(String[] args) {
-			}
+			public static void main(String[] args) {}
 		
-			public static void main(String... args) {
-			}
+			public static void main(String... args) {}
 		
-			static public void main(String[] args) {
-			}
+			static public void main(String[] args) {}
 		
 1.3 Java packages
 		
 		
+	Package-naming convention example:
 	
+		com.oracle.javacert.associate
+		
+			com			Commercial. A couple of the commonly used three-letter package abbreviations are gov—for government bodies and edu—for educational institutions
+			oracle		Name of the organization
+			javacert	Further categorization of the project at Oracle
+			associate	Further subcategorization of Java certification
+			
+	Here are a few of important rules about packages:
 	
+		- Per Java naming conventions, package names should all be in lowercase.
+		- The package and subpackage names are separated using a dot (.).
+		- Package names follow the rules defined for valid identifiers in Java.
+		- For classes and interfaces defined in a package, the package statement is the first statement in a Java source file (a .java file). The exception is that comments
+			can appear before or after a package statement.
+		- There can be a maximum of one package statement per Java source code file (.java file).
+		- All the classes and interfaces defined in a Java source code file are defined in the same package. They can’t be defined in separate packages.	
+		
+	You can’t import classes from a subpackage by using an asterisk in the import statement.		
 	
+	What happens if you don’t include a package statement in your classes or interfaces?
+		In that case, they become part of a default, no-name package.
+
+	Static imports
 	
+		package certification;
+		public class ExamQuestion {
+			static public int marks;
+			public static void print() {
+				System.out.println(100);
+			}
+		}
+		
+		package university;
+		import static certification.ExamQuestion.marks; // Correct statement is import static, not static import
+		class AnnualExam {
+			AnnualExam() {
+				marks = 20; // Access variable marks without prefixing it with its class name
+			}
+		}
+		
+		package university;
+		import static certification.ExamQuestion.*; // Imports all static members of class ExamQuestion
+		class AnnualExam {
+			AnnualExam() {
+				marks = 20;
+				print();
+			}
+		}
+		
+1.4 Java access modifiers
+
+	Java has four access levels:
+	
+		- public (least restrictive)
+			
+			This is the least restrictive access modifier. Classes and interfaces defined using the public
+			access modifier are accessible across all packages, from derived to unrelated classes.
+
+		- protected
+		
+			The members of a class defined using the protected access modifier are accessible to
+			 
+			 - Classes and interfaces defined in the same package
+			 - All derived classes, even if they’re defined in separate packages
+			 - A derived class inherits the protected members of its base class, irrespective of the packages in which they’re defined
+		
+		- default
+		
+			The members with package access are only accessible to classes and interfaces defined in the same package.
+			
+		- private (most restrictive)
+		
+			The members of a class defined using the private access modifier are accessible only to themselves.
+			For your real projects, it is possible to access private members of a class outside them, using Java reflection.
+		
+		Entity name 							public 		protected 		private
+		--------------------------------------------------------------------------------
+		Top-level class, interface, enum 		✓ 			✗ 				✗
+		Class variables and methods 			✓ 			✓ 				✓
+		Instance variables and methods 			✓ 			✓ 				✓
+		Method parameter and local variables 	✗ 			✗ 				✗
+		
+
+1.5 Nonaccess modifiers	
+		
+		
+		
+		
