@@ -1,0 +1,3 @@
+Working with Java data types
+
+2.1 Primitive variables
