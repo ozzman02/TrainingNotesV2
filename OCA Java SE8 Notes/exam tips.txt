@@ -38,4 +38,12 @@ Exam Tips
 
 - static methods and variables can’t access the instance members of a class.
 
-- You can access static variables and methods using a null reference
+- You can access static variables and methods using a null reference.
+
+- In this exam, the questions test your ability to select the best suitable data type for a condition that can only have two states: yes/no or true/
+	false. The correct answer here is the boolean type.
+	
+- In the exam, you won’t be asked to convert a number from the decimal number system to the octal and hexadecimal number systems and
+	vice versa. But you can expect questions that ask you to select valid literals for integers.
+	
+- 

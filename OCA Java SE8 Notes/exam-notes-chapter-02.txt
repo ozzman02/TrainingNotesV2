@@ -1,3 +1,80 @@
 Working with Java data types
 
 2.1 Primitive variables
+
+	Java defines the following eight primitive data types:
+	
+	- char
+	- byte
+	- short
+	- int
+	- long
+	- float
+	- double
+	- boolean
+	
+	2.1.1 Category: Boolean
+	
+		The Boolean category has only one data type: boolean. A boolean variable can store one of two values: true or false.
+	
+	2.1.2 Category: signed numeric
+		
+		Integers: byte, int, short, long
+		
+			You can assign integer literals in base decimal, binary, octal, and hexadecimal.
+			
+			The default type of a non decimal number is int. To designate an integer literal value as a long value, add the suffix L or l
+	
+			- For octal literals, use the prefix 0; 
+			- for binary, use the prefix 0B or 0b; 
+			- and for hexadecimal, use the prefix 0X or 0x. 
+	
+			Here’s an example of each of these:
+	
+				int baseDecimal = 267; 		// decimal
+				int octVal = 0413; 			// octVal
+				int hexVal = 0x10B; 		// hexadecimal
+				int binVal = 0b100001011;	// binary
+		
+			Rules to remember. Here’s a quick list of rules for usage of underscores in the numeric literal values:
+			
+				- You can place an underscore right after the prefix 0, which is used to define an octal literal value.
+				
+				- You can’t start or end a literal value with an underscore.
+				
+				- You can’t place an underscore right after the prefixes 0b, 0B, 0x, and 0X, which are used to define binary and hexadecimal literal values.
+				
+				- You can’t place an underscore prior to an L suffix (the L suffix is used to mark a literal value as long).
+				
+				- You can’t use an underscore in positions where a string of digits is expected.
+				
+					Example: int i = Integer.parseInt("45_98"); // compile successfully but will fail at runtime
+					
+					
+		Floating-point numbers: float and double	
+		
+			In Java, you can use the float and double primitive data types to store decimal numbers.
+			
+			- float requires less space than double, but it can store a smaller range of values than double.
+			- float is less precise than double.
+			- float can’t represent accurately some numbers even if they’re in range.
+			- The same limitation applies to double—even if it’s a data type that offer more precision.
+			
+			The default type of a decimal literal is double but by suffixing a decimal literal value with F or f, 
+			you tell the compiler that the literal value should be treated like a float and not a double.
+			
+			Rules to remember: 
+			
+				- You can’t place an underscore prior to a D, d, F, or f suffix (these suffixes are used to mark a 
+					floating-point literal as double or float).
+					
+				- You can’t place an underscore adjacent to a decimal point.
+				
+				Examples: (invalid)
+				
+					float floatLiteral = 100._48F;
+					double doubleLiteral = 100_.87;
+					float floatLiteral2 = 100.48_F;
+					double doubleLiteral2 = 100.87_d;
+				
+	2.1.3 Category: character (unsigned integer)	
