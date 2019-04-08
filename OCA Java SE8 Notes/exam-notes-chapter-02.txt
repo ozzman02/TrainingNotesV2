@@ -98,6 +98,27 @@ Working with Java data types
 			
 	2.1.4 Confusion with the names of the primitive data types
 
-	
+		Watch out for questions that use incorrect names for the primitive data types.
 		
+2.2 Identifiers	
+
+	Identifiers are names of packages, classes, interfaces, methods, and variables.
+	
+	2.2.1 Valid and invalid identifiers
+	
+		Invalid: 
+		
+			- Same spelling as a Java reserved word or keyword
+			- Uses special characters: !, @, #, %, ^, &, *, (, ),', :, ;, [, /, \, }
+			- Starts with a Java digit (0–9)
+		
+		Valid
+			
+			- Unlimited length
+			- Starts with a letter ( a–z, upper- or lowercase), a currency sign, or an underscore
+			- Can use a digit (not at the starting position)
+			- Can use an underscore (at any position)
+			- Can use a currency sign (at any position): ¤, $, £, ¢, ¥, and others
+		
+2.3 Object reference variables
 		
