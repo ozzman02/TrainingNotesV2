@@ -46,4 +46,8 @@ Exam Tips
 - In the exam, you won’t be asked to convert a number from the decimal number system to the octal and hexadecimal number systems and
 	vice versa. But you can expect questions that ask you to select valid literals for integers.
 	
-- 
+- Never use double quotes to assign a letter to a char variable. Double quotes are used to assign a value to a variable of type String.
+
+- The exam will test your understanding of the possible values that can be assigned to a variable of type char, including whether an assignment
+	will result in a compilation error. Don’t worry—it won’t test you on the value that’s actually displayed after assigning arbitrary 
+	integer values to a char!

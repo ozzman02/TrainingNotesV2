@@ -78,3 +78,26 @@ Working with Java data types
 					double doubleLiteral2 = 100.87_d;
 				
 	2.1.3 Category: character (unsigned integer)	
+	
+		- The character category defines only one data type: char. 
+		- A char is an unsigned integer. It can store a single 16-bit Unicode character.
+		- Internally, Java stores char data as an unsigned integer value (positive integer).
+		- You must use quotes to assign Unicode values to char variables.
+		- As mentioned earlier, char values are unsigned integer values, so if you try to assign a negative number to one, the code won’t compile.
+		- You can forcefully assign a negative number to a char type by casting it to char, as follows:
+		
+			char c3 = (char)-122;
+			System.out.println("c3 = " + c3);
+			
+		- Casting is the forceful conversion of one data type to another data type. You can cast only compatible data types.
+		- When you cast a bigger value to a data type that has a smaller range, you tell the compiler that
+			you know what you’re doing, so the compiler proceeds by chopping off any extra bits that may not fit into the smaller variable.
+			
+		- The char data type in Java doesn’t allocate space to store the sign of an integer. If you try to forcefully assign a 
+			negative integer to char, the sign bit is stored as the part of the integer value, which results in the storage of unexpected values.
+			
+	2.1.4 Confusion with the names of the primitive data types
+
+	
+		
+		
