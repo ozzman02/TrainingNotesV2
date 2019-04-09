@@ -51,3 +51,6 @@ Exam Tips
 - The exam will test your understanding of the possible values that can be assigned to a variable of type char, including whether an assignment
 	will result in a compilation error. Don’t worry—it won’t test you on the value that’s actually displayed after assigning arbitrary 
 	integer values to a char!
+	
+- Watch out for questions that use incorrect names for the primitive data types.
+

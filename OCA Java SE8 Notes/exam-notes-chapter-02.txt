@@ -121,4 +121,21 @@ Working with Java data types
 			- Can use a currency sign (at any position): ¤, $, £, ¢, ¥, and others
 		
 2.3 Object reference variables
+
+	2.3.1 What are object reference variables?
+	
+		An object reference is, in fact, a memory address that points to a memory area where an object’s data is located.
+	
+		The default value of all types of object reference variables is null. 
+	
+		You can also assign a null value to a reference variable explicitly.
+	
+	2.3.2 Differentiating between object reference variables and primitive variables
+	
+		The basic difference is that primitive variables store the actual values, whereas reference variables store 
+		the addresses of the objects they refer to.
+		
+2.4 Operators
+		
+	
 		
