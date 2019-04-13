@@ -54,3 +54,5 @@ Exam Tips
 	
 - Watch out for questions that use incorrect names for the primitive data types.
 
+- You can’t use the assignment operators to assign a boolean value to variables of type char, byte, int, short, long, float, or double, or vice versa.
+

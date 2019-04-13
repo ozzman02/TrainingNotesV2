@@ -136,6 +136,28 @@ Working with Java data types
 		the addresses of the objects they refer to.
 		
 2.4 Operators
-		
+
+	2.4.1 Assignment operators 
 	
+		=, +=, -=, *=, /=
+	
+		You can still assign a bigger value to a variable that can only store smaller ranges by explicitly casting the 
+		bigger value to a smaller value. By doing so, you tell the compiler that you know what you’re doing. 
+		In that case, the compiler proceeds by chopping off any extra bits that may not fit into the smaller variable.
+		
+		Though chopping off extra bits will make a bigger value fit in a smaller data type, the remaining bits won’t
+		represent the original value and can produce unexpected results.
+		
+		Allowed
+		
+			int intVal = 1009;
+			long longVal = intVal;
+			
+		You can also assign multiple values on the same line using the assignment operator
+		
+			int a = 7, b = 10, c = 8; // Define and initialize variables on the same line
+			a = b = c; // Assignment starts from right; the value of c is assigned to b and the value of b is assigned to a
+			System.out.println(a);
+		
+	2.4.2 Arithmetic operators		
 		
