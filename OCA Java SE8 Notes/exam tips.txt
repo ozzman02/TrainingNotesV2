@@ -1,58 +1,79 @@
 Exam Tips
 
-- The classes and interfaces can be defined in any order of occurrence in a Java source code file.
+Chapter 1
 
-- Classes and interfaces defined in the same Java source code file can’t be defined in separate packages. Classes and interfaces imported using the import 
-	statement are available to all the classes and interfaces defined in the same Java source code file.
+	- The classes and interfaces can be defined in any order of occurrence in a Java source code file.
+
+	- Classes and interfaces defined in the same Java source code file can’t be defined in separate packages. Classes and interfaces imported using the import 
+		statement are available to all the classes and interfaces defined in the same Java source code file.
 	
-- The method parameters that are passed to the main method are also called command-line parameters or command-line values. As the name
-	implies, these values are passed to a method from the command line.
+	- The method parameters that are passed to the main method are also called command-line parameters or command-line values. As the name
+		implies, these values are passed to a method from the command line.
 
-- You don’t need an explicit import statement to use members from the java.lang package. Classes and interfaces in this package are automatically
-	imported in all other Java classes, interfaces, or enums.
+	- You don’t need an explicit import statement to use members from the java.lang package. Classes and interfaces in this package are automatically
+		imported in all other Java classes, interfaces, or enums.
 
-- Members of a named package can’t access classes and interfaces defined in the default package.
+	- Members of a named package can’t access classes and interfaces defined in the default package.
 
-- Static imports is a Java feature, but the syntax is import static.
+	- Static imports is a Java feature, but the syntax is import static.
 	
-- A derived class can inherit and access protected members of its base class, regardless of the package in which it’s defined. 
+	- A derived class can inherit and access protected members of its base class, regardless of the package in which it’s defined. 
 
-- A derived class in a separate package can’t access protected members of its base class using reference variables.
+	- A derived class in a separate package can’t access protected members of its base class using reference variables.
 
-- Default access can be compared to package-private (accessible only within a package), and protected access can be compared to 
-	package private + kids (“kids” refer to derived classes). Kids can access protected methods only by inheritance and not 
-	by reference (accessing members by using the dot operator on an object).
+	- Default access can be compared to package-private (accessible only within a package), and protected access can be compared to 
+		package private + kids (“kids” refer to derived classes). Kids can access protected methods only by inheritance and not 
+		by reference (accessing members by using the dot operator on an object).
 
-- Watch out for invalid combinations of a Java entity and an access modifier. Such code won’t compile
+	- Watch out for invalid combinations of a Java entity and an access modifier. Such code won’t compile
 
-- An abstract class may or may not define an abstract method. But a concrete class can’t define an abstract method.
+	- An abstract class may or may not define an abstract method. But a concrete class can’t define an abstract method.
 
-- A method with an empty body isn’t an abstract method.
+	- A method with an empty body isn’t an abstract method.
 
-- Don’t be tricked by code that tries to apply the nonaccess modifier abstract to a variable. Such code won’t compile.
+	- Don’t be tricked by code that tries to apply the nonaccess modifier abstract to a variable. Such code won’t compile.
 
-- Even though you can use an object reference variable to access static members, it’s not advisable to do so. Because static members belong
-	to a class and not to individual objects, using object reference variables to access static members may make them appear to belong to an object. 
-	The preferred way to access them is by using the class name. The static and final nonaccess modifiers can be used together to define 
-	constants (variables whose value can’t change).
+	- Even though you can use an object reference variable to access static members, it’s not advisable to do so. Because static members belong
+		to a class and not to individual objects, using object reference variables to access static members may make them appear to belong to an object. 
+		The preferred way to access them is by using the class name. The static and final nonaccess modifiers can be used together to define 
+		constants (variables whose value can’t change).
 
-- static methods and variables can’t access the instance members of a class.
+	- static methods and variables can’t access the instance members of a class.
 
-- You can access static variables and methods using a null reference.
+	- You can access static variables and methods using a null reference.
 
-- In this exam, the questions test your ability to select the best suitable data type for a condition that can only have two states: yes/no or true/
-	false. The correct answer here is the boolean type.
+Chapter 2
+
+	- In this exam, the questions test your ability to select the best suitable data type for a condition that can only have two states: yes/no or true/
+		false. The correct answer here is the boolean type.
 	
-- In the exam, you won’t be asked to convert a number from the decimal number system to the octal and hexadecimal number systems and
-	vice versa. But you can expect questions that ask you to select valid literals for integers.
+	- In the exam, you won’t be asked to convert a number from the decimal number system to the octal and hexadecimal number systems and
+		vice versa. But you can expect questions that ask you to select valid literals for integers.
 	
-- Never use double quotes to assign a letter to a char variable. Double quotes are used to assign a value to a variable of type String.
+	- Never use double quotes to assign a letter to a char variable. Double quotes are used to assign a value to a variable of type String.
 
-- The exam will test your understanding of the possible values that can be assigned to a variable of type char, including whether an assignment
-	will result in a compilation error. Don’t worry—it won’t test you on the value that’s actually displayed after assigning arbitrary 
-	integer values to a char!
+	- The exam will test your understanding of the possible values that can be assigned to a variable of type char, including whether an assignment
+		will result in a compilation error. Don’t worry—it won’t test you on the value that’s actually displayed after assigning arbitrary 
+		integer values to a char!
 	
-- Watch out for questions that use incorrect names for the primitive data types.
+	- Watch out for questions that use incorrect names for the primitive data types.
 
-- You can’t use the assignment operators to assign a boolean value to variables of type char, byte, int, short, long, float, or double, or vice versa.
+	- You can’t use the assignment operators to assign a boolean value to variables of type char, byte, int, short, long, float, or double, or vice versa.
 
+	- You can use unary increment and decrement operators with variables but not with literal values. If you do, the code won’t compile.
+	
+	- You can use all arithmetic operators with the char primitive data type, including unary increment and decrement operators.
+	
+	
+	- For arithmetic operations with data types char, byte, short, or int, all operand values are widened to int. If an arithmetic operation
+		includes the data type long, all operand values are widened to long. If an arithmetic operation includes a data type of float or double, all operand values are widened to double.
+		
+	- You can’t compare incomparable values. For example, you can’t compare a boolean with an int, a char, or a floating-point number. If you try to do so, your code will not compile.
+	
+	- The result of the relational operation is always a boolean value. You can’t assign the result of a relational operation to a variable of type char, int, byte, short, long, float, or double.
+	
+	
+	
+	
+	
+	

@@ -161,3 +161,66 @@ Working with Java data types
 		
 	2.4.2 Arithmetic operators		
 		
+		+, -, *, /, %, ++, --
+		
+		When you apply the addition operator to char values, their corresponding ASCII values are added and subtracted.
+		
+		Implicit widening of data types in an arithmetic operation:
+		
+			- All byte, short, and char values are automatically widened to int when used as operands for arithmetic operations.
+			
+			- If a long value is involved somewhere, then everything, including int values, is widened to long.
+			
+			Fails to compile
+			
+				byte age1 = 10; 
+				byte age2 = 20;
+				short sum = age1 + age2;
+				
+			Compiles Successfully
+			
+				final byte age1 = 10;
+				final byte age2 = 20;
+				short sum = age1 + age2; 
+				
+		++ and -- (unary increment and decrement operators)	
+		
+			Unary operators can also be used in prefix and postfix notation. 
+			In prefix notation, the operator appears before its operand
+			In postfix notation, the operator appears after its operand
+			
+			
+			- For a prefix unary operator, the value of its operand increments or decrements just before its value is used in an expression.
+			
+			- For a postfix unary operator, the value of its operand increments or decrements just after its value is used in an expression.
+			
+	2.4.3 Relational operators
+	
+		<, <=, >, >=, ==, !=
+		
+	2.4.4 Logical operators
+	
+		!, &&, ||
+		
+		Logical AND (&&) — Evaluates to true if all operands are true; false otherwise.
+		Logical OR (||) — Evaluates to true if any or all the operands are true.
+		Logical negation (!)—Negates the boolean value. Evaluates to true for false and vice versa.
+		
+		The operators | and & can also be used to manipulate individual bits of a number value
+		
+		&&: If the first operand to this operator evaluates to false, the result can never be true. Therefore, && does not evaluate the second operand.
+		
+		||: Similarly, the || operator does not evaluate the second operator if the first operand evaluates to true.
+		
+		
+	2.4.5 Operator precedence
+		
+		The operator on top has the highest precedence, and operators within the same group have the same precedence and are evaluated from left to right.
+		
+		You can use parentheses to override the default operator precedence. If your expression defines multiple operators and you’re unsure how your expression 
+			will be evaluated, use parentheses to evaluate in your preferred order. The inner parentheses are evaluated prior to the outer ones, following the same rules of classic algebra
+		
+2.5 Wrapper classes
+		
+	
+		
