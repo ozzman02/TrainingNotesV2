@@ -217,10 +217,87 @@ Working with Java data types
 		
 		The operator on top has the highest precedence, and operators within the same group have the same precedence and are evaluated from left to right.
 		
-		You can use parentheses to override the default operator precedence. If your expression defines multiple operators and you’re unsure how your expression 
-			will be evaluated, use parentheses to evaluate in your preferred order. The inner parentheses are evaluated prior to the outer ones, following the same rules of classic algebra
+		You can use parentheses to override the default operator precedence. If your expression defines multiple operators and you’re unsure 
+		how your expression will be evaluated, use parentheses to evaluate in your preferred order. 
+		The inner parentheses are evaluated prior to the outer ones, following the same rules of classic algebra.
 		
 2.5 Wrapper classes
 		
+		Java defines a wrapper class for each of its primitive data types. The wrapper classes are used to wrap primitives in an object, so they 
+		can be added to a collection object. They enable all types to be treated like object instances.
+		
+	2.5.1 Class hierarchy of wrapper classes
+		
+		- All the numeric wrapper classes extend the class java.lang.Number.
+		- Classes Boolean and Character directly extend the class Object.
+		- All the wrapper classes implement the interfaces java.io.Serializable and java.lang.Comparable.
+		- All these classes can be serialized to a stream, and their objects define a natural sort order.
+		
+	2.5.2 Creating objects of the wrapper classes
 	
+		You can create objects of all the wrapper classes in multiple ways:
+			
+			- Assignment—By assigning a primitive to a wrapper class variable (autoboxing)
+			- Constructor—By using wrapper class constructors
+			- Static methods—By calling static method of wrapper classes, like, valueOf()
+			
+		All the wrapper classes define constructors to create an object using a corresponding primitive value or as a String.
+		
+		Neither of these classes defines a default no-argument constructor. 
+		
+		The wrapper classes are immutable. So it doesn’t make sense to initialize the wrapper objects with the default primitive 
+		values if they can’t be modified later.
+		
+		You can assign a primitive value directly to a reference variable of its wrapper class type—thanks to autoboxing.
+		
+		The reverse is unboxing, when an object of a primitive wrapper class is converted to its corresponding primitive value.
+		
+	2.5.3 Retrieving primitive values from the wrapper classes
+		
+		All wrapper classes define methods of the format primitiveValue(), where the term primitive refers to the exact primitive data type name.
+		
+	2.5.4 Parsing a string value to a primitive type
+	
+		To get a primitive data type value corresponding to a string value, you can use the static utility method parseDataType, 
+		where DataType refers to the type of the return value.
+		
+		Each wrapper class (except Character) defines a method to parse a String to the corresponding primitive value.
+			
+			public static boolean parseBoolean(String s)
+			public static byte parseByte(String s)
+			public static short parseShort (String s)
+			public static int parseInt(String s)
+			public static long parseLong(String s)
+			public static float parseFloat(String s)
+			public static double parseDouble(String s)
+			
+			* All these parsing methods throw NumberFormatExceptions for invalid values except parseBoolean(String s)
+			
+				Boolean.parseBoolean("TrUe"); // No exceptions; the String argument isn’t case-sensitive
+		
+	2.5.5 Difference between using the valueOf method and constructors of wrapper classes
+			
+		The valueOf() method returns an object of the corresponding wrapper class when it’s passed an argument of a primitive type or String.
+		
+		Wrapper classes Byte, Short, Integer, and Long cache objects with values in the range of -128 to 127.
+			
+		The Character class caches objects with values 0 to 127.
+		
+		These classes (Byte, Short, Integer, Long and Character) define inner static classes that store objects 
+			for the primitive values -128 to 127 or 0 to 127 in an array.
+			
+		If you request an object of any of these classes, from this range, the valueOf() method returns a reference to a 
+		predefined object; otherwise, it creates a new object and returns its reference:
+		
+			Long var1 = Long.valueOf(123);
+			Long var2 = Long.valueOf("123");
+			System.out.println(var1 == var2);	// Prints true; var1 and var2 refer to the same cached object.
+			
+			Long var3 = Long.valueOf(223);
+			Long var4 = Long.valueOf(223);
+			System.out.println(var3 == var4);	// Prints false; var3 and var4 refer to different objects.
+			
+		In the case of the Boolean class, the cached instances are accessible directly because only two exist: 
+			static constants Boolean.TRUE and Boolean.FALSE.
+			
 		

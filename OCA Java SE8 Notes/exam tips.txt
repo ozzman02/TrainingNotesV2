@@ -72,6 +72,25 @@ Chapter 2
 	
 	- The result of the relational operation is always a boolean value. You can’t assign the result of a relational operation to a variable of type char, int, byte, short, long, float, or double.
 	
+	- All wrapper classes (except Character) define a constructor that accepts a String argument representing the primitive value that needs to be
+		wrapped. Watch out for exam questions that include a call to a no-argument constructor of a wrapper class. None of these classes define a no-argument
+		constructor.
+		
+	- All six numeric wrapper classes inherit all six ***Value() methods from their common superclass, Number.
+	
+	- All parse methods throw NumberFormat-Exception except Boolean.parseBoolean(). This method returns false whenever
+		the string it parses is not equal to “true” (case-insensitive comparison).
+		
+		public static boolean parseBoolean(String s)
+		public static byte parseByte(String s)
+		public static short parseShort (String s)
+		public static int parseInt(String s)
+		public static long parseLong(String s)
+		public static float parseFloat(String s)
+		public static double parseDouble(String s)
+	
+	
+	- Wrapper classes Float and Double don’t cache objects for any range of values.
 	
 	
 	
