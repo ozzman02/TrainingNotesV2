@@ -300,4 +300,87 @@ Working with Java data types
 		In the case of the Boolean class, the cached instances are accessible directly because only two exist: 
 			static constants Boolean.TRUE and Boolean.FALSE.
 			
+	2.5.6 Comparing objects of wrapper classes		
+	
+		- You can compare objects of wrapper classes for equality by using the method equals or the comparison operator, that is, ==.
+		- Method equals() always compares the primitive value stored by a wrapper instance, and == compares object references.
+		
+		Constructors always create new instances
+			
+			Integer i1 = new Integer(10);
+			Integer i2 = new Integer(10);
+		
+		valueOf returns a cached copy for int value 10
+		
+			Integer i3 = Integer.valueOf(10);
+			Integer i4 = Integer.valueOf(10);
+			
+		Autoboxing returns a cached copy for applicable values
+			
+			Integer i5 = 10;
+			Integer i5 = 10;
+			
+		- You can’t compare wrapper instances for equality using equals() or ==, if they aren’t of the same class.
+		- The code won’t compile for instances that are compared using ==.
+		- When compared using equals(), the output will be false.
+		
+		
+			Integer obj1 = 100;
+			Short obj2 = 100;
+			
+			System.out.println(obj1.equals(obj2)); // false
+			System.out.println(obj1 == obj2); // won't compile
+			
+	2.5.7 Autoboxing and unboxing
+	
+		Autoboxing is the automatic conversion of a primitive data type to an object of the corresponding wrapper class.
+		Unboxing is the reverse process.
+		
+		Double d1 = new Double(12.67);
+		System.out.println(d1.compareTo(21.68)); // public int compareTo(Double anotherDouble)
+		
+		above code is converted to the following code at runtime
+		
+		Double d1 = new Double(12.67D);
+		System.out.println(d1.compareTo(Double.valueOf(21.68D)));
+		
+		public class Unboxing {
+			public static void main (String args[]) {
+				ArrayList<Double> list = new ArrayList<Double>();
+				list.add(12.12); // Autoboxing
+				list.add(11.24); // Autoboxing
+				Double total = 0.0;
+				for (Double d : list)
+					total += d; // Unbox to use operator += with total variable. The arithmetic operators like += can’t be used with objects.
+			}
+		}
+		
+		At runtime:
+		
+		public class Unbox {
+			public static void main(String args[]) {
+				ArrayList list = new ArrayList();
+				list.add(new Double(12.12D));
+				list.add(new Double(11.24D));
+				Double total = Double.valueOf(0.0D);
+				
+				for(Iterator iterator = list.iterator(); iterator.hasNext();) {
+					Double d = (Double)iterator.next();
+					total = total.doubleValue() + d.doubleValue();
+				}
+			}
+		}
+		
+		Wrapper classes are immutable. So what happens when you add a value to the variable total, a Double object? 
+		In this case, the variable total refers to a new Double object.
+	
+		What happens if you pass null as an argument to the following method?
+	
+		public int increment(Integer obj) {
+			return ++i;
+		}
+		
+		Because the Java compiler would call obj.intValue() to get obj’s int value, passing null to the increment() method will throw a NullPointerException.
+		
+		
 		

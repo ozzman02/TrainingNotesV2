@@ -1,2 +1,14 @@
 Question		My Answers			Correct Answer
 -------------------------------------------------
+Q2-1			a					a
+Q2-2			a, c, d				a, c, d
+Q2-3			b					a
+Q2-4			d					d
+Q2-5			c, d, e, f, g		c, d, f, g
+Q2-6			a, c				a, c
+Q2-7			a					d
+Q2-8			d					d
+Q2-9			b, c				b, c
+Q2-10			b					b
+				
+				
