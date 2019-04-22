@@ -107,6 +107,12 @@ Chapter 2
 	
 Chapter 3
 
-	- 
+	- The local variables topic is a favorite of OCA Java SE 8 Programmer I exam authors. You’re likely to be asked a question that seems to be
+	about a rather complex topic, such as inheritance or exception handling, but instead it’ll be testing your knowledge on the scope of a local variable
 	
+	- The scope of an instance variable is longer than that of a local variable or a method parameter.
+	
+	- Different local variables can have different scopes. The scope of local variables may be shorter than or as long as the scope of method parameters.
+	The scope of local variables is less than the scope of a method if they’re declared in a sub-block (within braces {}) in a method. This sub-block can be
+	an if statement, a switch construct, a loop, or a try-catch block
 	

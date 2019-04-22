@@ -1,1 +1,62 @@
 Methods and encapsulation
+
+3.1 Scope of variables
+		
+	- Local variables (also known as method-local variables)
+	- Method parameters (also known as method arguments)
+	- Instance variables (also known as attributes, fields, and nonstatic variables)
+	- Class variables (also known as static variables)
+	
+	As a rule of a thumb, the scope of a variable ends when the brackets of the block of code it’s defined in get closed.
+	
+	3.1.1 Local variables
+	
+		Local variables are defined within a method. They may or may not be defined within code constructs such as if-else constructs, 
+		looping constructs, or switch statements. They have the shortest scope (life span).
+		
+	3.1.2 Method parameters
+	
+		The variables that accept values in a method signature are called method parameters. They’re accessible only in the method that defines them.
+		The scope of a method parameter may be as long as that of a local variable or longer, but it can never be shorter.
+		
+	3.1.3 Instance variables
+	
+		Instance variable is available for the life of an object.
+		It’s accessible to all the instance (or nonstatic) methods defined in a class.
+		The scope of an instance variable is longer than that of a local variable or a method parameter.
+		
+	3.1.4 Class variables
+	
+		Have the largest scope of all types of variables.
+		A class variable belongs to a class, not to individual objects of the class
+		A class variable is shared across all objects—objects don’t have a separate copy of the class variables.
+		You don’t even need an object to access a class variable. It can be accessed by using the name of the class in which it’s defined
+		
+	3.1.5 Overlapping variable scopes
+	
+		In particular, you can’t define a static variable and an instance variable with the same name in a class
+		
+			class MyPhone {
+				static boolean softKeyboard = true;
+				boolean softKeyboard = true;
+			}
+		
+		Local variables and method parameters can’t be defined with the same name.
+		
+			void myMethod(int weight) {
+				int weight = 10;
+			}
+			
+		A class can define local variables with the same name as the instance or class variables, also referred to as shadowing.
+		
+			class MyPhone {
+				static boolean softKeyboard = true;
+				String phoneNumber;
+				void myMethod() {
+					boolean softKeyboard = true;
+					String phoneNumber;
+				}
+			}
+		
+		
+3.2 Object’s life cycle
