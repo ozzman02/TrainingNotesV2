@@ -71,5 +71,15 @@ housekeeping
 	
 		docker volume rm 4e12af8913af888ba67243dec78419bf18adddc3c7a4b2345754b6db64293163
 		docker volume prune
+		
+-----------------------------------------------------------------------
+
+mysql
+	
+	docker run --name ozz-mysql -e MYSQL_ROOT_PASSWORD=password -d mysql
+	docker exec -it ozz-mysql bash
+		root@12720c074807:/# mysql --user=root -p
+		
+		
 	
 		
