@@ -116,3 +116,13 @@ Chapter 3
 	The scope of local variables is less than the scope of a method if they’re declared in a sub-block (within braces {}) in a method. This sub-block can be
 	an if statement, a switch construct, a loop, or a try-catch block
 	
+	- Watch out for a count of instances created in a given code—the ones that are eligible for garbage collection and the ones that aren’t.
+	
+	- When an object goes out of scope, it can no longer be referenced and is marked for garbage collection.
+	
+	- An instance is dereferenced by reassignment when a variable is either explicitly set to null or is assigned another instance or reference variable.
+	
+	- Watch out for questions with wordings such as “which objects are sure to be collected during the next GC cycle,” for which the real answer can
+		never be known.
+		
+	
