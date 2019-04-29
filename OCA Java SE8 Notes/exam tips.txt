@@ -125,4 +125,9 @@ Chapter 3
 	- Watch out for questions with wordings such as “which objects are sure to be collected during the next GC cycle,” for which the real answer can
 		never be known.
 		
-	
+	- You can optionally assign the value returned by a method to a variable. If you don’t assign the returned value from a method, it’s neither a compilation
+		error nor a runtime exception.
+		
+	- In the OCA exam, you may be questioned on the valid return types for a method that doesn’t accept any method parameters. Note that there are
+		no valid or invalid combinations of the number and type of method parameters that can be passed to a method and the value that it can return. 
+		They’re independent of each other.

@@ -121,3 +121,71 @@ Methods and encapsulation
 			Calling this method doesn’t guarantee when the garbage collector would start (the call can even be ignored by the JVM).
 			
 		Garbage collecting referenced objects
+		
+			A group of instances with no external references forms an island of isolation, which is eligible for garbage collection.
+			
+			class Exam {
+				
+				private String name;
+				
+				private Exam other;
+				
+				public Exam(String name) {
+					this.name = name;
+				}
+				
+				public void setExam(Exam exam) {
+					other = exam;
+				}
+			}
+			
+			class IslandOfIsolation {
+				public static void main(String args[]) {
+					Exam php = new Exam("PHP");
+					Exam java = new Exam("Java");
+					php.setExam(java);
+					java.setExam(php);
+					php = null;
+					java = null;
+				}
+			}
+			
+3.3 Create methods with arguments and return values
+
+	- A method is a group of statements identified with a name. Methods are used to define the behavior of an object.
+	
+	3.3.1 Return type of a method: states the type of value that a method will return
+	
+	3.3.2 Method parameters: You can pass multiple values to a method as input. Theoretically, no limit exists on the number of method parameters that can be defined by a method, but practically
+		it’s not a good idea to define more than three method parameters. 
+		
+		Method parameters are the variables that appear in the definition of a method. Method arguments are the actual values that are passed to a method while executing it.
+		
+		You can define a parameter that can accept variable arguments (varargs) in your methods.
+		
+			class Employee {
+				public int daysOffWork(int... days) {
+					int daysOff = 0;
+					for (int i = 0; i < days.length; i++)
+						daysOff += days[i];
+					return daysOff;
+				}
+			}
+		
+			* The ellipsis (...) that follows the data type indicates that the method parameter days may be passed an array or multiple comma-separated values.
+			
+			* You can define only one variable argument in a parameter list, and it must be the last variable in the parameter list.
+	
+			* If your method defines multiple method parameters, the variable that accepts variable arguments must be the last one in the parameter list
+			
+			
+		Rules to remember
+
+			- You can define multiple parameters for a method.
+			- The method parameter can be a primitive type or object.
+			- The method’s parameters are separated by commas.
+			- Each method parameter is preceded by the name of its type. 
+			- Each method parameter must have an explicit type declared with its name. 
+			- You can’t declare the type once and then list the parameters separated by commas, as you can for variables.
+			
+			
