@@ -178,7 +178,6 @@ Methods and encapsulation
 	
 			* If your method defines multiple method parameters, the variable that accepts variable arguments must be the last one in the parameter list
 			
-			
 		Rules to remember
 
 			- You can define multiple parameters for a method.
@@ -187,5 +186,37 @@ Methods and encapsulation
 			- Each method parameter is preceded by the name of its type. 
 			- Each method parameter must have an explicit type declared with its name. 
 			- You can’t declare the type once and then list the parameters separated by commas, as you can for variables.
+	
+	3.3.3 Return statement		
+	
+		- A return statement is used to exit from a method, with or without a value.
+		
+		- For methods that define a return type, the return statement must be immediately followed by a return value.
+		
+		- For methods that don’t return a value, the return statement can be used without a return value to exit a method.
+		
+		- You can use the return statement in a method even if it doesn’t return a value.
+		
+			void setWeight(double val) {
+				if (val < -1) return; // control exits the method if the condition is true.
+				weight = val;
+			}
 			
+		- The return statement must be the last statement to execute in a method, if present.
+		
+		- The return statement need not be the last statement in a method, but it must be the last statement to execute in a method.
+		
+			void setWeight(double val) {
+				if (val < 0)
+					return; // not the last statement in the method but if the condition is true, it is the last statement to execute.
+				else
+					weight = val;
+			}
 			
+		Rules to remember when defining a return statement
+	
+			- For a method that returns a value, the return statement must be followed immediately by a value.
+			- For a method that doesn’t return a value (return type is void), the return statement must not be followed by a return value.
+			- If the compiler determines that a return statement isn’t the last statement to execute in a method, the method will fail to compile.
+	
+	3.4 Create an overloaded method
