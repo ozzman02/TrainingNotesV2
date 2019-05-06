@@ -220,3 +220,73 @@ Methods and encapsulation
 			- If the compiler determines that a return statement isn’t the last statement to execute in a method, the method will fail to compile.
 	
 	3.4 Create an overloaded method
+	
+		Overloaded methods are methods with the same name but different method parameter lists.
+		
+		- Overloaded methods must have method parameters different from one another.
+		- Overloaded methods may or may not define a different return type.
+		- Overloaded methods may or may not define different access levels.
+		- Overloaded methods can’t be defined by only changing their return type or access modifiers or both.
+		
+		3.4.1 Argument list
+		
+			- Change in the number of parameters that are accepted
+			- Change in the types of parameters that are accepted
+			- Change in the positions of the parameters that are accepted (based on parameter type, not variable names)
+			
+			Won't compile
+			
+				double calcAverage(int[] marks) {
+					//return a double value
+				}
+			
+				double calcAverage(int... marks) {
+					//return a double value
+				}
+			
+			
+			Change int the positions example
+				
+				double calcAverage(double marks1, int marks2) {
+					return (marks1 + marks2)/2.0;
+				}
+				double calcAverage(int marks1, double marks2) {
+					return (marks1 + marks2)/2.0;
+				}
+				
+				Issue: (Code fails to compile)
+				
+					class MyClass {
+						
+						double calcAverage(double marks1, int marks2) {
+							return (marks1 + marks2)/2.0;
+						}
+						
+						double calcAverage(int marks1, double marks2) {
+							return (marks1 + marks2)/2.0;
+						}
+						
+						public static void main(String args[]) {
+							MyClass myClass = new MyClass();
+							myClass.calcAverage(2, 3); // Compiler can’t determine which overloaded method calcAverage should be called
+						}
+					}
+					
+		3.4.2 Return type
+		
+			Methods can’t be defined as overloaded methods if they differ only in their return types, because return type is not part of a method signature
+			
+		3.4.3 Access level
+		
+			Methods can’t be defined as overloaded methods if they differ only in their access levels.
+			
+			Won't compile
+				
+				public double calcAverage(int marks1, int marks2) {
+					return (marks1 + marks2)/2.0;
+				}
+				private double calcAverage(int marks1, int marks2) {
+					return (marks1 + marks2)/2.0;
+				}
+
+	3.5 Constructors of a class		
