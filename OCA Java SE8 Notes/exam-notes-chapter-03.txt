@@ -290,3 +290,35 @@ Methods and encapsulation
 				}
 
 	3.5 Constructors of a class		
+	
+		- Constructors are special methods that create and return an object of the class in which they’re defined.
+		- Constructors have the same name as the class in which they’re defined, and they don’t specify a return type—not even void
+		
+		A constructor can accomplish the following tasks:
+			
+			- Call the superclass’s constructor; this can be an implicit or explicit call.
+			- Initialize all the instance variables of a class with their default values.
+		
+		3.5.1 User-defined constructors
+	
+			- If the author defines a constructor in a class, it’s known as a user-defined constructor.
+			- A constructor does have an implicit return type, which is the class in which it’s defined.
+			- You can define constructors using any of the four access levels.
+			- What happens if you define a return type for a constructor? Java will treat it as another method, not a constructor.
+			
+			Initializer blocks versus constructors
+				
+				- An initializer block is defined within a class, not as a part of a method. It executes for every object that’s created for a class.
+				- If you define both an initializer and a constructor for a class, both of these will execute. The initializer block will execute prior to the constructor
+				- If a class defines multiple initializer blocks, their order of execution depends on their placement in a class. But all of them execute before the class’s constructor
+				- Initializer blocks are used to initialize the variables of anonymous classes. An anonymous class is a type of inner class. In the absence of a name, anonymous classes can’t
+					define a constructor and rely on an initializer block to initialize their variables upon the creation of an object of their class.
+			
+				A lot of action can happen within an initializer block: 
+				
+					- It can create local variables. 
+					- It can access and assign values to instance and static variables. 
+					- It can call methods and define loops, conditional statements, and try-catch-finally blocks. 
+					- Unlike constructors, an initializer block can’t accept method parameters.
+		
+		3.5.2 Default constructor
