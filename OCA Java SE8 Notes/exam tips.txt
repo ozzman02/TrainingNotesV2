@@ -131,3 +131,19 @@ Chapter 3
 	- In the OCA exam, you may be questioned on the valid return types for a method that doesn’t accept any method parameters. Note that there are
 		no valid or invalid combinations of the number and type of method parameters that can be passed to a method and the value that it can return. 
 		They’re independent of each other.
+		
+	- You can define a constructor using all four access levels: public, protected, default, and private.	
+	
+	- A constructor must not define any return type. Instead, it creates and returns an object of the class in which it’s defined. 
+		If you define a return type for a constructor, it’ll no longer be treated as a constructor. Instead, it’ll be treated as a regular method, 
+		even though it shares the same name as its class.
+		
+	- The accessibility of a default constructor matches the accessibility of its class. Java creates a public default constructor 
+		for a public class. It creates a default constructor with package access for a class with package-level access.
+		
+	- Java defines a default constructor if and only if you don’t define a constructor. If a class doesn’t define a constructor, the compiler will add a
+		default, no-argument constructor to the class. But if you modify the class later by adding a constructor to it, the Java compiler 
+		will remove the default, no argument constructor that it initially added to the class.
+	
+	- Although object fields can be manipulated by direct access, it isn’t a recommended practice. It makes an object vulnerable to invalid data. Such
+		a class isn’t well encapsulated

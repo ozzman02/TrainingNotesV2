@@ -322,3 +322,38 @@ Methods and encapsulation
 					- Unlike constructors, an initializer block can’t accept method parameters.
 		
 		3.5.2 Default constructor
+		
+			In the absence of a user-defined constructor, Java inserts a default constructor.
+			It calls the constructor of the super (parent) class and assigns default values to all the instance variables.
+			
+		3.5.3 Overloaded constructors
+		
+			- Overloaded constructors must be defined using different argument lists.
+			- Overloaded constructors can’t be defined by just a change in the access levels.
+			
+			Invoking an overloaded constructor from another constructor
+			
+				- Overloaded constructors are invoked by using the keyword this.
+				- You can’t invoke a constructor within a class by using the class’s name.
+				- When you invoke an overloaded constructor using the keyword this, it must be the first statement in your constructor.
+				- You can’t call two (or more) constructors within a constructor because the call to a constructor must be the first statement in a constructor.
+				- You can’t call a constructor from any other method in your class.
+				- Overloaded constructors can’t be defined by just a change in the access levels.
+				- Overloaded constructors may be defined using different access levels.
+				
+		3.6 Accessing object fields
+		
+			3.6.1 What is an object field?
+			
+				An object field is another name for an instance variable defined in a class.
+				
+			3.6.2 Read and write object fields
+			
+				- Access modifier of the object field
+				- Access modifiers of methods used to read and write the value of the object field
+				- Constructors that assign values to object fields
+				
+			3.6.3 Calling methods on objects
+			
+			
+				
