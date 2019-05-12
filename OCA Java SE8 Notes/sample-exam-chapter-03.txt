@@ -1,5 +1,13 @@
 Question		My Answers			Correct Answer
 -------------------------------------------------
-
-				
+Q3-1			d					d
+Q3-2			d					d
+Q3-3			b, c, d				b, d			x
+Q3-4			b, c, d				a, b, c, d		x
+Q3-5			b					b
+Q3-6			c					c
+Q3-7			c, d, e, f			c, d, e, f, g	x
+Q3-8			c					c
+Q3-9			a, d				a, d
+Q3-10			a, b, 				a, c			x
 				

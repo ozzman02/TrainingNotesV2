@@ -341,72 +341,89 @@ Methods and encapsulation
 				- Overloaded constructors can’t be defined by just a change in the access levels.
 				- Overloaded constructors may be defined using different access levels.
 				
-		3.6 Accessing object fields
+	3.6 Accessing object fields
 		
-			3.6.1 What is an object field?
+		3.6.1 What is an object field?
 			
-				An object field is another name for an instance variable defined in a class.
+			An object field is another name for an instance variable defined in a class.
 				
-			3.6.2 Read and write object fields
+		3.6.2 Read and write object fields
 			
-				- Access modifier of the object field
-				- Access modifiers of methods used to read and write the value of the object field
-				- Constructors that assign values to object fields
+			- Access modifier of the object field
+			- Access modifiers of methods used to read and write the value of the object field
+			- Constructors that assign values to object fields
 				
-			3.6.3 Calling methods on objects
+		3.6.3 Calling methods on objects
 			
-				- Java uses the dot notation (.) to execute a method on a reference variable.
+			- Java uses the dot notation (.) to execute a method on a reference variable.
 				
-				- When you call a method, you must pass to it the exact number of method parameters that are defined by it.
+			- When you call a method, you must pass to it the exact number of method parameters that are defined by it.
 				
-				- If the parameter list of the called method defines a variable argument at the rightmost position, 
-					you can call the method with a variable number of arguments.
+			- If the parameter list of the called method defines a variable argument at the rightmost position, 
+				you can call the method with a variable number of arguments.
 				
-					public int daysOffWork(int... days) {
-						int daysOff = 0;
-						for (int i = 0; i < days.length; i++)
-							daysOff += days[i];
-						return daysOff;
+				public int daysOffWork(int... days) {
+					int daysOff = 0;
+					for (int i = 0; i < days.length; i++)
+						daysOff += days[i];
+					return daysOff;
+				}
+					
+				You can call this method using a variable list of arguments:
+					
+				Class Test {
+					public static void main(String args[]) {
+						Employee e = new Employee();
+						System.out.println(e.daysOffWork(1, 2, 3, 4));
+						System.out.println(e.daysOffWork(1, 2, 3));
 					}
+				}
 					
-					You can call this method using a variable list of arguments:
+			- You can’t assign a return value of a method to an incompatible variable
 					
-					Class Test {
-						public static void main(String args[]) {
-							Employee e = new Employee();
-							System.out.println(e.daysOffWork(1, 2, 3, 4));
-							System.out.println(e.daysOffWork(1, 2, 3));
-						}
-					}
-					
-				- You can’t assign a return value of a method to an incompatible variable
-					
-			3.7 Apply encapsulation principles to a class
+		3.7 Apply encapsulation principles to a class
 			
-				- A well-encapsulated object doesn’t expose its internal parts to the outside world. It defines a set of methods 
-					that enables the users of the class to interact with it.
+			- A well-encapsulated object doesn’t expose its internal parts to the outside world. It defines a set of methods 
+				that enables the users of the class to interact with it.
 					
-				3.7.1 Need for encapsulation
+			3.7.1 Need for encapsulation
 				
-					The private members of a class—its variables and methods—are used to hide information about a class.
+				The private members of a class—its variables and methods—are used to hide information about a class.
 					
-					Here’s a quick list of reasons to encapsulate the state of a Java object:
+				Here’s a quick list of reasons to encapsulate the state of a Java object:
 					
-						- To prevent an external object from performing dangerous operations
-						- To hide implementation details, so that the implementation can change a second time without impacting other objects
-						- To minimize the chance of coupling
+					- To prevent an external object from performing dangerous operations
+					- To hide implementation details, so that the implementation can change a second time without impacting other objects
+					- To minimize the chance of coupling
 						
-				3.7.2 Apply encapsulation
+			3.7.2 Apply encapsulation
 				
-					Encapsulation is the concept of defining variables and the methods together in a class.
+				Encapsulation is the concept of defining variables and the methods together in a class.
 					
-					Well-encapsulated classes don’t expose their instance variables outside their class.
+				Well-encapsulated classes don’t expose their instance variables outside their class.
 			
-			3.8 Passing objects and primitives to methods
+		3.8 Passing objects and primitives to methods
 			
-				3.8.1 Passing primitives to methods
+			3.8.1 Passing primitives to methods
 				
-					The value of a primitive data type is copied and passed to a method. Hence, the variable whose value was copied doesn’t change.
+				The value of a primitive data type is copied and passed to a method. Hence, the variable whose value was copied doesn’t change.
 					
-				3.8.2 Passing object references to methods		
+			3.8.2 Passing object references to methods		
+						
+				When methods reassign the object references passed to them
 					
+					- When you pass an object reference to a method, the method can assign it to another variable. In this case, 
+						the state of the object, which was passed on to the method remains intact.
+						
+					- When a method is passed a reference value, a copy of the reference (that is, the memory address) is passed 
+						to the invoked method. The callee can do whatever it wants with its copy without ever altering 
+						the original reference held by the caller.
+					
+				When methods modify the state of the object references passed to them	
+				
+					- When you pass an object reference variable to a method, a change in its value may be reflected in the calling method
+						(if the called method modifies an object field of the object passed to it.)
+					
+					- If the called method assigns a new object reference to the method argument before modifying the
+						value of its fields, these changes aren’t visible in the calling method. 					
+						
