@@ -147,3 +147,22 @@ Chapter 3
 	
 	- Although object fields can be manipulated by direct access, it isn’t a recommended practice. It makes an object vulnerable to invalid data. Such
 		a class isn’t well encapsulated
+		
+	- A call to a method must be followed by passing values to all its method parameters. For a method that defines one or more method parameters,
+		you can’t call the method followed by () to indicate it doesn’t need to be passed values.
+		
+	- Methods that accept varargs parameters can be called with a different count of actual arguments. Also, a method that accepts a vararg can be
+		invoked with an array in place of the vararg.
+		
+	- The terms encapsulation and information hiding are used interchangeably.
+	
+	- By exposing object functionality only through methods, you can prevent your private variables from being assigned any values that don’t fit
+		your requirements. 
+	
+	- One of the best ways to create a well-encapsulated class is to define its instance variables as private variables and allow access to these
+		variables using public methods.
+		
+	- When you pass a primitive variable to a method, its value remains the same after the execution of the method. The value doesn’t change,
+		regardless of whether the method reassigns the primitive to another variable or modifies it.
+		
+	
