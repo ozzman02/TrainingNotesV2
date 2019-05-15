@@ -1,1 +1,17 @@
 Selected classes from the Java API and arrays
+
+	4.1 Welcome to the world of the String class
+		
+		4.1.1 Creating String objects
+		
+			- String objects created using the operator new always refer to separate objects, even if they store the same sequence of characters.
+			- String objects created using the assignment operator (=) may refer to the same object if they store the same sequence of characters.
+			- You can also create a String object by enclosing a value within double quotes ("): 
+				
+				System.out.println("Morning"); // Creates a new String object with value Morning in the String constant pool
+				
+			- Because String objects are immutable, the pool of String objects is also called the String constant pool.
+			- You can also invoke other overloaded constructors of the class String to create its objects by using the operator new.
+			- You can also create objects of String using the classes StringBuilder and StringBuffer.
+			
+			Counting string objects
