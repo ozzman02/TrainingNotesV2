@@ -15,3 +15,22 @@ Selected classes from the Java API and arrays
 			- You can also create objects of String using the classes StringBuilder and StringBuffer.
 			
 			Counting string objects
+			
+				- If a String object is created using the keyword new, it always results in the creation of a new String object. 
+				- String objects created this way are never pooled. 
+				- When a variable is assigned a String literal using the assignment operator, a new String object is created only if a String object with the
+					same value isn’t found in the String constant pool.
+					
+		4.1.2 The class String is immutable
+		
+			- Once created, the contents of an object of the class String can never be modified.
+			- The immutability of String objects helps the JVM reuse String objects, reducing memory overhead and increasing performance.	
+			- The JVM creates a pool of String objects that can be referenced by multiple variables across the JVM.
+			- The JVM can make this optimization only because String is immutable.
+			- String objects can be shared across multiple reference variables without any fear of changes in their values.
+			
+			Immutability of the class String:
+			
+				- String uses a char array to store its value
+				- String uses final variable to store its value	
+				- Methods of string don’t modify the char array

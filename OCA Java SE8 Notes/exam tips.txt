@@ -164,5 +164,16 @@ Chapter 3
 		
 	- When you pass a primitive variable to a method, its value remains the same after the execution of the method. The value doesn’t change,
 		regardless of whether the method reassigns the primitive to another variable or modifies it.
+	
+Chapter 4
+
+	- The default value for String is null.
+	- If a String object is created using the keyword new, it always results in the creation of a new String object. 
+	- String objects created this way are never pooled. 
+	- When a variable is assigned a String literal using the assignment operator, a new String object is created only if a String object with the
+		same value isn’t found in the String constant pool.
+	- Strings are immutable. Once initialized, a String value can’t be modified. 
+	- All the String methods that return a modified String value return a new String object with the modified value. 
+	- The original String value always remains the same.
 		
 	
