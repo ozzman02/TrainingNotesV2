@@ -168,12 +168,24 @@ Chapter 3
 Chapter 4
 
 	- The default value for String is null.
+	
 	- If a String object is created using the keyword new, it always results in the creation of a new String object. 
+	
 	- String objects created this way are never pooled. 
+	
 	- When a variable is assigned a String literal using the assignment operator, a new String object is created only if a String object with the
 		same value isn’t found in the String constant pool.
+	
 	- Strings are immutable. Once initialized, a String value can’t be modified. 
+	
 	- All the String methods that return a modified String value return a new String object with the modified value. 
+	
 	- The original String value always remains the same.
+	
+	- The substring method doesn’t include the character at the end position in its return value.
 		
+	- The length of a String is one number greater than the position that stores its last character. 
+	
+	- When chained, the methods are evaluated from left to right.
+	
 	
