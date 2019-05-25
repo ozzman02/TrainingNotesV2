@@ -62,4 +62,20 @@ Selected classes from the Java API and arrays
 		
 		4.1.5 Determining equality of Strings
 		
+			Equals method
+			
+				- The correct way to compare two String values for equality is to use the equals method defined in the String class.
+				
+			Comparing reference variables to instance values
+			
+				- The operator == compares the reference variables, that is, whether the variables refer to the same object.
+		
+				- You can use the operator != to compare the inequality of objects referred to by String variables.
+				
+			Equality of values returned by string methods
+				
+				- Watch out for the exam questions that test you on using the == operator with String values returned by methods of the class String. 
+					Because these values are created using the new operator, they aren’t placed in the String pool.
+				
+		4.2 Mutable strings: StringBuilder
 		

@@ -188,4 +188,8 @@ Chapter 4
 	
 	- When chained, the methods are evaluated from left to right.
 	
-	
+	- The operator == compares whether the reference variables refer to the same objects, and the method equals compares the String values for
+		equality. Always use the equals method to compare two Strings for equality. Never use the == operator for this purpose.
+		
+	- Watch out for the exam questions that test you on using the == operator with String values returned by methods of the class String. Because
+		these values are created using the new operator, they aren’t placed in the String pool.
