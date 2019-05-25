@@ -79,3 +79,41 @@ Selected classes from the Java API and arrays
 				
 		4.2 Mutable strings: StringBuilder
 		
+			- The class StringBuilder is defined in the package java.lang, and it has a mutable sequence of characters.
+			
+			- You should use the class StringBuilder when you’re dealing with larger strings or modifying the contents of a string often.
+			
+			4.2.1 The StringBuilder class is mutable
+			
+			4.2.2 Creating StringBuilder objects
+				
+				StringBuilder sb1 = new StringBuilder();					// initial 16 characters of capacity
+				StringBuilder sb2 = new StringBuilder(sb1);					// receives an StringBuilder object
+				StringBuilder sb3 = new StringBuilder(50);					// receives an int to specify initial capacity
+				StringBuilder sb4 = new StringBuilder("Shreya Gupta");		// receives a String
+				
+			4.2.3 Methods of class StringBuilder
+			
+				charAt()
+				indexOf()
+				substring()
+				length()
+				append()
+				insert()
+				delete()
+				deleteCharAt()
+				reverse()
+				replace() * replace in String accepts characters to be replaced but in StringBuilder accepts a position to be replaced.
+				subsequence() * subsequence doesn’t modify the existing value of a StringBuilder object
+				
+			4.2.4 A quick note on the class StringBuffer
+			
+				The classes StringBuffer and StringBuilder offer the same functionality, with one difference: 
+				the methods of the class StringBuffer are synchronized where necessary, whereas the methods of the class StringBuilder aren’t.
+				If you need to access your code from multiple threads, use StringBuffer; otherwise use StringBuilder.
+				
+				
+				
+				
+				
+		

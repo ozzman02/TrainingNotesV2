@@ -193,3 +193,16 @@ Chapter 4
 		
 	- Watch out for the exam questions that test you on using the == operator with String values returned by methods of the class String. Because
 		these values are created using the new operator, they aren’t placed in the String pool.
+		
+	- You can expect questions on the need for the StringBuilder class and its comparison with the String class.
+	
+	- For classes that haven’t overridden the toString method, the append method results in appending the output from the default implementation
+		of method toString defined in the class Object (if the parameter isn’t null).
+		
+	- Take note of the start and end positions when inserting a value in a StringBuilder. Multiple flavors of the insert method defined in 
+		StringBuilder may confuse you because they can be used to insert either single or multiple characters.
+		
+	- Combinations of the deleteCharAt and insert methods can be quite confusing.
+	
+	- You can’t use the method reverse to reverse a substring of StringBuilder.
+	
