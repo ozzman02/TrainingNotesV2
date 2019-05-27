@@ -217,5 +217,12 @@ Chapter 4
 			- false for boolean; or
 			- \u0000 for char data.
 			
-	
+	- Code to access an array index will throw a runtime exception if you pass it an invalid array index value. 
+		Code to access an array index will fail	to compile if you don’t use a char, byte, short, or int.
+		
+	- When you combine an array declaration, allocation, and initialization in a single step, you can’t specify the size of the array. 
+		The size of the array is calculated by the number of values that are assigned to the array.
+		
+	- 
+		
 	
