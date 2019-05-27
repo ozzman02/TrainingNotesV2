@@ -112,8 +112,78 @@ Selected classes from the Java API and arrays
 				the methods of the class StringBuffer are synchronized where necessary, whereas the methods of the class StringBuilder aren’t.
 				If you need to access your code from multiple threads, use StringBuffer; otherwise use StringBuilder.
 				
+		4.3 Arrays	
+				
+			4.3.1 What is an array?
+				
+				- An array is an object that stores a collection of values.
+				
+				- Arrays can store two types of data:
+						
+					- A collection of primitive data types
+					- A collection of objects
+				
+				- Object arrays store references (to objects) and primitive arrays store primitive values.
+				
+				- You can define one-dimensional and multidimensional arrays.
+				
+				- multidimensional arrays may or may not contain the same number of elements in each row or column
+				
+				- Creating an array involves three steps, as follows:
+					
+					- Declaring the array
+					- Allocating the array
+					- Initializing the array elements
+					
+			4.3.2 Array declaration
+			
+				int intArray[];
+				String[] strArray;
+				int[] multiArray[];
+				
+				- The number of bracket pairs indicates the depth of array nesting. Java doesn’t impose any theoretical limit on 
+					the level of array nesting.
+					
+				- The array declaration only creates a variable that refers to null.
+				
+				- Array size can’t be defined with the array declaration.
+				
+				- An array type can be any of the following:
+				
+					- Primitive data type
+					- Interface
+					- Abstract class
+					- Concrete class
+					
+				- Arrays can be of any data type other than null.
+				
+			4.3.3 Array allocation
+				
+				- When you allocate memory for an array, you should specify its dimensions, such as the number of elements the array should store.
+				- Note that the size of an array can’t expand or reduce once it is allocated.
+				- Because an array is an object, it’s allocated using the keyword new, followed by the type
+					of value that it stores, and then its size.
+				- The size of the array must evaluate to an int value. You can’t create an array with its size specified as a floating-point number. 
+				- Java accepts an expression to specify the size of an array, as long as it evaluates to an int value. 
 				
 				
+				You can also allocate the multidimensional by defining size in only the first square brackets
 				
+					int[] multiArr[];
+					multiArr = new int[2][];
 				
-		
+				You can’t allocate a multidimensional array as follows:
+					
+					int[] multiArr[];
+					multiArr = new int[];		// Non matching square brackets
+					multiArr = new int[][3];	// Size in first square bracket missing
+					
+					
+				Once allocated, the array elements store their default values. 
+				
+					For arrays that store objects, all the allocated array elements store null. 
+					For arrays that store primitive values, the default values depend on the exact data types stored by them.	
+					
+			4.3.4 Array initialization
+			
+			

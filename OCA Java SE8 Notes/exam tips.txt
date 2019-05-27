@@ -206,3 +206,16 @@ Chapter 4
 	
 	- You can’t use the method reverse to reverse a substring of StringBuilder.
 	
+	- Once allocated, all the array elements store their default values. 
+		
+		Elements in an array that store objects default to null. 
+		
+		Elements of an array that store primitive data types store 
+		
+			- 0 for integer types (byte, short, int, long); 
+			- 0.0 for decimal types (float and double); 
+			- false for boolean; or
+			- \u0000 for char data.
+			
+	
+	
