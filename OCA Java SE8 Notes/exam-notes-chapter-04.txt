@@ -77,117 +77,115 @@ Selected classes from the Java API and arrays
 				- Watch out for the exam questions that test you on using the == operator with String values returned by methods of the class String. 
 					Because these values are created using the new operator, they aren’t placed in the String pool.
 				
-		4.2 Mutable strings: StringBuilder
+	4.2 Mutable strings: StringBuilder
 		
-			- The class StringBuilder is defined in the package java.lang, and it has a mutable sequence of characters.
+		- The class StringBuilder is defined in the package java.lang, and it has a mutable sequence of characters.
 			
-			- You should use the class StringBuilder when you’re dealing with larger strings or modifying the contents of a string often.
+		- You should use the class StringBuilder when you’re dealing with larger strings or modifying the contents of a string often.
 			
-			4.2.1 The StringBuilder class is mutable
+		4.2.1 The StringBuilder class is mutable
 			
-			4.2.2 Creating StringBuilder objects
+		4.2.2 Creating StringBuilder objects
 				
-				StringBuilder sb1 = new StringBuilder();					// initial 16 characters of capacity
-				StringBuilder sb2 = new StringBuilder(sb1);					// receives an StringBuilder object
-				StringBuilder sb3 = new StringBuilder(50);					// receives an int to specify initial capacity
-				StringBuilder sb4 = new StringBuilder("Shreya Gupta");		// receives a String
+			StringBuilder sb1 = new StringBuilder();					// initial 16 characters of capacity
+			StringBuilder sb2 = new StringBuilder(sb1);					// receives an StringBuilder object
+			StringBuilder sb3 = new StringBuilder(50);					// receives an int to specify initial capacity
+			StringBuilder sb4 = new StringBuilder("Shreya Gupta");		// receives a String
 				
-			4.2.3 Methods of class StringBuilder
+		4.2.3 Methods of class StringBuilder
 			
-				charAt()
-				indexOf()
-				substring()
-				length()
-				append()
-				insert()
-				delete()
-				deleteCharAt()
-				reverse()
-				replace() * replace in String accepts characters to be replaced but in StringBuilder accepts a position to be replaced.
-				subsequence() * subsequence doesn’t modify the existing value of a StringBuilder object
+			charAt()
+			indexOf()
+			substring()
+			length()
+			append()
+			insert()
+			delete()
+			deleteCharAt()
+			reverse()
+			replace() * replace in String accepts characters to be replaced but in StringBuilder accepts a position to be replaced.
+			subsequence() * subsequence doesn’t modify the existing value of a StringBuilder object
 				
-			4.2.4 A quick note on the class StringBuffer
+		4.2.4 A quick note on the class StringBuffer
 			
-				The classes StringBuffer and StringBuilder offer the same functionality, with one difference: 
-				the methods of the class StringBuffer are synchronized where necessary, whereas the methods of the class StringBuilder aren’t.
-				If you need to access your code from multiple threads, use StringBuffer; otherwise use StringBuilder.
+			The classes StringBuffer and StringBuilder offer the same functionality, with one difference: 
+			The methods of the class StringBuffer are synchronized where necessary, whereas the methods of the class StringBuilder aren’t.
+			If you need to access your code from multiple threads, use StringBuffer; otherwise use StringBuilder.
 				
-		4.3 Arrays	
+	4.3 Arrays	
 				
-			4.3.1 What is an array?
+		4.3.1 What is an array?
 				
-				- An array is an object that stores a collection of values.
+			- An array is an object that stores a collection of values.
 				
-				- Arrays can store two types of data:
+			- Arrays can store two types of data:
 						
-					- A collection of primitive data types
-					- A collection of objects
+				- A collection of primitive data types
+				- A collection of objects
 				
-				- Object arrays store references (to objects) and primitive arrays store primitive values.
+			- Object arrays store references (to objects) and primitive arrays store primitive values.
 				
-				- You can define one-dimensional and multidimensional arrays.
+			- You can define one-dimensional and multidimensional arrays.
 				
-				- multidimensional arrays may or may not contain the same number of elements in each row or column
+			- Multidimensional arrays may or may not contain the same number of elements in each row or column
 				
-				- Creating an array involves three steps, as follows:
+			- Creating an array involves three steps, as follows:
 					
-					- Declaring the array
-					- Allocating the array
-					- Initializing the array elements
+				- Declaring the array
+				- Allocating the array
+				- Initializing the array elements
 					
-			4.3.2 Array declaration
+		4.3.2 Array declaration
 			
-				int intArray[];
-				String[] strArray;
-				int[] multiArray[];
+			int intArray[];
+			String[] strArray;
+			int[] multiArray[];
 				
-				- The number of bracket pairs indicates the depth of array nesting. Java doesn’t impose any theoretical limit on 
+			- The number of bracket pairs indicates the depth of array nesting. Java doesn’t impose any theoretical limit on 
 					the level of array nesting.
 					
-				- The array declaration only creates a variable that refers to null.
+			- The array declaration only creates a variable that refers to null.
 				
-				- Array size can’t be defined with the array declaration.
+			- Array size can’t be defined with the array declaration.
 				
-				- An array type can be any of the following:
+			- An array type can be any of the following:
 				
-					- Primitive data type
-					- Interface
-					- Abstract class
-					- Concrete class
+				- Primitive data type
+				- Interface
+				- Abstract class
+				- Concrete class
 					
-				- Arrays can be of any data type other than null.
+			- Arrays can be of any data type other than null.
 				
-			4.3.3 Array allocation
+		4.3.3 Array allocation
 				
-				- When you allocate memory for an array, you should specify its dimensions, such as the number of elements the array should store.
-				- Note that the size of an array can’t expand or reduce once it is allocated.
-				- Because an array is an object, it’s allocated using the keyword new, followed by the type
-					of value that it stores, and then its size.
-				- The size of the array must evaluate to an int value. You can’t create an array with its size specified as a floating-point number. 
-				- Java accepts an expression to specify the size of an array, as long as it evaluates to an int value. 
-				
-				
-				You can also allocate the multidimensional by defining size in only the first square brackets
-				
-					int[] multiArr[];
-					multiArr = new int[2][];
-				
-				You can’t allocate a multidimensional array as follows:
+			- When you allocate memory for an array, you should specify its dimensions, such as the number of elements the array should store.
+			- Note that the size of an array can’t expand or reduce once it is allocated.
+			- Because an array is an object, it’s allocated using the keyword new, followed by the type
+				of value that it stores, and then its size.
+			- The size of the array must evaluate to an int value. You can’t create an array with its size specified as a floating-point number. 
+			- Java accepts an expression to specify the size of an array, as long as it evaluates to an int value. 
 					
-					int[] multiArr[];
-					multiArr = new int[];		// Non matching square brackets
-					multiArr = new int[][3];	// Size in first square bracket missing
+			You can also allocate the multidimensional by defining size in only the first square brackets
+				
+				int[] multiArr[];
+				multiArr = new int[2][];
+				
+			You can’t allocate a multidimensional array as follows:
+					
+				int[] multiArr[];
+				multiArr = new int[];		// Non matching square brackets
+				multiArr = new int[][3];	// Size in first square bracket missing
 					
 					
 				Once allocated, the array elements store their default values. 
-				
-					For arrays that store objects, all the allocated array elements store null. 
-					For arrays that store primitive values, the default values depend on the exact data types stored by them.	
+				For arrays that store objects, all the allocated array elements store null. 
+				For arrays that store primitive values, the default values depend on the exact data types stored by them.	
 					
-			4.3.4 Array initialization
+		4.3.4 Array initialization
 			
-				- Using for loop
-				- Assign value to a specific position
+			- Using for loop
+			- Assign value to a specific position
 				
 				int intArray[] = new int[2];
 				System.out.println(intArray[3]); Compiles but fails at runtime
@@ -201,55 +199,65 @@ Selected classes from the Java API and arrays
 				- You can’t remove array positions. For an array of objects, you can set a position
 					to the value null, but it doesn’t remove the array position.
 					
-			4.3.5 Combining array declaration, allocation, and initialization
+		4.3.5 Combining array declaration, allocation, and initialization
 					
-				int intArray[] = {0, 1};
-				String[] strArray = {"Summer", "Winter"};
-				int multiArray[][] = { {0, 1}, {3, 4, 5} };
+			int intArray[] = {0, 1};
+			String[] strArray = {"Summer", "Winter"};
+			int multiArray[][] = { {0, 1}, {3, 4, 5} };
 				
-				int intArray2[] = new int[]{0, 1};
-				String[] strArray2 = new String[]{"Summer", "Winter"};
-				int multiArray2[][] = new int[][]{ {0, 1}, {3, 4, 5}};
+			int intArray2[] = new int[]{0, 1};
+			String[] strArray2 = new String[]{"Summer", "Winter"};
+			int multiArray2[][] = new int[][]{ {0, 1}, {3, 4, 5}};
 				
 				
-				Won't compile
+			Won't compile
 				
-					int intArray2[] = new int[2]{0, 1};
-					String[] strArray2 = new String[2]{"Summer", "Winter"};
-					int multiArray2[][] = new int[2][]{ {0, 1}, {3, 4, 5}};
+				int intArray2[] = new int[2]{0, 1};
+				String[] strArray2 = new String[2]{"Summer", "Winter"};
+				int multiArray2[][] = new int[2][]{ {0, 1}, {3, 4, 5}};
 					
 				
-				Also valid:
+			Also valid:
 				
-					int intArray[];
-					intArray = new int[]{0, 1};	
+				int intArray[];
+				intArray = new int[]{0, 1};	
 					
 					
-				Not valid
+			Not valid
 
-					int intArray[];
-					intArray = {0, 1};
+				int intArray[];
+				intArray = {0, 1};
 				
-			4.3.6 Asymmetrical multidimensional arrays	
+		4.3.6 Asymmetrical multidimensional arrays	
 				
-				String multiStrArr[][] = new String[][] { {"A", "B"}, null, {"Jan", "Feb", "Mar"},};
+			String multiStrArr[][] = new String[][] { {"A", "B"}, null, {"Jan", "Feb", "Mar"},};
 				
-			4.3.7 Arrays of type interface, abstract class, and class Object
+		4.3.7 Arrays of type interface, abstract class, and class Object
 			
-				Interface type
+			Interface type
 				
-					- If the type of an array is an interface, its elements are either null or objects that implement the relevant interface type.
+				- If the type of an array is an interface, its elements are either null or objects that implement the relevant interface type.
 					
-				Abstract class type
+			Abstract class type
 				
-					- If the type of an array is an abstract class, its elements are either null or objects of concrete classes that extend the 
-						relevant abstract class
+				- If the type of an array is an abstract class, its elements are either null or objects of concrete classes that extend the 
+					relevant abstract class
 						
-				Object
+			Object
 
-					- Because all classes extend the class java.lang.Object, elements of an array whose type is java.lang.Object can refer to any object.
+				- Because all classes extend the class java.lang.Object, elements of an array whose type is java.lang.Object can refer to any object.
 					
 					
-			4.3.8 Members of an array
+		4.3.8 Members of an array
+				
+			Array objects have the following public members:
+				
+				- length
+				- clone()
+				- Inherited Methods (Methods inherited from the class Object, except the method clone)
 					
+			String—Retrieve length using the method length()
+			Array—Determine element count using the variable length
+				
+	4.4 ArrayList		
 				
