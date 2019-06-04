@@ -232,3 +232,24 @@ Selected classes from the Java API and arrays
 				
 			4.3.6 Asymmetrical multidimensional arrays	
 				
+				String multiStrArr[][] = new String[][] { {"A", "B"}, null, {"Jan", "Feb", "Mar"},};
+				
+			4.3.7 Arrays of type interface, abstract class, and class Object
+			
+				Interface type
+				
+					- If the type of an array is an interface, its elements are either null or objects that implement the relevant interface type.
+					
+				Abstract class type
+				
+					- If the type of an array is an abstract class, its elements are either null or objects of concrete classes that extend the 
+						relevant abstract class
+						
+				Object
+
+					- Because all classes extend the class java.lang.Object, elements of an array whose type is java.lang.Object can refer to any object.
+					
+					
+			4.3.8 Members of an array
+					
+				
