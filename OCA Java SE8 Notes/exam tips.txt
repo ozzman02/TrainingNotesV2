@@ -223,6 +223,13 @@ Chapter 4
 	- When you combine an array declaration, allocation, and initialization in a single step, you can’t specify the size of the array. 
 		The size of the array is calculated by the number of values that are assigned to the array.
 		
-	- 
+	- An ArrayList preserves the order of insertion of its elements. Iterator, ListIterator, and the enhanced for loop 
+		will return the elements in the order in which they were added to the ArrayList. 
+		An iterator(Iterator or ListIterator) lets you remove elements as you iterate an ArrayList. 
+		It’s not possible to remove elements from an ArrayList while iterating it using a for loop.
 		
+	- In the exam, you’re likely to encounter a question that adds the same object reference to multiple lists and then 
+		tests you on your understanding of the state of the same object and reference variable in all the lists.
+	
+	- An ArrayList can store duplicate object values.
 	

@@ -260,4 +260,88 @@ Selected classes from the Java API and arrays
 			Array—Determine element count using the variable length
 				
 	4.4 ArrayList		
+	
+		Here are a few more important properties of an ArrayList:
+		
+			- It implements the interface List.
+			- It allows null values to be added to it.
+			- It implements all list operations (add, modify, and delete values).
+			- It allows duplicate values to be added to it.
+			- It maintains its insertion order.
+			- You can use either Iterator or ListIterator to iterate over the items of an ArrayList.
+			- It supports generics, making it type safe. (You have to declare the type of the elements that 
+				should be added to an ArrayList with its declaration.)
 				
+		4.4.1 Creating an ArrayList
+		
+			An ArrayList uses an array to store its elements. It provides you with the functionality of a dynamic array.
+		
+		4.4.2 Adding elements to an ArrayList
+		
+			You can add a value to an ArrayList either at its end or at a specified position.
+			
+		4.4.3 Accessing elements of an ArrayList
+		
+			- Enhanced for loop: It’s not possible to remove elements from an ArrayList while iterating it using a for loop.
+			
+			- Iterator or ListIterator: It doesn’t contain any reference to the current element of an ArrayList. 
+				ListIterator provides you with a method (hasNext) to check whether more elements exist for an
+				ArrayList. If true, you can extract its next element using the method next().
+				
+				An iterator (Iterator or ListIterator) lets you remove elements as you iterate an ArrayList.
+				
+			Note that an ArrayList preserves the insertion order of its elements. 
+			ListIterator and the enhanced for loop will return to you the elements in the order in which you added them.
+			
+		4.4.4 Modifying the elements of an ArrayList
+		
+			You can modify an ArrayList by either replacing an existing element in the ArrayList or modifying all of its existing values.
+			
+		4.4.5 Deleting the elements of an ArrayList
+
+			ArrayList defines two methods to remove its elements, as follows:
+			
+				- remove(int index)—This method removes the element at the specified position in this list.
+				- remove(Object o)—This method removes the first occurrence of the specified element from this list, if it’s present.
+				
+				The method remove compares the objects for equality before removing it from ArrayList by calling the method equals.
+		
+		4.4.6 Other methods of ArrayList
+		
+			Adding multiple elements to an ArrayList
+			
+				- addAll(Collection<? extends E> c)
+				- addAll(int index, Collection<? extends E> c)
+				
+			Clearing ArrayList elements
+			
+				clear()
+				
+			Accessing individual ArrayList elements
+			
+				- get(int index)
+				- size()
+				- contains(Object o)
+				- indexOf(Object o)
+				- lastIndexOf(Object o)
+				
+			Cloning an ArrayList
+			
+				The method clone defined in the class ArrayList returns a shallow copy of this ArrayList instance. 
+				“Shallow copy” means that this method creates a new instance of the ArrayList object to be cloned. 
+				Its element references are copied, but the objects themselves are not.
+				
+			Creating an array from an ArrayList
+			
+				You can use the method toArray to return an array containing all the elements in an ArrayList 
+				in sequence from the first to the last element.
+					
+				No references to the returned array, which is itself an object, are maintained by the ArrayList. 
+				But the references to the individual ArrayList elements are copied to the returned array and are still referred to by the ArrayList.
+				
+				This implies that if you modify the returned array by, say, swapping the position of its elements or 
+				by assigning new objects to its elements, the elements of ArrayList won’t be affected. But if you modify 
+				the state of (mutable) elements of the returned array, then the modified state of elements 
+				will be reflected in the ArrayList.
+				
+	4.5 Comparing objects for equality
