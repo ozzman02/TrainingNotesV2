@@ -345,3 +345,108 @@ Selected classes from the Java API and arrays
 				will be reflected in the ArrayList.
 				
 	4.5 Comparing objects for equality
+	
+		4.5.1 The method equals in the class java.lang.Object
+		
+		4.5.2 Comparing objects of a user-defined class
+		
+		4.5.4 Contract of the equals method
+		
+		4.6 Working with calendar data
+		
+			4.6.1 LocalDate
+				
+				To store dates like a birthday or anniversary, visiting a place, or starting a job, school, or college, you don’t need to store the time.
+				LocalDate instances are immutable and hence safe to be used in a multi-threaded environment.
+				
+				Create a LocalDate
+					
+					- of()
+					- now()
+					- parse()
+					
+				Querying LocalDate
+					
+					- getXX()
+						
+						getDayOfMonth()
+						getDayOfWeek()
+						getDayOfYear()
+						getMonth()
+						getMonthValue()
+						getYear()
+						
+					- isAfter()  
+					- isBefore()
+					
+				Manipulate LocalDate
+					
+					- minusXX()
+					
+						minusDays()
+						minusMonths()
+						minusWeeks()
+						minusYears()
+						
+					- plusXX()
+					
+						plusDays()
+						plusMonths()
+						plusWeeks()
+						plusYears()
+						
+					- withXX()
+						
+						withDayOfMonth()
+						withDayOfYear()
+						withMonth()
+						withYear()
+						
+					Converting to another type
+					
+						atTime()
+						
+					
+			4.6.2 LocalTime	
+			
+				To store times like breakfast, conference talk start time, or in-store sale end time, you can use LocalTime.
+				
+				Create LocalTime
+				
+					- of()
+					- now()
+					- parse()
+					
+				LocalTime constants
+				
+					- LocalTime.MIN—Minimum supported time, that is, 00:00
+					- LocalTime.MAX—Maximum supported time, that is, 23:59:59.999999999
+					- LocalTime.MIDNIGHT—Time when the day starts, that is, 00:00
+					- LocalTime.NOON—Noontime, that is, 12:00
+					
+				Querying LocalTime
+				
+					- getXX()
+						
+						getHour()
+						getMinute()
+						getSecond()
+						getNano()
+					
+					- isAfter() 
+					- isBefore()
+					
+				Manipulate LocalTime
+				
+					- minusHours()
+					- minusMinutes()
+					- minusSeconds()
+					- minusNanos()
+				
+				Combine with another type
+					
+					- atDate()
+					
+			4.6.3 LocalDateTime
+			
+				If you want to store both date and time (without the time zone), use the class LocalDateTime.

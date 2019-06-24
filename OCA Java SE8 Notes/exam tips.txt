@@ -233,3 +233,41 @@ Chapter 4
 	
 	- An ArrayList can store duplicate object values.
 	
+	- In the exam, watch out for questions about the correct implementation of the equals method (refer to section 4.5.4) to compare two objects
+		versus questions about the equals methods that simply compile correctly. If you’d been asked whether equals() in the previous 
+		example code would compile correctly, the correct answer would be yes.
+	
+	- The method equals defines a method parameter of type Object, and its return type is boolean. Don’t change the name of the method, its
+		return type, or the type of method parameter when you define (override) this method in your class to compare two objects.
+		
+	- You may get to answer explicit questions on the contract of the equals method. An equals method that returns true for a null object passed
+		to it will violate the contract. Also, if the equals method modifies the value of any of the instance variables of the method
+		parameter passed to it, or of the object on which it is called, it will violate the equals contract.
+		
+	- If you pass invalid values to parse() or of(), you’ll get Date-TimeParseException. The format of the string passed to parse() must be
+		exactly of the format 9999-99-99. The month and date values passed to parse() must be of two digits; 
+		a single digit is considered an invalid value. For days and months with values 1–9, pass 01–09.
+		
+	- LocalDate is immutable. All the methods that seem to manipulate its value return a copy of the LocalDate instance on which it’s called.
+	
+	- All additions, subtractions, or replacements to LocalDate consider leap years.
+	
+	- If you pass any invalid hours, minutes, or seconds value to the method atTime, it will throw a DateTimeException at runtime.
+	
+	- LocalTime doesn’t define a method to pass a.m. or p.m. Use values 0–23 to define hours. 
+		If you pass out-of-range values to either hours, minutes, or seconds, you’ll get a runtime exception.
+		
+	- If you pass invalid string values to LocalTime parse(), the code will compile but will throw a runtime exception. 
+		If you don’t pass a DateTimeFormatter, the format of the string passed to parse() must be exactly of the format
+		99:99:99. The hours and minutes values passed to parse() must be two digits; a single digit is considered an invalid value. 
+		For hours and minutes with the value 0–9, pass 00–09.
+		
+	- The correct method names for querying LocalTime are getHour(), getMinute(), getSecond(), and getNano(). 
+		Watch out for exam questions that use invalid method names like getHours(), getMinutes(), getSeconds(), or getNanoSeconds().
+	
+	- Unlike the getXXX() methods, minusXXX() methods use the plural form: getHour() versus minusHours(), getMinute() versus minusMinutes(),
+		getSecond() versus minusSeconds(), and getNano() versus minusNanos().
+		
+	- LocalTime is immutable. Calling any method on its instance won’t modify its value.
+	
+	- The class LocalTime defines the method atDate(), which can be passed a LocalDate instance to create a LocalDateTime instance.
