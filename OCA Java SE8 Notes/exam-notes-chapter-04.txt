@@ -449,4 +449,70 @@ Selected classes from the Java API and arrays
 					
 			4.6.3 LocalDateTime
 			
-				If you want to store both date and time (without the time zone), use the class LocalDateTime.
+				- If you want to store both date and time (without the time zone), use the class LocalDateTime.
+				- It stores a value like 2050-06-18T14:20:30:908765 (year-month-dayThours:minutes:seconds:nanoseconds).
+				- You can consider this class to offer the functionality of both the LocalDate and LocalTime classes.
+				
+				Important methods:
+				
+				/* Parse String to LocalDateTime */
+				LocalDateTime prizeCeremony = LocalDateTime.parse("2050-06-05T14:00:00");
+
+				/* Get current date and time */
+				LocalDateTime dateTimeNow = LocalDateTime.now();
+
+				/* Retrieve month as integer value */
+				if (prizeCeremony.getMonthValue() == 6) 
+					System.out.println("Can't invite president");
+				else
+					System.out.println("President invited");
+		
+				LocalDateTime chiefGuestDeparture = LocalDateTime.parse("2050-06-05T14:30:00");
+
+				/* Check whether a LocalDateTime instance is before another LocalDateTime instance */
+				if (prizeCeremony.plusHours(2).isAfter(chiefGuestDeparture))
+					System.out.println("Chief Guest will leave before ceremony completes");
+		
+				/* Instantiate LocalDateTime using separate int values*/
+				LocalDateTime eventMgrArrival = LocalDateTime.of(2050, 6, 5, 14, 30, 0);
+		
+				if (eventMgrArrival.isAfter(prizeCeremony.minusHours(3)))
+					System.out.println("Manager is supposed to arrive 3 hrs earlier");
+			
+			4.6.4 Period
+
+				- The Period class represents a date-based amount in years, months, and days, like 2 years, 5 months, and 10 days. 
+				- To work with a time-based amount in seconds and nanoseconds, you can use the Duration class.
+				- The Duration class can be used to store amounts of time like 1 hour, 36 minutes, or 29.4 seconds.
+				- You can add or subtract Period instances from the LocalDate and LocalDateTime classes. 
+				- Period is also an immutable class and hence safe to use in a multi threaded environment.
+				
+				Instantiating Period
+				
+					The static methods of(), ofYears(), ofMonths(), ofWeeks(), and ofDays()
+
+					You can also define negative periods by passing negative integer values to all the preceding methods.
+					
+						Period period6 = Period.ofDays(-15);
+						
+					You can also parse a string to instantiate Period by using its static method parse. 
+					This method parses string values of the format PnYnMnD or PnW, where n represents a number and the letters 
+						(P, Y, M, D, and W) represent parse, year, month, day, and week.
+						
+					These letters can exist in lower- or uppercase. 
+					Each string must start with the letter p or P and must include at least one of the four sections, 
+						that is, year, month, week, or day.
+
+					For the string format PnW, the count of weeks is multiplied by 7 to get the number of days.
+					
+					You can also define negative periods using parse().
+					
+					If you precede the complete string value passed to parse() with a negative sign (-), it’s applied to all values.
+					
+					If you place a negative sign just before an individual number, it applies only to that section.
+					
+					You can also use the static method between(LocalDate dateInclusive, LocalDate dateExclusive) to instantiate Period
+					
+				Manipulating LocalDate and LocalDateTime using period
+				
+					

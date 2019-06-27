@@ -271,3 +271,14 @@ Chapter 4
 	- LocalTime is immutable. Calling any method on its instance won’t modify its value.
 	
 	- The class LocalTime defines the method atDate(), which can be passed a LocalDate instance to create a LocalDateTime instance.
+	
+	- A period of 35 days is not stored as 1 month and 5 days. Its individual elements, that is, days, months, and years, are stored 
+		the way it is initialized.
+		
+	- You can define positive or negative periods of time. For example, you can define Period instances representing 15 or -15 days.
+	
+	- If you pass invalid string values to Period.parse(), the code will compile but will throw a runtime exception.
+	
+	- The static method Period.between accepts two LocalDate instances and returns a Period instance representing the number of 
+		years, days, and months between the two dates. The first date is included, but the second date
+		is excluded in the returned Period. Here’s a quick way to remember it: period = end date – start date.
