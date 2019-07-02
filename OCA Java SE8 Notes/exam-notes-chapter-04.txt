@@ -515,4 +515,12 @@ Selected classes from the Java API and arrays
 					
 				Manipulating LocalDate and LocalDateTime using period
 				
+					In everyday life, it’s common to add or subtract periods of days, months, or years from a date. 
+					The Period class implements the interface TemporalAmount, so it can be used with the methods plus() and minus() 
+						defined in the classes LocalDateTime and LocalDate.
 					
+				Querying period instances
+
+					getYears(), getMonths(), and getDays()
+					
+					isNegative() and isZero()

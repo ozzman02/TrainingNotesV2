@@ -282,3 +282,9 @@ Chapter 4
 	- The static method Period.between accepts two LocalDate instances and returns a Period instance representing the number of 
 		years, days, and months between the two dates. The first date is included, but the second date
 		is excluded in the returned Period. Here’s a quick way to remember it: period = end date – start date.
+		
+	- Because Period instances can represent positive or negative periods (like 15 days or -15 days), you can subtract days from 
+		a LocalDate or LocalDateTime by calling the method plus.
+		
+	- When you initialize a Period instance with days more than 31 or months more than 12, it doesn’t recalculate its years, 
+		months, or days components.
