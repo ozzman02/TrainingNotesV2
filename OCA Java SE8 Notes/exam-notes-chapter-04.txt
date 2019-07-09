@@ -524,3 +524,71 @@ Selected classes from the Java API and arrays
 					getYears(), getMonths(), and getDays()
 					
 					isNegative() and isZero()
+					
+				Manipulating Period
+					
+					- minus(TemporalAmount)
+					- minusDays(long)
+					- minusWeeks(long)
+					- minusMonths(long)
+					- minusYears(long)
+					- multipliedBy(int)
+					- plus(TemporalAmount)
+					- plusDays(long)
+					- plusWeeks(long) 
+					- plusMonths(long)
+					- plusYears(long)
+					- withDays()
+					- withMonths()
+					- withYears()
+					
+				Converting to another type
+				
+					- toTotalMonths()
+					- A Period can be used as an argument to the LocalDate one-parameter plus() and minus() methods.
+					
+					What happens when you want to add 3 months and 10 days to a given date? 
+					
+					- The number of months per year is constant but the number of days per month isn’t. 
+						A glimpse at the plus() and minus() methods in the LocalDate source code shows that years are converted 
+						to months and months are always handled before days.
+			
+			4.6.5 DateTimeFormatter
+			
+				You’ll use this class to format or parse date and time objects
+				
+					using predefined constants (like ISO_LOCAL_DATE),
+					using patterns (like yyyy-MM-dd) or localized styles like long or short.
+			
+				The first step to format or parse a date or time object is to access a DateTimeFormatter and then call 
+				format or parse methods on either date or time objects or DateTimeFormatter.
+
+				Instantiate or access DateTimeFormatter
+				
+					- By calling a static ofXXX method, passing it a FormatStyle value
+					- By access public static fields of DateTimeFormatter
+					- By using the static method ofPattern and passing it a string value
+					
+					The methods ofLocalizedDate, ofLocalizedTime, and ofLocalizedDateTime format date and time objects according 
+					to the locale (language, region, or country) of the system on which your code executes. So the output
+					might vary slightly across systems.
+					
+				Format date or time objects using DateTimeFormatter
+					
+					- To format a date or time object, you can use either the instance format method in
+					date/time objects or the instance format method in the DateTimeFormatter class.
+					Behind the scenes, the format method in date and time objects simply calls the format
+					method in DateTimeFormatter
+					
+					- TemporalAccessor is an interface, implemented by the classes LocalDate, LocalTime, and LocalDateTime. 
+				
+				Parse Date or Time objects using DateTimeFormatter
+				
+					To parse a date or time object, you can use either the static parse method in date/time objects or the instance 
+					parse method in the DateTimeFormatter class.
+					
+					Behind the scenes, the parse method in date/time objects simply calls the parse method in DateTimeFormatter.
+					
+					
+					
+				

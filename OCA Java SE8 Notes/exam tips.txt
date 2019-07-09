@@ -288,3 +288,36 @@ Chapter 4
 		
 	- When you initialize a Period instance with days more than 31 or months more than 12, it doesn’t recalculate its years, 
 		months, or days components.
+		
+	- In the class Period, both the getXXX() methods and minusXXX() methods use the plural form: getYears(), minusHours().
+	
+	- When you subtract Period instances using the minusXXX() methods, the individual elements are subtracted. Subtracting P10D from P1M
+		returns P1M-10D and not P20D.
+		
+	- When you subtract Period instances using the minusXXX() methods, the individual elements are subtracted. 
+		Subtracting P10D from P1M returns P1M-10D and not P20D.
+		
+	- The method multipliedBy(int) in the class Period is used to modify all elements of a Period instance. Period doesn’t define a “divideBy()”
+		method. Both the getXXX() methods and minusXXX() methods use the plural form getYears(), minusHours().
+		
+	- Adding a Period of 10 months to a Period of 5 months gives 15 months, not 1 year and 3 months.	
+	
+	- A DateTimeFormatter can define rules to format or parse a date object, time object, or both.
+	
+	- Watch out for the count and type of arguments passed to the instance method format.
+	
+		When calling format on a LocalDate, LocalTime, or LocalDateTime instance, pass a DateTimeFormatter instance as a method parameter.
+		When calling format on DateTimeFormatter, pass a LocalDate, LocalTime, or LocalDateTime instance as a method argument.
+		
+	- If you pass a date object to the method format on a DateTimeFormatter instance that defines rules to format a time object, 
+		it will throw a runtime exception.
+		
+	- If you're confused between M, m, D, and d, remember that an uppercase letter represents a bigger duration period. 
+		So M is for month and m is for minutes. Similarly, D represents day of year; d represents day of month.
+	
+	- The parse methods are defined as static methods in the classes LocalDate, LocalTime, and LocalDateTime. The class DateTimeFormatter
+		defines the parse method as an instance method.
+		
+	- When calling parse on LocalDate, LocalTime, or LocalDateTime instances, you might not specify a formatter. 
+		In this case DateTimeFormatter.ISO_LOCAL_DATE, DateTimeFormatter.ISO_LOCAL_TIME, and DateTime-
+		Formatter.ISO_LOCAL_DATE_TIME are used to parse text, respectively
