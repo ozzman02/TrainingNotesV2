@@ -321,3 +321,15 @@ Chapter 4
 	- When calling parse on LocalDate, LocalTime, or LocalDateTime instances, you might not specify a formatter. 
 		In this case DateTimeFormatter.ISO_LOCAL_DATE, DateTimeFormatter.ISO_LOCAL_TIME, and DateTime-
 		Formatter.ISO_LOCAL_DATE_TIME are used to parse text, respectively
+		
+	- The parse method is defined as a static method in classes LocalDate, LocalTime, and LocalDateTime. The class DateTimeFormatter defines
+		the method parse as an instance method. But format() is defined as an instance method by all.
+		
+Chapter 5
+
+	- In Java, then isn’t a keyword, so it must not be used with the if statement.
+	- The if-else-if-else is an if-else construct in which the else part defines another if construct.
+	- In the exam, watch out for code that uses misleading indentation in if constructs. In the absence of a defined code block (marked with {}),
+		only the statement following the if construct will be considered part of it.
+		
+	

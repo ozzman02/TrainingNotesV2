@@ -1,0 +1,14 @@
+Question		My Answers			Correct Answer
+-------------------------------------------------
+Q4-1			e					e								
+Q4-2			e					e
+Q4-3			a, d				a, d
+Q4-4			d, e				d, e
+Q4-5			a, b, c, e			a, b, c, e		
+Q4-6			a, d, e, h, j 		a, d, e, h, j			
+Q4-7			c					c
+Q4-8			b					b
+Q4-9			e					e
+Q4-10			a			 		a
+Q4-11			c					c
+Q4-12			e					e
