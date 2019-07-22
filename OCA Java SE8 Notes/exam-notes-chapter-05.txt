@@ -43,5 +43,106 @@ Flow Control
 			The braces are optional if there’s only one line in the if statement.
 			
 		5.1.4 Appropriate versus inappropriate expressions passed as arguments to an if statement
+			
+			The result of a variable or an expression used in an if construct must evaluate to true or false.
+			
+		5.1.5 Nested if constructs
+		
+			Theoretically, there’s no limit on the number of levels of nested if and if-else constructs.
+			
+		5.1.6 Ternary construct
+		
+			Correct usage
+				
+				All three parts of a ternary operator are mandatory
+			
+				The parentheses enclosing a boolean expression are optional and are used for better readability.
+				
+					int discount = (bill > 2000)? 15 : 10;
+				
+				You can also assign an expression to the variable discount using a ternary operator
+				
+					int discount = (bill > 2000)? bill-150 : bill - 100;
+				
+				A method that returns a value can also be used to initialize a variable in a ternary construct
+			
+					int discount = (bill > 2000)? getSpecDisc(): getRegDisc();
+					
+			Incorrect usage
+			
+				If the expression used to evaluate a ternary operator doesn’t return a boolean or a Boolean value, the code won’t compile
+				
+	5.2 The switch statement	
+	
+		5.2.1 Create and use a switch statement
+		
+			- You can use a switch statement to compare the value of a variable with multiple values. 
+			- For each of these values, you can define a set of statements to execute.
+			- A switch statement can define multiple case labels within its switch block but only a single default label. 
+			- The default label executes when no matching value is found in the case labels. 
+			- A break statement is used to exit a switch statement, after the code completes its execution for a matching case.
+			
+		5.2.2 Comparing a switch statement with multiple if-else constructs
+		
+			- A switch statement can improve the readability of your code by replacing a set of (rather complicated-looking) 
+			related if-else-if-else statements with a switch and multiple case statements.
+			
+		5.2.3 Arguments passed to a switch statement
+		
+			- A switch statement accepts arguments of types char, byte, short, int, and String
+			- It also accepts arguments and expressions of types enum, Character, Byte, Integer, and Short.
+			- The switch statement doesn’t accept arguments of type long, float, or double, or any object besides String.
+			- Apart from passing a variable to a switch statement, you can also pass an expression to the switch statement as 
+				long as it returns one of the allowed types.
+			- For nonprimitive types, that is, String and wrapper types, the switch argument must not be null, which would cause a 
+				NullPointerException to be thrown
+				
+		5.2.4 Values passed to the label case of a switch statement
+		
+			- Case values should be compile-time constants
+			
+				int a=10, b=20, c=30;
+				switch (a) {
+					case b+c: System.out.println(b+c); break; // not valid
+					case 10*7: System.out.println(10*7512+10); break; // valid
+				}
+				
+				You can use variables in an expression if they’re marked final because the value of final 
+					variables can’t change once they’re initialized
+					
+				final int a = 10;
+				final int b = 20;
+				final int c = 30;
+				switch (a) {
+					case b+c: System.out.println(b+c); break; // valid compile time constants
+				}
+				
+				You may be surprised to learn that if you don’t assign a value to a final variable with its declaration, 
+					it isn’t considered a compile-time constant
+					
+				// Code doesn’t compile; b+c isn’t considered a constant expression because the variable c wasn’t initialized with its declaration.
+				
+				final int a = 10;
+				final int b = 20;
+				final int c;
+				c = 30;
+				switch (a) {
+					case b+c: System.out.println(b+c); break; 
+				}
+				
+			- Case values should be assignable to the argument passed to the switch statement
+			
+			- NULL isn’t allowed as a case label
+			
+			- One code block can be defined for multiple cases
+			
+		5.2.5 Use of break statements within a switch statement
+		
+			- Note the use of break to exit the switch construct once a matching case is found. 
+			- In the absence of the break statement, control will fall through the remaining code and execute the code 
+				corresponding to all the remaining cases that follow that matching case.
+	
+	5.3 The for loop
+	
 		
 			

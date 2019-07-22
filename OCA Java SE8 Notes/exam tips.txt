@@ -328,8 +328,26 @@ Chapter 4
 Chapter 5
 
 	- In Java, then isn’t a keyword, so it must not be used with the if statement.
+	
 	- The if-else-if-else is an if-else construct in which the else part defines another if construct.
+	
 	- In the exam, watch out for code that uses misleading indentation in if constructs. In the absence of a defined code block (marked with {}),
 		only the statement following the if construct will be considered part of it.
-		
 	
+	- Watch out for code in the exam that uses the assignment operator (=)to compare a boolean value in the if condition. It won’t compare the
+		boolean value; it’ll assign a value to it. The correct operator for comparing a boolean value is the equality operator (==).
+	
+	- In the exam, watch out for compatibility of the value that’s returned by a ternary operator and the variable to which it’s assigned.
+	
+	- Watch out for nested ternary constructs on the exam
+	
+	- The if-else-if-else construct evaluates all the conditions until it finds a match. 
+		A switch construct compares the argument passed to it with its labels.
+		
+	- Watch out for questions in the exam that try to pass a primitive decimal type such as float or double to a switch statement. 
+		Code that tries to do so will not compile.
+	
+	- For nonprimitive types, that is, String and wrapper types, the switch argument must not be null, which would cause a 
+		NullPointerException to be thrown.
+	
+	- 
