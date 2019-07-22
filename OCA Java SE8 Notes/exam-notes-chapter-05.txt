@@ -144,5 +144,93 @@ Flow Control
 	
 	5.3 The for loop
 	
+		- Initialization statements
+		- Termination condition
+		- Update clause (executable statement)
 		
+		for (initialization; condition; update) {
+			statements;
+		}
+		
+		- The statements defined within the loop body execute until the termination condition is false.
+		- The update clause executes after all the statements defined within the for loop body.
+		- The initialization section, which executes only once, may define multiple initialization statements.
+		- Similarly, the update clause may define multiple statements.
+		- There can be only one termination condition for a for loop.
+	
+		5.3.1 Initialization block
+		
+			- An initialization block executes only once. 
+			- A for loop can declare and initialize multiple variables in its initialization block, 
+				but the variables it declares should be of the same type.
+			- You can’t declare variables of different types in an initialization block.	
+		
+		5.3.2 Termination condition
+		
+			- The termination condition is evaluated once for each iteration before executing the statements 
+				defined within the body of the loop. 
+			- The for loop terminates when the termination condition evaluates to false
+			- A for loop can define exactly one termination condition
 			
+		5.3.3 The update clause
+		
+			- Usually, you’d use this block to manipulate the value of the variable that you used to specify the termination condition
+			- Code defined in this block executes after all the code defined in the body of the for loop.
+			- The termination condition is evaluated next. This execution continues until the termination condition evaluates to false.
+			- You can define multiple statements in the update clause, including calls to other methods.
+		
+		5.3.4 Optional parts of a for statement
+		
+			All three parts of a for statement—that is, initialization block, termination condition,
+				and update clause—are optional. But you must specify that you aren’t including a section by just including a semicolon.
+			
+			int a = 10;
+			for(; a < 5; ++a) {
+				System.out.println(a);
+			}
+			
+			int a = 10;
+			for(a < 5; ++a) {
+				System.out.println(a);
+			}
+			
+			// Following code is valid
+			for(;;)
+				System.out.println(1);
+				
+		5.3.5 Nested for loop
+		
+			- If a loop encloses another loop, they are called nested loops. The loop that encloses another loop is called the outer loop, 
+				and the enclosed loop is called the inner loop. Theoretically, there are no limits on the levels of nesting for loops.
+				
+	5.4 The enhanced for loop
+		
+		- The enhanced for loop is also called the for-each loop, and it offers some advantages over the regular for loop. 
+			It also has some limitations.
+				
+		5.4.1 Iteration with enhanced for loop
+			
+			What happens when you try to modify the value of the loop variable in an enhanced for loop?
+			
+			- If you’re iterating through an array of primitive values, manipulation of the loop variable will never change the 
+				value of the array being iterated because the primitive values are passed by value to the loop variable in an enhanced
+				for loop.
+				
+			- When you iterate through a collection of objects, the value of the collection is passed by reference to the loop variable. 
+				Therefore, if the value of the loop variable is manipulated by executing methods on it, the modified value will be reflected in the
+				collection of objects being iterated
+				
+		5.4.2 Limitations of the enhanced for loop
+		
+			- Can’t be used to initialize an array and modify its elements
+			- Can’t be used to delete or remove the elements of a collection
+				- If you assign a null value to the loop variable, it won’t remove the element from a collection
+			- Can’t be used to iterate over multiple collections or arrays in the same loop
+		
+		5.4.3 Nested enhanced for loop
+		
+			A nested loop executes all its iterations for each single iteration of its immediate outer loop.
+		
+	5.5 The while and do-while loops
+	
+		

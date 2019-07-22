@@ -350,4 +350,12 @@ Chapter 5
 	- For nonprimitive types, that is, String and wrapper types, the switch argument must not be null, which would cause a 
 		NullPointerException to be thrown.
 	
-	- 
+	- All three parts of a for statement—initialization block, termination condition, and update clause—are optional. 
+		A missing termination condition implies an infinite loop.
+		
+	- Watch out for code that uses an enhanced for loop and its loop variable to change the values of elements in the collection that it iterates. 
+		This behavior often serves as food for thought for the exam authors.
+		
+	- Use the for-each loop to iterate over arrays and collections. Don’t use it to initialize, modify, or filter them.
+	
+	- A nested loop executes all its iterations for each single iteration of its immediate outer loop.
