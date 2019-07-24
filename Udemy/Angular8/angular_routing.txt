@@ -1,0 +1,30 @@
+Angular Routing
+
+	1. importing "@angular/router" package in package.json file
+	
+	2. Define base URL in "index.html" file
+	
+		<base href="/">
+	
+	3. Create hyperlink for router
+		
+		<a routerLink="/path"> Link text </a>
+		
+	4. Create Router Module (app-routing.module.ts)
+	
+		const routes: Routes = [
+			{ path: "path1", component: Component1 },
+			{ path: "path2", component: Component2 }
+		];
+		
+		@NgModule({
+			imports: [ RouterModule.forRoot(routes) ],
+			exports: [ RouterModule ]
+		})
+		
+		export class AppRoutingModule {
+		}
+		
+	5. Create Router Oulet in app.component.html
+	
+		<router-outlet> </router-outlet>

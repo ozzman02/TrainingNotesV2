@@ -1,0 +1,44 @@
+Commands
+
+	- npm install @angular/cli -g
+	- md c:\Angular
+	- cd c:\Angular
+	- ng new TaskManager --style=scss --routing --skip-install
+	- cd c:\Angular\TaskManager
+	- npm install
+	- ng serve --port=4200 --open
+	- npm install jquery --save
+	- npm install popper.js --save
+	- npm install bootstrap --save
+	- npm install font-awesome --save
+	
+	open angular.json and add:
+	
+		"styles": [
+			"src/styles.scss",
+             "node_modules/bootstrap/dist/css/bootstrap.css",
+             "node_modules/font-awesome/css/font-awesome.css"
+        ],
+        "scripts": [
+			"node_modules/jquery/dist/jquery.js",
+            "node_modules/popper.js/dist/umd/popper.js",
+            "node_modules/bootstrap/dist/js/bootstrap.js"
+        ]
+
+
+compile and start the app
+	
+	ng serve --open --port=5200
+	
+create component
+	
+	ng g component component_name
+	
+		It creates 4 files: 
+		
+			component_name.html
+			component_name.spec.ts
+			component_name.ts
+			component_name.scss
+			
+			

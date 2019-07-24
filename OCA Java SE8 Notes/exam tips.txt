@@ -359,3 +359,7 @@ Chapter 5
 	- Use the for-each loop to iterate over arrays and collections. Don’t use it to initialize, modify, or filter them.
 	
 	- A nested loop executes all its iterations for each single iteration of its immediate outer loop.
+	
+Chapter 6
+
+	

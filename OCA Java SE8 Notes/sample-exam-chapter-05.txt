@@ -1,0 +1,12 @@
+Question		My Answers			Correct Answer
+-------------------------------------------------
+Q5-1			b					b								
+Q5-2			c					d 				x
+Q5-3			e					c               x
+Q5-4			a					b				x
+Q5-5			a, c, d				a, c, d
+Q5-6			d					d
+Q5-7			d					d
+Q5-8			a					a
+Q5-9			c					c
+Q5-10			f					f

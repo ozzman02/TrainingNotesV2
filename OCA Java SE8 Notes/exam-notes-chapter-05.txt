@@ -232,5 +232,123 @@ Flow Control
 			A nested loop executes all its iterations for each single iteration of its immediate outer loop.
 		
 	5.5 The while and do-while loops
-	
+		
+		- Both of these loops work in the same manner except for one difference: the while loops checks its condition before evaluating its loop body,
+			and the do-while loop checks its condition
+			after executing the statements defined in its loop body.
+				
+		5.5.1 The while loop
+			
+			- A while loop is used to repeatedly execute a set of statements as long as its condition evaluates to true. This loop checks the condition before 
+				it starts the execution of the statement.
+			- The while loop accepts arguments of type boolean or Boolean
+			
+		5.5.2 The do-while loop
+		
+			- A do-while loop is used to repeatedly execute a set of statements until the condition that it uses evaluates to false.
+			
+		5.5.3 while and do-while block, expression, and nesting rules
+		
+			You can use the curly braces {} with while and do-while loops to define multiple lines of code to execute for every iteration. Without the use of curly braces, only the
+			first line of code will be considered a part of the while or do-while loop, as specified in the if-else construct.
+			
+			
+	5.6 Comparing loop constructs	
+		
+		5.6.1 Comparing do-while and while loops
+		
+			Both do-while and while loops execute a set of statements until their termination condition evaluates to false. The only difference between these two statements is that
+			the do-while loop executes the code at least once, even if the condition evaluates to false. The do-while loop evaluates the termination condition after executing the
+			statements, whereas the while loop evaluates the termination condition before executing its statements.
+		
+		5.6.2 Comparing for and enhanced for loops
+		
+			The regular for loop, although cumbersome to use, is much more powerful than the enhanced for loop:
+			
+				- The enhanced for loop can’t be used to initialize an array and modify its elements.
+				- The enhanced for loop can’t be used to delete the elements of a collection.
+				- The enhanced for loop can’t be used to iterate over multiple collections or arrays in the same loop.
+		
+		5.6.3 Comparing for and while loops
+			
+			- You should try to use a for loop when you know the number of iterations—for example, when you’re iterating through a collection or an array or when you’re executing a loop 
+				for a fixed number of times.
+			
+			- You should try to use a do-while or a while loop when you don’t know the number of iterations beforehand and when the number of iterations depends on a condition being true
+			
+	5.7 Loop statements: break and continue			
+			
+		5.7.1 The break statement
+		
+			- The break statement is used to exit—or break out of—the for, for-each, do, and do-while loops, as well as switch constructs.
+			
+		5.7.2 The continue statement	
+			
+			- Alternatively, the continue statement can be used to skip the remaining steps in the current iteration and start with the next loop iteration.
+			
+		5.7.3 Labeled statements
+			
+			You can add labels to the following types of statements:
+			
+				- A code block defined using {}
+				- All looping statements (for, enhanced for, while, do-while)
+				- Conditional constructs (if and switch statements)
+				- Expressions
+				- Assignments
+				- return statements
+				- try blocks
+				- throws statements
+				
+					String[] programmers = {"Outer", "Inner"};
+					outer:
+					for (int i = 0; i < programmers.length; i++) {
+					}
+					
+			You can’t add labels to declarations
+			
+				outer :
+					int[] myArray = {1,2,3};
+					
+			It’s interesting to note that the preceding declaration can be defined within a block statement, as follows:
+			
+			outer : {
+				int[] myArray = {1,2,3};
+			}
+			
+			Labeled break statements
+			
+				String[] programmers = {"Outer", "Inner"};
+				outer:
+				for (String outer : programmers) {
+					for (String inner : programmers) {
+						if (inner.equals("Inner"))
+							break outer;  // Exits the outer loop, marked with label outer
+						System.out.print(inner + ":");
+					}
+				}
+				
+				When this code executes break outer;, control transfers to the line of text that marks the end of this block. It doesn’t transfer control to the label outer.
+				
+			Labeled continue statements
+
+				String[] programmers = {"Paul", "Shreya", "Selvan", "Harry"};
+				outer:
+				for (String name1 : programmers) {
+					for (String name : programmers) {
+						if (name.equals("Shreya"))
+							continue outer; // Skips remaining code for current iteration of outer loop and starts with its next iteration
+						System.out.println(name);
+					}
+				}
+		
+			
+			
+			
+			
+			
+			
+			
+				
+			
+			
 		
