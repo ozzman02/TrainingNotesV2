@@ -362,4 +362,6 @@ Chapter 5
 	
 Chapter 6
 
+	- Inheritance enables you to reuse code that has already been defined by a class. Inheritance can be implemented by extending a class
 	
+	- A derived class can inherit only what it can see.

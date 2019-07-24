@@ -1,1 +1,75 @@
 Working with inheritance
+
+	6.1 Inheritance with classes
+	
+		6.1.1 The need to inherit classes
+		
+			- Inheriting a class is also referred to as subclassing.
+			- Employee is also referred to as the superclass, base class, or parent class. The classes Programmer and Manager that inherit the class Employee are called subclasses, derived
+				classes, extended classes, or child classes.
+				
+		6.1.2 Benefits
+		
+			Do you know that all classes in Java inherit class java.lang.Object, either implicitly or explicitly?
+			
+			- Smaller derived class definitions
+			- Ease of modification to common properties and behavior
+			- Extensibility
+			- Use tried-and-tested code from a base class
+			- Concentrate on the specialized behavior of your classes
+			- Logical structures and grouping
+			
+		6.1.3 A derived class contains within it an object of its base class
+		
+			- You can think of this arrangement as follows: When a class inherits another class, it encloses within it an object of the inherited class. Hence, all the non private
+				members (variables and methods) of the inherited class are available to the class.
+				
+		6.1.4 Which base class members are inherited by a derived class?
+		
+			- The access modifiers play an important role in determining the inheritance of base class members in derived classes. 
+			- A derived class can inherit only what it can see.
+			- A derived class inherits all the non private members of its base class.
+			- A derived class inherits base class members with the following accessibility levels:
+				
+				- Default—Members with default access can be accessed in a derived class only if the base and derived classes reside in the same package.
+				- protected—Members with protected access are accessible to all the derived classes, regardless of the packages in which the base and derived classes are defined.
+				- public—Members with public access are visible to all other classes.
+				
+		6.1.5 Which base class members aren’t inherited by a derived class?
+		
+			- private members of the base class
+			- Base class members with default access, if the base class and derived classes exist in separate packages.
+			- Constructors of the base class. A derived class can call a base class’s constructors, but it doesn’t inherit them
+			
+		6.1.6 Derived classes can define additional properties and behaviors
+		
+			- Derived classes can also define their own constructors and static methods and variables. A derived class can also hide or override its base class’s members.
+			
+			- When a derived class defines an instance or class variable with the same name as one defined from its base class, only these new variables and methods are visible to
+				code using the derived class.
+				
+			- When a derived class defines different code for a method inherited from a base class by defining the method again, this method is treated as a special method—an overridden method.
+			
+			- You can implement inheritance by using either a concrete class or an abstract class as a base class.
+			
+		6.1.7 Abstract base class versus concrete base class
+		
+			- The essence of an abstract class: it groups the common properties and behavior of its derived classes, but it prevents itself from being instantiated.
+			
+			- Also, an abstract class can force all its derived classes to define their own implementations for a behavior by defining it as an abstract method.
+			
+			- It isn’t mandatory for an abstract class to define an abstract method. But if an abstract base class defines one or more abstract methods, the class must be marked
+				as abstract and the abstract methods must be implemented in all its concrete derived classes.
+			
+			- If a derived class doesn’t implement all the abstract methods defined by its base class, then it also needs to be an abstract class.
+			
+			- Important points about implementing inheritance using an abstract base class:
+			
+				- You can never create objects of an abstract class.
+				- A base class can be defined as an abstract class, even if it doesn’t define any abstract methods.
+				- A derived class should implement all the abstract methods of its base class. If it doesn’t, it must be defined as an abstract derived class.
+				- You can use variables of an abstract base class to refer to objects of its derived class.
+	
+	6.2 Use interfaces
+				
+			
