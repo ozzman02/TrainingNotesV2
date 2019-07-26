@@ -189,5 +189,144 @@ Working with inheritance
 					
 		6.2.4 Implementing a single interface
 		
+			Rules:
 			
+				- Implement abstract methods
+					
+					- If a concrete class doesn’t implement the abstract methods of the interface it implements, it won’t compile
+					- When you implement an interface method in a class, it follows method-overriding rules
+					
+				- Overriding default methods
+				
+					- A class might choose to override the implementation of a default method in an interface that it implements. 
+					- If it doesn’t, the default implementation of the interface method will be used.
+					- When a class overrides a default method, it doesn’t use the keyword default.
+					- Also, it follows method-overriding rules
+					
+				- Static methods		
+				
+					- If an interface defines a static method, the class that implements it can define a static method with the same name, 
+						but the method in the interface isn’t related to the method defined in the class.
 						
+		6.2.5 A class can’t extend multiple classes
+		
+			- Because a derived class may inherit different implementations for the same method signature from multiple base classes, 
+				multiple inheritance isn’t allowed in Java.
+				
+		6.2.6 A class can implement multiple interfaces
+		
+			A class can extend multiple interfaces only if a set of rules is adhered to.
+			
+			- Implementing multiple interfaces with the same constant names
+			
+				- A class can implement multiple interfaces with the same constant name, as long as a call to these interfaces isn’t ambiguous.
+				- If an implicit reference to a constant defined in an interface(s) isn’t ambiguous, the class that implements the interface 
+					can refer to it without prefixing it with the interface name.
+			
+			- Implementing multiple interfaces with the same abstract method names
+			
+				- An abstract method doesn’t define a body. It’s acceptable for a class to extend multiple interfaces that define abstract 
+					methods with the same signature because when a class implements the abstract method, it seems to implement the abstract method
+					from all the interfaces.
+					
+					interface Jumpable {
+						abstract String currentPosition();
+					}
+					interface Moveable {
+						abstract String currentPosition();
+					}
+					class Animal implements Jumpable, Moveable {
+						public String currentPosition() {
+							return "Home";
+						}
+					}
+					
+				- But you can’t make a class extend multiple interfaces that define methods with the same name that don’t seem to be a correct 
+					combination of overloaded methods.
+					
+					interface Jumpable {
+						abstract String currentPosition();
+					}
+					interface Moveable {
+						abstract void currentPosition();
+					}
+					class Animal implements Jumpable, Moveable {
+						public String currentPosition() {
+							return "Home";
+						}
+					}
+					
+			- Implementing multiple interfaces with the same default method names	
+
+				Won’t compile; inherits unrelated defaults for relax() from Jumpable and Moveable
+				
+					interface Jumpable {
+						default void relax() {
+							System.out.println("No jumping");
+						}
+					}
+					interface Moveable {
+						default void relax() {
+							System.out.println("No moving");
+						}
+					}
+					class Animal implements Jumpable, Moveable { }
+				
+				Compiles successfully, default implementation of relax() is overridden
+				
+					interface Jumpable {
+						default void relax() {
+							System.out.println("No jumping");
+						}
+					}
+					interface Moveable {
+						default void relax() {
+							System.out.println("No moving");
+						}
+					}
+				
+					class Animal implements Jumpable, Moveable {
+						public void relax() {
+							System.out.println("Watch movie");
+						}
+					}
+				
+				The default methods that a class inherits from the interfaces that it implements must form a correct 
+					set of overloaded methods, or else the class won’t compile.
+					
+					// Won’t compile; relax in Jumpable and Moveable have unrelated return types
+					
+					interface Jumpable {
+						default void relax() {
+							System.out.println("No jumping");
+						}
+					}
+					interface Moveable {
+						default String relax() {
+							System.out.println("No moving");
+							return null;
+						}
+					}
+					
+					class Animal implements Jumpable, Moveable { }
+					
+			- Implementing multiple interfaces with the same static method names
+			
+				A class can implement multiple interfaces that define static methods with the same name, even if they don’t qualify as correctly 
+					overloaded or overridden methods. This is because they’re not inherited by the class that implements the interfaces:
+					
+					// Compiles successfully
+					
+					interface Jumpable {
+						static int maxDistance() {
+							return 100;
+						}
+					}
+					interface Moveable {
+						static String maxDistance() {
+							return "forest";
+						}
+					}
+					class Animal implements Jumpable, Moveable { }
+					
+					

@@ -378,4 +378,23 @@ Chapter 6
 	
 	- Unlike an interface, if you define a static method in a base class, it can be accessed using either a reference variable or the class name.
 	
+	- You must implement an abstract method of an interface using the explicit access modifier public.
 	
+	- While overriding a default method, you must not use the keyword default. Rules for overriding default and regular methods are the same.
+	
+	- static methods in a class and the interface that it implements are not related to each other. A static method in a class doesn’t hide or override
+		the static method in the interface that it implements.
+		
+	- Because a derived class may inherit different implementations for the same method signature from multiple base classes, 
+		multiple inheritance isn’t allowed in Java.
+	
+	- A class can extend multiple interfaces only if a set of rules is adhered to.
+	
+	- A class can implement multiple interfaces with the same constant names, only if a reference to the constants isn’t ambiguous.
+	
+	- A class can implement multiple interfaces with the same abstract method names if they have the same signature or form an overloaded set of
+		methods.
+		
+	- A class can implement multiple interfaces with the same default method name and signature, if it overrides its default implementation.
+	
+	- A class can implement multiple interfaces with the same static method names, irrelevant of their return types or signature.
