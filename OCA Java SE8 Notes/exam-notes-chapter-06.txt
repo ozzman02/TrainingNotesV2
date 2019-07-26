@@ -72,4 +72,122 @@ Working with inheritance
 	
 	6.2 Use interfaces
 				
+		- An interface can define a set of behaviors (methods) and constants. 
+		- Usually it delegates the implementation of the behavior to the classes that implement it. 
+		- Interfaces are used to refer to multiple related or unrelated objects that share the same set of behaviors.
+		- As an application designer, you can use interfaces to establish the behavior that’s required from objects, promoting 
+			flexibility in the design (new classes that implement an interface can be created and used later).
+		- Interfaces make an application manageable, extensible, and less prone to propagation of errors due to changes to existing types.
+		
+		- With Java 8, you can add methods to an interface without breaking the existing implementations.
+		- With Java 8, an interface can define the default implementation for its methods (so it doesn’t stop the existing classes that 
+			implement it from compiling).
+		- Interfaces in Java 8 can also define static methods.
+		- Inheriting multiples classes isn’t allowed but inheriting multiple interfaces is allowed
+		
+		6.2.1 Need for using interfaces
+		
+			You need interfaces to enable multiple classes to support a set of behaviors.
 			
+		6.2.2 Defining interfaces
+		
+			- You can define methods and constants in an interface.
+			- All methods of an interface are implicitly public.
+			- The interface variables are implicitly public, static, and final.
+			
+			Why do you think these implicit modifiers are added to the interface members?
+			
+				- Because an interface is used to define a contract, it doesn’t make sense to limit access to its members
+					and so they are implicitly public.
+					
+				- An interface can’t be instantiated, and so the value of its variables should be defined and accessible in a static context,
+					which makes them implicitly static.
+					
+			Here’s the complete list of the components of an interface declaration:
+			
+				- Access modifiers
+				- Nonaccess modifiers
+				- Interface name
+				- All extended interfaces, if the interface is extending any interfaces
+				- Interface body (variables and methods), included within a pair of curly braces {}
+				
+				public strictfp interface Runner extends Athlete, Walker {}
+				
+			Valid access modifiers for an interface
+			
+				- You can declare a top-level interface (the one that isn’t declared within any other class or interface), 
+					with only the following access levels:
+					
+					- public
+					- No modifier (default access)
+					
+			Valid access modifiers for members of an interface
+			
+				- All members of an interface—variables, methods, inner interfaces, and inner classes (yes, an interface 
+					can define a class within it!)—are inherently public because that’s the only modifier they can accept.
+					
+			Valid nonaccess modifiers for an interface
+			
+				- abstract
+				- strictfp
+				
+				If you try to declare your top-level interfaces by using the other nonaccess modifiers (final, static, transient, 
+					synchronized, or volatile), the interface will fail to compile.
+					
+		6.2.3 Types of methods in an interface
+
+			- abstract methods
+			- Default methods (new in Java 8) The default methods are also referred to as defender or virtual extension methods.
+			- static methods (new in Java 8)
+			
+			Abstract methods
+			
+				- An abstract method is used to specify a behavior (set of methods), which must be defined by the class that implements it
+				- When a class implements an interface with abstract methods, the class must implement all the methods, or else the class won’t compile.
+				
+			Default methods
+			
+				- Starting with Java 8, interfaces can be augmented by adding methods with default implementation. 
+					Implementing classes might choose to override these methods to define their own specific behavior. 
+					If they don’t choose to override them, the default implementation from the interface is used.
+					
+					interface Interviewer {
+						abstract void conductInterview();
+						default void submitInterviewStatus() {
+							System.out.println("Accept");
+						}
+					}
+					
+					Because the return type of the preceding method, submitInterviewStatus, is void, the following definition of method 
+					submitInterviewStatus is valid:
+					
+						// Empty method body != abstract method
+						
+						interface Interviewer {
+							default void submitInterviewStatus() {}
+						}
+						
+				- Declaration of a default method must be followed by the method body marked using {}.
+						
+				- Just like regular methods, the return type of a default method must match the type of the value that it returns.
+				
+					// Won't compile
+					
+					interface Interviewer {
+						default void submitInterviewStatus() {
+							return 0;
+						}
+					}
+			
+			Static methods
+			
+				- Static interface methods enable you to define utility methods in the interfaces that they belong to.
+					
+				- The static method must be called by prefixing its call with the interface name. You can’t call it
+					using a reference variable of the interface type or a variable of the class that implements
+					this interface.
+					
+		6.2.4 Implementing a single interface
+		
+			
+						

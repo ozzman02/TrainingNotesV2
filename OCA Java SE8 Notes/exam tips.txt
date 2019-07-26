@@ -365,3 +365,17 @@ Chapter 6
 	- Inheritance enables you to reuse code that has already been defined by a class. Inheritance can be implemented by extending a class
 	
 	- A derived class can inherit only what it can see.
+	
+	- The declaration of an interface can’t include a class name. An interface can never extend any class.
+	
+	- All the top-level Java types (classes, enums, and interfaces) can be declared using only two access levels: public and default. 
+		Inner or nested types can be declared using any access level.
+		
+	- Interface methods are implicitly abstract. To define default or static methods, you must explicitly use the keyword default or static with
+		the method declaration in an interface. Default and static methods include their implementation in an interface.
+		
+	- A static method in an interface can’t be called using a reference variable. It must be called using the interface name.
+	
+	- Unlike an interface, if you define a static method in a base class, it can be accessed using either a reference variable or the class name.
+	
+	
