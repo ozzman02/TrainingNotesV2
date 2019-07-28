@@ -329,4 +329,24 @@ Working with inheritance
 					}
 					class Animal implements Jumpable, Moveable { }
 					
-					
+		6.2.7 Extending interfaces
+		
+			- Extending multiple interfaces with the same abstract method names
+			
+			- Extending multiple interfaces with the same name default method names
+			
+				- Classes always win: a method implemented in a class always has priority over an interface default method.
+				
+				- Otherwise, subinterfaces always win: a method implemented in a more specific interface has precedence over one 
+					defined in a more general interface (for example, a superinterface).
+				
+				- Otherwise, if there’s an ambiguity that can’t be resolved by the previous rules, then you get to the case presented earlier: 
+					the targeted superinterface must be specified, using the super keyword.
+			
+			- Extending multiple interfaces with the same static method names
+
+		6.2.8 Modifying existing methods of an interface
+		
+			
+		
+			
