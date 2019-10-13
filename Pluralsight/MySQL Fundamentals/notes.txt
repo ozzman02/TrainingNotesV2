@@ -1,5 +1,0 @@
-MySQL Command Line
-
-	show databases;
-	use db_name;
-	show tables;
