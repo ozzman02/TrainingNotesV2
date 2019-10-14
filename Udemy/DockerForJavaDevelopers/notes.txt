@@ -1,0 +1,14 @@
+/* run an image in the background with port mapping */
+docker run -p 27017:27017 -d mongo
+
+/* view container logs */
+docker logs -f containerId
+
+/* local volume for db persistence */
+docker run -p 27017:27017 -v C:\Users\oscar.santamaria\dockerdata\mongo:\data\db -d mongo
+
+/* run rabbitmq with port mapping exposing also the management console */ 
+docker run -d --hostname guru-rabbit --name some-rabbit -p 8080:15672 -p 5671:5671 -p 5672:5672 rabbitmq:3-management
+
+/* run mysql with port mapping, environment variables and local storage */
+docker run --name guru-mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v C:\Users\oscar.santamaria\dockerdata\mysql:\var\lib\mysql -p 3306:3306 -d mysql
