@@ -1,56 +1,17 @@
-From git bash
+simple_server project
 
-version: node -v
-no package modules: npm -v
+express_website project
 
-git bash command: npm init
-create package.json
-create server.js (get the code from node.js web site)
-git bash command: node server.js (or npm start)
+nodeauth project
 
-to install express
-	npm install -g express
-	
-create the package.json file
-	npm init
+	- npm install -g express
+	- npm install -g express-generator
+	- express
+	- modifify package.json
+	- npm install
+	- code ....
+	- npm start
 
-add dependencies to the package.json file
-run npm install
 
-to install express generator: npm install -g express-generator
-------------------------------------------------------------------
-How do you install express globally?
-npm install express –g
-npm install -g express
-
-How do you generate the express file structure?
-npm express appname
-
-What is the name of the Express manifest file?
-package.json
-
-Routes need to be “required” just like any module
-True
-
-Jade indentation can only use tabs
-False
-------------------------------------------------------------------
-
-to install bcryptjs: npm install bcryptjs --save (--save includes the dependency in the package.json file)
-
-------------------------------------------------------------------
-
-to start a project when express-generator is installed
-
-express project_name
-
-express nodeblog
-
-------------------------------------------------------------------
-
-Which express-validator method checks for empty fields?
-.notEmpty()
-
-Which Passport method is called to check username/password?
 
 

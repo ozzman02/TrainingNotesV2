@@ -1,58 +1,30 @@
-MongoDB
+C:\mongodb\bin>mongod .\mongod.exe --directoryperdb --dbpath C:\Users\oscar.santamaria\MongoDB\data\ --logpath C:\Users\oscar.santamaria\MongoDB\data\log\mongodb.log --logappend --install 
+C:\mongodb\bin>net start MongoDB
+C:\mongodb\bin>mongo
 
-cd "Program Files\MongoDB\Server\3.2\bin"
+Commands:
 
-From cmd, run as admin and type this commands
+	db: shows current db
+	use database_name: create new db and switches to it
+	show dbs: show available dbs that are not empty
+	db.createCollection('customers'); create collection
+	show collections: shows available collections
+	
 
-	mongod --directoryperdb --dbpath "c:\Program Files\MongoDB\Server\3.2\data\db" --logpath "c:\Program Files\MongoDB\Server\3.2\log\mongodb.log" --logappend --rest --install
-	net start MongoDB
-	mongo
-
-Commands
-
-db: tells the current database by default is test
-use: create a new database
-show dbs: shows all databases (empty tables do not appear)
-db.createCollection('collection name'): Creates a new collection
-show collections
-
-
-use nodeauth
-db.users.insert({name: 'Oscar Santamaria', email: 'osantamaria@gmail.com', username: 'ozzman', password: '1234'});
-db.users.insert({name: 'Carlos A Santamaria', email: 'casantamaria@gmail.com', username: 'carlos', password: '1234'});
-db.users.find()
-{ "_id" : ObjectId("57400b274ae129c7a05aa542"), "name" : "Oscar Santamaria", "email" : "osantamaria@gmail.com", "username" : "ozzman", "password" : "1234" }
-{ "_id" : ObjectId("57400c2e4ae129c7a05aa543"), "name" : "Carlos A Santamaria", "email" : "casantamaria@gmail.com", "username" : "carlos", "password" : "1234" }
-
-db.users.find().pretty()
-{
-        "_id" : ObjectId("57400b274ae129c7a05aa542"),
-        "name" : "Oscar Santamaria",
-        "email" : "osantamaria@gmail.com",
-        "username" : "ozzman",
-        "password" : "1234"
-}
-{
-        "_id" : ObjectId("57400c2e4ae129c7a05aa543"),
-        "name" : "Carlos A Santamaria",
-        "email" : "casantamaria@gmail.com",
-        "username" : "carlos",
-        "password" : "1234"
-}
-
-db.users.update({username:'carlos'}, {$set:{email:'csanta@gmail.com'}});
-db.users.remove({username:'sergio'});
-
-MongoDB stores documents/records in what?
-Collections
-
-What data type is the automatic “_id” field?
-ObjectId
-
-Which function can be used in the command line to better format a find() result?
-pretty()
-
-
-
-
-
+Steps
+	
+	use nodeauth
+		
+	db.createCollection('users');
+	
+	db.users.insert({name: 'Oscar Santamaria', email: 'osantamaria@gmail.com', username: 'brad', password: '1234'});
+	db.users.insert({name: 'Adrian Venegas', email: 'advenegas@gmail.com', username: 'addrian', password: '1234'});
+	db.users.insert({name: 'Stephanie Rodriguez', email: 'steph@gmail.com', username: 'srod', password: '1234'});
+	
+	db.users.find().pretty()
+	
+	db.users.update({username:'brad'}, {$set:{username:'ossant'}});
+	
+	db.users.remove({username: 'addran'});   
+	
+	
