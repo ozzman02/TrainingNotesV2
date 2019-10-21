@@ -14,3 +14,22 @@ docker run -d --hostname guru-rabbit --name some-rabbit -p 8080:15672 -p 5671:56
 
 /* run mysql with port mapping, environment variables and local storage */
 docker run --name guru-mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v C:\Users\oscar.santamaria\dockerdata\mysql:\var\lib\mysql -p 3306:3306 -d mysql
+
+Run Centos image on docker
+	
+	docker run -d centos
+	
+	docker run -d centos tail -f /dev/null
+	
+	docker exec -it 557cc951b694 bash
+	
+	in the terminal:
+	
+		yum install java
+		
+Run Spring Boot app in docker
+	
+	1. Crear docker file.
+	2. docker build -t spring-boot-docker .
+	3. docker run -d -p 8080:8080 spring-boot-docker
+	
