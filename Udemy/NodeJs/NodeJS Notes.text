@@ -1,7 +1,19 @@
 simple_server project
-
+	
+	- npm init
+	- create server.js
+	- code ...
+	- node server.js / npm start
+	
 express_website project
-
+	
+	- npm install -g express
+	- create app.js
+	- npm init
+	- add dependencies to package.json
+	- npm install
+	- node app
+	
 nodeauth project
 
 	- npm install -g express
@@ -10,8 +22,14 @@ nodeauth project
 	- modifify package.json
 	- npm install
 	- code ....
+	- npm install bcrypt.js --save
 	- npm start
 
+node blog system
+
+	- express nodeblog (express is globally installed)
+	- modifify package.json by adding dependencies
+	- npm install
 
 
 
