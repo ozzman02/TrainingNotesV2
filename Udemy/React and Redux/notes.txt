@@ -1,0 +1,124 @@
+How to get help	
+	
+	ste.grider@gmail.com
+	
+Github repo
+
+	- https://github.com/StephenGrider/redux-code
+
+Tool for making a tiny React App
+
+	goo.gl/T6zQ9q
+	
+Babel:
+	
+	Command line tool that can take any version of javascript and spit out a newer version
+	
+	website: https://babeljs.io/
+	
+Javascript Modules
+
+	- ES2015 Modules 	(import: ES2015 import statement)
+	- CommonJS Modules 	(require: CommonJS import statement)
+	
+JSX
+	
+	- Special dialect of JS (it's not HTML)
+	- Browsers do not understand JSX code! We write JSX then run tools to turn it into JS
+	- Very similar in form and function to HTML with a couple differences
+	
+	JSX vs HTML
+		
+		- Adding custom styling to an element uses different syntax.
+		- Adding a class to an element uses different syntax.
+		- JSX can reference JS variables.
+		- {{}} indicates JS object
+		- {} indicates JS variable
+		- Check property names. 
+			
+			Example: 
+			
+				/* React error if you inspect the console */
+				<label className="label" For="name">{labelText}</label>
+
+				/* Solution replace the For with htmlFor */
+				<label className="label" htmlFor="name">{labelText}</label>
+		
+		- Values that JSX can't show
+		
+			- We are not allowed to take a JS object and reference it inside of JSX specifically when we want to show text.
+			
+				/* Error */
+				const buttonText = {text: 'Click me'};
+				<button style={{ backgroundColor: 'blue', color: 'white' }}>{buttonText}</button>
+				
+				/* Valid */
+				const buttonText = {text: 'Click me'};
+				<button style={{ backgroundColor: 'blue', color: 'white' }}>{buttonText.text}</button>
+	
+	Props System
+	
+		- System for passing data from a parent component to a child component.
+		- Goal is to customize or configure a child component.
+		- A child cannot pass data back up to the parent.
+		
+React Component:
+
+	- Is a function or class that produces HTML to show the user (using JSX)and handles feedback from the user (using Event Handlers)
+	
+	const App = function() {
+		return <div>Hi there!</div>
+	}
+	
+	/* ES2015 */
+	const App = () => {
+		return <div>Hi there!</div>
+	}
+	
+	Three Tenets of Components
+	
+		- Component Nesting
+	
+		- Component Reusability
+	
+		- Component Configuration
+	
+	Components
+	
+		- Functional Components: Good for simple content
+		
+		- Class Components: Good for just about everything else
+		
+			Benefits
+			
+				- Easier code organization
+				- Can't use 'state' (another React system) -----> easier to handle user input
+				- Understand lifecycle events ----> easier to do things when the app first start
+			
+			Rules
+				
+				- Must be a Javascript class
+				- Must extend (subclass) React.Component
+				- Must define render method that returns some amount of JSX
+				
+			State in React Components
+			
+				- Only usable with class components
+				- You will confuse props with state
+				- State is JS object that contains data relevant to a component
+				- Updating state on a component causes the component to almost instantly render
+				- State must be initialized when a component is created
+				- State can only be updated using the function 'setState'
+	
+Create React app
+
+	- npm install -g create-react-app
+	- create-react-app jsx
+	
+Start the application
+
+	- npm start
+	- http://localhost:3000
+	
+	
+	

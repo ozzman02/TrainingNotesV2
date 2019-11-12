@@ -33,3 +33,16 @@ Run Spring Boot app in docker
 	2. docker build -t spring-boot-docker .
 	3. docker run -d -p 8080:8080 spring-boot-docker
 	
+	
+Automatig Building of Docker images (Fabric8)
+
+	- mvn clean package
+	
+	- mvn clean package docker:build (build docker image)
+	
+	- mvn clean package docker:build push (publish to docker hub)
+	
+Running images from Maven
+
+	
+	
