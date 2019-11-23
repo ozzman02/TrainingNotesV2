@@ -109,7 +109,168 @@ React Component:
 				- Updating state on a component causes the component to almost instantly render
 				- State must be initialized when a component is created
 				- State can only be updated using the function 'setState'
+				
+LifeCycle method
+
+	- Constructor: Good place to do one time setup
+	- Render: Avoid doing anything besides returning JSX
+	- componentDidMount: Good place to do data loading
+	- componentDidUpdate: Good place to do more data loading when state/props change
+	- componentWillUnmount: Good place to do cleanup (specially for non react stuff)
 	
+	Other lifecycle methods:
+	
+		- shouldComponentUpdate
+		- getDerivedStateFromProps
+		- getSnapshotBeforeUpdate
+		
+		
+Event Handlers
+
+	Example:
+
+		import React from 'react';
+
+		class SearchBar extends React.Component {
+
+			onInputChange(event) {
+				console.log(event.target.value);
+			}
+
+			render() {
+				return (
+					<div className="ui segment">
+						<form className="ui form">
+							<div className="field">
+								<label>Image Search</label>
+                        
+								{/* this.onInputChange is a callback function since we are not using (). 
+									if we use () the method is going to be called everytime that the component is rendered */}
+                            
+								<input type="text" onChange={this.onInputChange} />
+							</div>
+						</form>
+					</div>
+				);
+			}
+		}
+	
+		export default SearchBar;
+	
+	Alternate Syntax:
+	
+		import React from 'react';
+	
+		class SearchBar extends React.Component {
+
+			render() {
+				return (
+					<div className="ui segment">
+						<form className="ui form">
+							<div className="field">
+								<label>Image Search</label>
+                        
+								{/* Alternate Syntax */}
+                            
+								<input type="text" onChange={(event) => console.log(event.target.value)} />
+							</div>
+						</form>
+					</div>
+				);
+			}
+		}
+	
+		export default SearchBar;
+		
+Understanding This
+
+	- What is this used for in a class?
+	
+		This is a reference to the class.
+	
+	- How is the value of this determined in a function?
+	
+		Don't look at the function, take a look at how the function is called. Look at what is left of the dot.
+		
+			truck.driveMyTruck(); // this is a reference to truck.
+			
+			
+			
+	Issue: TypeError: Cannot read property 'sound' of undefined
+	
+		class Car {
+			setDriveSound(sound) {
+				this.sound = sound;
+			}
+			drive() {
+				return this.sound;
+			}
+		}
+
+		const car = new Car();
+		car.setDriveSound('vroom');
+
+		const drive = car.drive;
+
+		drive();
+		
+		
+	Solution 1: Define a constructor and bind the function
+	
+		class Car {
+			constructor() {
+				this.drive = this.drive.bind(this);
+			}
+			setDriveSound(sound) {
+				this.sound = sound;
+			}
+			drive() {
+				return this.sound;
+			}
+		}
+
+		const car = new Car();
+		car.setDriveSound('vroom');
+
+		const drive = car.drive;
+
+		drive();
+	
+	Solution 2: Turn the function into an arrow function to automatically bind the value of this 
+	
+		class SearchBar extends React.Component {
+
+			state = { term: ''};
+			
+			/* the arrow function makes sure that the value of this is always equals to an instance of SearchBar */
+			onFormSubmit = (event) => {
+				event.preventDefault();
+				console.log(this.state.term);
+			}
+		
+			...
+		}
+	
+	Solution 3: Instead of defining a method as an arrow function, pass an arrow function directly into the event
+	
+		render() {
+			return (
+				<div className="ui segment">
+					<form className="ui form" onSubmit={(event) => this.onFormSubmit(event)}>
+						<div className="field">
+							<label>Image Search</label>
+							<input 
+								type="text" 
+								value={this.state.term} 
+								onChange={(e) => this.setState({ term: e.target.value })} 
+							/>
+						</div>
+					</form>
+				</div>
+			);
+		}
+		
+
 Create React app
 
 	- npm install -g create-react-app
