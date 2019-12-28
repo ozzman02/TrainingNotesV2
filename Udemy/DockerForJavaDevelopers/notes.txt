@@ -44,5 +44,9 @@ Automatig Building of Docker images (Fabric8)
 	
 Running images from Maven
 
+	mvn docker:run 		run interactively
+	mvn docker:start	run in the background
+	mvn docjer:stop
+
 	
 	

@@ -41,4 +41,9 @@ Configure MySQL
 			add entry (select the schema)
 			
 				select all
+		
+
+RootApplicationContext:		localhost:8080/web/
+CustomerApplicationContext: localhost:8080/web/welcome/1
+AdminApplicationContext:	localhost:8080/web/admin/welcome/1
 	
