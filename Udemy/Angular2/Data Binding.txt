@@ -1,0 +1,9 @@
+Data Binding
+
+	Asociamos un valor a la propiedad desde la clase y la mostramos en el HTML
+	
+		{{pelicula.titulo}}
+		
+	Two way data binding: Modificacion bidireccional. 
+	
+		<input type="text" [(ngModel)] = "pelicula.titulo" />
