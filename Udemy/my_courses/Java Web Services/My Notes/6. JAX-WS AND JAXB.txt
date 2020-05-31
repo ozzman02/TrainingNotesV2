@@ -47,3 +47,22 @@ JAXB: Java Architecture for XML Binding
 		xjc.exe
 		schemagen.exe
 		
+Steps to generate stubs from XML Schema
+
+	- Create the project
+	- Create the schemas
+	- Use the JAXB Plugin
+	- Generate the stubs and use them
+
+	1. Create maven project
+	
+	2. Put the schema files here: /jaxbxjc/src/main/xsd
+	
+	3. Create the src/generated folder
+		- In Eclipse: right click on src folder and then select new/source folder
+		- Type folde name
+	
+	4. Generate the stubs
+
+		- Delete the contents of the src/generated folder
+		- Run as Maven generate-sources
