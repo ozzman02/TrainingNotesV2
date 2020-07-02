@@ -1,3 +1,4 @@
+-- change field datatype
 ALTER TABLE email_subscribers
 ALTER COLUMN email SET DATA TYPE varchar(225);
 
