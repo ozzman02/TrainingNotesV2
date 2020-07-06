@@ -1,5 +1,5 @@
 ALTER TABLE products
-ADD CHECK ( reorderlevel > 0);
+ADD CHECK ( reorderlevel >= 0);
 
 -- All rows must meet the condition
 UPDATE products
@@ -26,3 +26,8 @@ DROP CONSTRAINT order_details_unitprice_check;
 
 ALTER TABLE order_details
 ALTER COLUMN discount DROP NOT NULL;
+
+
+/*
+    If you do not know the name of the constraints you can run a create script and check
+*/
