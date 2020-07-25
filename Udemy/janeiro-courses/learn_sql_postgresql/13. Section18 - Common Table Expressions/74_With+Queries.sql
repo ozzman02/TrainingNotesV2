@@ -25,7 +25,7 @@ ORDER BY categoryname
 
 	We want to see if we will lose any important customer if we quit carrying those two products
 */
-WITH slowest_products AS (
+WITH slowest_products AS (	
 	SELECT productid,SUM(od.quantity)
 	FROM products
 	JOIN order_details AS od USING (productid)
