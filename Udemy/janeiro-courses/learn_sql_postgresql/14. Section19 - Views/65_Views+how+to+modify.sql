@@ -1,10 +1,17 @@
-CREATE OR REPLACE VIEW customer_order_details AS
-SELECT companyname, Orders.customerid,employeeid,requireddate,shippeddate,
-Shipvia,freight,shipname,shipcity,shipregion,shippostalcode,shipcountry,
-order_details.*,contactname
+/*
+    Can't remove an existing column in the view.
+    Must have same columns with same name, same datatypes, in the same order.
+    You can add column names.
+*/
+
+CREATE OR replace VIEW customer_order_details AS
+SELECT companyname, Orders.customerid, employeeid, orderdate, requireddate, shippeddate
+Shipvia, freight, shipname, shipaddress, shipcity, shipregion, shippostalcode, shipcountry,
+order_details.*, contactname 
 FROM customers
 JOIN orders on customers.customerid=orders.customerid
 JOIN order_details on order_details.orderid=orders.orderid;
+
 
 CREATE OR REPLACE VIEW supplier_order_details AS
 SELECT companyname,suppliers.supplierid,

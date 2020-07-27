@@ -1,3 +1,13 @@
+/*
+    You can update, delete or insert into a view if
+
+        - Only one table is referenced in FROM (could be another view)
+        - Can't have GROUP BY, LIMIT, DISTINCT, UNION, INTERSECT and EXCEPT in defining query
+        - Can't have any window functions, set returning function, or any aggregate functions
+            like SUM, COUNT, AVG, MIN and MAX.
+*/
+
+
 CREATE VIEW north_america_customers AS
 SELECT *
 FROM customers
