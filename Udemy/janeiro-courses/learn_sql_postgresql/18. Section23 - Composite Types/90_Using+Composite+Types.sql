@@ -29,8 +29,10 @@ INSERT INTO friends (name, address, specialdates)
 VALUES (ROW('Boyd','M','Gregory'),ROW('7777','','Boise','Idaho','USA','99999'),ROW('1969-02-01',49,'2001-07-15'));
 
 SELECT * FROM friends;
+
 SELECT name FROM friends;
 
+/* access composite columns */
 SELECT (address).city,(specialdates).birthdate
 FROM friends;
 

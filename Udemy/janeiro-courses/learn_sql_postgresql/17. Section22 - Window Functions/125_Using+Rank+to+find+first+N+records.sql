@@ -3,6 +3,7 @@
 	for each row in first table?
 */
 
+/* Top two most valuable items ordered for each orders records */
 SELECT * FROM
 (SELECT orders.orderid, productid, unitprice, quantity,
  	rank() OVER (PARTITION BY order_details.orderid ORDER BY (quantity*unitprice) DESC) AS rank_amount
