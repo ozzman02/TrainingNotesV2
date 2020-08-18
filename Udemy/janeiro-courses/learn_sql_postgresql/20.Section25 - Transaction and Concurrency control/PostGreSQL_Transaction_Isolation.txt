@@ -1,0 +1,15 @@
+PostGreSQL Transaction Isolation
+
+    MVCC: Multiversion Concurrency Control
+
+    Data is not overwritten, but changes are timestamped.
+    Each statement sees a snapshot based on how the data looked at a given timestamp.
+    This prevents conflicts based on locking records during trasaction.
+
+
+    Default isolation level: READ COMMITTED
+
+    Also READ UNCOMMITTED acts like READ COMMITTED.
+
+    All reads see a snapshot of data before the query began. It does not see any updates within
+    it's own transaction, even though they are not committed.

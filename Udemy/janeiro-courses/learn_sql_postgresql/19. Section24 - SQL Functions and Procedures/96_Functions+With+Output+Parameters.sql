@@ -1,3 +1,7 @@
+/*
+	Using IN, OUT, INOUT (Both input and output) and VARIADIC (covered with arrays)
+*/
+
 CREATE OR REPLACE FUNCTION sum_n_product (x int, y int, OUT sum int, OUT product int) AS $$
 	SELECT x + y, x * y
 $$ LANGUAGE SQL;

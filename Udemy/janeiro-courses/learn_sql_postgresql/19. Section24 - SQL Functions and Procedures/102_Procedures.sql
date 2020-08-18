@@ -13,6 +13,6 @@ CREATE OR REPLACE PROCEDURE change_supplier_prices(supplierid smallint, amount r
 	SET unitprice = unitprice + amount
 	WHERE supplierid = $1
 
-$$ LANGUAGE;
+$$ LANGUAGE SQL;
 
 CALL change_supplier_prices(20::smallint, 0.50);
