@@ -20,6 +20,8 @@ $$ LANGUAGE plpgsql;
 
 SELECT * FROM middle_priced();
 
+/* Build a function that determines the average order size and return all orders 
+   (not order_details) that are between 75% and 130% of that order */
 CREATE OR REPLACE FUNCTION normal_orders() RETURNS SETOF orders AS $$
 
 	DECLARE

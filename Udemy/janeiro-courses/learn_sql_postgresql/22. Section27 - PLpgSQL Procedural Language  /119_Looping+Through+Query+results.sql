@@ -15,6 +15,7 @@ WITH RECURSIVE reports_to(employeeid,reportsto) AS (
 
 $$ LANGUAGE SQL;
 
+select * from reports_to(218);
 
 CREATE OR REPLACE FUNCTION report_to_array(eid smallint) RETURNS smallint[] AS $$
 
