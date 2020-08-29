@@ -398,3 +398,15 @@ Chapter 6
 	- A class can implement multiple interfaces with the same default method name and signature, if it overrides its default implementation.
 	
 	- A class can implement multiple interfaces with the same static method names, irrelevant of their return types or signature.
+
+	- You may see multiple questions in the exam that try to assign an object of a base class to a reference variable of a derived class. 
+		Note that a derived class can be referred to using a reference variable of a superclass. The reverse is not allowed and won’t compile.
+
+	- This refers to the instance of the class in which it’s used. this can be used to access the inherited members of a base class in the derived class.
+
+	- With Java 8, you can use the keyword this in a default method to access the methods of an interface and its constants.
+
+	- If present, a call to a superclass’s constructor must be the first statement in a derived class’s constructor. Otherwise, a call to super(); 
+		(the no-argument constructor) is inserted automatically by the compiler.
+
+	

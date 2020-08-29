@@ -347,6 +347,112 @@ Working with inheritance
 
 		6.2.8 Modifying existing methods of an interface
 		
+			Changing static method to default or abstract: 
+				
+				- In an interface, if you change a static method to a default method, the implementing class will continue to compile, but the code that calls the method won’t compile.
+
+				- If you change a static method to an abstract method, the implementing class might not compile.
+
+			Changing an abstract method to default or static:
+
+				- If you modify an interface by changing its abstract method to a default method, the code that calls the method will continue to compile.
+				
+				- But if you change an abstract method into a static method, the code that calls the method won’t compile.
 			
+			Changing a default method to abstract or static:
+
+				- If you modify an interface and change its default method to an abstract method, a class that implements it might fail to compile. The implementing class will fail to compile, if it doesn’t override the default method of the interface.
+
+				- If you modify the default method to a static method in an interface, the code that calls the method won’t compile. 
+
+		6.2.9 Properties of members of an interface
+
+			Interface constants:
+
+				- The variables of an interface are implicitly public, final, and static.
+				- You must initialize all variables in an interface, or your code won’t compile.
+
+			Interface methods:
+
+				- The methods of an interface are implicitly public. When you implement an interface, you must implement all its methods by using the access modifier public
+
+				- A class that implements an interface can’t make the interface’s methods more restrictive.
+
+			Interface constructors:
+
+				- Unlike a class, an interface can’t define constructors.
+
+	6.3 Refence variables and object types
+
+		- For this exam objective, you need to understand that when you refer to an object, the type of the object reference variable and the type of the object being referred to may be different.
+
+		- Objects of derived classes can be referred to using a reference variable of any of the following types:	
+
+			- Its own type.
+			- Its superclass.
+			- Implemented interfaces.	
+
+			There are differences, however, when you try to access an object using a reference variable of its own type, its base class, or an implemented interface.
+
+		6.3.1 Using a variable of the derived class to access its own object
+
+			You can access all the variables and methods that are defined in its base class and interface.
+
+		6.3.2 Using a variable of a superclass to access an object of a derived class
+
+			You can't. It can access only the variables and methods defined in the superclass.
+
+		6.3.3 Using a variable of an implemented interface to access a derived class object
+
+			The variable of an implemented interface can only access the methods defined in the interface.
+
+		6.3.4 The need for accessing an object using the variables of its base class or implemented interfaces
+
+			- When you do so, you’re only concerned about the behavior of the class that relates to its capability defined in the interface.
+			
+			- This arrangement also makes it possible to create an array (or a list) of the objects that refers to different types of objects 
+				grouped by a common base class or an interface.
+
+			- Reverse of these assignments will fail compilation.
+
+	6.4 Casting
+
+		6.4.1 How to cast a variable to another type
+
+			- Casting is the process of forcefully making a variable behave as a variable of another type. If a class shares an IS-A or 
+			  inheritance relationship with another class or interface, their variables can be cast to each other’s type.
+
+		6.4.2 Need for casting
+
+			You can’t access all the members of an object if you access it using a reference variable of any of its implemented interfaces 
+			or of a base class.
+
+			But when a need arises (as mentioned in the preceding paragraph), you might choose to access some of the members of a derived class, 
+			which aren’t explicitly available, by using the reference variable of the base type or the implemented inter- face. This is where casting comes in!
+
+	6.5 Use this and super to access objects and constructors
+
+		6.5.1 Object reference: this
+
+			- The this reference always points to an object’s own instance.
+
+			- The this reference is required only when code executing within a method block needs to differentiate between an instance variable and 
+			its local variable or method parameters.
+
+			- You can also reference one constructor from another by using the keyword this. To call the default constructor, call this().
+
+			- If present, a call to a constructor from another constructor must be done on the first line of code of the calling constructor.
 		
-			
+			- With Java 8, you can use the keyword this in an interface’s default method to access its constants and other default and abstract methods. 
+
+			- You can’t use the this keyword to access static methods of an interface.
+
+		6.5.2 Object reference: super
+
+			- Super is also an object reference, but super refers to the direct parent or base class of a class.
+
+			- The variable reference super can be used to access a variable or method from the base class if there’s a clash between these names. 
+
+			- The reference variable super can also be used to refer to the constructors of the base class in a derived class.
+
+			- You can’t use this and super in static methods.
