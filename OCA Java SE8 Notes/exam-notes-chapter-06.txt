@@ -456,3 +456,59 @@ Working with inheritance
 			- The reference variable super can also be used to refer to the constructors of the base class in a derived class.
 
 			- You can’t use this and super in static methods.
+
+	6.6 Polymorphism
+
+		The same action may have different meanings for different living beings.
+
+		6.6.1 Polymorphism with classes
+
+			- Polymorphism with classes comes into the picture when a class inherits another class and both the base and the derived classes define methods 
+			with the same method signature (the same method name and method parameters).
+
+			- Polymorphic methods are also called overridden methods.
+
+				Rules to override methods:
+
+				- Overridden methods are defined by classes and interfaces that share inheritance relationships.
+				
+				- The name of the overridden method in the base class and the overriding method in the subclass must be the same.
+ 				
+				- The argument list passed to the overridden method in the base class must be the same as the argument
+				 	list passed to the overriding method in the subclass.
+ 				
+				- The return type of an overriding method in the subclass can be the same as or a subclass of the return type 
+				 	of the overridden method in the base class. When the overriding method returns a subclass of the return type 
+					of the overridden method, it’s known as a covariant return type.
+ 				
+				- An overridden method defined in the base class can be an abstract method or a non-abstract method.
+ 				
+				- A derived class can override only non-final methods.
+				
+				- Access modifiers for an overriding method can be the same as or less restrictive than the method being overridden, 
+					but they can’t be more restrictive.
+
+			- Polymorphism works only with overridden methods.
+
+		6.6.2 Binding of variables and methods at compile time and runtime
+
+			- Binding refers to resolving of variables or methods that would be called for a reference variable.
+			- With inheritance, the instance variables bind at compile time and the methods bind at runtime.
+
+		6.6.3 Polymorphism with interfaces
+
+			- Polymorphism can also be implemented using interfaces.
+			- Whereas polymorphism with classes has a class as the base class, polymorphism with interfaces requires a class to implement an interface.
+			- Polymorphism with interfaces involves abstract or default methods from the implemented interface.
+			- An interface can also define static methods, but static methods never participate in polymorphism.
+
+			- Polymorphism with abstract methods
+			
+			- Polymorphism with default methods
+
+				When a class implements an interface that defines a default method, the class might or might not override the default method.
+
+	6.7 Simple lambda expressions
+
+
+	
