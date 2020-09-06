@@ -409,4 +409,12 @@ Chapter 6
 	- If present, a call to a superclass’s constructor must be the first statement in a derived class’s constructor. Otherwise, a call to super(); 
 		(the no-argument constructor) is inserted automatically by the compiler.
 
-	
+	- To implement polymorphism with classes, you can define abstract or non-abstract methods in the base class and override them in the derived classes.
+
+	- Watch out for code in the exam that uses variables of the base class to refer to objects of the derived class and then accesses variables 
+		and methods of the referenced object. Remember that variables bind at compile time, whereas methods bind at runtime
+
+	- Watch out for overloaded methods that seem to participate in polymorphism—overloaded methods don’t participate in polymorphism. 
+		Only overridden methods—methods with the same method signatures—par- ticipate in polymorphism.
+
+	- 

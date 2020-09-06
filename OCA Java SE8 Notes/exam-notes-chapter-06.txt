@@ -510,5 +510,62 @@ Working with inheritance
 
 	6.7 Simple lambda expressions
 
+		- Functional programming enables you to write declarative code.
+		- With functional programming, you can pass code to your methods as arguments. 
 
-	
+		6.7.1 Comparing passing values with passing code to methods
+
+			Lambdas work only with functional interfaces, interfaces that define exactly one abstract method.
+
+			public interface Validate {
+				boolean check(Emp emp);
+			}
+
+			public class Emp {
+
+				int performanceRating;
+
+				public int getPerformanceRating() {
+					return performanceRating;
+				}
+
+			}
+
+			/* passing code to the method defined in the interface */
+			Validate validate = e -> e.getPerformanceRating() >= 5;
+
+		6.7.2 Syntax of lambda expressions
+
+			e -> e.getPerformanceRating() >= 5;
+
+			e  : 								parameter name
+			-> : 								arrow
+			e.getPerformanceRating() >= 5 :		body
+
+			Each lambda expression has multiple optional and mandatory sections:
+			
+				- Parameter type (optional)
+				- Parameter name (mandatory)
+				- Arrow (mandatory)
+				- Curly braces (optional)
+				- Keyword return (optional)
+				- Lambda body (mandatory)
+
+			Valid variations of e -> e.getPerformanceRating() >= 5 are:
+
+				Validate validate = (e) -> e.getPerformanceRating() >= 5;
+				Validate validate = (Emp e) -> e.getPerformanceRating() >= 5;
+				Validate validate = (e) -> { return (e.getPerformanceRating() >= 5); }
+
+			The return value of the lambda expression must match or must be compatible with the return value of the only 
+			abstract method in the interface.
+
+				Invalid 
+					
+					/* method check returns boolean */
+					- Validate validatePerformance = (Emp e) -> 5;
+
+					/* invalid count of parameters, method check receives only one argument */
+					- Validate validatePerformance = (e, f) -> { return true; };
+
+		6.7.3 Interface Predicate
