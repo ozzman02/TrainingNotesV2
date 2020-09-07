@@ -1,3 +1,13 @@
+/*
+    Containment operator: is the value on right contained in left hand side
+
+        Field @> '{"iso_country": "BR"}'
+
+    Grab the field and compare
+
+        Field->>'iso_country' = 'BR'
+*/
+
 SELECT * FROM airports_json
 WHERE airports @> '{"iso_country": "BR"}';
 

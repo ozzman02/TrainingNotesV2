@@ -1,3 +1,17 @@
+/*
+	Updating existing json
+
+		- Use the concatenation operator ||
+
+			This will add a field or replace existing value of field.
+
+	Removing fields
+
+		- delete key/value pairs
+		#- delete based on path
+
+*/
+
 UPDATE airports_json
 SET airports = airports || '{"nearby_lakes": ["Lake Chicot"]}'::jsonb
 WHERE airports->>'iso_region' = 'US-AR'

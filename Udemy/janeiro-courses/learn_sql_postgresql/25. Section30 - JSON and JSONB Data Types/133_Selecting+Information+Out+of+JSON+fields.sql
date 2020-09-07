@@ -1,3 +1,26 @@
+/* 
+    Select json from json:
+
+        Operator ->
+
+        Select based on key: -> text
+        Select based on array index: -> number
+
+        These can be chained
+
+    Select text from json
+
+        Operator: ->>
+
+        For selecting array element:
+
+        ->> int
+
+        For selecting by field name:
+
+        ->> text
+*/
+
 SELECT airports->'runways'->0, airports->'country_name'
 FROM airports_json;
 

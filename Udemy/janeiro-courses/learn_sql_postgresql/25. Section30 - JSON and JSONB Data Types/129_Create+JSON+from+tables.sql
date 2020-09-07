@@ -1,3 +1,8 @@
+/*
+	1. function jsonb_build_object
+	2. function JSONB_STRIP_NULLS
+*/
+
 SELECT jsonb_build_object(
 	'id', air.id,
 	'ident', air.ident,
@@ -17,6 +22,12 @@ SELECT jsonb_build_object(
 )
 FROM airports AS air;
 
+/*
+	How to add array of keywords
+
+	1. STRING_TO_ARRAY(field, ',')
+	2. TO_JSONB();
+*/
 SELECT jsonb_build_object(
 	'id', air.id,
 	'ident', air.ident,

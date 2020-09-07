@@ -1,3 +1,4 @@
+/* Convert to json */
 SELECT to_jsonb(runway_json) FROM
 (SELECT le_ident, he_ident, length_ft, width_ft, surface, lighted AS is_lighted,
 closed AS is_closed,
@@ -6,7 +7,7 @@ he_latitude_deg,he_longitude_deg,he_elevation_ft, he_heading_degt,he_displaced_t
 FROM runways
 WHERE airport_ident = 'JRA') as runway_json;
 
-
+/* Aggregate rows into array*/
 SELECT JSONB_AGG(to_jsonb(runway_json)) FROM
 (SELECT le_ident, he_ident, length_ft, width_ft, surface, lighted AS is_lighted,
 closed AS is_closed,
@@ -14,6 +15,7 @@ le_latitude_deg, le_longitude_deg,le_elevation_ft,le_displaced_threshold_ft,
 he_latitude_deg,he_longitude_deg,he_elevation_ft, he_heading_degt,he_displaced_threshold_ft
 FROM runways
 WHERE airport_ident = 'JRA') as runway_json;
+
 
 SELECT JSONB_AGG(to_jsonb(nav)) FROM
 (SELECT name, filename, ident, type, frequency_khz,
