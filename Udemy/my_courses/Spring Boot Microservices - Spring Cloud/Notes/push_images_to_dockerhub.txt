@@ -1,0 +1,6 @@
+mvn clean package docker:build docker:push
+
+mvn clean install docker:build docker:push -Dfabric8.dockerUser=osantamaria/ 
+
+mvn clean package docker:build docker:push -Ddocker.push.username=osantamaria -Ddocker.push.password=canela01 
+

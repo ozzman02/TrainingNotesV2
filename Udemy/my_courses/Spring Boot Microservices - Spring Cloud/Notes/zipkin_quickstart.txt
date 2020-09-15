@@ -9,5 +9,5 @@ docker
 
 view traces in ui
 
-	http://your_host:9411/zipkin/
+	http://localhost:9411/
 
