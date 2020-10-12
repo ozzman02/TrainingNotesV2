@@ -8,4 +8,9 @@ Steps to Develop Top Down Web Services
     6. Run the app
 
 
+Run projects:
+
+    http://localhost:8080/wsdlfirstws
+
+    http://localhost:8080/javafirstws
 
