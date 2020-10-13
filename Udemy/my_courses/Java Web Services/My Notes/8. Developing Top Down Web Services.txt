@@ -14,3 +14,7 @@ Run projects:
 
     http://localhost:8080/javafirstws
 
+    http://localhost:8080/mtom
+    
+
+
