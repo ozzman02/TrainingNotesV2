@@ -1,0 +1,12 @@
+Question		My Answers			Correct Answer
+-------------------------------------------------
+Q6-1			a		            a											
+Q6-2		    b                   d               x
+Q6-3			b, c                a, b, c         x
+Q6-4			b                   b                
+Q6-5			a	                d               x		
+Q6-6			a, b                a, b
+Q6-7			d                   a               x 
+Q6-8			b, c, f             b, c            x
+Q6-9			a, d                c               x
+Q6-10			c                   a               x

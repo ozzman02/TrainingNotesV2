@@ -569,3 +569,8 @@ Working with inheritance
 					- Validate validatePerformance = (e, f) -> { return true; };
 
 		6.7.3 Interface Predicate
+
+			Predicate is a functional interface. To use Predicate in your code, your method must accept a parameter of type 
+				Predicate and you must use its public method test to evaluate an argument.
+
+			Predicate<Emp> predicate = e -> e.getPerformanceRating() >= 5;

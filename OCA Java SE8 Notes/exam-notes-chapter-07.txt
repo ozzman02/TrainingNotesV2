@@ -1,0 +1,89 @@
+Exception Handling
+
+    7.1 Exceptions in Java
+
+        7.1.1  A taste of exceptions    
+
+            - ArrayIndexOutOfBoundsException (code fails to compile)
+            - FileNotFoundException (code fails to compile)
+            - StackOverflowError  (method calls itself recursively without specifying an exit condition) (error at runtime)
+
+            I/O API:
+
+            - java.io.File
+            
+            - java.io.FileInputStream
+                
+                - defines methods read and close
+
+            - java.io.FileOutputStream
+
+                - define methods write and close
+
+            - Creating an object of the class FileInputStream or FileOutputStream can throw 
+                the checked exception java.io.FileNotFoundException.
+            
+            - The methods read, write, and close defined in classes FileInputStream and FileOutputStream 
+                can throw the checked exception java.io.IOException.
+
+            - FileNotFoundException subclasses IOException.
+
+        7.1.2 Why handle exceptions separately?        
+
+            Example:
+
+                try {
+                    step1
+                    step2
+                    step3
+                }
+                catch (Step1Exception e) {
+                    // define code to execute
+                }
+                catch (Step2Exception e) {
+                    // define code to execute
+                }
+                catch (Step3Exception e) {
+                    // define code to execute
+                }
+
+            Because the exception handlers are defined separately, any confusion with what steps you need to accomplish 
+            to perform a task or process has been clarified. 
+             
+            In addition, this code doesn’t compromise on checking the completion of a step before moving on to the next step, 
+            courtesy of appropriate exception handlers.
+
+        7.1.3 Does exception handling offer any other benefits?
+
+            Apart from separating concerns between defining the regular program logic and the exception-handling code, 
+            exceptions also can help pinpoint the offending code (code that throws an exception), together with the method 
+            in which it is defined, by providing a stack trace of the exception or error.
+
+            Stack Trace
+            
+                - A stack trace is so called because it gives you a way to trace back the stack (the sequence of method calls that generated the error)
+
+                - The stack trace gives you a trace of the methods that were called when the JVM encountered an unhandled exception. 
+                
+                - Stack traces are read from the bottom up.
+
+                - Depending on the complexity of your code, a stack trace can range from a few lines to hundreds of lines of code. 
+                
+                - A stack trace works with handled and unhandled exceptions
+
+    7.2 Categories of exceptions
+
+        7.2.1 Identifying exception categories
+
+            - Checked exceptions
+            - Runtime exceptions
+            - Errors
+
+            * Runtime exceptions and errors are collectively referred to as unchecked exceptions.
+
+            - Of these three types, checked exceptions require most of your attention when it comes to coding and using methods.
+            - Runtime exceptions represent programming errors.
+            - Errors are thrown by the JVM.
+
+        7.2.2 Class hierarchy of exception classes
+        
