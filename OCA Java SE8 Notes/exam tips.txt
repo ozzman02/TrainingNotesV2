@@ -419,4 +419,21 @@ Chapter 6
 
 Chapter 7
 
-	- 
+	- In this exam, you may have to select which type of reference variable to use to store the object of the thrown checked exception in a handler. 
+		To answer such questions correctly, remember that a checked exception subclasses java.lang.Exception but not java.lang.RuntimeException.
+
+	- Together, runtime exceptions and errors are referred to as unchecked exceptions.
+
+	- Syntactically, you don’t always need a combination of throw and throws statements to create a method that throws an exception (checked or unchecked). 
+		You can replace the throw statement with a method that throws an exception.
+
+	- The rule of either handling or declaring an exception is also referred to as the handle-or-declare rule. To use a method that throws 
+		a checked exception, you must either handle the exception or declare it to be thrown. But this rule applies only to checked exceptions 
+		and not to unchecked exceptions.
+	
+	- Adding runtime exceptions or errors to a method’s declaration isn’t required. A method can throw a runtime exception or error irrespective of 
+		whether its name is included in its throws clause.
+
+	- A method can declare to throw any type of exception, checked or unchecked, even if it doesn’t do so. 
+		But a try block can’t define a catch block for a checked exception (other than Exception) 
+		if the try block doesn’t throw that checked exception or use a method that declares to throw that checked exception.
