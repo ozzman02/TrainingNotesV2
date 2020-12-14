@@ -437,3 +437,16 @@ Chapter 7
 	- A method can declare to throw any type of exception, checked or unchecked, even if it doesn’t do so. 
 		But a try block can’t define a catch block for a checked exception (other than Exception) 
 		if the try block doesn’t throw that checked exception or use a method that declares to throw that checked exception.
+
+	- The finally block executes regardless of whether the try block throws an exception.
+
+	- To use a method that throws a checked exception, you must follow the handle-or-declare rule.
+
+	- Watch out for code that returns a value from the catch block and modifies it in the finally block. 
+		
+		- If a catch block returns a primitive data type, the finally block can’t modify the value being returned by it. 
+		
+		- If a catch block returns an object, the finally block can modify the state of the object being returned by it.
+
+	
+	
