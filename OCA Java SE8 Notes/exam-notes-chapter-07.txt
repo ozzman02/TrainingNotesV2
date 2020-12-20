@@ -283,4 +283,219 @@ Exception Handling
             a try block declares to throw a checked exception, either it must be followed by a catch block, or the method in which it 
             is defined must declare to throw it.
 
+        7.4.9 Does the order of the exceptions caught in the catch blocks matter?
+
+            - Order doesn’t matter for unrelated classes. But it does matter for related classes sharing an IS-A relationship because 
+                catch blocks are checked from the top down to find a suitable one to handle a given exception.
+
+            - In the latter case, if you try to catch an exception of the base class before an exception of the derived class, 
+                your code will fail to compile.
+
+            - Similarly, if you try to catch an exception of a base class before its derived class, the exception handler for the derived class 
+                can never be reached, so the code will fail to compile.
+
+            - This behavior may seem bizarre, but there’s a valid reason for it. As you know, an object of a derived class can be assigned to a 
+                variable of a base class.
+            
+            - Java doesn’t compile code if it contains unreachable statements.
+
+            Rules to remember:
+
+                - A try block may be followed by multiple catch blocks, and the catch blocks may be followed by a single finally block.
+                
+                - A try block may be followed by either a catch or a finally block or both. But a finally block alone won’t suffice 
+                    if code in the try block throws a checked exception. In this case, you need to catch the checked exception 
+                    or declare it to be thrown by your method. Otherwise, your code won’t compile.
+                
+                - The try, catch, and finally blocks can’t exist independently.
+
+                - The finally block can’t appear before a catch block.
+
+                - A finally block always executes, regardless of whether the code throws an exception.
         
+        7.4.10 Can I rethrow an exception or the error I catch?
+
+            You can do whatever you want with an exception. Rethrow it, pass it on to a method, assign it to another variable, 
+            upload it to a server, send it in an SMS, and so on.
+
+            When you rethrow a checked exception, it’s treated like a regular thrown checked exception, meaning that all the rules 
+            of handling a checked exception apply to it.
+            
+            You can rethrow a runtime exception, but you’re not required to catch it, nor must you modify your method signature to 
+            include the throws clause.
+
+        7.4.11 Can I declare my methods to throw a checked exception instead of handling it?
+
+            If a method doesn’t wish to handle the checked exceptions thrown by a method it calls, it can declare to throw these exceptions 
+            using the throws clause in its own method declaration. 
+
+        7.4.12 I can create nested loops, so can I create nested try-catch blocks too?
+
+            The simple answer is yes, you can define a try-catch-finally block within another try-catch-finally block.
+
+        7.4.13 Should I handle errors?
+
+            Although you can define code to handle errors, you shouldn’t. You should instead let the JVM handle the errors.
+
+    7.5 Common exception classes and categories
+
+        Runtime Exceptions
+
+            - ArrayIndexOutOfBoundsException
+            - IndexOutOfBoundsException
+            - ClassCastException
+            - IllegalArgumentException
+            - ArithmeticException
+            - NullPointerException
+            - NumberFormatException
+
+        Errors
+
+            - ExceptionInInitializerError
+            - StackOverflowError
+            - NoClassDefFoundError
+            - OutOfMemoryError
+
+        7.5.1 ArrayIndexOutOfBoundsException and IndexOutOfBoundsException
+
+            When you try to access an invalid array position, ArrayIndexOutOfBoundsException is thrown. 
+            When you try to access an invalid ArrayList position, IndexOutOfBoundsException is thrown.
+
+            You can avoid these exceptions from being thrown if you check whether the index position you’re trying to access 
+            is greater than or equal to 0 and less than the size of your array or ArrayList.
+
+        7.5.2 ClassCastException 
+
+            A ClassCastException is thrown when an object fails an IS-A test with the class type to which it’s being cast.
+
+            You can use the instanceof operator to verify whether an object can be cast to another class before casting it.
+
+        7.5.3 IllegalArgumentException
+
+            As the name of this exception suggests, Illegal- ArgumentException is thrown to specify that a method has passed 
+            illegal or inappropriate arguments.
+            
+        7.5.4 NullPointerException
+
+            This exception is thrown by the JVM if you try to access a non-static method or a variable through a null value.
+
+            The key is to ensure that the reference variable has been assigned a non-null value.
+
+                - Accessing members of a reference variable that is explicitly assigned a null value
+                - Using an uninitialized local variable, which may seem to throw a NullPointerException
+                - Attempting to access nonexistent array positions
+                - Using members of an array element that are assigned a null value
+
+            By default, the static and instance variables of a class are assigned a null value.
+
+            By default local variables aren’t assigned a value—not even a null value.
+
+        7.5.5 ArithmeticException
+
+            When the JVM encounters an exceptional mathe- matical condition, like dividing an integer by zero, it throws ArithmeticException.
+            Note that division by 0 is not the same as division by 0.0.
+
+            - A division will be performed as an integer division as long as only integers are involved.
+              As soon as there’s a floating-point number, then everything is computed in floating-point arithmetic.
+
+            - An integer division by zero throws an ArithmeticException.
+
+            - A floating-point division by zero won’t throw any exception but rather will return ±Infinity or NaN, depending on the first operand.  
+
+            - Division of a negative or positive integer value by 0 will result in an ArithmeticException.
+
+	        - Division of 0 by 0 results in an ArithmeticException.
+
+            - If you divide a positive decimal number by 0, the answer is Infinity.
+
+            - If you divide a negative decimal number by 0, the answer is -Infinity.
+
+            - Division of 0.0 by 0 results in NaN.
+
+            - Dividing by 0 and dividing by 0.0 don’t give you the same results.
+
+            - When a positive integer or decimal value is divided by 0.0, the result is Infinity.
+
+            - When a negative integer or decimal value is divided by 0.0, the result is –Infinity.
+
+        7.5.6 NumberFormatException
+
+            - NumberFormatException is a runtime exception. It’s thrown to indicate that the application tried to convert a string 
+            (with an inappropriate format) to one of the numeric types.
+
+            - Valid
+                
+                System.out.println(Integer.parseInt("-123")); 
+                System.out.println(Integer.parseInt("123")); 
+                System.out.println(Integer.parseInt("+123")); 
+
+                System.out.println(Integer.parseInt("123ABCD", 16);
+            
+            - Not valid     
+                
+                System.out.println(Integer.parseInt("123_45")); 
+                System.out.println(Integer.parseInt("12ABCD"));
+
+                System.out.println(Integer.parseInt("123ABCD"), 16);
+
+            - Starting in Java 7, you can use underscores (_) in numeric literal values. But you can’t use them in String values 
+              passed to the method parseInt.
+
+            - One of the most common candidates for this exception is methods that are used to convert a command-line argument 
+              (accepted as a String value) to a numeric value. 
+              Please note that all command-line arguments are accepted in a String array as String values.
+
+        7.5.7 ExceptionInInitializerError
+
+            - The ExceptionInInitializerError error is typically thrown by the JVM when a static initializer in your code 
+            throws any type of RuntimeException.
+
+            - A static initializer block is defined using the keyword static, followed by curly braces, in a class.
+
+            - This block is defined within a class but not within a method.
+
+            - Runtime exceptions arising from any of the following will throw this error:
+
+                - Execution of an anonymous static block
+                - Initialization of a static variable
+                - Execution of a static method (called from either of the previous two items)
+
+            - ExceptionInInitializerError can be caused only by a runtime exception.
+
+            - This error can’t be thrown if a static initializer block throws an object of a checked exception because the 
+              Java compiler is intelligent enough to determine this condition and doesn’t allow you to throw an unhandled checked exception 
+              from a static initialization block.
+
+        7.5.8 StackOverflowError
+
+            - The StackOverflowError error extends VirtualMachineError. As its name suggests, you should leave it to be managed by the JVM.
+            
+            - This error is thrown by the JVM when a Java program calls itself so many times that the memory stack allocated 
+              to execute the Java program “overflows”.
+            
+            - Overflows means that the stack exceeds a certain size
+
+        7.5.9 NoClassDefFoundError
+
+            - What would happen if you failed to set your classpath and, as a result, the JVM was unable to load the class 
+            that you wanted to access or execute? 
+            
+            - What would happen if you tried to run your application before compiling it (and so no .class file would be found for 
+              the class you were trying to use)? 
+
+            - Don’t confuse the exception thrown by Class.forName(), used to load the class, and NoClassDefFoundError, thrown by the JVM. 
+              Class.forName() throws ClassNotFoundException.
+
+        7.5.10 OutOfMemoryError
+
+            What happens if you create and use a lot of objects in your application— for example, if you load a large chunk of 
+            persistent data to be processed by your application? 
+            In such a case, the JVM may run out of memory on the heap, and the garbage collector may not be able to free more memory for the JVM.
+
+            You’ll always work with a finite heap size, no mat- ter what platform you work on, so you can’t create and use an unlimited 
+            number of objects in your application. 
+
+            To get around this error, you need to either limit the number of resources or objects that your application creates 
+            or increase the heap size on the platform you’re working with.
+
+            A number of tools are available (which are beyond the scope of this book) that can help you monitor the number of objects created in your application.

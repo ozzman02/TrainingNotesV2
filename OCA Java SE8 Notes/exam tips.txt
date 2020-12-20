@@ -448,5 +448,33 @@ Chapter 7
 		
 		- If a catch block returns an object, the finally block can modify the state of the object being returned by it.
 
+	- In the exam, watch out for code that tries to use an uninitialized local variable. Because such variables aren’t initialized with even a null value, 
+	you can’t print their value using the System.out.println method. Such code won’t compile.
+
+	- In the exam, watch out for division with integers. If the divisor is 0, the integer value that’s being divided doesn’t matter. 
+	  Such an operation will throw an ArithmeticException.
 	
-	
+	- Division of a negative or positive integer value by 0 will result in an ArithmeticException.
+
+	- Division of 0 by 0 results in an ArithmeticException.
+
+	- If you divide a positive decimal value by 0, the result is Infinity. If you divide a negative decimal value by 0, the result is -Infinity.
+
+	- Division of 0.0 by 0 results in NaN.
+
+	- When a positive integer or decimal value is divided by 0.0, the result is Infinity.
+
+	- When a negative integer or decimal value is divided by 0.0, the result is –Infinity.
+
+	- Beware of code that seems to be simple in the OCA Java SE 8 Programmer I exam. The class 
+	  DemoExceptionInInitializerError (mentioned previously) seems deceptively simple, but it’s a good candidate for an exam question. 
+	  As you know, this class throws the error ExceptionInInitializerError when the JVM tries to load it.
+
+	  	public class DemoExceptionInInitializerError {
+    		static {
+        		int num = Integer.parseInt("sd", 16);
+    		}
+		}
+
+	- ExceptionInInitializerError can be caused by an object of RuntimeException only. 
+	  It can’t occur as the result of an error or checked exception thrown by the static initialization block.
