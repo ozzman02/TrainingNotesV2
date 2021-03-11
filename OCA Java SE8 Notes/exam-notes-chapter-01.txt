@@ -29,16 +29,21 @@ Java Basics
 	Structure and components of a Java source code file
 	
 		- A Java source code file is used to define Java entities such as a class, interface, enum, and annotation.
-		- When you define a public class or an interface in a Java source file, the names of the class or interface and Java source file must match. 
+		
+		- When you define a public class or an interface in a Java source file, the names of the class or interface 
+			and Java source file must match. 
+		
 		- Also, a source code file can’t define more than one public class or interface.
 		
 1.2 Executable Java applications
 
-	An executable Java class, when handed over to the JVM, starts its execution at a particular point in the class—the main method. 
+	An executable Java class, when handed over to the JVM, starts its execution at a particular point in the class,
+	the main method. 
+	
 	The JVM starts executing the code that’s defined in the main method.
 	
-	You can’t hand over a non-executable Java class (class without a main method) to the JVM and ask it to execute it. In this case, the JVM
-	won’t know which method to execute because no entry point is marked.
+	You can’t hand over a non-executable Java class (class without a main method) to the JVM and ask it to execute it. 
+	In this case, the JVM won’t know which method to execute because no entry point is marked.
 	
 	The main method
 	
@@ -47,7 +52,8 @@ Java Basics
 		- The name of the method must be main.
 		- The return type of this method must be void.
 		- The method must accept a method argument of a String array or a variable argument (varargs) of type String.
-		- If a class defines a main method that doesn’t match the signature of the main method, it’s referred to as an overloaded method
+		- If a class defines a main method that doesn’t match the signature of the main method, it’s referred to 
+			as an overloaded method
 		
 		Valid signatures:
 		
@@ -61,12 +67,12 @@ Java Basics
 		
 1.3 Java packages
 		
-		
 	Package-naming convention example:
 	
 		com.oracle.javacert.associate
 		
-			com			Commercial. A couple of the commonly used three-letter package abbreviations are gov—for government bodies and edu—for educational institutions
+			com			Commercial. A couple of the commonly used three-letter package abbreviations are 
+						gov for government bodies and edu for educational institutions
 			oracle		Name of the organization
 			javacert	Further categorization of the project at Oracle
 			associate	Further subcategorization of Java certification
@@ -76,14 +82,16 @@ Java Basics
 		- Per Java naming conventions, package names should all be in lowercase.
 		- The package and subpackage names are separated using a dot (.).
 		- Package names follow the rules defined for valid identifiers in Java.
-		- For classes and interfaces defined in a package, the package statement is the first statement in a Java source file (a .java file). The exception is that comments
-			can appear before or after a package statement.
+		- For classes and interfaces defined in a package, the package statement is the first statement in a Java 
+			source file (a .java file). The exception is that comments can appear before or after a package statement.
 		- There can be a maximum of one package statement per Java source code file (.java file).
-		- All the classes and interfaces defined in a Java source code file are defined in the same package. They can’t be defined in separate packages.	
+		- All the classes and interfaces defined in a Java source code file are defined in the same package. 
+			They can’t be defined in separate packages.	
 		
 	You can’t import classes from a subpackage by using an asterisk in the import statement.		
 	
 	What happens if you don’t include a package statement in your classes or interfaces?
+
 		In that case, they become part of a default, no-name package.
 
 	Static imports
@@ -128,7 +136,8 @@ Java Basics
 			 
 			 - Classes and interfaces defined in the same package
 			 - All derived classes, even if they’re defined in separate packages
-			 - A derived class inherits the protected members of its base class, irrespective of the packages in which they’re defined
+			 - A derived class inherits the protected members of its base class, irrespective of the packages in which
+			 	they’re defined
 		
 		- default
 		
@@ -176,7 +185,8 @@ Java Basics
 		
 			- belong to a class.
 			- They’re common to all instances of a class and aren’t unique to any instance of a class
-			- static attributes exist independently of any instances of a class and may be accessed even when no instances of the class have been created.
+			- static attributes exist independently of any instances of a class and may be accessed even 
+				when no instances of the class have been created.
 			- You can compare a static variable with a shared variable. 
 			- A static variable is shared by all the objects of a class. 
 			- A class and an interface can declare static variables
@@ -189,11 +199,10 @@ Java Basics
 			- The static members aren’t involved in runtime polymorphism.
 			- You can’t override the static members in a derived class, but you can redefine them
 			- Neither static methods nor static variables can access the non-static variables and methods of a class.
-			- Non-static variables and methods can access static variables and methods because the static members of a class exist even if no
-				instances of the class exist.
-			- Because static variables and methods belong to a class and not to an instance, you can access them using variables, 
-				which are initialized to null	
-
+			- Non-static variables and methods can access static variables and methods because the static members of 
+				a class exist even if no instances of the class exist.
+			- Because static variables and methods belong to a class and not to an instance, you can access them using 
+				variables, which are initialized to null	
 
 				class Emp {
 					String name;
@@ -211,11 +220,10 @@ Java Basics
 					}
 				}
 		
-			
-	
 	- final
 	
-		The keyword final can be used with the declaration of a class, variable, or method. It can’t be used with the declaration of an interface.
+		The keyword final can be used with the declaration of a class, variable, or method. 
+		It can’t be used with the declaration of an interface.
 		
 		final class
 			
@@ -228,8 +236,8 @@ Java Basics
 			It’s easy to confuse reassigning a value to a final variable with calling a method on a final variable, 
 			which might change the state of the object that it refers to.
 		
-			If a reference variable is defined as a final variable, you can’t reassign another object to it, but you can call methods 
-			on this variable (that modify its state)
+			If a reference variable is defined as a final variable, you can’t reassign another object to it, 
+			but you can call methods on this variable (that modify its state)
 			
 			class Person {
 				final StringBuilder name = new StringBuilder("Sh");
@@ -245,26 +253,28 @@ Java Basics
 			
 	- synchronized
 	
-		A synchronized method can’t be accessed by multiple threads concurrently. You can’t mark classes, interfaces, or variables with this modifier.
+		A synchronized method can’t be accessed by multiple threads concurrently. 
+		You can’t mark classes, interfaces, or variables with this modifier.
 		
 	- native
 	
-		A native method calls and makes use of libraries and methods implemented in other programming languages such as C or C++. You can’t mark
-		classes, interfaces, or variables with this modifier.
+		A native method calls and makes use of libraries and methods implemented in other programming languages 
+		such as C or C++. You can’t mark classes, interfaces, or variables with this modifier.
 
 	- strictfp
 	
-		Classes, interfaces, and methods defined using this keyword ensure that calculations using floating-point numbers are identical on all platforms.
-		This modifier can’t be used with variables.
+		Classes, interfaces, and methods defined using this keyword ensure that calculations using floating-point 
+		numbers are identical on all platforms.This modifier can’t be used with variables.
 		
 	- transient
 	
-		A transient variable isn’t serialized when the corresponding object is serialized. The transient modifier can’t be applied to classes, 
-		interfaces, or methods.
+		A transient variable isn’t serialized when the corresponding object is serialized. The transient modifier 
+		can’t be applied to classes, interfaces, or methods.
 
 	- volatile
 	
-		A volatile variable’s value can be safely modified by different threads. Classes, interfaces, and methods can’t use this modifier.
+		A volatile variable’s value can be safely modified by different threads. Classes, interfaces, and methods 
+		can’t use this modifier.
 	
 	
 1.6 Features and components of Java
