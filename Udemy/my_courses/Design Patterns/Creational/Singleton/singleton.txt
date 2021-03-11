@@ -19,3 +19,8 @@ Benefits
 	1. Controlled access to one instance
 	2. Reduce name space -----> avoid global variables
 	3. The ability to subclass the singleton class.
+	4. Configure the number of instances you need.
+	
+Drawback
+
+	State of the Singleton must be shareable between program executions.
