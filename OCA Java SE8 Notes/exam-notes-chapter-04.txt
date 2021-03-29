@@ -207,14 +207,14 @@ Selected classes from the Java API and arrays
 				
 			int intArray2[] = new int[]{0, 1};
 			String[] strArray2 = new String[]{"Summer", "Winter"};
-			int multiArray2[][] = new int[][]{ {0, 1}, {3, 4, 5}};
+			int multiArray2[][] = new int[][]{ {0, 1}, {3, 4, 5} };
 				
 				
 			Won't compile
 				
 				int intArray2[] = new int[2]{0, 1};
 				String[] strArray2 = new String[2]{"Summer", "Winter"};
-				int multiArray2[][] = new int[2][]{ {0, 1}, {3, 4, 5}};
+				int multiArray2[][] = new int[2][]{ {0, 1}, {3, 4, 5} };
 					
 				
 			Also valid:
@@ -350,7 +350,10 @@ Selected classes from the Java API and arrays
 		
 		4.5.2 Comparing objects of a user-defined class
 		
-		4.5.4 Contract of the equals method
+		4.5.4 Contract of the equals and hashCode methods
+
+			If two objects are equals they must have the same hashCode.
+			If two objects have the same hashCode that does not mean they are equals.
 		
 		4.6 Working with calendar data
 		
