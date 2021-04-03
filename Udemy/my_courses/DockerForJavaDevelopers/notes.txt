@@ -1,10 +1,14 @@
 Docker for Java Developers
 
 /* run an image in the background with port mapping */
-docker run -p 27017:27017 -d mongo
+	
+	docker run -p 27017:27017 -d mongo
+
+	* -d runs in the background
 
 /* view container logs */
-docker logs -f containerId
+
+	docker logs -f containerId
 
 /* SpringBoot Mongo DB project */
 
@@ -49,7 +53,8 @@ docker logs -f containerId
 		sha256:d1165f2212346b2bab48cb01c1e39ee8ad1be46b87873d9ca7a4e434980a7726
 
 /* mongo local volume for db persistence */
-docker run -p 27017:27017 -v /home/oscars/DockerData/mongo:/data/db -d mongo
+	
+	docker run -p 27017:27017 -v /home/oscars/DockerData/mongo:/data/db -d mongo
 
 /* run rabbitmq with port mapping exposing also the management console */ 
 
@@ -73,7 +78,33 @@ docker run -p 27017:27017 -v /home/oscars/DockerData/mongo:/data/db -d mongo
 
 		mysql
 
-Run Centos image on docker
+/* Docker cleaning */
+
+	Kill all running containers
+
+		docker kill $(docker ps -q)
+
+	Delete all stop containers
+
+		docker rm $(docker ps -a -q)
+
+	Remove a docker image
+
+		docker rmi <image name>	
+
+	Delete untagged (dangling images)
+
+		docker rmi $(docker images -q -f dangling=true)
+	
+	Delete all images
+
+		docker rmi $(dockers images -q)
+
+	Remove all dangling volumes
+
+		docker volume rm $(docker volume ls -f dangling=true -q)
+
+/* Run Centos image on docker */
 	
 	docker run -d centos
 	
@@ -85,9 +116,9 @@ Run Centos image on docker
 	
 		yum install java
 		
-Run Spring Boot app in docker
+/* Run Spring Boot app in docker */
 	
-	1. Crear docker file.
+	1. Create docker file.
 	2. docker build -t spring-boot-docker .
 	3. docker run -d -p 8080:8080 spring-boot-docker
 	
