@@ -1,0 +1,7 @@
+CQRS
+
+    Command Query Responsibility Segregation: Separate Write and Read
+
+        https://martinfowler.com/bliki/CQRS.html
+
+        https://cqrs.files.wordpress.com/2010/11/cqrs_documents.pdf
