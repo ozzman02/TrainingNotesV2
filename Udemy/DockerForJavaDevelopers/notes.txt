@@ -62,6 +62,10 @@ Docker for Java Developers
 	password: guest
 	docker run -d --hostname oscars --name oscars-rabbit -p 8080:15672 -p 5671:5671 -p 5672:5672 rabbitmq:3-management
 
+	connect to console: http://localhost:8080/
+
+	docker run -d --hostname my-rabbit --name rabbitmq -p 5671:5671 -p 5672:5672 rabbitmq
+
 /* run mysql with port mapping, environment variables and local storage */
 	
 	stop local mysql 
@@ -77,6 +81,8 @@ Docker for Java Developers
 	connect to mysql
 
 		mysql
+
+	docker run --name mysqldb -p 8082:3306 -e MYSQL_DATABASE=pageviewservice -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d mysql:5
 
 /* Docker cleaning */
 
@@ -123,19 +129,28 @@ Docker for Java Developers
 	3. docker run -d -p 8080:8080 spring-boot-docker
 	
 	
-Automatig Building of Docker images (Fabric8)
+/* Automatig Building of Docker images (Fabric8) */
+
+	- configure the maven plugin  (Check Daemon socket option info https://docs.docker.com/engine/reference/commandline/dockerd/)
 
 	- mvn clean package
 	
 	- mvn clean package docker:build (build docker image)
 	
-	- mvn clean package docker:build push (publish to docker hub)
-	
-Running images from Maven
+	- mvn clean package docker:build docker:push (publish to docker hub)
 
-	mvn docker:run 		run interactively
-	mvn docker:start	run in the background
-	mvn docjer:stop
+	For a better automation:
+
+	- Change the dockerfile to a DockerFileTemplate.
+	- Create a groovy script
+	- Update pom with gmavenplus-plugin
+	
+/* Running images from Maven */
+
+	mvn docker:run 		runs interactively
+	mvn docker:start	runs in the background
+	mvn docker:stop
+
 
 	
 	

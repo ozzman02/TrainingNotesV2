@@ -330,6 +330,8 @@ Selected classes from the Java API and arrays
 				The method clone defined in the class ArrayList returns a shallow copy of this ArrayList instance. 
 				“Shallow copy” means that this method creates a new instance of the ArrayList object to be cloned. 
 				Its element references are copied, but the objects themselves are not.
+
+				Shallow copy means that the method creates a new instance of the ArrayList to be cloned, but the ArrayList elements aren’t copied.
 				
 			Creating an array from an ArrayList
 			
@@ -575,15 +577,33 @@ Selected classes from the Java API and arrays
 					The methods ofLocalizedDate, ofLocalizedTime, and ofLocalizedDateTime format date and time objects according 
 					to the locale (language, region, or country) of the system on which your code executes. So the output
 					might vary slightly across systems.
+
+					DateTimeFormatter formatter1 = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM);
+					DateTimeFormatter formatter5 = DateTimeFormatter.ISO_DATE;
+					DateTimeFormatter formatter6 = DateTimeFormatter.ofPattern("yyyy MM dd");
 					
 				Format date or time objects using DateTimeFormatter
 					
 					- To format a date or time object, you can use either the instance format method in
 					date/time objects or the instance format method in the DateTimeFormatter class.
+
 					Behind the scenes, the format method in date and time objects simply calls the format
 					method in DateTimeFormatter
 					
 					- TemporalAccessor is an interface, implemented by the classes LocalDate, LocalTime, and LocalDateTime. 
+
+						DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
+						LocalDate date = LocalDate.of(2057,8,11);
+						System.out.println(formatter.format(date));
+
+						LocalDate date = LocalDate.of(2057,8,11);
+						LocalTime time = LocalTime.of(14,30,15);
+
+						DateTimeFormatter d1 = DateTimeFormatter.ofPattern("y");
+						System.out.println(d1.format(date)); // 2057
+
+						DateTimeFormatter t1 = DateTimeFormatter.ofPattern("H h m s");
+						System.out.println(t1.format(time)); // 14 2 30 15
 				
 				Parse Date or Time objects using DateTimeFormatter
 				
@@ -591,6 +611,9 @@ Selected classes from the Java API and arrays
 					parse method in the DateTimeFormatter class.
 					
 					Behind the scenes, the parse method in date/time objects simply calls the parse method in DateTimeFormatter.
+
+					DateTimeFormatter 	 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+					LocalDate date = LocalDate.parse("2057-01-29", d1 );
 					
 					
 					
