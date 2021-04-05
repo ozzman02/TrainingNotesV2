@@ -31,9 +31,9 @@ Working with inheritance
 			- A derived class inherits all the non private members of its base class.
 			- A derived class inherits base class members with the following accessibility levels:
 				
-				- Default—Members with default access can be accessed in a derived class only if the base and derived classes reside in the same package.
-				- protected—Members with protected access are accessible to all the derived classes, regardless of the packages in which the base and derived classes are defined.
-				- public—Members with public access are visible to all other classes.
+				- Default: Members with default access can be accessed in a derived class only if the base and derived classes reside in the same package.
+				- protected: Members with protected access are accessible to all the derived classes, regardless of the packages in which the base and derived classes are defined.
+				- public: Members with public access are visible to all other classes.
 				
 		6.1.5 Which base class members aren’t inherited by a derived class?
 		
@@ -48,7 +48,8 @@ Working with inheritance
 			- When a derived class defines an instance or class variable with the same name as one defined from its base class, only these new variables and methods are visible to
 				code using the derived class.
 				
-			- When a derived class defines different code for a method inherited from a base class by defining the method again, this method is treated as a special method—an overridden method.
+			- When a derived class defines different code for a method inherited from a base class by defining the method again, this method is treated as a special 
+				method, an overridden method.
 			
 			- You can implement inheritance by using either a concrete class or an abstract class as a base class.
 			
@@ -152,7 +153,9 @@ Working with inheritance
 					If they don’t choose to override them, the default implementation from the interface is used.
 					
 					interface Interviewer {
+						
 						abstract void conductInterview();
+						
 						default void submitInterviewStatus() {
 							System.out.println("Accept");
 						}
@@ -220,6 +223,7 @@ Working with inheritance
 			- Implementing multiple interfaces with the same constant names
 			
 				- A class can implement multiple interfaces with the same constant name, as long as a call to these interfaces isn’t ambiguous.
+
 				- If an implicit reference to a constant defined in an interface(s) isn’t ambiguous, the class that implements the interface 
 					can refer to it without prefixing it with the interface name.
 			
@@ -361,7 +365,8 @@ Working with inheritance
 			
 			Changing a default method to abstract or static:
 
-				- If you modify an interface and change its default method to an abstract method, a class that implements it might fail to compile. The implementing class will fail to compile, if it doesn’t override the default method of the interface.
+				- If you modify an interface and change its default method to an abstract method, a class that implements it might fail to compile. The implementing 
+					class will fail to compile, if it doesn’t override the default method of the interface.
 
 				- If you modify the default method to a static method in an interface, the code that calls the method won’t compile. 
 
@@ -384,7 +389,8 @@ Working with inheritance
 
 	6.3 Refence variables and object types
 
-		- For this exam objective, you need to understand that when you refer to an object, the type of the object reference variable and the type of the object being referred to may be different.
+		- For this exam objective, you need to understand that when you refer to an object, the type of the object reference variable and the type of the object being 
+			referred to may be different.
 
 		- Objects of derived classes can be referred to using a reference variable of any of the following types:	
 
@@ -394,17 +400,32 @@ Working with inheritance
 
 			There are differences, however, when you try to access an object using a reference variable of its own type, its base class, or an implemented interface.
 
+
+			public class Person {}
+
+			public class Employee extends Person {}
+
+			public class HRExecutive extends Employee implements Interviewer {}
+
+
 		6.3.1 Using a variable of the derived class to access its own object
 
 			You can access all the variables and methods that are defined in its base class and interface.
+
+				HRExecutive hrExecutive = new HRExecutive();
 
 		6.3.2 Using a variable of a superclass to access an object of a derived class
 
 			You can't. It can access only the variables and methods defined in the superclass.
 
+				Employee employee = new HRExecutive();
+				Person person = new HRExecutive();
+
 		6.3.3 Using a variable of an implemented interface to access a derived class object
 
 			The variable of an implemented interface can only access the methods defined in the interface.
+
+				Interviewer interviewer = new HRExecutive();
 
 		6.3.4 The need for accessing an object using the variables of its base class or implemented interfaces
 
@@ -428,7 +449,7 @@ Working with inheritance
 			or of a base class.
 
 			But when a need arises (as mentioned in the preceding paragraph), you might choose to access some of the members of a derived class, 
-			which aren’t explicitly available, by using the reference variable of the base type or the implemented inter- face. This is where casting comes in!
+			which aren’t explicitly available, by using the reference variable of the base type or the implemented interface. This is where casting comes in!
 
 	6.5 Use this and super to access objects and constructors
 
@@ -437,7 +458,7 @@ Working with inheritance
 			- The this reference always points to an object’s own instance.
 
 			- The this reference is required only when code executing within a method block needs to differentiate between an instance variable and 
-			its local variable or method parameters.
+				its local variable or method parameters.
 
 			- You can also reference one constructor from another by using the keyword this. To call the default constructor, call this().
 
@@ -464,7 +485,7 @@ Working with inheritance
 		6.6.1 Polymorphism with classes
 
 			- Polymorphism with classes comes into the picture when a class inherits another class and both the base and the derived classes define methods 
-			with the same method signature (the same method name and method parameters).
+				with the same method signature (the same method name and method parameters).
 
 			- Polymorphic methods are also called overridden methods.
 
@@ -493,13 +514,17 @@ Working with inheritance
 		6.6.2 Binding of variables and methods at compile time and runtime
 
 			- Binding refers to resolving of variables or methods that would be called for a reference variable.
+
 			- With inheritance, the instance variables bind at compile time and the methods bind at runtime.
 
 		6.6.3 Polymorphism with interfaces
 
 			- Polymorphism can also be implemented using interfaces.
+
 			- Whereas polymorphism with classes has a class as the base class, polymorphism with interfaces requires a class to implement an interface.
+			
 			- Polymorphism with interfaces involves abstract or default methods from the implemented interface.
+			
 			- An interface can also define static methods, but static methods never participate in polymorphism.
 
 			- Polymorphism with abstract methods
@@ -511,6 +536,7 @@ Working with inheritance
 	6.7 Simple lambda expressions
 
 		- Functional programming enables you to write declarative code.
+
 		- With functional programming, you can pass code to your methods as arguments. 
 
 		6.7.1 Comparing passing values with passing code to methods
@@ -532,7 +558,8 @@ Working with inheritance
 			}
 
 			/* passing code to the method defined in the interface */
-			Validate validate = e -> e.getPerformanceRating() >= 5;
+
+				Validate validate = e -> e.getPerformanceRating() >= 5;
 
 		6.7.2 Syntax of lambda expressions
 
@@ -574,3 +601,76 @@ Working with inheritance
 				Predicate and you must use its public method test to evaluate an argument.
 
 			Predicate<Emp> predicate = e -> e.getPerformanceRating() >= 5;
+
+
+
+		Example
+
+			interface Validate {
+				boolean check(Emp emp);
+			}
+
+			class Emp {
+				
+				String name;
+				int performanceRating;
+				double salary;
+				
+				Emp(String nm, int rating, double sal) {
+					name = nm;
+					performanceRating = rating;
+					salary = sal;
+				}
+				
+				public String getName() { return name; }
+				
+				public int getPerformanceRating() { return performanceRating; }
+				
+				public double getSalary() { return salary; }
+				
+				public String toString() {
+					return name + ":" + performanceRating + ":" + salary;
+				}
+			}
+			
+			class Test {
+
+				static void filter(ArrayList<Emp> list, Validate rule) {
+					for (Emp e : list) {
+						if (rule.check(e)) {
+							System.out.println(e);
+						}
+					}
+				}
+
+				static void filterWithPredicate(ArrayList<Emp> list, Predicate<Emp> rule) {
+					for (Emp e : list) {
+						if (rule.test(e)) {
+							System.out.println(e);
+						}
+					}
+				}
+				
+				public static void main(String[] args) {
+					
+					Emp e1 = new Emp("Shreya", 5, 9999.00);
+					Emp e2 = new Emp("Paul", 4, 1234.00);
+					Emp e3 = new Emp("Harry", 5, 8769.00);
+					Emp e4 = new Emp("Selvan", 1, 2769.00);
+					
+					ArrayList<Emp> empArrList = new ArrayList<>();
+					
+					empArrList.add(e1);
+					empArrList.add(e2);
+					empArrList.add(e3);
+					empArrList.add(e4);
+
+					Validate validate = e -> e.getPerformanceRating() >= 5;
+					filter(empArrList, validatePerfor);
+
+					Predicate<Emp> predicate = e -> e.getPerformanceRating() >= 5;
+					filterWithPredicate(empArrList, predicate);
+					
+				}
+
+			}
