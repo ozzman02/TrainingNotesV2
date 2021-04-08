@@ -238,7 +238,7 @@ Exception Handling
                 Finally, you execute a set of code, in all conditions, regardless of whether the code in the try block throws any exceptions.
 
         
-            - You can create an exception of your own—a custom exception—by extending the class Exception (or any of its subclasses).
+            - You can create an exception of your own a custom exception by extending the class Exception (or any of its subclasses).
 
             - Single Try Block, Multiple Catch Blocks and a Finally Blocks
 
@@ -246,7 +246,7 @@ Exception Handling
 
                 - Multiple catch blocks are used to handle different types of exceptions. 
                 
-                - A finally block is used to define cleanup code—code that closes and releases resources, such as file handlers 
+                - A finally block is used to define cleanup code, code that closes and releases resources, such as file handlers 
                     and database or network connections.
 
         7.4.2 Using a method that throws a checked exception
@@ -446,11 +446,11 @@ Exception Handling
 
             By default, the static and instance variables of a class are assigned a null value.
 
-            By default local variables aren’t assigned a value—not even a null value.
+            By default local variables aren’t assigned a value, not even a null value.
 
         7.5.5 ArithmeticException
 
-            When the JVM encounters an exceptional mathe- matical condition, like dividing an integer by zero, it throws ArithmeticException.
+            When the JVM encounters an exceptional mathematical condition, like dividing an integer by zero, it throws ArithmeticException.
             Note that division by 0 is not the same as division by 0.0.
 
             - A division will be performed as an integer division as long as only integers are involved.
@@ -550,7 +550,7 @@ Exception Handling
             persistent data to be processed by your application? 
             In such a case, the JVM may run out of memory on the heap, and the garbage collector may not be able to free more memory for the JVM.
 
-            You’ll always work with a finite heap size, no mat- ter what platform you work on, so you can’t create and use an unlimited 
+            You’ll always work with a finite heap size, no matter what platform you work on, so you can’t create and use an unlimited 
             number of objects in your application. 
 
             To get around this error, you need to either limit the number of resources or objects that your application creates 
