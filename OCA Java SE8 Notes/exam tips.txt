@@ -70,7 +70,8 @@ Chapter 2
 		
 	- You can’t compare incomparable values. For example, you can’t compare a boolean with an int, a char, or a floating-point number. If you try to do so, your code will not compile.
 	
-	- The result of the relational operation is always a boolean value. You can’t assign the result of a relational operation to a variable of type char, int, byte, short, long, float, or double.
+	- The result of the relational operation is always a boolean value. You can’t assign the result of a relational operation to a variable of type char, int, byte, short, long,
+		 float, or double.
 	
 	- All wrapper classes (except Character) define a constructor that accepts a String argument representing the primitive value that needs to be
 		wrapped. Watch out for exam questions that include a call to a no-argument constructor of a wrapper class. None of these classes define a no-argument
@@ -103,7 +104,7 @@ Chapter 2
 	- Wrapper classes are immutable. Adding a primitive value to a wrapper class variable doesn’t modify the value of the object it refers to. 
 		The wrapper class variable is assigned a new object.
 	
-	- EXAM TIP Unboxing a wrapper reference variable, which refers to null, will throw a NullPointerException.
+	- Unboxing a wrapper reference variable, which refers to null, will throw a NullPointerException.
 	
 Chapter 3
 
@@ -334,7 +335,7 @@ Chapter 5
 	- In the exam, watch out for code that uses misleading indentation in if constructs. In the absence of a defined code block (marked with {}),
 		only the statement following the if construct will be considered part of it.
 	
-	- Watch out for code in the exam that uses the assignment operator (=)to compare a boolean value in the if condition. It won’t compare the
+	- Watch out for code in the exam that uses the assignment operator (=) to compare a boolean value in the if condition. It won’t compare the
 		boolean value; it’ll assign a value to it. The correct operator for comparing a boolean value is the equality operator (==).
 	
 	- In the exam, watch out for compatibility of the value that’s returned by a ternary operator and the variable to which it’s assigned.
@@ -414,8 +415,8 @@ Chapter 6
 	- Watch out for code in the exam that uses variables of the base class to refer to objects of the derived class and then accesses variables 
 		and methods of the referenced object. Remember that variables bind at compile time, whereas methods bind at runtime
 
-	- Watch out for overloaded methods that seem to participate in polymorphism—overloaded methods don’t participate in polymorphism. 
-		Only overridden methods—methods with the same method signatures—par- ticipate in polymorphism.
+	- Watch out for overloaded methods that seem to participate in polymorphism. Overloaded methods don’t participate in polymorphism. 
+		Only overridden methods, methods with the same method signatures participate in polymorphism.
 
 Chapter 7
 
@@ -449,7 +450,7 @@ Chapter 7
 		- If a catch block returns an object, the finally block can modify the state of the object being returned by it.
 
 	- In the exam, watch out for code that tries to use an uninitialized local variable. Because such variables aren’t initialized with even a null value, 
-	you can’t print their value using the System.out.println method. Such code won’t compile.
+		you can’t print their value using the System.out.println method. Such code won’t compile.
 
 	- In the exam, watch out for division with integers. If the divisor is 0, the integer value that’s being divided doesn’t matter. 
 	  Such an operation will throw an ArithmeticException.
