@@ -1,66 +1,88 @@
-Granularity: Is the extent to which a system could be broken down into small parts.
+Object Relational Impedance Mismatch
 
-	coarse-grained: Contains a lot of details: Example: Person
-	fine-granined: Contains specific information: Example: Address
+	Granularity: Is the extent to which a system could be broken down into small parts.
+
+		coarse-grained: Contains a lot of details: Example: Person
+		fine-granined: Contains specific information: Example: Address
 	
-	Object model: Various levels of granularity
-	Relational Model: 2 levels of granularity (columns and tables)
-	Object model is more granular than the relational model. 
+		Object model: Various levels of granularity
+		Relational Model: 2 levels of granularity (columns and tables)
+		Object model is more granular than the relational model. 
 	
-Inheritance
+	Inheritance
 	
-	Object model: Inheritance
-	Relational model: No inheritance
+		Object model: Inheritance
+		Relational model: No inheritance
 
-Identity
+	Identity
 
-	Object model: object identity (foo == bar) and object equality (foo.equals(bar))
-	Relational model: Primary key.
+		Object model: object identity (foo == bar) and object equality (foo.equals(bar))
+		Relational model: Primary key.
 	
-Associations
+	Associations
 
-	Object model: Object references (directional)
-	Relational model: Foreign key (non - directional)
+		Object model: Object references (directional)
+		Relational model: Foreign key (non - directional)
 
-Data Navigation
+	Data Navigation
 
-	Object model: Navigate through associations
-	Relational model: SQL
+		Object model: Navigate through associations
+		Relational model: SQL
 	
+
+Mapping Concepts
 	
-Aggregation: Indicates a relationship between a whole and its parts. Example: Music Band (whole) Artist (part). When the whole is destroyed its parts are not destroyed with it.
-Composition: Composition is a strong form of aggregation. Each part may belong to only one whole (no sharing). Example: House (whole) Rooms(part) When the whole is destroyed its parts are also destroyed with it.
+	Aggregation: Indicates a relationship between a whole and its parts. Example: Music Band (whole) Artist (part). 
+				 When the whole is destroyed its parts are not destroyed with it.
+	
+	Composition: Composition is a strong form of aggregation. Each part may belong to only one whole (no sharing). 
+			     Example: House (whole) Rooms(part) When the whole is destroyed its parts are also destroyed with it.
 
-An object of entity type has its own database identity (primary key value)
+	
+	Entities and Value Types
+	
+		An object of entity type has its own database identity (primary key value)
 
-An object of value type has no database identity (primary key value), it belongs to an entity
-
-A component is a part of a whole in such a way that if the whole is destroyed, all its parts are also destroyed with it.
-Each component may belong to only one whole (it is not shared).
-A component is a contained object that is persisted as a value type.
-A component has no database identity.
-
-Associations
-
-	Cascading the Persist Operation = Transitive Persistance
-	If the association is bidirectional, one of the sides (and only one) has to be the owner of the relationship - The owner of the relationship is responsible for the association column(s) update.
-	Many side in a OneToMany bidirectional relationship is (almost) always the owner side. In this case the One side is called inverse end.
-	In a bidirectional OneToOne relationship to declare a side as not responsible for the relationship, the attribute mappedBy is used.
-	In a bidirectional ManyToMany relationship the inverse end is not responsible for the relationship. The inverse end will be ignored when updating the relationship values in the join table.
-		When updating the owner, the owner is responsible for the relationship, so it will have the join table updated.
+		An object of value type has no database identity (primary key value), it belongs to an entity
 		
-Composite Primary Key
+		String and Integer are value types.
 
-	A combination of more than 1 table column that identifies the uniqueness of a record/(database table row)
-	No matter how good or natural a composite primary key is, it is not recommended for uniquely identifying a record.
-	Not only composite keys, even business keys (e.g ISBN, SSN) are not recommended for uniquely identifying a record. A business key is also called a Natural Key.
-	A business key is not just a unique identifier but it also has a business meaning associated with it.
-	As a best practice use synthetic identifier. (Identifier with no business meaning)
+	Component Mapping
 	
-Composite Foreign Key
+		A component is a part of a whole in such a way that if the whole is destroyed, all its parts are also destroyed with it.
+		Each component may belong to only one whole (it is not shared).
+		A component is a contained object that is persisted as a value type.
+		A component has no database identity.
 
-	When a foreign key is made of a single column we use @JoinColumn
-	When a foreign key is made of a multiple columns we use @JoinColumns
+	Associations
+
+		Cascading the Persist Operation = Transitive Persistance
+		
+		If the association is bidirectional, one of the sides (and only one) has to be the owner of the relationship.
+		The owner of the relationship is responsible for the association column(s) update.
+		
+		The "Many side" in a OneToMany bidirectional relationship is (almost) always the owner side. In this case the "One side" is called inverse end.
+		
+		In a bidirectional OneToOne relationship to declare a side as not responsible for the relationship, the attribute mappedBy is used.
+		
+		In a bidirectional ManyToMany relationship the inverse end is not responsible for the relationship. The inverse end will be ignored when 
+		updating the relationship values in the join table. When updating the owner, the owner is responsible for the relationship, 
+		so it will have the join table updated.
+		
+		The owner of the relationship is the one that has a reference to the foreign key.
+		
+	Composite Primary Key
+
+		A combination of more than 1 table column that identifies the uniqueness of a record/(database table row)
+		No matter how good or natural a composite primary key is, it is not recommended for uniquely identifying a record.
+		Not only composite keys, even business keys (e.g ISBN, SSN) are not recommended for uniquely identifying a record. A business key is also called a Natural Key.
+		A business key is not just a unique identifier but it also has a business meaning associated with it.
+		As a best practice use synthetic identifier. (Identifier with no business meaning)
+	
+	Composite Foreign Key
+
+		When a foreign key is made of a single column we use @JoinColumn
+		When a foreign key is made of a multiple columns we use @JoinColumns
 	
 JPA
 
