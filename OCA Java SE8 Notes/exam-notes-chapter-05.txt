@@ -33,7 +33,7 @@ Flow Control
 			Here’s another interesting and bizarre piece of code:
 			
 				int score = 100;
-				if((score=score+10) > 110);
+				if ( (score=score+10) > 110 );
 				
 			Using if(testValue==true) is the same as using if(testValue). Similarly,
 			if(testValue==false) is the same as using if(!testValue).
@@ -139,6 +139,7 @@ Flow Control
 		5.2.5 Use of break statements within a switch statement
 		
 			- Note the use of break to exit the switch construct once a matching case is found. 
+			
 			- In the absence of the break statement, control will fall through the remaining code and execute the code 
 				corresponding to all the remaining cases that follow that matching case.
 	
@@ -181,18 +182,22 @@ Flow Control
 		
 		5.3.4 Optional parts of a for statement
 		
-			All three parts of a for statement—that is, initialization block, termination condition,
-				and update clause—are optional. But you must specify that you aren’t including a section by just including a semicolon.
+			All three parts of a for statement that is, initialization block, termination condition,
+				and update clause are optional. But you must specify that you aren’t including a section by just including a semicolon.
 			
-			int a = 10;
-			for(; a < 5; ++a) {
-				System.out.println(a);
-			}
+			Valid:
+
+				int a = 10;
+				for (; a < 5; ++a) {
+					System.out.println(a);
+				}
 			
-			int a = 10;
-			for(a < 5; ++a) {
-				System.out.println(a);
-			}
+			Invalid:
+
+				int a = 10;
+				for (a < 5; ++a) {
+					System.out.println(a);
+				}
 			
 			// Following code is valid
 			for(;;)
@@ -234,13 +239,13 @@ Flow Control
 	5.5 The while and do-while loops
 		
 		- Both of these loops work in the same manner except for one difference: the while loops checks its condition before evaluating its loop body,
-			and the do-while loop checks its condition
-			after executing the statements defined in its loop body.
+			and the do-while loop checks its condition after executing the statements defined in its loop body.
 				
 		5.5.1 The while loop
 			
 			- A while loop is used to repeatedly execute a set of statements as long as its condition evaluates to true. This loop checks the condition before 
 				it starts the execution of the statement.
+
 			- The while loop accepts arguments of type boolean or Boolean
 			
 		5.5.2 The do-while loop
@@ -280,7 +285,7 @@ Flow Control
 			
 		5.7.1 The break statement
 		
-			- The break statement is used to exit—or break out of—the for, for-each, do, and do-while loops, as well as switch constructs.
+			- The break statement is used to exit or break out of the for, for-each, do, and do-while loops, as well as switch constructs.
 			
 		5.7.2 The continue statement	
 			

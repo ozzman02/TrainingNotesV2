@@ -1,0 +1,14 @@
+11. Using Cloud Formation
+
+Allows you to create scripts to deploy infrastructure.
+
+Cloud Formation is free but you pay for the resources that it creates.
+
+GetAtt: The value that you use to return a result.
+
+	- The default scripting language for CloudFormation is: JSON
+	- Cloud Formation itself is free, however the resources it provisions will be charged at the usual rates: true
+	- What happens if Cloud Formation encounters an error by default? It will terminate and rollback all resources created on failure.
+	- You are creating a virtual data centre using cloud formation and you need to output the DNS name of your load balancer. What command would you use to achieve this?
+		FN::GetAtt
+	- What language are cloud formation templates written in? JSON

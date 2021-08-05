@@ -1,0 +1,3 @@
+localhost:8080/swagger-ui.html
+
+localhost:8080/v2/api-docs

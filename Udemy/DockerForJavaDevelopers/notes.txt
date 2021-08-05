@@ -1,0 +1,156 @@
+Docker for Java Developers
+
+/* run an image in the background with port mapping */
+	
+	docker run -p 27017:27017 -d mongo
+
+	* -d runs in the background
+
+/* view container logs */
+
+	docker logs -f containerId
+
+/* SpringBoot Mongo DB project */
+
+	url: localhost:8080/product/list
+	connect to container: docker exec -it 1bfd0b48c0fe bash
+	
+/* Images */
+
+	Image ids are a SHA 256 has derived from the layers
+
+	docker images
+
+		The image id f03be0dc25f8 is the first 12 characters of the hash
+
+	docker image inspect mongo
+
+		The mongo image has the following layers. Every layer is a file.
+
+		"RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:030309cad0ba82b098939419dcb5e0a95c77d2427d99c44a690ecab59f80a487",
+                "sha256:1e77dd81f9fa12f3034fa1ed55bc2d1f7a316b450ae53f36beb52af2dd83b78f",
+                "sha256:6f15325cc380f8fc8fa0cdffc5cc7e38c5beb155e09ab3e0edbb1e5a842c46cc",
+                "sha256:5724f34c44b8f3121e55902ff4664ac351b04c3575217aaaa7c9fd5b130ffe38",
+                "sha256:44cf575eef6a7eda4b2f668b7e671d7ac34232b1b0fbeccc41d816e5207a657e",
+                "sha256:6e986e3f895269ebfef6ff7434c3d06f5d3a28b0a1e01ebf47b9450dec99e7bc",
+                "sha256:52370c71518869b6e554b06b99a5c44767ecffc0b71623cb6960827e94a64e45",
+                "sha256:0bd5442a3a3ab0bc859289269de66db757c90bba5a886c4cce4bb73c646ca625",
+                "sha256:dcfb9fa1925e709903d50575ae4ee72e2e9896206ec3acc33baab283c0238191",
+                "sha256:d7329912c923cb0119e13c07f600bcb87a6ec2a8e90a24cea66484aff0aedcdb",
+                "sha256:567278c58c0078c8c6d0ac5948a86bdb791a99c8d3e58e5c190d870ada7cf402",
+                "sha256:81924e984258a15d12282f8684463da9392c6f06ea07b17727de7e601e808a15"
+            ]
+        },
+
+	docker images -q --no-trunc
+
+		List the full value of the hash
+
+		sha256:f03be0dc25f8732caef29f051c91ce7447f8305738032e91c23b13cba3e74e40
+		sha256:d1165f2212346b2bab48cb01c1e39ee8ad1be46b87873d9ca7a4e434980a7726
+
+/* mongo local volume for db persistence */
+	
+	docker run -p 27017:27017 -v /home/oscars/DockerData/mongo:/data/db -d mongo
+
+/* run rabbitmq with port mapping exposing also the management console */ 
+
+	user: guest
+	password: guest
+	docker run -d --hostname oscars --name oscars-rabbit -p 8080:15672 -p 5671:5671 -p 5672:5672 rabbitmq:3-management
+
+	connect to console: http://localhost:8080/
+
+	docker run -d --hostname my-rabbit --name rabbitmq -p 5671:5671 -p 5672:5672 rabbitmq
+
+/* run mysql with port mapping, environment variables and local storage */
+	
+	stop local mysql 
+		
+		sudo systemctl stop mysql
+	
+	docker run --name oscars-mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v /home/oscars/DockerData/mysql:/var/lib/mysql -p 3306:3306 -d mysql
+
+	connect to container
+
+		docker exec -it d29977fb5f69 bash
+
+	connect to mysql
+
+		mysql
+
+	docker run --name mysqldb -p 8082:3306 -e MYSQL_DATABASE=pageviewservice -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d mysql:5
+
+/* Docker cleaning */
+
+	Kill all running containers
+
+		docker kill $(docker ps -q)
+
+	Delete all stop containers
+
+		docker rm $(docker ps -a -q)
+
+	Remove a docker image
+
+		docker rmi <image name>	
+
+	Delete untagged (dangling images)
+
+		docker rmi $(docker images -q -f dangling=true)
+	
+	Delete all images
+
+		docker rmi $(dockers images -q)
+
+	Remove all dangling volumes
+
+		docker volume rm $(docker volume ls -f dangling=true -q)
+
+/* Run Centos image on docker */
+	
+	docker run -d centos
+	
+	docker run -d centos tail -f /dev/null
+	
+	docker exec -it 557cc951b694 bash
+	
+	in the terminal:
+	
+		yum install java
+		
+/* Run Spring Boot app in docker */
+	
+	1. Create docker file.
+	2. docker build -t spring-boot-docker .
+	3. docker run -d -p 8080:8080 spring-boot-docker
+	
+	
+/* Automatig Building of Docker images (Fabric8) */
+
+	- configure the maven plugin  (Check Daemon socket option info https://docs.docker.com/engine/reference/commandline/dockerd/)
+
+	- mvn clean package
+	
+	- mvn clean package docker:build (build docker image)
+	
+	- mvn clean package docker:build docker:push (publish to docker hub)
+
+	For a better automation:
+
+	- Change the dockerfile to a DockerFileTemplate.
+	- Create a groovy script
+	- Update pom with gmavenplus-plugin
+	
+/* Running images from Maven */
+
+	mvn docker:run 		runs interactively
+	mvn docker:start	runs in the background
+	mvn docker:stop
+
+
+	
+	

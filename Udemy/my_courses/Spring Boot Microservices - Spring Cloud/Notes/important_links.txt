@@ -1,5 +1,0 @@
-https://github.com/sfg-beer-works
-
-https://mvnrepository.com/artifact/com.github.sfg-beer-works
-
-https://hub.docker.com/u/sfgbeerworks

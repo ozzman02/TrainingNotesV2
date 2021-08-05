@@ -1,4 +1,0 @@
-Common table expressions define temporary tables that are used just for the current query.
-
-You can reference those tables in the statement that follows.
-

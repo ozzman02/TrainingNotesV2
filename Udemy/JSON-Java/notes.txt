@@ -1,0 +1,22 @@
+JSON Three ways
+
+	Streaming API
+	Tree Model
+	Data Binding
+	
+Here you will find a list of web pages;
+
+Json Schema:
+
+https://github.com/FasterXML/jackson-module-jsonSchema
+http://json-schema-validator.herokuapp.com/
+http://json-schema.org/
+
+Json Jackson Annotations:
+https://github.com/FasterXML/jackson-annotations
+
+Json Jackson Databind:
+https://github.com/FasterXML/jackson-databind
+
+Json Jackson XML:
+https://github.com/FasterXML/jackson-dataformat-xml

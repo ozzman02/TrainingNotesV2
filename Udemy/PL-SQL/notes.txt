@@ -1,0 +1,45 @@
+Run commands from sqlplus
+	
+	@ C:\git\PL-SQL\CompanyDefine.sql
+	@ C:\git\PL-SQL\CompanyInsert.sql
+	@ C:\git\PL-SQL\CompanySelect.sql
+	@ C:\git\PL-SQL\ElectronicsDefine.sql
+	@ C:\git\PL-SQL\ElectronicsInsert.sql
+	@ C:\git\PL-SQL\ElectronicsSelect.sql
+	@ C:\git\TrainingNotes\Udemy\PL-SQL\PL-SQL Fundamentals I\Lesson 3 - Language Features\Code.sql
+	@ C:\git\PL-SQL\MyScripts\firstscript.sql
+	
+Connect to the database from sqlplus
+
+	connect system
+
+Set blank lines
+
+	set sqlbl on;
+
+Set server output	
+
+	set serveroutput on;	
+	
+Terminate a script with .
+	
+The run or / (slash) command compiles the block and executes
+
+SQL plus variable substitution (&) is supported.
+
+Generate output within SQL Plus
+
+	set serveroutput on command for each session
+	
+	DBMS_OUTPUT() command writes to the output buffer
+	
+	Syntax for output uses the format
+		
+		PackageName.ProcedureName(parameter)
+		
+		dbms_output.put_line('Message Text')
+		
+List command
+
+ed command
+

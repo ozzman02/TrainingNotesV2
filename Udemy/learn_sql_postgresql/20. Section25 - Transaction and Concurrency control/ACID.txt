@@ -1,0 +1,43 @@
+ACID transactions
+
+    Atomicity: All the operations in a transaction work or none of them work.
+
+    Consistency: All transactions change the database state properly.
+
+    Isolation:  Transactions won't interfere with each other.
+                It's a property that defines how/when the changes made by one operation
+                become visible to others.
+
+                There are three phenomena which are prohibited at different isolation levels:
+
+                1. Dirty reads: A transaction reads data written by another unfinished 
+                    transaction running at the same time.
+                
+                2. Nonrepeatable reads: When during the course of a transaction, a row is retrieved
+                    twice and the values within the row differ between reads.
+                
+                3. Phantom reads: Occurs when in the course of a transaction, new rows are added or
+                    removed by another transaction to the records being read.
+
+
+                SQL Isolation Levels:
+
+                1. Read uncommitted: Lowest isolation level. Allows dirty reads, non repeatable reads 
+                    and phantom reads. Can see uncommitted changes made by other transactions.
+                
+                2. Read committed: Allows non repeatable reads and phantom reads. Guarantees that any
+                    data read is committed at the moment it is read. But the next read in transaction
+                    might find different data.
+
+                3. Repeatable reads: Allows phantom reads. New rows could be added or rows removed during
+                    your transaction between different reads.
+
+                4. Serializable: Highest isolation level. All types of read errors are avoided during your 
+                    transaction.
+
+    Durability: The changes or results won't be lost if there is a system failure
+
+
+By default every single statement has a transaction around it.
+If you want to bundle more than one statement you will need to use transaction control
+statements.

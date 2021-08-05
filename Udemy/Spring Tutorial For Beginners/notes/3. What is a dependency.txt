@@ -1,0 +1,12 @@
+2. What is a dependency?
+
+TodoBusinessService	---- Business Layer
+TodoDataService		---- Data Layer
+
+Business Layer is dependent of the Data Layer
+
+	That means the Business Layer calls the Data Layer
+	
+The TodoBusinessService makes a method call to the TodoDataService
+
+	That means that the TodoDataService is a dependency of TodoBusinessService

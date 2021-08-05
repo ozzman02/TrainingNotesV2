@@ -1,0 +1,12 @@
+What is MVC?
+
+	- MVC stands for Model View Controller
+	- It is a desing pattern used in WEB based JAVA Enterprise Applications.
+	- MVC pattern is also implemented in other WEB frameworks as well for separating the model layer from the view layer.
+		By doing that UI programmers and back end developers can work together.
+	- Model Layer includes business specific logic.
+	- View Layer is responsible for rendering (displaying) model objects inside the user interface using different view technologies
+		(JSP, Facelets or Velocity) (Browser)
+	- Controller receives user inputs and calls model objects based on handler mappings and pass model objects to views in order to 
+		display output inside the view layer.
+	

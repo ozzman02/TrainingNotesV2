@@ -1,0 +1,1 @@
+http://stackoverflow.com/questions/3777590/how-to-remove-jax-ws-web-services-node-in-eclipse-project-explorer

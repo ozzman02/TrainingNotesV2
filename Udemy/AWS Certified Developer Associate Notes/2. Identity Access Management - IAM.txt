@@ -1,0 +1,65 @@
+Identity Access Management - IAM
+
+What does IAM give you?
+
+Centralised control of your AWS account.
+Shared access to your AWS account.
+Granular permissions.
+Identity federation (including Active Directory, Facebook, Linkedin)
+Multifactor Authentication
+Provide temporary access to users/devices and services where necessary
+Allows you to set your own password rotation policy
+Integrates with many different AWS services
+Supports PCI DSS Compliance
+
+Critical Terms
+
+Users
+Groups
+Roles
+Policies
+
+Not region specific
+
+
+root account: email that you used to set the AWS account. Complete administrator access. Activate multifactor auth for the root account.
+https://osantamaria.signin.aws.amazon.com/console
+
+By default when a user is created they don't have permissions to do anything.
+
+Can I change the IAM role on a running EC2 instance?
+	No, at this time you cannot change the IAM role on a running EC2 instance. You can change the permissions on the IAM role associated with a running instance and the 
+	updated permissions will take effect almost immediately.
+
+Can I associate an IAM role with an already running EC2 instance?
+	No, you can associate only one IAM role with an EC2 instance
+
+Active Directory Federation
+
+1. The flow is initiated when a user (let's call him Bob) browses to the ADFS (Active Directory Federation Services) sample site
+	(https://Fully.Qualified.Domain.Name.Here/adfs/ls/IdpInitiatedSignOn.aspx) inside his domain. When you install
+	ADFS, you get a new virtual directory named adfs for your default website, which includes this page.
+	
+2. The sign-on page authenticates Bob against AD. Depending on the browser Bob is using, he might be prompted for his AD user name and password.
+
+3. Bob's browser receives a SAML (Security Assertive Markup Language) assertion in the form of an authentication response from ADFS.
+
+4. Bob's browser posts the SAML assertion to the AWS sign-in endpoint for SAML (https://signin.aws.amazon.com/saml). Behind the scenes, sign-in uses
+	the AssumeRoleWithSAML API to request a temporary security credentials and then constructs a sign-in URL for the AWS Management Console.
+
+5. Bob's browser receives the sign-in URL and it's redirected to the console.
+
+From Bob's perspective, the process happens transparently, He starts at an internal website and ends up at the AWS Management Console, without ever 
+having to supply any AWS credentials.	
+
+
+Can you authenticate with Active Directory? Yes using SAML
+Do you get security credentials first? No, Authenticate against Active Directory first and then you get credentials. 
+
+Web Identity Federation with Mobile Applications
+
+1. Authenticate first with your identity provider
+2. Get temporary security credentials
+3. Call AssumeRoleWithWebIdentity
+4. Access your AWS resource (arn: Amazon Resource Name)
+

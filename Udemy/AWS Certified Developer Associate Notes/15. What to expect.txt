@@ -1,0 +1,12 @@
+15. What to expect
+
+	Register here: https://www.webassessor.com
+	
+	Provide authorization code
+	
+	Provide two forms of identification
+		- Photo government id
+		- Credit card, debit card, employee identification card
+		
+	Exam rescheduling with less than 72 hours notice will incur a penalty and can only be done by contacting AWS at awscertification@amazon.com
+	

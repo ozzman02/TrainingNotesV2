@@ -1,8 +1,0 @@
-node -v
-npm install http-server -g
-http-server C:\git\TrainingNotes\Udemy\Javascript\Javascript -p 8081
-
-ver cookies en chrome
- 
- chrome://settings/content/cookies
-

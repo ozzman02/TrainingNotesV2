@@ -1,5 +1,0 @@
-
-wsdlfirstws 	- 	soapclient
-javafirstwsut 	-	utsoapclient
-
-restws		-	restwsclient

@@ -1,0 +1,12 @@
+14. Shared Responsability Model
+
+	http://media.amazonwebservices.com/AWS_Security_Best_Practices.pdf
+
+	Shared Responsability Model for Infrastructure Services
+	Shared Responsibility Model for Container Services
+	Shared Responsibility Model for Abstracted Services
+
+	- You are required to patch OS and Applications in RDS? False
+	- In the shared responsibility model, what is AWS's responsibility?
+		Restricting access to the data centres, proper destruction of decommissioned disks, 
+		patching of firmware for the hardware on which your AWS resources reside.

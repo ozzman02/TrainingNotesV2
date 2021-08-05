@@ -1,4 +1,0 @@
-CREATE OR REPLACE TRIGGER DepartmentIntegrity
-	BEFORE UPDATE OF mgrssn ON DEPARTMENT
-  FOR EACH ROW
-  CALL CHECK_PROMOTION(:new.mgrssn, :new.dnumber);

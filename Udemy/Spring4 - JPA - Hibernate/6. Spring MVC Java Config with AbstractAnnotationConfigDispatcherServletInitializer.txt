@@ -1,0 +1,22 @@
+Spring MVC Java Config with AbstractAnnotationConfigDispatcherServletInitializer
+
+public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+	
+	@Override
+	protected Class<?>[] getRootConfigClasses() {
+		// application services
+		return null;
+	}
+	
+	@Override
+	protected Class<?>[] getServletConfigClasses() {
+		// mvc
+		return new Class[] {WebConfig.class};
+	}
+	
+	@Override
+	protected String[] getServletMappings() {
+		return new String[] {"/"};
+	}
+	
+}

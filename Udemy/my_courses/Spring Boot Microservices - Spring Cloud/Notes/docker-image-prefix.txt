@@ -1,3 +1,0 @@
-User your dockerhub account
-
-<docker.image.prefix>sfgbeerworks</docker.image.prefix>

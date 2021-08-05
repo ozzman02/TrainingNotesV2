@@ -1,0 +1,58 @@
+7. Apache CXF
+
+Why CXF ?
+
+	SOAP / REST Engine : Supports JAX-WS and JAX-RS
+	
+		Serialize and De Serialize
+		
+		Publish and Dispatch
+		
+		
+		XML message ------> Soap/Rest Engine ------> Java Object ------> WS Endpoint Method
+					<------					 <------			 <------
+					
+		
+		
+		Web Service standards
+		
+			WS Security
+			WS Policy
+			
+			
+		Tools
+		
+			wsdl2java generate code from wsdl file
+			java2wsdl code first development
+		
+		Spring Configuration
+		
+		Extend and Customize
+		
+			Interceptors and Handler
+		
+		Documentation and samples
+
+CXF Project
+
+	1. Create a SpringBoot project (see HelloWebService project)
+	2. Run as a Spring Boot app
+	3. Endpoints can be seen on http://localhost:8080/services (default)
+	4. In order to view the wsdl file of the web service click on the link.
+	5. You can use the link http://localhost:8080/services/hello?wsdl to use any other tool to run tests.
+
+	Change the application context
+
+		add the following properties to application.properties
+
+			1. server.servlet.context-path=/hellows
+			2. cxf.path=/
+
+		restart the application and access: http://localhost:8080/hellows
+		
+
+
+Test on SOAP UI
+
+	1. File ----> New SOAP Project
+	2. Paste the wsdl link

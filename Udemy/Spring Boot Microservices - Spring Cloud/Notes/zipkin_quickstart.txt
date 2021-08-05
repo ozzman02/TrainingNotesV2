@@ -1,0 +1,13 @@
+curl
+
+	curl -sSL https://zipkin.io/quickstart.sh | bash -s
+	java -jar zipkin.jar
+
+docker
+
+	docker run -d -p 9411:9411 openzipkin/zipkin
+
+view traces in ui
+
+	http://localhost:9411/
+

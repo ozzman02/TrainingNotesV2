@@ -1,0 +1,3 @@
+user/password@pluggabledb
+
+Hr2/hr2@pdborcl

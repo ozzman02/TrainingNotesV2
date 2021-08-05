@@ -4,14 +4,14 @@ Working with Java data types
 
 	Java defines the following eight primitive data types:
 	
-	- char
-	- byte
-	- short
-	- int
-	- long
-	- float
-	- double
-	- boolean
+	- char		16 bits
+	- byte		8 bits
+	- short		16 bits
+	- int		32 bits
+	- long      64 bits
+	- float		32 bits
+	- double	64 bits
+	- boolean   1 bit
 	
 	2.1.1 Category: Boolean
 	
@@ -189,7 +189,6 @@ Working with Java data types
 			In prefix notation, the operator appears before its operand
 			In postfix notation, the operator appears after its operand
 			
-			
 			- For a prefix unary operator, the value of its operand increments or decrements just before its value is used in an expression.
 			
 			- For a postfix unary operator, the value of its operand increments or decrements just after its value is used in an expression.
@@ -237,9 +236,9 @@ Working with Java data types
 	
 		You can create objects of all the wrapper classes in multiple ways:
 			
-			- Assignment—By assigning a primitive to a wrapper class variable (autoboxing)
-			- Constructor—By using wrapper class constructors
-			- Static methods—By calling static method of wrapper classes, like, valueOf()
+			- Assignment: By assigning a primitive to a wrapper class variable (autoboxing)
+			- Constructor: By using wrapper class constructors
+			- Static methods: By calling static method of wrapper classes, like, valueOf()
 			
 		All the wrapper classes define constructors to create an object using a corresponding primitive value or as a String.
 		
@@ -248,7 +247,7 @@ Working with Java data types
 		The wrapper classes are immutable. So it doesn’t make sense to initialize the wrapper objects with the default primitive 
 		values if they can’t be modified later.
 		
-		You can assign a primitive value directly to a reference variable of its wrapper class type—thanks to autoboxing.
+		You can assign a primitive value directly to a reference variable of its wrapper class type thanks to autoboxing.
 		
 		The reverse is unboxing, when an object of a primitive wrapper class is converted to its corresponding primitive value.
 		
@@ -318,7 +317,7 @@ Working with Java data types
 		Autoboxing returns a cached copy for applicable values
 			
 			Integer i5 = 10;
-			Integer i5 = 10;
+			Integer i6 = 10;
 			
 		- You can’t compare wrapper instances for equality using equals() or ==, if they aren’t of the same class.
 		- The code won’t compile for instances that are compared using ==.
@@ -377,7 +376,7 @@ Working with Java data types
 		What happens if you pass null as an argument to the following method?
 	
 		public int increment(Integer obj) {
-			return ++i;
+			return ++obj;
 		}
 		
 		Because the Java compiler would call obj.intValue() to get obj’s int value, passing null to the increment() method will throw a NullPointerException.

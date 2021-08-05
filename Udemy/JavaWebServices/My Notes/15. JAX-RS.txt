@@ -1,0 +1,61 @@
+15. JAX-RS
+
+	JAVA API for XML based rest services
+	
+	Specification
+	
+		Apache CXF
+		Jersey
+		
+	API
+	
+		Developers
+			
+			JAX-RS
+				Annotations
+					URI Mapping
+					HTTP Methods
+					Data formats
+					Params
+					Exception Mapping
+			
+			
+		Annotations:
+		
+			URI Mapping
+			
+				import javax.ws.rs*
+			
+				@Path("/users/{username}")
+			
+			HTTP Methods
+			
+				@GET
+				@PUT
+				@POST
+				@DELETE
+				
+			Data Formats:
+			
+				@Consumes("text/plain")
+				@Produces({"application/json","application/xml"})
+			
+			Parameter Values
+			
+				@PathParam
+				@QueryParam
+				@FormParam
+				
+			Exception Mappers:
+			
+				@Provider
+				
+				
+	Steps for implementing REST
+	
+		1. Implement the resources & beans
+		2. JAX-RS Annotations
+		3. JAXB Annotations
+		4. Publish the endpoint
+		
+	

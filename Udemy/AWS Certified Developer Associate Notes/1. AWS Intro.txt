@@ -1,0 +1,91 @@
+AWS Introduction
+
+Global Infrastructure
+	Region: Geographical area that has 2 or more Availability Zones. There are 11 regions and 30 availability zones. 
+		An independent collection of AWS computing resources in a defined geography.
+	Availability Zone: Data Center. Distinct locations from within an AWS region that are engineered to be isolated from failures.
+	Edge Location: Are Content Distribution Networks (CDN) endpoint for CloudFront. There are over 50 edge locations
+
+Networking
+	VPC: Virtual Private Cloud. It's a virtual data center that exists within the AWS account. It's a separate and isolated set of resources from a logical perspective.
+	Direct Connect: Way of connecting to the AWS environment without using Internet.
+	Route53: Amazon DNS service	
+	
+Compute
+	EC2: Virtual server
+	EC2 Container service: EC2 with Docker
+	Elastic Beanstalk: Deploy and scale web applications
+	Lambda: Let's you run code without provisioning servers
+	
+Storage
+	S3: Object based storage
+	CloudFront: CDN service
+	Glacier: Offline storage. Archaic storage
+	EFS: Elastic File System. Block level instead of Object level
+	Snowball: Import and export hard disk service
+	Storage Gateway: It connects a cloud storage software device in your organization with AWS storage infrastructure.
+	
+Database
+	RDS: Relational Database Service
+	DynamoDB: No SQL database service
+	Elasticache: Releaving the stress on RDS. 
+	Redshift: Amazon data warehousing service.
+	DMS: Database migration service.
+	
+Analytics
+	EMR: Elastic Map Reduce
+	Data Pipeline: Moving data from one server to another
+	Elastic Search: Deploy, operate, and escale elastic search on the AWS cloud.
+	Kinesis: Streaming data on AWS.
+	Machine Learning: Predictive analytics
+	Quick Sight: Business intelligence service
+	
+Security and Identity
+	IAM: Identity Access Management
+	Directory Services: Connect AWS resources with Microsoft Active Directory or with an independent new directory in the cloud.
+	Inspector: Install agents to inspect security vulneravilities.
+	WAF: Web Application Firewall
+	Cloud HSM: Hubway Security Module. Securing your cloud based infrastructure using HSM devices.
+	KMS: Key Management Service.
+	
+Management Tools
+	Cloud Watch
+	Cloud Formation
+	Cloud Trail
+	Opsworks
+	Config
+	Service Catalog
+	Trusted Advisor
+	
+Aplication Services
+	API Gateway
+	AppStream
+	CloudSearch
+	Elastic Transcoder
+	SES: Simple Email Service
+	SQS: Simple Queue Service
+	SWS: Simple Work Flow service
+	
+Developer Tools
+	CodeCommit
+	CodeDeploy
+	CodePipeline
+	
+Mobile Services
+	Mobile Hub
+	Cognito
+	Device Farm
+	Mobile Analytics
+	SNS: Simple Notification Service
+	
+Enterprise Applications
+	WorkSpaces
+	WorkDocs
+	WorkMail
+	
+Internet Of Things
+
+	
+
+	
+	

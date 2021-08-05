@@ -1,0 +1,17 @@
+Spring MVC Java Config
+
+*You do not need web.xml file with the new specification Servlet API 3.0+
+
+@Configuration
+@EnableWebMvc
+@ComponentScan(basePackages = { "springmvc.java" })
+public class WebConfig extends WebMvcConfigurerAdapter {
+}
+
+public class WebInitializer implements WebApplicationInitializer {
+	
+	@Override
+	public void onStartup(ServletContext servletContext) throws ServletException {
+	}
+	
+}

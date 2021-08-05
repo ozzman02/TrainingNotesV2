@@ -1,2 +1,0 @@
-ALTER TABLE employee
-MODIFY (LName NOT NULL);

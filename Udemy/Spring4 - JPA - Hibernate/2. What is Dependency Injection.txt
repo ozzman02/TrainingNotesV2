@@ -1,0 +1,12 @@
+What is Dependency Injection?
+
+	- This is also called as IOC (Inversion Of Control Principle)
+	- It is a software design pattern which is really useful for designing loosely coupled software components.
+	- You will have more plug-gable and testable code and objects.
+	- It is easy to reuse your code in other applications.
+	- The dependencies won't be hard coded inside all Java objects/classes instead they will be defined in
+		XML configuration files or configuration classes (Java Config)
+	- Spring Container is responsible for injecting dependencies of objects.
+	- There are two types of Dependency Injection in Spring Framework, Setter Injection and Constructor Injection.
+	
+	

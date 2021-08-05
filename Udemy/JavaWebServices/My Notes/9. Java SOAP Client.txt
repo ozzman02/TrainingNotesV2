@@ -1,0 +1,7 @@
+Use Java SOAP Client instead of SOAP UI
+
+    1. Create the project
+    2. Retrieve the wsdl file
+    3. Generate the stubs
+    4. Create the client
+    5. Run the application

@@ -1,1 +1,0 @@
-The required jar files for the entire course could be download from Lecture 10.

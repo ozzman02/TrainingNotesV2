@@ -1,7 +1,0 @@
-Kibana
-
-    http://localhost:5601
-
-    1. Click on discover icon
-    2. type filebeat*
-    3. @timestamp

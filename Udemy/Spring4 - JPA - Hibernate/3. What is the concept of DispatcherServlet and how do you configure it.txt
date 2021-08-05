@@ -1,0 +1,27 @@
+What is the concept of DispatcherServlet and how do you configure it?
+
+	- DispatcherServlet is configured in order to dispatch incoming HTTP requests to handlers and returns response to browsers.
+	- Spring MVC is designed around DispatcherServlet
+	- DispatcherServlet is configured in web.xml file
+	
+	<servlet>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfiguration</param-name>
+			<param-value>/WEB-INF/classes/mvc-config.xml<param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dispatcherServlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+	
+	DispatcherServlet dispatcherServlet = new DispatcherServlet(rootContext);
+	ServletRegistration.Dynamic registration = container.addServlet("dispatcherServlet", dispatcherServlet);
+	registration.setLoadOnStartup(1);
+	registration.addMapping("/");
+	
+	

@@ -1,0 +1,102 @@
+8. SQS Simple Queue Service
+
+Is a web service that gives you access to a message queue that can be used to store messages while waiting for a computer to process them.
+
+Amazon SQS is a distributed queue system that enables web service applications to quickly and reliably queue messages that one component
+in the application generates to be consumed by another component. A queue is a temporary repository for messages that are awaiting
+processing.
+
+Using Amazon SQS you can decouple the components of an application so they run independently, with SQS easing message management between components.
+Any component of a distributed application can store messages in a fail-safe queue. Messages can contain up to 256 kb of text in any format. Any
+component can later retrieve the messages programmatically using the Amazon SQS API.
+
+The queue acts as a buffer between the component producing and saving data for processing. This means the queue resolves issues that arise if the 
+producer is producing work faster than the consumer can process it or if the producer or consumer are only intermittently connected to the network.
+
+SQS ensures delivery of each message at least once, and supports multiple readers and writers interacting with the same queue. A single queue can be
+used simultaneously by many distributed application components, with no need for those components to coordinate with each other to share the queue.
+
+SQS is engineered to always be available and deliver messages. One of the resulting tradeoffs is that SQS does not guarantee first in, first out delivery
+of messages. For many distributed applications, each message can stand on its own, and as long as all messages are delivered the order is not important.
+If your system requires that order to be preserved you can place sequencing information in each message, so that you can reorder the messages when
+the queue returns them.
+
+To illustrate, suppose you have a number of image files to enconde.In an Amazon SQS worker queue, you create an Amazon SQS message for each file
+specifying the command (jpeg-encode) and the location of the file in S3. A pool of EC2 instances running the needed image processing software
+does the following:
+
+	1. Asynchronously pulls the task messages from the queue.
+	2. Retrieves the named file
+	3. Processes the conversion
+	4. Writes the image back to S3.
+	5. Writes a "task complete" message to another queue.
+	6. Deletes the original task message.
+	
+	Visibility timeout period only starts when the application server has picked up the message.
+	
+	- Does not offer FIFO
+	- 12 hours visibility time out.
+	- SQS is engineered to provide at least once delivery of all messages in its queues.
+		Although most of the time each message will be delivered to your application
+		exactly once, you should desing your system so that processing a message
+		more than once does not create any erros or inconsistencies.
+	- 256kb message size now available.
+	- Billed at 64kb chunks
+	
+	Pricing
+	
+	First 1 million SQS Requests per month are free.
+	$0.50 per 1 million SQS Requests per month thereafter ($0.00000050 per SQS Request)
+	A single request can have from 1 to 10 messages up to a maximum total payload of 256kb
+	Each 64kb chunk of payload is billed as 1 request. For examplea single API call with a 256kb payload
+		will be billed as four requests.
+		
+	*decouple think about SQS
+	
+	
+Exam tips
+
+	SQS Messages can be delivered multiple times and in any order.
+	
+	Default visibility timeout
+		
+		- Default is 30 seconds
+		
+		- Max is 12 hours
+		
+		- When you receive a message from a queue and begin processing it, you may find the 
+			visibility timeout for the queue is insufficient to fully process and delete that
+			message. To give yourself more time to process the message you can extend its visibility
+			timeout by using the ChangeMessageVisibility action to specify a new timeout value.
+			Amazon SQS restarts the timeout period using the new value.
+	
+	Long Polling
+		
+		Is a way to retrieve messages from your SQS queues. While the traditional SQS short polling
+		returns immediately, even if the queue being polled is empty, SQS long polling does not 
+		return a response until a message arrives in the queue, or the long poll times out. SQS long
+		polling makes it easy and inexpensive to retrieve messages from your SQS queue as soon as 
+		they are available.
+		
+		Max long poll time out = 20 seconds.
+
+		Example:
+		
+			Polling in a tight loops is burning CPU cycles and costing the company money. 
+			How would you fix this?
+				Enabling Long Polling
+	
+	Fanning out
+		
+		Create an SNS topic first using SNS. Then create and subscribe multiple SQS queues to the 
+		SNS topic. Now whenever a message is sent to the SNS topic, the message will be fanned out
+		to the SQS queues.
+		
+		SNS will deliver the message to all the SQS queues that are subscribed to the topic.
+		
+		
+You are designing a new application which involves processing payments and delivering promotional emails to customers. You plan to use SQS to help facilitate this. 
+You need to ensure that the payment process takes priority over the creation and delivery of emails. What is the best way to achieve this.
+
+Use 2 SQS queues for the platform. Have the EC2 fleet poll the payment SQS queue first. If this queue is empty, then poll the promotional emails queue.
+

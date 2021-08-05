@@ -1,0 +1,21 @@
+Active Directory Federation
+
+1. The flow is initiated when a user (let's call him Bob) browses to the ADFS (Active Directory Federation Services) sample site
+	(https://Fully.Qualified.Domain.Name.Here/adfs/ls/IdpInitiatedSignOn.aspx) inside his domain. When you install
+	ADFS, you get a new virtual directory named adfs for your default website, which includes this page.
+	
+2. The sign-on page authenticates Bob against AD. Depending on the browser Bob is using, he might be prompted for his AD user name and password.
+
+3. Bob's browser receives a SAML (Secure Assertive Markup Language) assertion in the form of an authentication response from ADFS.
+
+4. Bob's browser posts the SAML assertion to the AWS sign-in endpoint for SAML (https://signin.aws.amazon.com/saml). Behind the scenes, sign-in uses
+	the AssumeRoleWithSAML API to request a temporary security credentials and then constructs a sign-in URL for the AWS Management Console.
+
+5. Bob's browser receives the sign-in URL and it's redirected to the console.
+
+From Bob's perspective, the process happens transparently, He starts at an internal website and ends up at the AWS Management Console, without ever 
+having to supply any AWS credentials.	
+
+
+Can you authenticate with Active Directory? Yes using SAML
+Do you get security credentials first? No, Authenticate against Active Directory first and then you get credentials. 

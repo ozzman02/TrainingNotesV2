@@ -1,0 +1,7 @@
+Create a Maven Project
+
+	1.	File, New Maven Project
+	2. 	Select Maven Archetype Webapp
+	3.	Type the group id and artifact id
+	4. 	Select the targeted runtime
+			Project Properties, targeted runtimes

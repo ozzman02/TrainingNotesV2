@@ -1,0 +1,7 @@
+What is ContextLoaderListener and how do you configure it in Spring MVC?
+
+	- ContextLoaderListener is responsible for creating a root application context in Java Enterprise Applications inside ServletContext.
+	- Developers can use different controller and view layers (for example Struts, JSF or Spring MVC can be used) however Spring Framework
+		will be responsible for managing service layers or components defined in ContextLoaderListener configuration files.
+	- You can set different configuration XML files in web.xml
+	

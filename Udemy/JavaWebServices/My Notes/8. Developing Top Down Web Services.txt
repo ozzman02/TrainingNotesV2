@@ -1,0 +1,20 @@
+Steps to Develop Top Down Web Services
+
+    1. Create the project
+    2. Create the wsdl file
+    3. Generate the stubs
+    4. Create the endpoint
+    5. Create the config class
+    6. Run the app
+
+
+Run projects:
+
+    http://localhost:8080/wsdlfirstws
+
+    http://localhost:8080/javafirstws
+
+    http://localhost:8080/mtom
+    
+
+

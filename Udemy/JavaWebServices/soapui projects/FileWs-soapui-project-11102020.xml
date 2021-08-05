@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project id="ef37667c-844b-45c0-9b5a-def703961a79" activeEnvironment="Default" name="FileWs" resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" id="a5acc677-5b81-4f36-8d7d-2917c2239663" wsaVersion="NONE" name="FileWsImplServiceSoapBinding" type="wsdl" bindingName="{http://soap.ws.bharath.com/}FileWsImplServiceSoapBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:8080/mtom/fileWs?wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:8080/mtom/fileWs?wsdl"><con:part><con:url>http://localhost:8080/mtom/fileWs?wsdl</con:url><con:content><![CDATA[<wsdl:definitions name="FileWsImplService" targetNamespace="http://soap.ws.bharath.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://soap.ws.bharath.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http">
+  <wsdl:types>
+    <xs:schema elementFormDefault="unqualified" targetNamespace="http://soap.ws.bharath.com/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="download" type="tns:download"/>
+      <xs:element name="downloadResponse" type="tns:downloadResponse"/>
+      <xs:element name="upload" type="tns:upload"/>
+      <xs:element name="uploadResponse" type="tns:uploadResponse"/>
+      <xs:complexType name="upload">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="file" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="uploadResponse">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="download">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:complexType name="downloadResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="uploadResponse">
+    <wsdl:part element="tns:uploadResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="downloadResponse">
+    <wsdl:part element="tns:downloadResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="upload">
+    <wsdl:part element="tns:upload" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="download">
+    <wsdl:part element="tns:download" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="FileWs">
+    <wsdl:operation name="upload">
+      <wsdl:input message="tns:upload" name="upload"></wsdl:input>
+      <wsdl:output message="tns:uploadResponse" name="uploadResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="download">
+      <wsdl:input message="tns:download" name="download"></wsdl:input>
+      <wsdl:output message="tns:downloadResponse" name="downloadResponse"></wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="FileWsImplServiceSoapBinding" type="tns:FileWs">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="upload">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="upload">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="uploadResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="download">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="download">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="downloadResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FileWsImplService">
+    <wsdl:port binding="tns:FileWsImplServiceSoapBinding" name="FileWsImplPort">
+      <soap:address location="http://localhost:8080/mtom/fileWs"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>http://localhost:8080/mtom/fileWs</con:endpoint></con:endpoints><con:operation id="96e8602f-8f18-4d02-9c71-3000a98f5e9d" isOneWay="false" action="" name="download" bindingOperationName="download" type="Request-Response" outputName="downloadResponse" inputName="download" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="67540429-4dac-4781-ac22-88f5976ffd1d" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/mtom/fileWs</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.ws.bharath.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soap:download/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://soap.ws.bharath.com/FileWs/download"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="fb3ea0b4-78a5-4d73-8025-bdec35423426" isOneWay="false" action="" name="upload" bindingOperationName="upload" type="Request-Response" outputName="uploadResponse" inputName="upload" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="40ddf34c-c3fb-485f-80a8-19a000edd9b4" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/mtom/fileWs</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.ws.bharath.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soap:upload>
+         <!--Optional:-->
+         <file>cid:1407257559352</file>
+      </soap:upload>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:attachment><con:name>test.jpg</con:name><con:contentType>image/jpeg</con:contentType><con:size>5983</con:size><con:contentId>test.jpg</con:contentId><con:part>1407257559352</con:part><con:data>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</con:data><con:id>98ec08c9-be01-4745-8660-1dbea212c51f</con:id></con:attachment><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="http://soap.ws.bharath.com/FileWs/upload"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:testSuite id="779d1f48-3399-4974-addc-5cddc151ba7c" name="FileWsImplServiceSoapBinding TestSuite"><con:settings/><con:runType>SEQUENTIAL</con:runType><con:testCase id="cefb8330-6a20-4ec2-95a7-e1c8675f96cc" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="download TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="498d798b-1d72-4412-b3d7-0423489615c2" name="download"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>FileWsImplServiceSoapBinding</con:interface><con:operation>download</con:operation><con:request name="download" id="c8c8d2db-8da0-4b70-b087-b9d1e3266333"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/mtom/fileWs</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.ws.bharath.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soap:download/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="http://soap.ws.bharath.com/FileWs/download"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:testCase id="f16d95ba-2c9c-42fa-b785-8d555e7c2780" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="upload TestCase" searchProperties="true"><con:settings/><con:testStep type="request" id="31d26320-d7ef-46d1-b0ed-30ac5b3b4cc7" name="upload"><con:settings/><con:config xsi:type="con:RequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:interface>FileWsImplServiceSoapBinding</con:interface><con:operation>upload</con:operation><con:request name="upload" id="f1126803-b3e5-42cf-97e6-a261fab84093"><con:settings/><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/mtom/fileWs</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:soap="http://soap.ws.bharath.com/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <soap:upload>
+         <!--Optional:-->
+         <file>cid:945888307470</file>
+      </soap:upload>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:wsaConfig action="http://soap.ws.bharath.com/FileWs/upload"/></con:request></con:config></con:testStep><con:properties/></con:testCase><con:properties/></con:testSuite><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/><con:oAuth1ProfileContainer/></con:soapui-project>

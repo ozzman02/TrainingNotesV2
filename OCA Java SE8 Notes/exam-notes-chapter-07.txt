@@ -150,11 +150,11 @@ Exception Handling
 
             To use a method that throws a checked exception, you must do one of the following:
 
-                - Handle the exception —Enclose the code within a try block and catch the thrown exception.
+                - Handle the exception: Enclose the code within a try block and catch the thrown exception.
 
-                - Declare it to be thrown—Declare the exception to be thrown by using thethrows clause.
+                - Declare it to be thrown: Declare the exception to be thrown by using the throws clause.
 
-                - Handle and declare—Implement both of the preceding options together.
+                - Handle and declare: Implement both of the preceding options together.
 
         7.3.3 Creating a method that throws runtime exceptions or errors
 
@@ -209,11 +209,16 @@ Exception Handling
         Exception propagation example:
 
             1. When the method main starts its execution, its instructions are pushed onto the stack.
+
             2. The method main calls the method method1, and instructions for method1 are pushed onto the stack.
+            
             3. Method1 calls method2; instructions for method2 are pushed onto the stack.
-            4. method2 throws an exception: ArrayIndexOutOfBoundsException. Because method2 doesn’t handle this exception itself, 
-                it’s passed to the method that called it—method1.
-            5. method1 doesn’t define any exception handler for ArrayIndexOutOfBoundsException, so it hands this exception over to its calling method—main.
+            
+            4. Method2 throws an exception: ArrayIndexOutOfBoundsException. Because method2 doesn’t handle this exception itself, 
+                it’s passed to the method that called it, method1.
+
+            5. Method1 doesn’t define any exception handler for ArrayIndexOutOfBoundsException, so it hands this exception over to its calling method, main.
+            
             6. There are no exception handlers for ArrayIndexOutOfBoundsException in main. Because there are no further methods that handle 
                 ArrayIndexOutOfBoundsException, execution of the class Trace stops.
 
@@ -233,13 +238,15 @@ Exception Handling
                 Finally, you execute a set of code, in all conditions, regardless of whether the code in the try block throws any exceptions.
 
         
-            - You can create an exception of your own—a custom exception—by extending the class Exception (or any of its subclasses).
+            - You can create an exception of your own a custom exception by extending the class Exception (or any of its subclasses).
 
             - Single Try Block, Multiple Catch Blocks and a Finally Blocks
 
                 - For a try block, you can define multiple catch blocks but only a single finally block. 
+
                 - Multiple catch blocks are used to handle different types of exceptions. 
-                - A finally block is used to define cleanup code—code that closes and releases resources, such as file handlers 
+                
+                - A finally block is used to define cleanup code, code that closes and releases resources, such as file handlers 
                     and database or network connections.
 
         7.4.2 Using a method that throws a checked exception
@@ -262,6 +269,26 @@ Exception Handling
             - It’s interesting to note that a finally block will execute even if the code in the try block or any of the catch blocks 
                 defines a return statement.
 
+
+                public class ReturnFromCatchBlock() {
+                    public static void main(String[] args) {
+                        openFile();
+                    }
+                }
+
+                private static void openFile() {
+                    FileInputStream fis = null;
+                    try {
+                        fis = new FileInputStream("file.txt");
+                    } catch (FileNotFoundException ex) {
+                        System.out.println("file not found");
+                        return;                                 ------> The return statement does not transfer control to the main method. Finally block executes first.
+                    } finally {
+                        System.out.println("finally");
+                    }
+                    System.out.println("Next task..");          ------> This line is not executed.
+                }
+
             There are a few scenarios in Java in which a finally block does not execute:
 
                 - Application termination: The try or the catch block executes System.exit, which immediately terminates the application.
@@ -271,11 +298,42 @@ Exception Handling
 
             If both the catch and finally blocks define return statements, the calling method will receive a value from the finally block.
 
+            private static int getInt() {
+                try {
+                    String[] students = {"Harry", "Paul"};
+                    System.out.println(students[5]);
+                } catch (Exception e) {
+                    return 10;
+                } finally {
+                    return 20;
+                }
+            }
+
+            public static void main(String[] args) {
+                System.out.println(getInt());   -----> returns 20
+            }
+
         7.4.7 What happens if a finally block modifies the value returned from a catch block?
 
             If a catch block returns a primitive data type, the finally block can’t modify the value being returned by it.
             If a catch block returns an object remember that primitives are passed by value and objects are passed by reference.
             If a catch block returns an object, the finally block can modify the state of the object being returned by it.
+
+            private static StringBuilder getStringBuilder() {
+                StringBuilder returnVal = new StringBuilder("10");
+                try {
+                    String[] students = {"Harry", "Paul"};
+                    System.out.println(students[5]);
+                 } catch (Exception e) {
+                    System.out.println("About to return :" + returnVal);
+                    return returnVal;
+                } finally {
+                    returnVal = new StringBuilder("20"); ---> returns 10
+                    //returnVal.append("10"); ---> returns 1010
+                     System.out.println("Return value is now :" + returnVal);
+                }
+                return returnVal;
+            }
 
         7.4.8 Can a try block be followed only by a finally block?
 
@@ -388,11 +446,11 @@ Exception Handling
 
             By default, the static and instance variables of a class are assigned a null value.
 
-            By default local variables aren’t assigned a value—not even a null value.
+            By default local variables aren’t assigned a value, not even a null value.
 
         7.5.5 ArithmeticException
 
-            When the JVM encounters an exceptional mathe- matical condition, like dividing an integer by zero, it throws ArithmeticException.
+            When the JVM encounters an exceptional mathematical condition, like dividing an integer by zero, it throws ArithmeticException.
             Note that division by 0 is not the same as division by 0.0.
 
             - A division will be performed as an integer division as long as only integers are involved.
@@ -492,7 +550,7 @@ Exception Handling
             persistent data to be processed by your application? 
             In such a case, the JVM may run out of memory on the heap, and the garbage collector may not be able to free more memory for the JVM.
 
-            You’ll always work with a finite heap size, no mat- ter what platform you work on, so you can’t create and use an unlimited 
+            You’ll always work with a finite heap size, no matter what platform you work on, so you can’t create and use an unlimited 
             number of objects in your application. 
 
             To get around this error, you need to either limit the number of resources or objects that your application creates 

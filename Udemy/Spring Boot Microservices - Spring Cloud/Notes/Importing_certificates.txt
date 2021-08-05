@@ -1,0 +1,16 @@
+Importing certificates
+
+Run this command to generate the truststore file
+
+    keytool -importcert -alias DoMySQLCert -file ca-certificate.crt -keystore truststore -storepass password
+
+Update program arguments of the spring boot configuration service
+
+    -Djavax.net.ssl.trustStore : truststore file location
+    -Djavax.net.ssl.trustStorePassword : password  
+
+Add the truststore file to the docker image
+
+    Add this line to the DockerFile
+    
+        COPY truststore ./
