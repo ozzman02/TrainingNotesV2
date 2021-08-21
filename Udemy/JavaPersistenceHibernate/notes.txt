@@ -56,7 +56,7 @@ Mapping Concepts
 
 	Associations
 
-		Cascading the Persist Operation = Transitive Persistance
+		Cascading the Persist Operation = Transitive Persistence
 		
 		If the association is bidirectional, one of the sides (and only one) has to be the owner of the relationship.
 		The owner of the relationship is responsible for the association column(s) update.
@@ -73,11 +73,17 @@ Mapping Concepts
 		
 		Orphaned record is a record whose foreign key value references a non-existent key value.
 		
+	Derived Identifier
+	
+		Id that is derived from another entity. It is used only with Single Point Association(OneToOne or ManyToOne).
+		Use derived identifier when you want to use a shared primary key.
+		
 	Composite Primary Key
 
 		A combination of more than 1 table column that identifies the uniqueness of a record/(database table row)
 		No matter how good or natural a composite primary key is, it is not recommended for uniquely identifying a record.
-		Not only composite keys, even business keys (e.g ISBN, SSN) are not recommended for uniquely identifying a record. A business key is also called a Natural Key.
+		Not only composite keys, even business keys (e.g ISBN, SSN) are not recommended for uniquely identifying a record. 
+			A business key is also called a Natural Key.
 		A business key is not just a unique identifier but it also has a business meaning associated with it.
 		As a best practice use synthetic identifier. (Identifier with no business meaning)
 	
@@ -92,31 +98,221 @@ JPA
 	JPA provides guidelines that a framework can implement to be considered JPA compatible.
 	In addition to its own "native" API, Hibernate is also an implementation of the Java Persistence API (JPA) specification.
 	
+	How can we use the Hibernate Non JPA features while using it as a JPA Provider?
+	
+		We can do that by using the Hibernate Native API accessing the unwrap() method. By using that method we can get access to the
+		native Hibernate Session Factory and Session objects.
+	
 	<persistence-unit name="hibernate-jpa" transaction-type="RESOURCE_LOCAL">
 
 		transaction-type="RESOURCE_LOCAL": You are responsible for creating an EntityManager
 		transaction-type="JTA": An EntityManager can be supplied to you by EJB container of an application server (Glassfish for example)
 		
-Working with objects
 
-	Transiency object: State is transient which means that is not associated with any database. It's state is going to be lost as soon as it's no longer referenced by any other object.
+
+Transient object: 
 	
-	Persistent object: Object that is associated with an entity manager. It's an object with a database identity. It may be an object created by an application or it may be an object
-		created by calling a lookup method. When an object becomes persistent it's going to be managed by the entity manager for the duration of the transaction.
-		A persistent object is an object that not only exist in Java memory but is also associated with an entity manager so that when the transaction is committed the state of that object 
-		will be persisted to the database.
+	State is transient which means that is not associated with any database. It's state is going to be lost as soon as it's no longer 
+	referenced by any other object.
 	
-	Persistence context: It is a forest level cache and it has its own non shared database connection and it is this persistent contact that checks whether an object has got dirty or modified
-		by the application and updates those changes where the transaction is committed. Whenever you create a new hibernate session object or an answer as a manager it creates a persistence context.
-		Each entity manager has a persistence context. When the object is detached it is no longer managed by the entity manager. You can re attach an object by using the merge method.
-		To manually detach a persistent object you just need to call the detach method.
+Persistent object: 
 	
+	- Object that is associated with an entity manager. It's an object with a database identity.
+	- It may be an object created by an application or it may be an object created by calling a lookup method. 
+	- When an object becomes persistent it's going to be managed by the entity manager for the duration of the transaction.
+	- A persistent object is an object that not only exist in Java memory but is also associated with an entity manager so that 
+		when the transaction is committed the state of that object will be persisted to the database.
+	
+Persistence context: 
+		
+	- It is a first level cache and it has its own non shared database connection and it is this persistent context that checks 
+	whether an object has got dirty or modified by the application and updates those changes where the transaction is committed. 
+		
+	- Whenever you create a new hibernate session object or an entity manager it creates a persistence context.
+	- Each entity manager has a persistence context. When the object is detached it is no longer managed by the entity manager. 
+	- You can re attach an object by using the merge method. To manually detach a persistent object you just need to call the detach method.
+						 
+	- It is a service that remembers all the modifications and state changes made to your data in a particular unit of work.
+		
+	Types:
+						 
+		- Application Managed
+						 
+				EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+				EntityManager entityManager = entityManagerFactory.createEntityManager();
+				EntityTransaction entityTransaction = entityManager.getTransaction();
+				try {
+						entityTransaction.begin();
+            
+						entityTransaction.commit();
+					} catch (Exception ex) {
+						if (entityTransaction != null) {
+							entityTransaction.rollback();
+						}
+						ex.printStackTrace();
+					} finally {
+						entityManager.close(); // you create it, you close it
+					}	
+							
+		- Container Managed (created and managed by an application server)
+						
+				@Stateless
+				public class MyEjb implements MyEjbInterface {
+								
+					@PersistenceContext(unitName = "myPersistenceUnit")
+					private EntityManager entityManager;			
+						// other stuff
+					}
+						
+						Persistence Context provides:
+						
+							1. Automatic Dirty Checking
+							2. First Level Cache
+							3. Repeatable reads
+							4. Guaranteed Scope of Objects Identity
+
+	Automatic Dirty Checking: 
+		
+		- It is performed by the persistence context. If there is an object already loaded in the persistence context Hibernate will create a 
+		snapshot of it so it can perform comparisons. 
+		
+		- If we get an object, a select statement will be issued against the database and the object will be retrieved and placed in the Persistence Context 
+		and it will have a persistence state. (if the object is already in the Persistence Context there is no need of a select statement)
+							  
+		- If the state of the object is modified when we commit the transaction, Hibernate will compare the snapshot against the object state 
+		and it will perform an update statement.
+		
+		- How to force dirty checking synchronization?
+							  
+			flush() method will flush changes to the database without the need of commit.
+					
+	Guaranteed Scope of Objects Identity:
+							  
+		The persistence context will ensure that will have only one object representing one database row. 
+							  
+		Dirty checking with snapshots is time consuming. Hibenate does give you an extension point if you want to customize the dirty checking strategy. 
+		We can do that by implementing the CustomEntityDirtinessStrategy interface:
+							  
+			public class MyCustomEntityDirtinessStrategy implements CustomEntityDirtinessStrategy {
+				// override methods
+			}
+								
+		Then we need to configure the persistence.xml file by adding:
+							  
+			<property name = "hibernate.entity_dirtiness_strategy" value = "MyCustomEntityDirtinessStrategy" />
+								
+							 
+							
+	Repeatable read: Gives you the same result for the same query even if there is an update in the database.
+							
+	Refresh() method
+							
+		If an object is updated but the database info is different and you want to work with fresh data you can 
+		use the entityManager.refresh() method and pass the reference of the object as argument.
+		This will issue a new select statement and it will override any changes that you have made to the object.
+								
+	Clear() method
+							
+		The entityManager.clear() method will detach all the objects of the persistence context.
+		
+	Detach() method
+	
+		When the object is detached it is no longer managed by the entity manager. To manually detach a persistent object 
+		you just need to call the detach method.
+	
+	Merge() method
+	
+		You can re attach an object to the persistence context by using the merge method. 
+							
+	GetReference() method
+	
+		If you want to load an entity instance without accessing the database you can use getReference() method.
+		You get an uninitialize proxy object. It does not issue a select statement. A proxy get initialize as soon as we call any of the methods 
+		to access any of its data attributes. You can also use the Hibernate.initialize() method. The proxy that you get is in the persistent state.
+		
+			Student student = entityManager.getReference(Student.class, 3L);
+			
+				String studentName = student.getName(); // initialization
+				Hibernate.initialize(student); // initialization
+	
+	Making data transient
+		
+		Code
+		
+			Student student = entityManager.find(Student.class, 3L);
+			
+			// Even if me remove the student from the persistence context we still having its data. 
+			// This won't have any impact on the id of the removed student
+			entityManager.remove(student);
+		
+			Long id = student.getId // you will get a value, it will not be null
+		
+			entityManager.persist(student); // this code will move back the student to the persistence state. The deletion will be cancelled.
+		
+			entityManager.getTransaction().commit(); // no delete statement will be issued
+	
+		When we persist the remove state of the student it will not have any impact on the id of the object. If we want to save the student with a 
+		different id value we need to persist a transient student:
+		
+			The id of a transient student is null.
+			
+			In the persistence.xml we need to add this configuration:
+				
+				<!-- Reset identifier value (from long to null) after removal of an entity instance -->
+				<property name="hibernate.use_identifier_rollback" value="true" />
+				
+			Then when calling entityManager.remove(student); it will move the object out of the persistence context and the reference will no longer
+			have an id. The id will be set to null. Then:
+			
+				Student student = entityManager.find(Student.class, 3L);
+				entityManager.remove(student);
+		
+				Long id = student.getId // id will be null
+		
+				entityManager.persist(student); // Exception
+		
+			To resolve this we need to close the persistence context and use a new one:
+				
+				EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+				EntityManager entityManager = entityManagerFactory.createEntityManager();
+				entityManager.getTransaction().begin();
+				Student student = entityManager.find(Student.class, 3L);
+				entityManager.remove(student);
+				Long id = student.getId // id will be null
+				entityManager.getTransaction().commit();
+				entityManager.close();
+				
+				EntityManager entityManager2 = entityManagerFactory.createEntityManager();
+				entityManager2.getTransaction().begin();
+				entityManager2.persist(student); // Student student2 = entityManager2.merge(student);
+				entityManager2.getTransaction().commit();
+				entityManager2.close();
+	
+	Persist vs Merge
+	
+		entityManager.persist(transientStudent); 
+		
+			The transient object will be moved from the transient state to the persistence state.
+
+		entityManager.merge(transientStudent); 
+				
+			Hibernate checks whether there is already an object being managed in the persistence context whose id is same as the id of
+			the object that you passed into it. In this case it does not move the transient state to persistence state instead, it creates
+			a new object in the persistence state.
+			
+			
 Caching objects
 	
 	Cache: Is a copy of data, copy meanining pulled from but living outside the database.
 	
 	First level caching: 	scope ---> EntityManager
 	Second level caching: 	scope ---> EntityManagerFactory
+	
+	Cache does not shrink automatically. 
+	
+		Keep the size of the cache to the necessary minimum.
+		Check that your queries return only data that you need.
+		
 	
 SQL Joins
 
@@ -166,7 +362,28 @@ HQL (Hibernate Query Language)
 	You can use it when you are are using native Hibernate API
 	You can also use it when you are using Hibernate as a JPA provider
 	
-
+Flushing
+	
+	- When the transactions commits.
+	
+	- By using the flush method we can force dirty checking and update database.
+	
+	- Before the execution of a query the flushing happens automatically because that is the default behavior (entityManager.setFlushMode(FlushModeType.AUTO)).
+		
+		Example:
+		
+			entityTransaction.begin();
+            Student3 student = entityManager.find(Student3.class, 3L); // in database is Oscar Santamaria
+            student.setName("Oscar Venegas");
+            String selectStatement = "select s.name from Student3 s where s.id = :id";
+            
+			/* Synchronizes/flushes persistence context before the query is executed */
+            Query query = entityManager.createQuery(selectStatement).setParameter("id", 3L);
+            String name = (String) query.getSingleResult();
+            entityTransaction.commit(); // no update issued
+	
+	- We can change the default to entityManager.setFlushMode(FlushModeType.COMMIT).
+	
 Inheritance Mapping and Polymorphic Queries
 	
 	Single_Table strategy
