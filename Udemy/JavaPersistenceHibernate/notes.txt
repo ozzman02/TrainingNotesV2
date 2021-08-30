@@ -348,9 +348,10 @@ Equals and Hashcode
 	
 JPQL (Java Persistence Query Language)
 
-	Queries entities.
-	Case sensitive.
-	A JPQL query is always a valid HQL query, the reverse is not true however.
+	- Queries entities.
+	- Case sensitive.
+	- A JPQL query is always a valid HQL query, the reverse is not true however.
+	- Join fetch: Useful when you need to reduce the number of queries against the database.
 	
 SQL is case insensitive
 	
@@ -384,6 +385,29 @@ Flushing
 	
 	- We can change the default to entityManager.setFlushMode(FlushModeType.COMMIT).
 	
+Criteria API
+
+	1. Programmatic Query Construction
+
+		Compiler checks for errors: 
+		
+			select g from Guide join fetch g.students student; 	 ---> syntactically incorrect
+			select g from Guide g join fetch g.students student  ---> syntactically correct
+
+	2. Type Safety
+
+		TypedQuery<T> typedQuery = em.createQuery(CriteriaQuery);
+		List<T> result = typedQuery.getResultList();
+
+		TypedQuery<String> typedQuery = em.createQuery("select g.name from Guide g", String.class);
+		List<String> names = typedQuery.getResultList();
+
+			Metamodel of Guide entity
+				
+				Guide_.name
+
+				https://docs.jboss.org/hibernate/orm/current/topical/html_single/metamodelgen/MetamodelGenerator.html
+
 Inheritance Mapping and Polymorphic Queries
 	
 	Single_Table strategy
