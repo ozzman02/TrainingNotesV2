@@ -414,7 +414,7 @@ Inheritance Mapping and Polymorphic Queries
 	
 		The class hierarchy is represented in one table. A discriminator column identifies the type and the subclass.
 		Good for polymorphic queries; no joins required.
-		All the properties in subclass must not have not-null constraint.
+		All the properties in subclass must not have not-null constraint. (This could be negative)
 		Good performance for derived class queries; no joins required.
 		
 	Joined strategy
@@ -430,6 +430,73 @@ Inheritance Mapping and Polymorphic Queries
 		The database identifier and its mapping have to be present in the superclass, to be shared in all subclasses and their tables.
 		Not good for polymorphic queries.
 		Good performance for derived class queries.
+
+	@MappedSuperClass
+
+		Can't run polymorphic queries like "select account from Account account"
+
+		@MappedSuperclass
+		public class Account {
+
+    		@Id
+    		@GeneratedValue(strategy= GenerationType.IDENTITY)
+    		private Long id;
+
+    		private String owner;
+
+    		private BigDecimal balance;
+
+    		public void setOwner(String owner) {
+        		this.owner = owner;
+    		}
+
+    		public void setBalance(BigDecimal balance) {
+        		this.balance = balance;
+    		}
+		}
+			
+		@Entity
+		@Table(name="credit_account")
+		public class CreditAccount extends Account {
+
+    		@Column(name="credit_limit")
+    		private BigDecimal creditLimit;
+
+    		public void setCreditLimit(BigDecimal creditLimit) {
+        		this.creditLimit = creditLimit;
+    		}
+
+		}
+
+Pre Insert Identifier Generation
+
+	Sequence: Generates unique sequential numeric values. MySQL does not provide native support for sequences.
+
+	SQL
+
+		create sequence my_sequence
+			minvalue 0
+			start 1
+			increment 1
+		;
+
+		select nextval('my_sequence');
+
+	There are two ways that the id value can be assigned to an entity.
+
+		Before an insert is issued. (pre insert identifier generation)
+
+			- That happens with the GenerationType.SEQUENCE and GenerationType.TABLE strategies.
+			- Here an insert statement is issued when calling entityTransaction.commit() not entityManager.persist(student). That happens because hibernate tries to optimize sql statements.
+			- The difference between GenerationType.SEQUENCE and GenerationType.TABLE is that GenerationType.TABLE uses row table lock. With GenerationType.TABLE a table always is going to 
+				be created to store the next value of a sequence.
+            
+		After an insert is issued.
+
+			If we use GenerationType.IDENTITY it uses auto-incremented column value so the identifier id is available at post-insert.
+			Insert statement is issued when calling entityManager.persist(student).
+
+		GenerationType.AUTO in hibernate 5 will use Sequence as default id generation strategy. Since MySQL does not support sequences it will choose Table strategy underneath the hood.
 		
 N + 1 Selects Problem
 

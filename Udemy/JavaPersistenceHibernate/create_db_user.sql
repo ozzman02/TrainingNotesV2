@@ -1,0 +1,4 @@
+CREATE USER IF NOT EXISTS `persistence_hibernate_user`@`%` IDENTIFIED WITH mysql_native_password BY 'password';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, EXECUTE, CREATE VIEW, SHOW VIEW,
+CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `persistence_hibernate`.* TO `persistence_hibernate_user`@`%`;
+FLUSH PRIVILEGES;
