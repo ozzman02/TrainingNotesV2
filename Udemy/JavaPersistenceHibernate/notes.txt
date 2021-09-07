@@ -504,23 +504,12 @@ N + 1 Selects Problem
 	
 		By default single point associations (@OneToOne and @ManyToOne) are eagerly fetched
 		By default collection associations (@OneToMany and @ManyToMany) are lazily fetched
-		
-		Student and Guide example:
-		
-			select student from Student student;
-			
-				1 select for all the parent objects
-				1 select for each child object
-		
-			select student from Student student left join fetch student.guide;
-			
-				Resolved.
 				
 		How to solve:
 		
 		1. Change the fetching strategy of your single point associations (@ManyToOne and @OneToOne) from Eager to Lazy.
 		2. Write the query based on the requirements (e.g using left fetch join to load the child objects eagerly)
-		3. When number of parents becomes higher to change the fetching strategy to eager in order to have small n + 1 statements. 
+		3. When number of parents becomes higher the select statement will be huge. If that is the case, think on changing the fetching strategy back to eager in order to have small n + 1 statements. 
 		4. The previous recommendation still not good enough for performance, consider Batch Fetching implementation.
 		
 Batch Fetching
