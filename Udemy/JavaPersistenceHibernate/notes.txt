@@ -235,6 +235,19 @@ Persistence context:
 				String studentName = student.getName(); // initialization
 				Hibernate.initialize(student); // initialization
 	
+	Proxy
+
+		Initialize a collection proxy:
+
+			- Iterating through the elements 
+
+				for (Student student : students) {...}	
+			
+			- Invoke one of the collection management operations
+
+				- contains(Object o)
+				- size()
+
 	Making data transient
 		
 		Code
@@ -509,27 +522,59 @@ N + 1 Selects Problem
 		
 		1. Change the fetching strategy of your single point associations (@ManyToOne and @OneToOne) from Eager to Lazy.
 		2. Write the query based on the requirements (e.g using left fetch join to load the child objects eagerly)
-		3. When number of parents becomes higher the select statement will be huge. If that is the case, think on changing the fetching strategy back to eager in order to have small n + 1 statements. 
+		3. When number of parents becomes higher the select statement will be huge. If that is the case, think on changing the fetching strategy back to eager in order 
+			to have small n + 1 statements. 
 		4. The previous recommendation still not good enough for performance, consider Batch Fetching implementation.
 		
 Batch Fetching
 
-	@BatchSize
-	
-	Batch fetching is an optimization of the lazy fetching strategy.
+	- @BatchSize annotation
+	- Batch fetching is an optimization of the lazy fetching strategy.
+	- Using Batch Fetching, Hibernate can load several uninitialized proxies, even if just one proxy is accessed.
 	
 
 Merging Detached Objects
 	
 	1. Using detached objects, cascade={CascadeType.MERGE} and entityManager.merge(entityObj);
 	2. Using extended persistence context, cascade={CascadeType.MERGE} not needed.
+
+	Why do we need to detach objects instead of modifying them while they are associated with a persistence context?
+
+		In a multiuser application where there are so many users using the app we do not usually maintain a database transaction
+		across user interactions. Users take a lot of time thinking on the modifications. For scalability reasons we must keep 
+		the database transactions short and release database resources as soon as possible.
+
+		We could do this modifications while having them associated with the persistence context but the db connection needs to remain
+		disconnected while the objects are being modified. We do that by extending the persistence context. We will be having
+		one persistence context but mutiple transactions across user interaction and the object modifications will be done while 
+		there is no database connection. If we extend the persistence context Merge operation is not needed since we will not have
+		detached objects to merge.
+	
+Identity of Detached Objects
+
+	Detached objects (even with same data) from different persistence contexts are not equal unless we make them equal by
+	overriding the default implementation of equals() and hashcode() methods.
+
+	Whenever you work with detached objects and you test them for equality, you override the equals() and hashcode() methods
+	for your mapped entity.
+
+	Using database ids for comparing equality is discouraged is because database identities are not assigned until an object becomes persistent.
+	So if you're working with a transient object whose id value is null, it'll cause you a problem.
+
 	
 Optimistic Locking and Versioning
 
-	Last commit wins issue
-	
+	Without Optimistic Locking we have the "Last commit wins" issue. Optimistic Locking is the official name of the Versioning Strategy.
+	We are not expecting the "last updates" to happen very often. 
+
+	/* Needs an alter table statement */
 	@Version
 	private Integer version
+
+	/* Better to use this right from the begining */
+	@Column(columnDefinition = "integer DEFAULT 0", nullable = false)
+    @Version
+    private Integer version;
 	
 	Hibernate is going to check for the version number at each update.
 	An exception will be thrown, to prevent a lost update, if Hibernate does not find the in-memory version of an entity to be same as the database version (current version)
@@ -538,6 +583,9 @@ Optimistic Locking and Versioning
 	
 	Optimistic Locking: Official name of the versioning strategy to prevent lost updates. No database locking.
 	Pessimistic Locking: Database locking. Could be used only withing a single transaction.
+
+	A database lock is used to lock some data in a database. It's basically used to prevent two or more database users from updating the same exact piece of data
+	at the same exact time.
 	
 	Conversation
 	
@@ -545,10 +593,18 @@ Optimistic Locking and Versioning
 		2. Modyfing loaded objects.
 		3. Storing loaded objects.
 		
-	Use Versioning strategy to prevent lost updates when implementing a conversation (multiple transactions/[request/response cycles]).
-	Use Pessimistic locking only within a single transaction.
-	
-	When to use Pessimistic locking? When you've got multiple database queries being executed on the same data, within a single transactions.
+	Usage:
+
+		- Use Versioning strategy to prevent lost updates when implementing a conversation (multiple transactions/[request/response cycles]).
+		
+		- Use Pessimistic locking only within a single transaction. When you've got multiple database queries being executed on the same data, within a single transaction.
+		Actually, you would not be using pessimistic locking too often in your multi-user applications as holding database logs could hurt the scalability of an application.
+		The longer you hold a database lock, the greater the risk of a bad scalability.
+
+			LockModeType.PESSIMISTIC_WRITE: It will not allow other transactions or users to even read the data that is being locked. 
+        	LockModeType.PESSIMISTIC_READ: Other users will be able to read the data is being locked.
+
+		- If we use database locks we are being pessimistic since while we are working on some data some of the users might actually update that data in the database.
 	
 Rules for Isolation Levels
 
