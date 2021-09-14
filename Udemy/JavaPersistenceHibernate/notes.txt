@@ -613,13 +613,104 @@ Rules for Isolation Levels
 	
 	Shouldn't a transaction be completely isolated from other transactions?
 	
-		Serializable: highest isolation-level; provides full/complete isolation-level. Transactions are executed serialy, one after the other. Transaction2 can be commited until transaction 1 is committed. Slow performance.
-		Repeatable_read: Phantom reads are possible. Better performance.
-		Read_committed: Un repeatable reads are possible.
-		Read_uncommitted: lowest isolation-level: Same as read_commited. Could get rollbacks. Dirty reads are possible. Not recommended.
+		- Serializable: 
+			
+			Highest isolation-level. 
+			Provides full/complete isolation-level. 
+			Transactions are executed serialy, one after the other. Transaction2 can be commited until transaction 1 is committed. 
+			Slow performance.
 		
+		- Repeatable_read: 
+			
+			Phantom reads are possible. Better performance.
+		
+		- Read_committed: 
+			
+			Un repeatable reads are possible.
+		
+		- Read_uncommitted: 
+		
+			lowest isolation-level: Same as read_commited. Could get rollbacks. Dirty reads are possible. Not recommended.
+
+
+	Scenario
+
+		User1:										|
+													|
+			start transaction						|
+													|
+			select name, salary, from guide;		|
+													|
+			name		salary						|
+			--------------------					|
+			Mike		1000						|
+			Ian			4000						|
+			David		3000						|
+													|
+													|		User2:
+													|
+													|			start transaction
+													|
+													|			update guide set salary = 4000 where id = 3;
+													|			insert into guide (name,salary,staff_id) values ("Enrich Esterly", 2500, "2000EL10793");
+													|
+													|			commit;
+													|
+													|
+			select name, salary from guide;			|
+													|
+													|
+
+
+		How does transaction 2 is going to affect transaction 1?
+		
+			If isolation level is Serializable the result is:
+
+				name		salary						
+				--------------------					
+				Mike		1000						
+				Ian			4000						
+				David		3000
+
+
+			If isolation level is Repeatable_read the result is:
+			
+				name		salary						
+				--------------------					
+				Mike		1000						
+				Ian			4000						
+				David		3000
+				Enrich		2500			* insert of transaction2
+
+			
+			If isolation level is Read_commited the result is:
+
+				name		salary						
+				--------------------					
+				Mike		1000						
+				Ian			4000						
+				David		4000			* update of transaction2
+				Enrich		2500
+
+			If isolation level is Read_uncommitted
+
+				name		salary						
+				--------------------					
+				Mike		1000						
+				Ian			4000						
+				David		4000			
+				Enrich		2500
+
 		MySQL supports all 4 isolation levels. Repeatable_read (default)
 		Oracle supports Serializable and Read_committed. Read_commited (default)
+
+		To test the same scenario using hibernate read_committed in the code we need to modify persistence.xml file
+
+		1: READ UNCOMMITED
+		2: READ COMMITTED
+		4: REPEATABLE_READ
+		8: SERIALIZABLE 
+		<property name="hibernate.connection.isolation" value = "2" />
 		
 Caching and Object Identity
 
