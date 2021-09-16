@@ -690,7 +690,7 @@ Rules for Isolation Levels
 				Mike		1000						
 				Ian			4000						
 				David		4000			* update of transaction2
-				Enrich		2500
+				Enrich		2500			* insert of transaction2
 
 			If isolation level is Read_uncommitted
 
