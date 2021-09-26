@@ -738,60 +738,130 @@ Caching and Object Identity
 
 Second level caching
 
-	By default, Hibernate does not cache the persistent objects across different EntityManagers.
-	Second cache is also called L2 Cache, Shared Data Cache and Shared Cache.
-	Hibernate stores data in a Second level cache in a dehydrated way: Guide[2] => ["Ian Lamb", 4000, "2000IM10901", 1]
+	- By default, Hibernate does not cache the persistent objects across different EntityManagers.
+	- Second cache is also called L2 Cache, Shared Data Cache and Shared Cache.
+	- Hibernate stores data in a Second level cache in a dehydrated way: Guide[2] => ["Ian Lamb", 4000, "2000IM10901", 1]. That means there is no
+		object. It's more like a key value pair. We have some regions inside Second Level Cache:
+
+		- Entity Data Cache
+		- Collection Cache
+		- Query Result Cache
+
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+
+		/* 
+			If Second Level Cache is enabled, Hibernate will look for the guide in Fist Level Cache but if the guide is not found
+			it will look for it in the Second Level Cache and if the guide is not found, a select statement will be issued.
+			The guide will be placed in first level cache and also in the second level cache.
+		*/
+
+		EntityManager em1 = emf.createEntityManager();
+		em1.getTransaction().begin();
+		Guide guide1 = em1.find(Guide.class, 2L);
+		em1.getTransaction().commit();
+
+		/* Once the em1 is closed the object is detached */
+		em1.close(); 
+
+		EntityManager em2 = emf.createEntityManager();
+		em2.getTransaction().begin();
+
+		/* 
+			Here Hibernate will look for the guide in the first level cache and it is not found so it will search in the second level cache 
+			This is called Cache Hit. There is no need of a select statement.
+		*/
+		Guide guide2 = em2.find(Guide.class, 2L);
+		em2.getTransaction().commit();
+		em2.close();
 	
 	L2 Cache
 	
 		Entity Data Cache
+
+				key			value
+				-------------------------------------------------
+				Guide[1] => ["Mike Lawson",1000,"2000MO10789",0]
+				Guide[2] => ["Ian Lamb", 4000, "2000IM10901", 1]
+				Guide[3] => ["David Crow", 3000, "2000DO10777", 0]
+
+
+
 		Collection Cache
 		Query Result Cache
 	
 	L2 Cache Implementation
 	
 		EhCache - Single JVM					
+			
 			hibernate-ehcache-4.3.5.jar
 		
 		TreeCache from JBOSS - Multiple JVMs	
+				
 			ehcache-core-2.4.3.jar
 			slf4j-api-1.6.1.jar
 			slf4j-log4j12-1.6.1.jar
 			log4j-1.2.17.jar
 			
-		ehcache.xml
+
+		ehcache.xml 
+
+			- Important to configure the maximum number of entries of the Guide data that you can have in the Entity Data Cache Region.
+			- Also it's important to set for how long you would have those entries available in the Entity Data Cache Region.
+			- Another important thing to configure is whether you like to overflow the data from the RAM to the disk or not.
 		
-			<?xml version="1.0" encoding="UTF-8" ?>
-			<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				xsi:noNamespaceSchemaLocation="ehcache.xsd">
-				<cache name="domain.Guide" 
-					maxElementsInMemory="1000" 
-					eternal="true" 
-					<!-- Configure timeToIdleSeconds and timeToLiveSeconds if there is a probability of more than one user modifying the entity at the same time -->
-					timeToIdleSeconds="..."  
-					timeToLiveSeconds="..." 
-					overflowToDisk="false"
-				</cache>
-			</ehcache>
+				<?xml version="1.0" encoding="UTF-8" ?>
+				<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xsi:noNamespaceSchemaLocation="ehcache.xsd">
+					<cache name="domain.Guide" 
+						maxElementsInMemory="1000" 
+						eternal="true"  
+						overflowToDisk="false"
+					</cache>
+				</ehcache>
 		
-		 When entities cached in the second level cache are updated, Hibernate invalidates them and add the updated data.
+			- When entities cached in the second level cache are updated, Hibernate invalidates them and add the updated data.
 		 
-	To manually invalidate the cached data of a persistent class:
-	emf.evictEntity(domain.Guide2);		//Invalidate all elements
-	emf.evictEntity(domain.Guide2, 2L);	//Invalidate only one element
+			- To manually invalidate the cached data of a persistent class:
+
+				emf.evictEntity(domain.Guide2);		//Invalidate all elements
+				emf.evictEntity(domain.Guide2, 2L);	//Invalidate only one element
 	
+		
 	StatistcsAPI: Monitors the second level cache.
 	
 	Cache Concurrency Strategy: A cache concurrency strategy defines a transaction isolation level for an entry in a cache region.
 		
-		@Cacheable uses CacheConcurrencyStrategy.READ_WRITE. Default and it is equivalent to READ_COMMITTED transaction isolation level.
+		@Cacheable uses CacheConcurrencyStrategy.READ_WRITE by Default and it is equivalent to READ_COMMITTED transaction isolation level.
 		
 		Types
 		
-			- TRANSACTIONAL: cluster, read-mostly data; equivalent to REPEATABLE_READ
+			- TRANSACTIONAL: cluster or multiple virtual machines, read-mostly data; equivalent to REPEATABLE_READ
+			
 			- READ_WRITE: read mostly data equivalent to READ_COMMITTED
-			- NONSTRICT_READ_WRITE : data is hardly ever changes
-			- READ_ONLY: data is never modified
+			
+			- NONSTRICT_READ_WRITE : Data is hardly ever changes (two users are unlikely to udpdate same data at the same time)
+
+				In this case we do not need transaction isolation but there is no guarantee of data consistency between the cache region and the database.
+				If there is a posibility of concurrent access to the same entity we should configure a a sufficiently short expiry time out in 
+				the cash configuration of that entity otherwise, you might end up reading steal data from the cash region.
+
+					timeToIdleSeconds=
+					timeToLiveSeconds=  
+
+				<?xml version="1.0" encoding="UTF-8" ?>
+				<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xsi:noNamespaceSchemaLocation="ehcache.xsd">
+					<cache name="domain.Guide" 
+						maxElementsInMemory="1000" 
+						eternal="true"
+						timeToIdleSeconds=
+						timeToLiveSeconds=  
+						overflowToDisk="false"
+					</cache>
+				</ehcache>
+			
+			- READ_ONLY: Data is never modified (Example: country codes)
 		
 		
 			Single JVM - EhCache
