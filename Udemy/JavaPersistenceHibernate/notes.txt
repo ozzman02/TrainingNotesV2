@@ -906,27 +906,35 @@ Best practices
 	
 	3. Do not treat exceptions as recoverable.
 	
-	4. Prefer lazy fetching for associations. If you need to load a collection eagerly use a left join fetch.
-	
-	5. Prefer bidirectional associations. In a large application, almost all associations must be navigable
+	4. Prefer bidirectional associations. In a large application, almost all associations must be navigable
 		in both directions in queries
-		
-	6. Use bind variables.
+
+	5. Use bind variables.
 	
 		In JDBC always replace non-constant values by ?
 		If using JPQL used named parameters
+
+	6. Prefer lazy fetching for associations. If you need to load a collection eagerly use a left join fetch.
 	
-	7. Using second level caching for those entity classes that represented
+	7. Keep the size of your cache to the necessary minimum.
+
+	8. Prevent N+1 Selects Problem.
+		
+	9. Prevent issues caused by the identity of detached objects.
+	
+	10. Prevent lost updates by using Optimistic Locking (@Version)
+
+	11. Using second level caching for those entity classes that represented
 		
 		Good candidates: 
 		
 			Data that changes rarely.
-			Noncritical data (for example content management data)
+			Noncritical data (for example content management data, country codes, etc)
 			Data that's local to the application and not modified by other applications.
 			
 		Bad candidates:
 		
-			Data taht is updated often.
+			Data that is updated often.
 			Financial data, where decisions must be based on the latest update.
 			Data that is shared with and/or written by other applications.
 			
