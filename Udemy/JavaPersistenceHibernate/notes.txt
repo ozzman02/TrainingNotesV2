@@ -742,6 +742,7 @@ Second level caching
 	- Second cache is also called L2 Cache, Shared Data Cache and Shared Cache.
 	- Hibernate stores data in a Second level cache in a dehydrated way: Guide[2] => ["Ian Lamb", 4000, "2000IM10901", 1]. That means there is no
 		object. It's more like a key value pair. We have some regions inside Second Level Cache:
+	- By default associated objects are not chached. The reason to cache associations is to avoid extra calls to the database.
 
 		- Entity Data Cache
 		- Collection Cache
@@ -886,7 +887,9 @@ Second level caching
 		Cluster Scope
 			- Cluster of JVMs
 			- Transactional
-			- TreeCache from JBOSS (Replicated clustered cache)
+			- TreeCache from JBOSS 
+				
+				(Replicated clustered cache: The cached data of your second level cache is replicated to all the virtual machines that your application is running on)
 		
 	Caching Associations (in Second level cache)	
 		
