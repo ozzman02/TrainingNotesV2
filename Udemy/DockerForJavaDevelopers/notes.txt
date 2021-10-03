@@ -14,14 +14,29 @@ Docker for Java Developers
 
 	url: localhost:8080/product/list
 	connect to container: docker exec -it 1bfd0b48c0fe bash
+
+	run the app: mvn spring-boot:run
 	
 /* Images */
 
-	Image ids are a SHA 256 has derived from the layers
+	Image ids are a SHA 256 has derived from the layers.
+
+	Tag Names
+
+		Format: [REGISTRYHOST/][USERNAME/]NAME[:TAG]
+
+		Example: registry.hub.docker.com/mongo:latest
 
 	docker images
 
 		The image id f03be0dc25f8 is the first 12 characters of the hash
+
+	docker images -q --no-trunc
+
+		List the full value of the hash
+
+		sha256:f03be0dc25f8732caef29f051c91ce7447f8305738032e91c23b13cba3e74e40
+
 
 	docker image inspect mongo
 
@@ -44,23 +59,17 @@ Docker for Java Developers
                 "sha256:81924e984258a15d12282f8684463da9392c6f06ea07b17727de7e601e808a15"
             ]
         },
-
-	docker images -q --no-trunc
-
-		List the full value of the hash
-
-		sha256:f03be0dc25f8732caef29f051c91ce7447f8305738032e91c23b13cba3e74e40
-		sha256:d1165f2212346b2bab48cb01c1e39ee8ad1be46b87873d9ca7a4e434980a7726
+	
 
 /* mongo local volume for db persistence */
 	
-	docker run -p 27017:27017 -v /home/oscars/DockerData/mongo:/data/db -d mongo
+	docker run -p 27017:27017 -v /Users/oscar.santamaria/dockerdata/mongo:/data/db -d mongo
 
 /* run rabbitmq with port mapping exposing also the management console */ 
 
 	user: guest
 	password: guest
-	docker run -d --hostname oscars --name oscars-rabbit -p 8080:15672 -p 5671:5671 -p 5672:5672 rabbitmq:3-management
+	docker run -d --hostname local --name local-rabbit -p 8080:15672 -p 5671:5671 -p 5672:5672 rabbitmq:3-management
 
 	connect to console: http://localhost:8080/
 
@@ -72,7 +81,7 @@ Docker for Java Developers
 		
 		sudo systemctl stop mysql
 	
-	docker run --name oscars-mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v /home/oscars/DockerData/mysql:/var/lib/mysql -p 3306:3306 -d mysql
+	docker run --name local-mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -v /Users/oscar.santamaria/dockerdata/mysql:/var/lib/mysql -p 3306:3306 -d mysql
 
 	connect to container
 
@@ -123,15 +132,47 @@ Docker for Java Developers
 		yum install java
 		
 /* Run Spring Boot app in docker */
+
+	1. mvn package to generate spring-boot-web-0.0.1-SNAPSHOT.jar
 	
-	1. Create docker file.
-	2. docker build -t spring-boot-docker .
-	3. docker run -d -p 8080:8080 spring-boot-docker
+	2. Create docker file.
+
+		FROM centos
+
+		RUN yum install -y java
+
+		VOLUME /tmp
+		ADD /spring-boot-web-0.0.1-SNAPSHOT.jar myapp.jar
+		RUN sh -c 'touch /myapp.jar'
+		ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/myapp.jar"]
+
+	3. Create a folder and copy the docker file and the jar file.
+
+	3. Go to that folder and run docker build -t spring-boot-docker .
+
+	4. When the build is complete then run docker run -d -p 8080:8080 spring-boot-docker
 	
 	
 /* Automatig Building of Docker images (Fabric8) */
 
+	- download the app and test by running on http://localhost:8080/
+
 	- configure the maven plugin  (Check Daemon socket option info https://docs.docker.com/engine/reference/commandline/dockerd/)
+
+	- in the settings.xml file add DockerHub credentials.
+
+		<?xml version="1.0" encoding="UTF-8"?>
+		<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          			xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    		<servers>
+        		<server>
+            		<id>docker.io</id>
+            		<username>osantamaria</username>
+            		<password>canela01</password>
+        		</server>
+    		</servers>
+		</settings>
 
 	- mvn clean package
 	
@@ -149,7 +190,7 @@ Docker for Java Developers
 
 	mvn docker:run 		runs interactively
 	mvn docker:start	runs in the background
-	mvn docker:stop
+	mvn docker:stop		
 
 
 	
