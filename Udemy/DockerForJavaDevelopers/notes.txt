@@ -214,7 +214,112 @@ Docker for Java Developers
 			-e SPRING_RABBITMQ_HOST=local-rabbitmq \
 			-d osantamaria/pageviewservice
 
+		Course Example:
 
+			docker run --name mysqldb -p 3306:3306 -e MYSQL_DATABASE=pageviewservice -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d mysql
+			docker run --name rabbitmq -p 5671:5671 -p 5672:5672 rabbitmq
+
+			docker run --name pageviewservice -p 8081:8081 \
+			--link rabbitmq:rabbitmq \
+			--link mysqldb:mysqldb \
+			-e SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/pageviewservice \
+			-e SPRING_PROFILES_ACTIVE=mysql  \
+			-e SPRING_RABBITMQ_HOST=rabbitmq \
+			osantamaria/pageviewservice
+
+/* Docker compose */
+
+	Wordpress example:
+
+		Go to the docker compose file location:
+
+			/Users/oscar.santamaria/git/personal/DockerForJavaDevelopers/spring-boot-docker/src/main/scripts/wordpress
+
+		Execute the command to start:
+
+			docker-compose up -d
+
+		Execute this command to stop
+
+			docker-compose down
+
+
+	Spring Boot Docker app example
+
+		/Users/oscar.santamaria/git/personal/DockerForJavaDevelopers/spring-boot-docker/src/main/scripts/sfgapp
+
+		docker-compose up -d
+
+		docker-compose down
+
+
+/* Docker Swarm Mode */
+
+	- Login to Digital Ocean and create an SSH key in /Users/oscar.santamaria/.ssh/digitalocean/
+	- Create 4 droplets using CentOS 7.
+	- Navigate to /Users/oscar.santamaria/.ssh/digitalocean/
+	- Install docker on each node: ssh -i id_rsa.pub root@dropletip
+
+		- https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-centos-7
+
+			sudo yum check-update
+    		curl -fsSL https://get.docker.com/ | sh
+			sudo systemctl start docker
+    		sudo systemctl status docker
+    		sudo systemctl enable docker
+
+		ssh -i id_rsa root@147.182.221.91		--->	manager
+		ssh -i id_rsa root@147.182.221.164		--->	worker
+		ssh -i id_rsa root@137.184.56.126		--->	manager
+		ssh -i id_rsa root@147.182.135.1		--->	worker
+		
+
+	- connect to node1 and enable Docker Swarm using the public ip
+
+		docker swarm init --advertise-addr 147.182.221.91
+
+			Swarm initialized: current node (qsne222jiys9fsi12yirib0dz) is now a manager.
+
+			To add a worker to this swarm, run the following command:
+
+    			docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-7anezn3gm9xg05l0zhw9elyft 147.182.221.91:2377
+
+			To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 
 	
+	- connect to node2, node3 and node4 and execute
+		
+		docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-7anezn3gm9xg05l0zhw9elyft 147.182.221.91:2377
+
+	- On node 1 execute
+
+		docker node ls
+
+		docker swarm join-token manager
+
+			docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-bzsrkhdp30epmtb8t34i4um4b 147.182.221.91:2377
+
+		docker swarm join-token worker
+
+			docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-7anezn3gm9xg05l0zhw9elyft 147.182.221.91:2377
+
+	- On node 3 execute
+
+		docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-bzsrkhdp30epmtb8t34i4um4b 147.182.221.91:2377
+
+	- On node 4 execute
+
+		docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-7anezn3gm9xg05l0zhw9elyft 147.182.221.91:2377
+
+	- At this point, from any manager node 
+
+		[root@centos-node1 ~]# docker node ls
+		ID                            HOSTNAME       STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+		qsne222jiys9fsi12yirib0dz *   centos-node1   Ready     Active         Leader           20.10.9
+		5coyj4b4jpuqy42dttw9rts0u     centos-node2   Ready     Active                          20.10.9
+		q7x4kchnetrj64lnzw378jygy     centos-node3   Ready     Active         Reachable        20.10.9
+		lc1ucfgnuc1zvk430a3n7ka9v     centos-node4   Ready     Active                          20.10.9
+
+		
+
 	
