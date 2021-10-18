@@ -268,28 +268,28 @@ Docker for Java Developers
     		sudo systemctl status docker
     		sudo systemctl enable docker
 
-		ssh -i id_rsa root@147.182.221.91		--->	manager
-		ssh -i id_rsa root@147.182.221.164		--->	worker
-		ssh -i id_rsa root@137.184.56.126		--->	manager
-		ssh -i id_rsa root@147.182.135.1		--->	worker
+		ssh -i id_rsa root@137.184.19.49		--->	manager
+		ssh -i id_rsa root@137.184.214.79		--->	worker
+		ssh -i id_rsa root@137.184.214.80		--->	worker
+		ssh -i id_rsa root@137.184.214.94		--->	worker
 		
 
 	- connect to node1 and enable Docker Swarm using the public ip
 
-		docker swarm init --advertise-addr 147.182.221.91
+		docker swarm init --advertise-addr 137.184.19.49
 
-			Swarm initialized: current node (qsne222jiys9fsi12yirib0dz) is now a manager.
+			Swarm initialized: current node (w3g6ki77fb2bk18xy3n15dl86) is now a manager.
 
-			To add a worker to this swarm, run the following command:
+			To add a worker to this swarm, run the following command:	
 
-    			docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-7anezn3gm9xg05l0zhw9elyft 147.182.221.91:2377
+    			docker swarm join --token SWMTKN-1-2oloxekj4h8c5h2f1fr1jdj061w5qghjnrkk2vfuw012m1ycix-1dx9ip0hund7412td81k0qzx5 137.184.19.49:2377
 
 			To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 
 	
 	- connect to node2, node3 and node4 and execute
 		
-		docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-7anezn3gm9xg05l0zhw9elyft 147.182.221.91:2377
+		docker swarm join --token SWMTKN-1-2oloxekj4h8c5h2f1fr1jdj061w5qghjnrkk2vfuw012m1ycix-1dx9ip0hund7412td81k0qzx5 137.184.19.49:2377
 
 	- On node 1 execute
 
@@ -297,19 +297,12 @@ Docker for Java Developers
 
 		docker swarm join-token manager
 
-			docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-bzsrkhdp30epmtb8t34i4um4b 147.182.221.91:2377
+			docker swarm join --token SWMTKN-1-2oloxekj4h8c5h2f1fr1jdj061w5qghjnrkk2vfuw012m1ycix-48199drrpnbmggis6sfp54kr7 137.184.19.49:2377
 
 		docker swarm join-token worker
 
-			docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-7anezn3gm9xg05l0zhw9elyft 147.182.221.91:2377
+			docker swarm join --token SWMTKN-1-2oloxekj4h8c5h2f1fr1jdj061w5qghjnrkk2vfuw012m1ycix-1dx9ip0hund7412td81k0qzx5 137.184.19.49:2377
 
-	- On node 3 execute
-
-		docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-bzsrkhdp30epmtb8t34i4um4b 147.182.221.91:2377
-
-	- On node 4 execute
-
-		docker swarm join --token SWMTKN-1-4ssqhl00iiso2q9ccjp7cwih8pduhoyrvq67fi4j7zg6be49vr-7anezn3gm9xg05l0zhw9elyft 147.182.221.91:2377
 
 	- At this point, from any manager node 
 
@@ -320,6 +313,45 @@ Docker for Java Developers
 		q7x4kchnetrj64lnzw378jygy     centos-node3   Ready     Active         Reachable        20.10.9
 		lc1ucfgnuc1zvk430a3n7ka9v     centos-node4   Ready     Active                          20.10.9
 
+	- On node1 install portainer as service
+
+		docker service create \
+		--name portainer \
+		--publish 80:9000 \
+		--constraint 'node.role == manager' \
+		--mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock \
+		portainer/portainer \
+		-H unix:///var/run/docker.sock
+
+		docker service create --name portainer --publish 80:9000 --constraint 'node.role == manager' --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock portainer/portainer -H unix:///var/run/docker.sock
+
+
+
+		[root@centos-node1 ~]# docker ps
+		CONTAINER ID   IMAGE                        COMMAND                  CREATED          STATUS          PORTS      NAMES
+		a510d57046e4   portainer/portainer:latest   "/portainer -H unix:…"   28 seconds ago   Up 26 seconds   9000/tcp   portainer.1.htsyghha9edw2lukeinnufu48
+
+		[root@centos-node1 ~]# docker service ls
+		ID             NAME        MODE         REPLICAS   IMAGE                        PORTS
+		58orligcxy38   portainer   replicated   1/1        portainer/portainer:latest   *:80->9000/tcp
+
+
+		[root@centos-node1 ~]# docker service ps portainer
+		ID             NAME              IMAGE                        NODE           DESIRED STATE   CURRENT STATE                ERROR                       PORTS
+		5lh50zfiw4la   portainer.1       portainer/portainer:latest   centos-node1   Running         Running about a minute ago  
+
+
+		Login to portainer
+
+			Last command is telling us that portainer is running on centos-node1
+
+			http://137.184.19.49/#/init/admin
+
+				user: admin
+				password: admin2021
 		
+		
+
+
 
 	
