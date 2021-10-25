@@ -323,7 +323,9 @@ Docker for Java Developers
 		portainer/portainer \
 		-H unix:///var/run/docker.sock
 
-		docker service create --name portainer --publish 80:9000 --constraint 'node.role == manager' --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock portainer/portainer -H unix:///var/run/docker.sock
+		inline:
+			
+			docker service create --name portainer --publish 80:9000 --constraint 'node.role == manager' --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock portainer/portainer -H unix:///var/run/docker.sock
 
 
 
@@ -349,9 +351,129 @@ Docker for Java Developers
 
 				user: admin
 				password: admin2021
+
+	- On node1 install MySQL as a service
+
+		docker service create \
+		--name mysqldb -p 3306:3306 \
+		-e MYSQL_DATABASE=pageviewservice \
+		-e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+		mysql
 		
+		inline:
+
+			docker service create --name mysqldb -p 3306:3306 -e MYSQL_DATABASE=pageviewservice -e MYSQL_ALLOW_EMPTY_PASSWORD=yes mysql
+
+		[root@node1 ~]# docker service ls
+		ID             NAME        MODE         REPLICAS   IMAGE                        PORTS
+		yo8d4zqiwl6c   mysqldb     replicated   1/1        mysql:latest                 *:3306->3306/tcp
+		dm7mayt0h5qt   portainer   replicated   1/1        portainer/portainer:latest   *:80->9000/tcp
+
+		[root@node1 ~]# docker service ps mysqldb
+		ID             NAME        IMAGE          NODE      DESIRED STATE   CURRENT STATE                ERROR     PORTS
+		sw299snyqesy   mysqldb.1   mysql:latest   node2     Running         Running about a minute ago 
+		
+		docker service rm mysqldb
+
+	- We want to deploy the services but they need to talk to each other. For that we need to create an overlay network.
+
+		docker network create --driver overlay guru-service-network
+
+		docker service create --name mysqldb -p 3306:3306 -e MYSQL_DATABASE=pageviewservice -e MYSQL_ALLOW_EMPTY_PASSWORD=yes --network guru-service-network mysql
+
+		docker service create --name rabbitmq -p 5671:5671 -p 5672:5672 --network guru-service-network rabbitmq
+
+		docker service create --name pageviewservice -p 8081:8081 -e SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/pageviewservice -e SPRING_PROFILES_ACTIVE=mysql -e SPRING_RABBITMQ_HOST=rabbitmq --network guru-service-network springframeworkguru/pageviewservice
+
+		docker service create --name springbootwebapp -p 8080:8080 -e SPRING_RABBITMQ_HOST=rabbitmq --network guru-service-network springframeworkguru/springbootdocker
+
+
+		[root@node1 ~]# docker service ls
+		ID             NAME               MODE         REPLICAS   IMAGE                                         PORTS
+		phti0lj5zn97   mysqldb            replicated   1/1        mysql:latest                                  *:3306->3306/tcp
+		t00srebzmm3o   pageviewservice    replicated   1/1        springframeworkguru/pageviewservice:latest    *:8081->8081/tcp
+		dm7mayt0h5qt   portainer          replicated   1/1        portainer/portainer:latest                    *:80->9000/tcp
+		vq6ndz5x18p6   rabbitmq           replicated   1/1        rabbitmq:latest                               *:5671-5672->5671-5672/tcp
+		y8rtxhcufoti   springbootwebapp   replicated   1/1        springframeworkguru/springbootdocker:latest   *:8080->8080/tcp
 		
 
+		Test on node1 
 
+			137.184.142.223:8080
 
+		Remove all the services in order to build a stack
 	
+	- On node1 create the docker-compose.yml file and run
+
+		docker stack deploy -c docker-compose.yml guru_stack
+
+			[root@node1 ~]# docker stack deploy -c docker-compose.yml guru_stack
+			Ignoring unsupported options: restart
+
+			Creating network guru_stack_rabbit_net
+			Creating network guru_stack_database_net
+			Creating service guru_stack_springbootdocker
+			Creating service guru_stack_mysqldb
+			Creating service guru_stack_rabbitmq
+			Creating service guru_stack_pageviewservice
+
+			[root@node1 ~]# docker service ls
+			ID             NAME                          MODE         REPLICAS   IMAGE                                         PORTS
+			oet6umrfy23h   guru_stack_mysqldb            replicated   1/1        mysql:latest                                  *:3306->3306/tcp
+			1ns4og785e35   guru_stack_pageviewservice    replicated   0/3        springframeworkguru/pageviewservice:latest    *:8081->8081/tcp
+			cs7i44hdpkr0   guru_stack_rabbitmq           replicated   1/1        rabbitmq:latest                               *:4369->4369/tcp, *:5671-5672->5671-5672/tcp, *:25672->25672/tcp
+			lhdn0cfbn5yc   guru_stack_springbootdocker   replicated   3/3        springframeworkguru/springbootdocker:latest   *:8080->8080/tcp
+			dm7mayt0h5qt   portainer                     replicated   1/1        portainer/portainer:latest                    *:80->9000/tcp
+
+		
+		Test on node1 
+
+			137.184.142.223:8080
+
+	- Implementing Docker Secrets
+
+		Add the configuration in the docker-compose.yml file and create the file in the node1 along with the application.properties file.
+		Then run docker stack deploy -c docker-compose.yml guru_stack
+	
+		On node1
+
+			[root@node1 ~]# echo "password" | docker secret create mysql.txt -
+			qndr52ps9w5f6bm5d8gcj4olg
+
+			[root@node1 ~]# docker secret ls
+			ID                          NAME        DRIVER    CREATED          UPDATED
+			qndr52ps9w5f6bm5d8gcj4olg   mysql.txt             36 seconds ago   36 seconds ago
+
+			[root@node1 ~]# docker secret inspect mysql.txt
+			[
+    			{
+        			"ID": "qndr52ps9w5f6bm5d8gcj4olg",
+        			"Version": {
+            			"Index": 717
+        			},
+        			"CreatedAt": "2021-10-25T04:57:30.089520965Z",
+        			"UpdatedAt": "2021-10-25T04:57:30.089520965Z",
+        			"Spec": {
+            			"Name": "mysql.txt",
+            			"Labels": {}
+        			}
+    			}
+			]
+
+			[root@node1 ~]# docker stack deploy -c docker-compose.yml guru_stack
+			Ignoring unsupported options: restart
+
+			Creating network guru_stack_rabbit_net
+			Creating network guru_stack_database_net
+			Creating secret guru_stack_application.properties
+			Creating service guru_stack_springbootdocker
+			Creating service guru_stack_mysqldb
+			Creating service guru_stack_rabbitmq
+			Creating service guru_stack_pageviewservice
+
+			[root@node1 ~]# docker secret ls
+			ID                          NAME                                DRIVER    CREATED              UPDATED
+			f25hxn4hbzbbrjh5ffomh7eza   guru_stack_application.properties             About a minute ago   About a minute ago
+			qndr52ps9w5f6bm5d8gcj4olg   mysql.txt                                     8 minutes ago        8 minutes ago
+ 
+
