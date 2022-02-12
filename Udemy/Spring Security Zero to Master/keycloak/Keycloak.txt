@@ -3,5 +3,8 @@ Keycloak admin
     username: eazybankadmin
     password: admin
 
+    realm: eazybankdev
     clientId: eazybankapi
     clientSecret: NHWvUufBJGxI2rrz9okB1pa5xHW19q5e
+
+    run: http://localhost:8080/auth/
