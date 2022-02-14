@@ -4,7 +4,15 @@ Keycloak admin
     password: admin
 
     realm: eazybankdev
-    clientId: eazybankapi
-    clientSecret: NHWvUufBJGxI2rrz9okB1pa5xHW19q5e
+        
+        clientId: eazybankapi
+        clientSecret: NHWvUufBJGxI2rrz9okB1pa5xHW19q5e
+
+        clientId: eazyuiclient
+        clientSecret: XbZNAWjZUCblt7UWVo0KdwC6fr0lGf1X
+        redirectUrl: http://localhost:8081/sample
+
+        username: accounts
+        password: 123456
 
     run: http://localhost:8080/auth/
