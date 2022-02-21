@@ -1,5 +1,7 @@
 Keycloak admin
 
+    run: http://localhost:8080/auth/
+
     username: eazybankadmin
     password: admin
 
@@ -10,9 +12,21 @@ Keycloak admin
 
         clientId: eazyuiclient
         clientSecret: XbZNAWjZUCblt7UWVo0KdwC6fr0lGf1X
-        redirectUrl: http://localhost:8081/sample
+        redirectUri: http://localhost:8081/sample
 
-        username: accounts
-        password: 123456
+        Use with client-app-ui and resource server projects
+            
+            clientId: eazypublicclient
+            redirectUri: http://localhost:4200/dashboard
 
-    run: http://localhost:8080/auth/
+            username: accounts
+            password: 123456
+
+        Integrate with GitHub
+
+            Client ID: e96a17bfd7dca02d57a9
+            clientSecret: 5516294c1fd477df310787dd8f78fdb666a61214
+
+    
+    
+    
