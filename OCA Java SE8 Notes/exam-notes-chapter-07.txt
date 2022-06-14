@@ -110,7 +110,8 @@ Exception Handling
  
             - A runtime exception is a representation of a programming error. These occur from inappropriate use of a piece of code.
 
-            - A runtime exception is named so because it isn’t feasible to determine whether a method call will throw a runtime exception until it executes.
+            - A runtime exception is named so because it isn’t feasible to determine whether a method call will throw a runtime exception 
+                until it executes.
 
             - A runtime exception is a subclass of java.lang.RuntimeException
 
@@ -158,7 +159,8 @@ Exception Handling
 
         7.3.3 Creating a method that throws runtime exceptions or errors
 
-            - When creating a method that throws a runtime exception or error, including the exception or error name in the throws clause isn’t required.
+            - When creating a method that throws a runtime exception or error, including the exception or error name in the throws 
+                clause isn’t required.
 
             - A method that throws a runtime exception or error isn’t subject to the handle-or-declare rule.
 
