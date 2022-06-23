@@ -1,6 +1,10 @@
 Source Code
 
 	https://github.com/simplyi/springmvc-ws
+
+Developers blog
+
+	https://www.appsdeveloperblog.com/
 	
 
 http://www.yourWebSiteAddress.com/api/users/?start=1&limit=50
@@ -138,3 +142,296 @@ Create user without addresses
     "password":"canela01",
     "addresses": [] 
 }
+
+Exceptions
+
+	If message element is missing consider adding:
+	
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+		
+	In the properties file:
+	
+		server.error.include-messages = always
+		
+Deploy app
+	
+	Run app using Maven
+		
+		Spring Boot App
+			
+			mvn spring-boot:run
+			
+		Java App
+		
+			java -jar mobile-app-ws-0.0.1-SNAPSHOT.jar
+	
+	Build executable jar
+	
+		maven clean compile install or just mvn install
+		
+	Deploy to an existing Tomcat Server (Could be other server therefore we need a WAR file)
+	
+		Fist, need to modifify the main class as follows:
+		
+			1. Extends from SpringBootServletInitializer.
+			2. Override the configure method.
+			3. Change pom packaging to war. (Web application archive)
+			4. Tomcat dependencies should be provided at runtime. 
+				That means we need to add tomcat-starter as dependency and change the scope as follows:
+				
+				<dependency>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<version>2.7.0</version>
+					<scope>provided</scope>
+				</dependency>
+
+			@SpringBootApplication
+			public class MobileAppWsApplication extends SpringBootServletInitializer {
+
+				public static void main(String[] args) {
+					SpringApplication.run(MobileAppWsApplication.class, args);
+				}
+
+				@Override
+				protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+					return application.sources(MobileAppWsApplication.class);
+				}
+
+			}
+			
+	Tomcat 9
+	
+		1. Download and install
+		
+		2. Set admin user.
+		
+		3. Manually start
+			
+			C:\Program Files\Apache Software Foundation\Tomcat 9.0\bin\Tomcat9.exe
+			
+		4. Go to browser: http://localhost:8080/
+		
+		5. Go to http://localhost:8080/manager/html and introduce tomcat admin user credentials
+		
+		Tomcat9w:
+			
+			1. Choose manual as startup type
+			
+		Tomcat users
+		
+			C:\Program Files\Apache Software Foundation\Tomcat 9.0\conf\tomcat-users.xml
+			
+				<user username="tomcat_admin" password="tadmin" roles="admin-gui,manager-gui" />
+			
+		Remote access (Access tomcat from a remote machine)
+		
+			If you are running Tomcat on a server in the cloud (for example EC2 instance using win10):
+
+				1. Go to control panel -> System and Security -> Windows Firewall -> Allow Application and add 
+					C:\Program Files\Apache Software Foundation\Tomcat 9.0\bin\Tomcat9.exe
+					
+				2. Change Tomcat manager context:
+			
+					C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps\manager\META-INF\context and add your computer ip address.
+						
+						<Context antiResourceLocking="false" privileged="true" >
+							<CookieProcessor className="org.apache.tomcat.util.http.Rfc6265CookieProcessor" sameSiteCookies="strict" />
+							<Valve className="org.apache.catalina.valves.RemoteAddrValve"
+								allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|192.168.99.1" />
+							<Manager sessionAttributeValueClassNameFilter="java\.lang\.(?:Boolean|Integer|Long|Number|String)|org\.apache\.catalina\.filters\.CsrfPreventionFilter\$LruCache(?:\$1)?|java\.util\.(?:Linked)?HashMap"/>
+						</Context>
+					
+					
+					For all addresses:
+						
+						<Context antiResourceLocking="false" privileged="true" >
+							<CookieProcessor className="org.apache.tomcat.util.http.Rfc6265CookieProcessor" sameSiteCookies="strict" />
+							<Valve className="org.apache.catalina.valves.RemoteAddrValve"
+								allow="^.*$" />
+							<Manager sessionAttributeValueClassNameFilter="java\.lang\.(?:Boolean|Integer|Long|Number|String)|org\.apache\.catalina\.filters\.CsrfPreventionFilter\$LruCache(?:\$1)?|java\.util\.(?:Linked)?HashMap"/>
+						</Context>
+						
+				3. Restart Tomcat server
+			
+	
+	Connect to AWS EC2 (AWS Linux 2 AMI)
+	
+		Run chmod 400 PhotoAppEC2Server.pem
+		
+		With Public Ip
+		
+			ssh -i PhotoAppEC2Server.pem ec2-user@3.144.151.61
+			
+		With Public DNS
+			
+			ssh -i PhotoAppEC2Server.pem ec2-user@ec2-3-144-151-61.us-east-2.compute.amazonaws.com
+			
+		Install Java
+			
+			yum list java*
+			
+			sudo yum install java-11
+			
+			sudo /usr/sbin/alternatives --config java (just in case if we need to choose a java version)
+			sudo /usr/sbin/alternatives --config javac
+			
+		Install Apache Tomcat
+		
+			sudo wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.64/bin/apache-tomcat-9.0.64.tar.gz
+			
+			sudo tar xvf apache-tomcat-9.0.64.tar.gz -C /usr/share
+			
+			sudo ln -s /usr/share/apache-tomcat-9.0.64 /usr/share/tomcat9
+			
+			sudo groupadd --system tomcat
+			
+			sudo useradd -d /usr/share/tomcat9 -r -s /bin/false -g tomcat tomcat
+			
+			sudo chown -R tomcat:tomcat /usr/share/apache-tomcat-9.0.64
+			
+			sudo vi /etc/systemd/system/tomcat9.service
+			
+				[Unit]
+				Description=Tomcat Server
+				After=syslog.target network.target
+
+				[Service]
+				Type=forking
+				User=tomcat
+				Group=tomcat
+
+				Environment=JAVA_HOME=/usr/lib/jvm/jre
+				Environment='JAVA_OPTS=-Djava.awt.headless=true'
+				Environment=CATALINA_HOME=/usr/share/tomcat9
+				Environment=CATALINA_BASE=/usr/share/tomcat9
+				Environment=CATALINA_PID=/usr/share/tomcat9/temp/tomcat.pid
+				Environment='CATALINA_OPTS=-Xms512M -Xmx1024M'
+				ExecStart=/usr/share/tomcat9/bin/catalina.sh start
+				ExecStop=/usr/share/tomcat9/bin/catalina.sh stop
+
+				[Install]
+				WantedBy=multi-user.target
+				
+			sudo systemctl daemon-reload
+			
+			sudo systemctl enable tomcat9
+			
+			sudo systemctl start tomcat9
+			
+			sudo systemctl stop tomcat9
+			
+			sudo systemctl restart tomcat9
+			
+		Access Tomcat 
+		
+			EC2 instance Public DNS and port
+		
+				http://ec2-3-144-151-61.us-east-2.compute.amazonaws.com:8080/
+				
+		Configure Remote Access to Tomcat Manager App
+		
+			sudo vi /usr/share/tomcat9/webapps/manager/META-INF/context.xml
+			
+				Comment this:
+				
+					<!-- <Valve className="org.apache.catalina.valves.RemoteAddrValve" allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->
+			
+			Restart tomcat
+			
+				sudo systemctl restart tomcat9
+				
+		Configure Tomcat Users
+		
+			sudo vi /usr/share/tomcat9/conf/tomcat-users.xml
+			
+				Add this code snipet
+				
+					<role rolename="manager-gui"/>
+					<user username="tomcat" password="admin" roles="manager-gui"/>
+				
+				username: tomcat
+				password: admin
+				
+			sudo systemctl restart tomcat9
+			
+		Install MySQL
+		
+			sudo yum install https://dev.mysql.com/get/mysql80-community-release-el7-6.noarch.rpm
+			
+			ls /etc/yum.repos.d
+			
+			sudo yum repolist
+			
+			sudo amazon-linux-extras install epel -y
+			
+			sudo rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+			
+			sudo yum install mysql-community-server
+			
+			sudo systemctl enable --now mysqld
+			
+			systemctl status mysqld
+			
+			sudo grep 'temporary password' /var/log/mysqld.log
+			
+				2022-06-22T22:58:04.154747Z 6 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: N2;<atu)GYL6
+			
+			sudo mysql_secure_installation
+			
+				Root password: SuperUser22!
+				
+			mysql -u root -p
+			
+			SHOW VARIABLES LIKE 'validate_password%';
+			SET GLOBAL validate_password.policy=LOW;
+			
+			create database photo_app;
+			
+			create user 'photo_app_user'@'localhost' identified by 'photo_app_password';
+			
+			grant all privileges on photo_app.* to 'photo_app_user'@'localhost';
+			
+			mysql -u photo_app_user -p;
+
+	Deploy war to AWS Elastic Beanstalk
+	
+		Create database in AWS RDS
+		
+			identifier: photo-app-users-db
+			
+			database name: photo_app
+		
+			master user name: photo_app_user
+			
+			password: photo_app_password
+			
+			
+		Check the security group and add MySQL inbound rule (anywhere)
+		
+		Change spring.datasource.url in application.properties
+		
+			spring.datasource.url=jdbc:mysql://photo-app-users-db.cvkq3hrvh1h3.us-east-2.rds.amazonaws.com:3306/photo_app
+			
+		Run mvn package to build the app and generate a new war
+		
+		Go to AWS Elastic Beanstalk
+			
+			Create application
+			
+				application name: PhotAppUsersAPI
+				
+				platform: Tomcat
+				
+				upload your code
+				
+				source code origin
+				
+					local file (load the war file)
+					
+				create application
+				
+				
