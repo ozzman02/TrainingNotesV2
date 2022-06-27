@@ -1,0 +1,123 @@
+{
+    "firstName":"Oscar",
+    "lastName":"Santamaria",
+    "email":"osantamaria@gmail.com",
+    "password":"canela01",
+    "addresses": [
+        {
+            "city":"San Francisco de dos Rios",
+            "country":"Costa Rica",
+            "streetName":"Mi calle",
+            "postalCode":"10106",
+            "type":"home"
+        },
+        {
+            "city":"Heredia",
+            "country":"Costa Rica",
+            "streetName":"AFZ Street",
+            "postalCode":"40103",
+            "type":"work"
+        }
+    ] 
+}
+{
+    "firstName":"Carlos",
+    "lastName":"Santamaria",
+    "email":"csantama86@gmail.com",
+    "password":"canela01",
+    "addresses": [
+        {
+            "city":"San Francisco de dos Rios",
+            "country":"Costa Rica",
+            "streetName":"Mi calle",
+            "postalCode":"10106",
+            "type":"home"
+        },
+        {
+            "city":"Heredia",
+            "country":"Costa Rica",
+            "streetName":"AFZ Street",
+            "postalCode":"40103",
+            "type":"work"
+        }
+    ] 
+}
+
+{
+    "firstName":"Sergio",
+    "lastName":"Santamaria",
+    "email":"sersanta1986@gmail.com",
+    "password":"canela01",
+    "addresses": [
+        {
+            "city":"San Francisco de dos Rios",
+            "country":"Costa Rica",
+            "streetName":"Mi calle",
+            "postalCode":"10106",
+            "type":"home"
+        },
+        {
+            "city":"Heredia",
+            "country":"Costa Rica",
+            "streetName":"AFZ Street",
+            "postalCode":"40103",
+            "type":"work"
+        }
+    ] 
+}
+
+{
+    "firstName":"Grace",
+    "lastName":"Venegas",
+    "email":"gracepa60@gmail.com",
+    "password":"canela01",
+    "addresses": [
+        {
+            "city":"San Francisco de dos Rios",
+            "country":"Costa Rica",
+            "streetName":"Mi calle",
+            "postalCode":"10106",
+            "type":"home"
+        },
+        {
+            "city":"Heredia",
+            "country":"Costa Rica",
+            "streetName":"AFZ Street",
+            "postalCode":"40103",
+            "type":"billing"
+        },
+        {
+            "city":"Heredia",
+            "country":"Costa Rica",
+            "streetName":"Cubujuqui",
+            "postalCode":"40102",
+            "type":"shipping"
+        }
+    ] 
+}
+
+{
+    "firstName":"Maria",
+    "lastName":"Cerdas",
+    "email":"mariacerdas@gmail.com",
+    "password":"narules2022",
+    "addresses": [
+        {
+            "city":"San Juan",
+            "country":"Costa Rica",
+            "streetName":"San Juan Street",
+            "postalCode":"10303",
+            "type":"home"
+        }
+    ] 
+}
+
+
+
+{
+    "firstName":"Carlos",
+    "lastName":"Santamaria",
+    "email":"csantama86@gmail.com",
+    "password":"canela01",
+    "addresses": [] 
+}
