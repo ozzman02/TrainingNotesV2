@@ -1,0 +1,13 @@
+Build React App with Create-React-App
+
+    1. Install NodeJS 
+    2. Install NPM
+    3. Execute the commands:
+
+        npx create-react-app my-app
+        cd my-app
+        npm start
+
+
+
+Build React App with ViteJS

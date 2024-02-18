@@ -1,0 +1,24 @@
+SpringSecurityFilters
+
+    AuthorizationFilter
+
+    DefaultLoginPageGeneratingFilter
+
+    UsernamePasswordAuthenticationFilter
+
+Authentication
+
+    UsernamePasswordAuthenticationToken
+
+
+Authentication Manager
+
+    ProviderManager
+
+Authentication Provider
+
+    DaoAuthenticationProvider
+
+UserDetailsService
+
+    InMemoryUserDetailsManager
