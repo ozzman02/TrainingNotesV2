@@ -11,3 +11,62 @@ Build React App with Create-React-App
 
 
 Build React App with ViteJS
+
+    1. Install NodeJS
+    2. Install NPM
+    3. Execute the commands:
+
+        npm create vite@latest ems-frontend
+
+        cd ems-frontend
+        npm install
+        npm run dev
+
+Adding Bootstrap
+
+    1. npm install bootstrap --save
+    2. go to main.jsx and import 'bootstrap/dist/css/bootstrap.min.css'
+
+Install axios
+
+    npm install axios --save
+
+Install react-router-dom
+
+    1. npm install react-router-dom --save
+
+    2. Configure the routing in App.jsx
+
+        import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+        function App() {
+  
+            return (
+                <>     
+                    <BrowserRouter>
+                        <HeaderComponent></HeaderComponent>
+                            <Routes>
+                                {/* http://localhost:3000 */}
+                                <Route path="/" element = { <ListEmployeeComponent /> }></Route>
+                                {/* http://localhost:3000/employees */}
+                                <Route path="/employees" element = { <ListEmployeeComponent /> }></Route>
+                            </Routes>
+                        <FooterComponent></FooterComponent>
+                    </BrowserRouter>
+                </>
+            )
+        }
+
+        export default App
+
+    
+
+
+
+
+
+React Execution Flow:
+
+    1. index.html
+    2. main.jsx
+    3. App.jsx
