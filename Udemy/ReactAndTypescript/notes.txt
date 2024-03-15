@@ -1,0 +1,14 @@
+create project
+
+    npx create-react-app <projectName> --template typescript
+
+extension
+
+    .tsx => The file will contain a React Component or any kind of JSX
+
+    .ts => No JSX
+
+
+run the app
+
+    npm run start
