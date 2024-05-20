@@ -1,0 +1,79 @@
+GraphQL dependencies
+
+	<dependency>
+		<groupId>com.graphql-java</groupId>
+		<artifactId>graphql-spring-boot-starter</artifactId>
+		<version>5.0.2</version>
+	</dependency>
+	<dependency>
+		<groupId>com.graphql-java</groupId>
+		<artifactId>graphql-java-tools</artifactId>
+		<version>5.2.4</version>
+	</dependency>
+	<dependency>
+		<groupId>com.graphql-java</groupId>
+		<artifactId>graphiql-spring-boot-starter</artifactId>
+		<version>5.0.2</version>
+	</dependency>
+
+Schema
+
+	Extension must be .graphqls
+	
+		Example: query.graphqls
+		
+			type Query {
+				firstQuery : String
+				secondQuery: String
+			}
+
+
+Query
+
+	package com.example.query;
+
+	import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+	import org.springframework.stereotype.Component;
+
+	@Component
+	public class Query implements GraphQLQueryResolver {
+
+		public String firstQuery() {
+			return "First Query";
+		}
+
+		public String secondQuery() {
+			return "Second Query";
+		}
+	}
+	
+	
+
+
+
+GraphQL endpoint
+
+	http://localhost:8080/graphiql
+	
+	All queries are HTTP POST calls.
+	
+	Example:
+		
+		query {
+			firstQuery
+		}
+		
+	Result	
+		
+		{
+			"data": {
+				"firstQuery": "First Query"
+			}
+		}
+		
+Altair
+
+	Create POST request 
+		
+		http://localhost:8080/graphql
+	
