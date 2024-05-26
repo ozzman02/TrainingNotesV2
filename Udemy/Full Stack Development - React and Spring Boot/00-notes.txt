@@ -8,8 +8,6 @@ Build React App with Create-React-App
         cd my-app
         npm start
 
-
-
 Build React App with ViteJS
 
     1. Install NodeJS

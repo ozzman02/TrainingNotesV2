@@ -524,6 +524,7 @@ N + 1 Selects Problem
 		2. Write the query based on the requirements (e.g using left fetch join to load the child objects eagerly)
 		3. When number of parents becomes higher the select statement will be huge. If that is the case, think on changing the fetching strategy back to eager in order 
 			to have small n + 1 statements. 
+		4. Use entity graphs.
 		4. The previous recommendation still not good enough for performance, consider Batch Fetching implementation.
 		
 Batch Fetching

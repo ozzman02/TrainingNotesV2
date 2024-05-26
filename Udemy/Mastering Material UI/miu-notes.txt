@@ -1,0 +1,45 @@
+Fixing a Bug in MUI
+
+
+	https://www.youtube.com/watch?v=E-4VzoM3sqI&t=710s
+
+	https://github.com/mui/mui-x/issues/9993
+
+	https://github.com/mui/mui-x/pull/10084
+
+	https://github.com/mui/mui-x/releases/tag/v6.15.0
+	
+	
+	
+Get Started
+
+	Create React app
+	
+		1. Install NodeJS
+		2. Install NPM
+		3. Execute the command: npm create vite@latest mymuitest
+
+	Dependencies
+	 
+		@mui/material
+		@emotion/styled
+		@emotion/react
+	  
+		npm install @mui/material @emotion/react @emotion/styled
+	
+	
+Material UI Components Basics
+
+	Props:
+	
+		There are a few props that all UI components have:
+		
+			component: This props changes the render element. In this case the button will be rendered into an a tag.
+			
+				<Button component="a">My Button</Button>
+				
+			sx: Add quick style to certain element
+			
+				<Button sx={{bgcolor: "green"}}>My Button</Button>
+				
+			
