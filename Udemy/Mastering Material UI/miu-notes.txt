@@ -41,5 +41,16 @@ Material UI Components Basics
 			sx: Add quick style to certain element
 			
 				<Button sx={{bgcolor: "green"}}>My Button</Button>
-				
+			
+			children: Represents whatever goes inside the tags for a component.
+			
+				<Button>
+					My Button   ---> children
+				</Button>
+			
+Material UI Styling
+
+	The Theme
+	
+		https://mui.com/material-ui/customization/default-theme/
 			

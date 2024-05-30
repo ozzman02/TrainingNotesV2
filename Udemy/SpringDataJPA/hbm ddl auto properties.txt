@@ -1,0 +1,9 @@
+HBM DDL Auto Properties
+
+	none: Disables schema generation tool
+	create-only: Creates database schema for JPA entities
+	drop: Drops database tables related to JPA entities
+	create: Drops database schema and re creates from JPA entities
+	create-drop: Drops database schema and re creates from JPA entities, then will drop when shutting down
+	validate: Validates schema, fatal error if wrong
+	update: Updates schema from JPA entities
