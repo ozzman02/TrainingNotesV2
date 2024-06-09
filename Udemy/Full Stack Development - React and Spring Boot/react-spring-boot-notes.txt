@@ -4,7 +4,7 @@ Build React App with Create-React-App
     2. Install NPM
     3. Execute the commands:
 
-        npx create-react-app my-app
+        npx create-react-app my-app (We can also use the command: npx create-react-app jsx)
         cd my-app
         npm start
 

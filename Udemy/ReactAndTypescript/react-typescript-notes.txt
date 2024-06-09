@@ -1,6 +1,8 @@
 create project
 
     npx create-react-app <projectName> --template typescript
+	
+	npx create-react-app <projectName> --template jsx
 
 extension
 

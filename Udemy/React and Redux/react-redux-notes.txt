@@ -7,14 +7,84 @@ Github repo
 	- https://github.com/StephenGrider/redux-code
 
 Tool for making a tiny React App
-
-	goo.gl/T6zQ9q
 	
+	Original
+	
+		codesandbox.io/s/react-pibc94
+	
+	Mine
+		
+		https://codesandbox.io/p/sandbox/react-forked-8ryxzj?file=%2Fsrc%2FApp.js
+	
+	
+	full code
+		
+		codesandbox.io/s/react-forked-m5bz37
+	
+		
 Babel:
 	
 	Command line tool that can take any version of javascript and spit out a newer version
 	
-	website: https://babeljs.io/
+	website: https://babeljs.io/repl
+
+Install Bulma (css framework)
+
+	npm install Bulma
+
+	
+Install json server
+
+	npm install json-server
+	
+	create db.json file under project root directory
+	
+	Modify the scripts section in package.json
+	
+		"scripts": {
+			"start": "react-scripts start",
+			"server": "json-server -p 3001 --watch db.json",
+			"build": "react-scripts build",
+			"test": "react-scripts test",
+			"eject": "react-scripts eject"
+		},
+		
+	Run the server
+		
+		npm run server
+		
+		
+useEffect
+
+	If you wanted to log some information when your component is first rendered to the screen and never again, which of the following would you write?
+	
+		useEffect(() => {
+			console.log("Some info");
+		}, []);
+	
+	If you wanted to log some information when your component is first rendered to the screen and whenever it re-renders, which of the following would you write?
+		
+		useEffect(() => {
+			console.log("Some info");
+		});
+		
+	Imagine you are creating a component that has a state variable called counter.
+
+	You want to log info about counter at the following points in time:
+
+		1. When the component is first rendered to the screen
+
+		2. When the component is re-rendered, but only log info if counter changed
+	
+		useEffect(() => {
+			console.log("Some info");
+		}, [counter]);
+		
+	
+	
+	
+/************************************************************************************************************************************************************************/
+Old Notes
 	
 Javascript Modules
 
@@ -251,7 +321,8 @@ Understanding This
 			...
 		}
 	
-	Solution 3: Instead of defining a method as an arrow function, pass an arrow function directly into the event
+	Solution 3: Instead of defining a method as an arrow function, pass an
+	arrow function directly into the event
 	
 		render() {
 			return (
@@ -289,7 +360,8 @@ Making API requests with AJAX
 						Authorization: 'Client-ID b0ce22e08331fdd00b7a552538ed53e4366e62c06eaf73c38231670368998cd6'
 					}
 				}).then( (response) => {
-					console.log(response.data.results);
+					console.log(response.data.res
+					ults);
 				});
 			}
 		
