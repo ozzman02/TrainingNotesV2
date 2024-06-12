@@ -80,6 +80,20 @@ useEffect
 			console.log("Some info");
 		}, [counter]);
 		
+		
+Application State vs Component State
+
+	Application state: Data that is used by many different components. Is often a good idea to put application state into context.
+	
+	Component state: Data that is used by a vey few components.
+	
+useCallback
+	
+	- Hook to help you tell React that your function isn't actually changing over time.
+	
+	- Fixes bugs around useEffect and other similar situations
+	
+	- Follow similar conventions as useEffect (second argument is an array)
 	
 	
 	

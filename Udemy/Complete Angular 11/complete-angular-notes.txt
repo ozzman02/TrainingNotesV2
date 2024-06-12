@@ -1,0 +1,36 @@
+Complete Angular Notes
+
+Install NodeJs
+
+Install NVM
+
+	nvm -v
+	
+	nvm list
+	
+	nvm list available
+	
+	nvm use 18.20.3
+	
+	nvm use 20.13.1
+
+Install Angular CLI
+	
+	npm install -g @angular/cli
+	
+	npm install -g @angular/cli@12
+
+Uninstall
+	
+	npm uninstall -g @angular/cli
+	
+	npm cache clean --force
+	
+Create new app
+
+	ng new AppName --style=scss --routing
+	
+Run the app
+	
+	ng serve --open
+
