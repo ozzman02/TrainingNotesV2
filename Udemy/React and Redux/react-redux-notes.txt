@@ -56,13 +56,13 @@ Install json server
 		
 useEffect
 
-	If you wanted to log some information when your component is first rendered to the screen and never again, which of the following would you write?
+	If you wanted to log some information when your component is first rendered to the screen and never again
 	
 		useEffect(() => {
 			console.log("Some info");
 		}, []);
 	
-	If you wanted to log some information when your component is first rendered to the screen and whenever it re-renders, which of the following would you write?
+	If you wanted to log some information when your component is first rendered to the screen and whenever it re-renders
 		
 		useEffect(() => {
 			console.log("Some info");
@@ -95,6 +95,26 @@ useCallback
 	
 	- Follow similar conventions as useEffect (second argument is an array)
 	
+PropTypes
+	
+	npm install prop-types
+	
+Tailwind
+	
+	npm install -D tailwindcss postcss autoprefixer
+
+	npx tailwindcss init -p
+	
+	npm install tailwind-merge
+
+classnames library
+	
+	npm install classnames
+	
+react-icons
+
+	npm install react-icons --save
+
 	
 	
 /************************************************************************************************************************************************************************/
