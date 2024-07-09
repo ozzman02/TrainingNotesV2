@@ -117,6 +117,35 @@ react-icons
 
 	
 	
+Event Capturing and Bubbling with JavaScript
+	
+	When an event occurs, browser wants to find event handlers to call. The order in which this search occurs is divided into three phases.
+
+	Capture Phase
+		
+		Go to the most parent of clicked element and see if it has a handler. (Up to down)
+			
+	Target Phase
+		
+		Go to the clicked element, check to see if it has event handler.
+		
+	Bubble
+		
+		Go to the parent of clicked element and see if it has a handler. Then go to parent's parent, etc.
+		
+		
+	document.addEventListener('click', handleClick);			----> Sets up event handler for the bubbling phase
+	
+	document.addEventListener('click', handleClick, false);		----> Sets up event handler for the bubbling phase
+	
+	document.addEventListener('click', handleClick, true);		----> Sets up event handler for the capture phase
+	
+Handling Back and Fordward buttons
+
+	When a user clicks on a back or fordward button in the browser, Window object emits a popstate event 
+	if the user current url was added by pushState.
+	
+	
 /************************************************************************************************************************************************************************/
 Old Notes
 	

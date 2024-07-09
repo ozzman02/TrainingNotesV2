@@ -1,0 +1,105 @@
+JavaScript notes
+
+Array Sort Function
+
+	Working with numbers:
+	
+		const data = [5, 1, 4, 3];
+		data.sort();
+	
+		[1,3,4,5]
+	
+		If we change a value in the array the sort function will not return the data as we expect. 
+		Elements in the array will be converted as Strings, then sorts those.
+	
+		const data = [5, 10, 4, 3];
+		data.sort();
+	
+		[10,3,4,5]
+	
+		That means we need to provide a comparator function.
+	
+		const data = [5, 10, 4, 3];
+	
+		data.sort((a, b) => {
+			return a - b;
+		});
+	
+		[3, 4, 5, 10]
+	
+		Considerations: 
+	
+		Should a go before b => Return a negative number
+
+		Should b go before a => Return a positive number
+
+		Are they the same => Return 0
+		
+	Working with Strings
+		
+		Default sorting does not like the one we were expecting.
+		
+			const data = ['t', 'A', 'a', 'B', 'b'];
+		
+			data.sort();
+		
+			['A', 'B', 'a', 'b', 't']
+			
+		Comparator function
+		
+		data.sort((a, b) => {
+			return a.localeCompare(b);
+		});
+		
+		['a', 'A', 'b', 'B', 't']
+		
+	Working with Objects
+	
+		const data = [
+			{ weight: 13, cost: 5, name: 'Onion' },
+			{ weight: 10, cost: 2, name: 'Tomato' },
+			{ weight: 4, cost: 7, name: 'Carrot' }
+		]
+		
+		function getSortValue(vegetable) {
+			return vegetable.cost;
+		}
+		
+		/* ascending */
+		data.sort((a, b) => {
+		
+			const valueA = getSortValue(a);
+			
+			const valueB = getSortValue(b);
+			
+			if (typeof valueA === 'string') {
+				return valueA.localeCompare(valueB);
+			} else {
+				return valueA - valueB;
+			}
+			
+		});
+		
+		/* reversing */
+		
+		const sortOrder = 'desc';
+		
+		data.sort((a, b) => {
+		
+			const valueA = getSortValue(a);
+			
+			const valueB = getSortValue(b);
+			
+			const reverseOrder = sortOrder === 'asc' ? 1 : -1;
+			
+			if (typeof valueA === 'string') {
+				return valueA.localeCompare(valueB) * reverseOrder;
+			} else {
+				return (valueA - valueB) * reverseOrder;
+			}
+			
+		});
+		
+		
+		
+		
