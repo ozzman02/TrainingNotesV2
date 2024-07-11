@@ -76,4 +76,11 @@ Altair
 	Create POST request 
 		
 		http://localhost:8080/graphql
+		
+		
+Resolver
+	
+	If you want Spring Boot to use the Resolver we need to enable LazyLoading.
+	
+	For every response object you can create a Resolver.
 	
