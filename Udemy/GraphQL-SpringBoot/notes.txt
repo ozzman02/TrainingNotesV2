@@ -84,3 +84,106 @@ Resolver
 	
 	For every response object you can create a Resolver.
 	
+Node and Edge
+
+	In our example Student is a node and Subject is another node.
+	
+	The traversal from Student to Subject is called Edge (path)
+	
+	
+	
+query {
+  student(id: 1) {
+    id
+    firstName
+    lastName
+    email
+    street
+    city
+    learningSubjects(subjectNameFilter: ALL) {
+      id
+      subjectName
+      marksObtained
+    }
+    fullName
+  }
+}
+
+-----------------------------------------------------------------
+
+
+mutation {
+  createStudent(createStudentRequest: {
+    firstName: "Sachin"
+    lastName: "Kumar"
+    email: "sachink@gmail.com"
+    street: "any street"
+    city: "Mumbai"
+    subjectsLearning: [
+      {
+        subjectName: "Java"
+        marksObtained: 60.00
+      },
+      {
+        subjectName: "React"
+        marksObtained: 65.00
+      }
+    ]
+  }) {
+    id
+    firstName
+    lastName
+    email
+    street
+    city
+    learningSubjects(subjectNameFilter: ALL) {
+      id
+      subjectName
+      marksObtained
+    }
+    fullName
+  }
+}
+
+-----------------------------------------------------------------
+
+
+mutation createStudent($createStudentRequest: CreateStudentRequest) {
+  createStudent(createStudentRequest: $createStudentRequest) {
+    id
+    firstName
+    lastName
+    email
+    street
+    city
+    learningSubjects(subjectNameFilter: ALL) {
+      id
+      subjectName
+      marksObtained
+    }
+    fullName
+  }
+}
+
+
+Variables
+
+{
+  "createStudentRequest": {
+    "firstName": "Sachin",
+    "lastName": "Kumar",
+    "email": "sachink@gmail.com",
+    "street": "any street",
+    "city": "Mumbai",
+    "subjectsLearning": [
+      {
+        "subjectName": "Java",
+        "marksObtained": 60.00
+      },
+      {
+        "subjectName": "React",
+        "marksObtained": 65.00
+      }
+    ]   
+  }
+}
