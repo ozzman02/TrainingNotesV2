@@ -1,0 +1,166 @@
+- Understanding stale variable references.
+			
+			https://codesandbox.io/p/sandbox/hungry-fog-0ev1ec 
+			
+			Anytime our use effect function creates or contains a function that refers to a variable. This is a possible bug. (stale variable)
+			
+			Create-React-App includes an ESLint rule to help you find this kind of bug but following ESLint can lead to more bugs.
+			
+			We want to have the ability to click anywhere on the screen and increase the value of counter.
+			
+			The code below will print the correct value of counter in the html but the console log will be always 0. This is inconsistent.
+			
+				import { useState } from "react";
+
+				function App() {
+				
+					const [counter, setCounter] = useState(0);
+				
+					useEffect(()=> {
+						document.body.onclick = () => {
+							console.log(counter);
+						};
+					}, []);
+
+					return (
+						<div>
+							<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+							<div>Count: {counter}</div>
+						</div>
+					);
+				}
+
+				export default App;
+
+			Understanding the issue:
+				
+				Everytime (every new render) we are going to have a new set of variables.
+				
+				In the first render:
+					
+					We are going to have a counter variable with the value of 0.
+					
+					useEffect is going to be executed.
+					
+					We also have a function that is going to take a look at the counter variable. Is a reference to the counter with the value of 0.
+					
+				
+				In the second render (user clicks on the button)
+					
+					Use effect is not going to be called because we specified an empty array of dependencies.
+					
+					We are going to have a new variable with the value of 1. Then, we have two variables. One counter === 0 and other counter === 1
+				
+				The fix:
+				
+					import { useState } from "react";
+
+					function App() {
+					
+						const [counter, setCounter] = useState(0);
+				
+						useEffect(()=> {
+							document.body.onclick = () => {
+								console.log(counter);
+							};
+						}, [counter]); // here's the fix
+
+						return (
+							<div>
+								<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+								<div>Count: {counter}</div>
+							</div>
+						);
+					}
+
+					export default App;
+					
+					
+			Potential bug introduced when following ESLint
+			
+				The code below is an example of an ESLint warning. It suggest that fetchBooks should be included in the dependency array.
+			
+					import { useEffect } from "react";
+					import BookCreate from "./components/BookCreate";
+					import BookList from "./components/BookList";
+					import useBooksContext from "./hooks/UseBooksContext";
+
+					export default function App() {
+	
+						const { fetchBooks } = useBooksContext();
+
+						useEffect(() => { 
+							fetchBooks(); 
+						}, []); // Here we have an ESLint warning.
+
+						return (
+							<div className="app">
+								<h1>Reading List</h1>
+								<BookList />
+								<BookCreate />
+							</div>
+						);
+
+					}
+					
+				We might think that we can fix the warning by including fetchBooks into the dependencies array.
+					
+					import { useEffect } from "react";
+					import BookCreate from "./components/BookCreate";
+					import BookList from "./components/BookList";
+					import useBooksContext from "./hooks/UseBooksContext";
+
+					export default function App() {
+	
+						const { fetchBooks } = useBooksContext();
+
+						useEffect(() => { 
+							fetchBooks(); 
+						}, [fetchBooks]); // fixing the warning 
+
+						return (
+							<div className="app">
+								<h1>Reading List</h1>
+								<BookList />
+								<BookCreate />
+							</div>
+						);
+
+					}
+				
+				A new issue is introduced since we are going to have endless HTTP calls.
+				
+					function Provider() {
+						
+						const [books, setBooks] = useState([]);
+						
+						const fetchBooks = () => {
+							// ... code to fetch books
+							setBooks(updatedBooks);
+						};
+						
+						return <BookContext.Provider value={{ books, fetchBooks}} />
+						
+					}
+					
+					function App() {
+						
+						const { fetchBooks } = useContext(BookContext);
+						
+						useEffect(() => {
+							fetchBooks();
+						}, [fetchBooks]);
+					}
+				
+				First render
+					
+					1. The fetchBooks function is placed into the memory
+					2. useEffect is executed.
+				
+				Second Render (Books are updated)
+				
+					1. The Provider is executed again.
+					2. Another fetchBooks variable is created but it has the same same of the function that was created in the first render.
+					3. A brand new reference (variable is created in the memory. At this point we have 2 arrow functions doing the same thing.)
+					4. useEffect is executed again because fetchBooks changed. (We have two different arrow functions in memory, same name but different variables)
+					5. This cicle repeats over and over.

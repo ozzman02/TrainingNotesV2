@@ -1,0 +1,5376 @@
+React general
+
+	- React does not print booleans, null and undefined.
+	
+		const config = { color: 'red' }
+		
+		// does not work !
+		
+		<h1>{config}</h1>
+	
+	- || returns the first value that is truthy
+	
+	- && returns the first falsey value or the last truthy value
+	
+	- Example:
+	
+		if isExpanded is true, we get the last truthy value. In this case, we get the <div>{item.content}</div>
+        
+			const content = isExpanded && <div>{item.content}</div>
+			
+	- Properties
+	
+		Props does not have to be defined as variables.
+		
+			Strings		- 	wrap with double quotes
+			Numbers 	- 	wrap with curly braces
+			Arrays 		- 	wrap with curly braces
+			Objects 	- 	wrap with curly braces
+			Variables 	- 	wrap with curly braces
+			
+			<input 
+				type="number" 
+				min={5} 
+				max={10}
+				list={[1,2,3]}
+				style={{color: 'red'}}
+				alt={message}
+			/>
+	
+	- Converting HTML to JSX
+	
+		1. In JSX all prop names follow camelCase
+		
+			HTML						JSX
+			------------				------------
+			<input maxlength="5" />		<input maxLength={5} />	
+			
+		2. In JSX attributes meant to be numbers should be provided as numbers with curly braces.
+		
+		3. In JSX boolean true can be written with just the property name, False should be written with curly braces.
+		
+			<input spellCheck />
+			
+			<input spellCheck={false} />
+			
+		4. In JSX the class attribute is written as className.
+		
+			<input type="number" min={5} max={10} style={{color: 'red'}} spellCheck={false} className="divider" />
+	
+		5. In JSX in line syles are provided as objects
+		
+			HTML													JSX
+			------------------------------------------------------  --------------------------------------------------------
+			<a style="text-decoration: 'none'; padding: '5px';">  	<div style={{ textDecoration: 'none', padding: '5px'}}/>
+			
+			
+	- Module Systems Overview
+	
+		Variables are shared between files by using import/export statements.
+		
+		Export statements:
+		
+			'./' or '../' means we are importing a file that we created
+			
+				import App from './App'
+				
+			No './' or '../' means we are importing a package
+			
+				import React from 'react'
+		
+			Default
+			
+				- A file can only have a single default export.
+				
+				- Two ways to write a default export:
+					
+					1)
+					
+						function App() {
+							return <h1>Hi</h1>
+						}
+					
+						export default App
+					
+					2)
+					
+						export default function App() {
+							return <h1>Hi</h1>
+						}
+					
+				- Default exports can be renamed in the importing file.
+						
+					App.js
+					
+						function App() {
+							return <h1>Hi</h1>
+						}
+					
+						export default App
+					
+					index.js
+					
+						import MyApp from './App'
+			
+			Named
+			
+				- Use when exporting multiple variables from a file.
+				
+				- Can have as many named exports as we want.
+				
+				- Two ways to write a named export.
+				
+					App.js
+						
+						1)
+						
+							function App() {
+								return <h1>Hi</h1>
+							}
+							
+							export default App
+							
+							const message = "hi"
+							export {message}   ----> named export
+							
+							
+						2) 
+							
+							export default function App() {
+								return <h1>Hi</h1>
+							}
+							
+							export const message = "h1" ----> named export
+		
+				- Curly braces indicate we want a named export.
+				
+				- Named exports cannot be renamed.
+				
+					
+					index.js
+					
+						import App, { message } from './App'
+		
+		
+	- JSX CheatSheet
+	
+		https://jsx-notes.vercel.app/
+		
+	- Communication with Props
+	
+		1. Add attributes to a JSX element.
+		2. React collects the attributes and puts them in an object.
+		3. Props object shows up as the first argument to the child component function.
+		4. Use the props however we wish.
+		
+		Parent Component
+		
+			function App() {
+				return <Child color="red" />
+			}
+			
+		Child Component
+			
+			function Child(props) {
+				return <div>{props.color}</div>
+			}
+			
+		Argument Destructuring
+		
+			export default function ProfileCard(props) {
+				const { title, handle } = props;
+			}
+			
+			export default function ProfileCard({ title, handle }) {}
+			
+	- Event and State Systems
+		
+		- Event System: Detect a user clicking the button.
+		
+			1. Decide what kind of event you want to watch for.
+			2. Create a function. Usually called event handler or callback function.
+			3. Name the function using pattern of handle + EventName
+			4. Pass the function as a prop to a plain element.
+			5. Make sure you pass the function using a valid event name (onClick, onMouseOver, etc)
+			6. Make sure you pass a reference to the function (don't call it !)
+			
+			export default function App() {
+				
+				const handleClick = () => {
+					console.log('Button was clicked!!!')
+				};
+				
+				return (
+					<div>
+						<button onClick={handleClick}>
+							Add Animal
+						</button>
+					</div>
+				);
+			}
+			
+			When you pass a reference like this one: <button onClick={handleClick}>Add Animal</button>  
+			It gives the button the whole function so the button can call the function in the future
+			when the button is clicked.
+			
+			If we do not want a callback function we can do this:
+				
+				return (
+					<div>
+						<button onClick={function () {
+							console.log('Button was clicked');
+						}}>
+							Add Animal
+						</button>
+					</div>
+				);
+				
+			or
+				return (
+					<div>
+						<button onClick={() => console.log('Button was clicked')}>
+							Add Animal
+						</button>
+					</div>
+				);
+				
+			
+		- State System: Update content on screen.
+		
+			Data that changes as the user interacts with our app.
+			
+			When this data changes, React will update content on the screen automatically.
+			
+			Re-rendering process:
+			
+				function App() {
+					const [count, setCount] = useState(0);
+					
+					const handleClick = () => {
+						setCount(count + 1);
+					};
+					
+					return (
+						<div>
+							<button onClick={handleClick}>Add Animal</button>
+							<div>Number of animals to show: {count}</div>
+						</div>
+					);
+				}
+				
+				Everytime we use setCount our App function is going to be called.
+				
+				
+				Array destructuring with useState
+				
+					function makeArray() {
+						return [1,10,32,40];
+					}
+					
+					const myArray = makeArray();
+					
+					const firstElement = myArray[0];
+					
+					const secondElement = myArray[1];
+					
+					console.log(firstElement, secondElement);
+					
+					// Equivalent code: First brackets do not create a new array. 
+					// It tells, assume that whatever is next to the equals operator is an array and get first and second elements.
+					
+					const [firstElement, secondElement] = makeArray();
+					
+					
+					// Check what happens with useState();
+				
+					console.log(useState(50));
+					
+					[50, f]
+					
+					// custom implementation
+					
+					function useState(defaultValue) {
+						return {
+							yourState: defaultValue,
+							yourSetter: () => {}
+						};
+					}
+					
+					// usage
+					fuction App() {
+						
+						// 1
+						const stateConfig = useState(0);
+						const count = stateConfig.yourState;
+						const setCount = stateConfig.yourSetter;
+						
+						// 2
+						const {yourState: count, yourSetter: setCount} = useState(0);
+						
+						// by convenience
+						const [count, setCount] = useState(0);
+					}
+
+	- Child to parent communication (Check the pics project)
+	
+		export default function App() {
+
+			const [images, setImages] = useState([]);
+
+			const handleSubmit = async (term) => {
+				const result = await searchImages(term);
+				setImages(result);
+			}
+
+			return (
+				<div>
+					<SearchBar onSubmit={handleSubmit} />
+					<ImageList images={images} />
+				</div>
+			)
+		}
+		
+		export default function SearchBar({ onSubmit }) {
+
+			const [term, setTerm] = useState('');
+
+			const handleChange = (event) => {
+				setTerm(event.target.value);
+			}
+
+			const handleFormSubmit = (event) => {
+				event.preventDefault();
+				onSubmit(term);
+			}
+
+			return (
+				<div className='search-bar'>
+					<form onSubmit={handleFormSubmit}>
+						<label>Enter Search Term</label>
+						<input value={term} onChange={handleChange} />
+					</form>
+				</div>
+			)
+		}
+		
+		Important:
+		
+			If we need to detect when the user is pressing the enter key we can wrap the input field into a form.
+			If we do this, a submit event is going to be triggered. The browser will also try to perform a network request. This is automatic behavior of the browser.
+			In most cases we need to disable this automatic behaviour, that's why we use event.preventDefault() in the onSubmit handler.
+		
+		
+	- Handling Input Elements
+
+		1. Create a new piece of state.
+		2. Create an event handler to watch for the onChange event.
+		3. When the onChange event fires, get the value from the input.
+		4. Take that value from the input and use it to update your state.
+		5. Pass your state to the input as the value prop.
+		
+	- Passing an event and a value
+	
+		Here we are passing a value:
+		
+			const handleClick = (index) => {
+				setExpandedIndex(index)
+			}
+		
+			<div onClick={() => handleClick(index)}>{item.label}</div>
+		
+		Here we are passing an event
+		
+			const handleClick = (event) => {
+				...
+			}
+			
+			<div onClick={() => handleClick}>{item.label}</div>
+			
+	- Good practices when working with React States and Arrays
+	
+		Check https://state-updates.vercel.app/
+		
+		When we have the syntax ...books that means "go and find the current books piece of state, 
+		copy all elements from old array and add an element at the end".
+		
+			const [books, setBooks] = useState([]);
+			
+			const createBook = (title) => {
+				const updatedBooks = [...books, {id: 123, title: title}]
+			}
+			
+		When we call setBooks(updatedBooks), React is going to re render the component. UpdatedBooks is then a reference to a new state.
+		
+		
+		-------------------------------------------
+		Add elements to the start of an array
+		-------------------------------------------
+	
+			const [colors, setColors] = useState([]);
+
+			const addColor = (newColor) => {
+				const updatedColors = [
+					newColor, ...colors
+				];
+				setColors(updatedColors);
+			};
+			
+	
+		-------------------------------------------
+		Add elements to the end of an array
+		-------------------------------------------
+	
+			const [colors, setColors] = useState([]);
+
+			const addColor = (newColor) => {
+				const updatedColors = [
+					...colors, newColor
+				];
+				setColors(updatedColors);
+			};
+	
+		----------------------------------------------------------
+		Add elements to the middle of the array (or start or end)
+		----------------------------------------------------------
+		
+			slice function:
+			
+				0		1		2
+				red		green	blue
+				
+				
+				// Return all elements from index 0 but not including index 1
+				colors.slice(0, 1) = red
+				
+				colors.slice(0, 2) = red green
+				
+				// returns nothing
+				colors.slice(0, 0) = 
+				
+				// Returns everything starting from index 1
+				colors.slice(1) = green blue
+				
+				colors.slice(2) = blue
+				
+			Example:
+	
+				const [colors, setColors] = useState([]);
+				
+				const addColorAtIndex = (newColor, index) => {
+					const updatedColors = [
+						...colors.slice(0, index),
+						newColor,
+						...colors.slice(index)
+					];
+					setColors(updatedColors);
+				}
+		
+		-----------------------------------------------------------
+		Removing an element with a particular value and at an index
+		-----------------------------------------------------------
+		
+			const [colors, setColors] = useState(['red','green','blue']);
+	
+			// if the function returns true, we want to keep the value if not, value is not added
+				
+			// filter always returns a new array
+			
+			const removeColor = (colorToRemove) => {
+				const updatedColors = colors.filter((color, index) => {
+					return color !== colorToRemove
+				});
+				setColors(updatedColors);
+			}
+	
+			const removeColorAtIndex = (indexToRemove) => {
+				const updatedColors = colors.filter((color, index) => {
+					return indexToRemove !== index;
+				});
+				setColors(updatedColors);
+			}
+
+		------------------------------------------------
+		Removing an element with a particular property
+		------------------------------------------------
+
+			const [books, setBooks] = useState([
+				{id: 1, title: 'TestBook'},
+				{id: 2, title: 'TestBook2'}
+			]);
+
+			const removeBookById = (bookId) => {
+				const updatedBooks = books.filter((book) => {
+					return book.id !== bookId;
+				});
+				setColors(updatedBooks);
+			}
+	
+		-------------------------------------------
+		Modifying an element based on a property
+		-------------------------------------------
+
+			const [books, setBooks] = useState([
+				{id: 1, title: 'TestBook'},
+				{id: 2, title: 'TestBook2'}
+			]);
+			
+			// map will give us a brand new array
+			
+			/* 
+				return { ...book, title: newBookTitle }
+				
+				1. Curly braces mean we are creating a new object. 
+				2. ...book syntax means we are copying all properties from the book object. Original book is not being modified.
+				3. title: newBookTitle. At this point we have a new object similar to this: { id: 2, title: 'Dark Tower', title: 'Dark Tower 2' }
+				4. In JavaScript when an object has duplicate keys, the first one is overriden or removed. At the end we have: { id: 2, title: 'Dark Tower 2' }
+			*/
+			
+			const updateBookById = (bookId, newBookTitle) => {
+				const updatedBooks = books.map((book) => {
+					if (book.id === bookId) {
+						// here we are creating a new object
+						return { ...book, title: newBookTitle };
+					}
+					return book;
+				});
+				setColors(updatedBooks);
+			}
+	
+		-------------------------------------------
+		Adding or changing properties to an object
+		-------------------------------------------
+
+			const [fruit, setFruit] = useState({
+				color: 'red',
+				name: 'apple'
+			});
+	
+			/*
+				1. Create a new object.
+				2. Copy paste all properties from existing object. (...fruit)
+				3. Add in your updated property.
+			*/
+			const changeColor = (color) => {
+				const updatedFruit = {
+					...fruit,
+					color: color
+				};
+				setFruit(updatedFruit);
+			};
+	
+		-------------------------------------------
+		Removing properties from an object
+		-------------------------------------------
+
+			const [fruit, setFruit] = useState({
+				color: 'red',
+				name: 'apple'
+			});
+	
+			/*
+				1. We want to remove the color property
+				2. rest: the other properties
+			*/
+			
+			/*
+				1. List the property to remove. (color)
+				2. Get all the other properties from the object. (...rest)
+			*/
+	
+			const removeColor = () => {
+				const { color, ...rest } = fruit;
+				setFruit(rest);
+			};
+
+	
+	
+	- useEffect *** Very important information ***
+	
+		Used to run code when a component is initially rendered and (sometimes) when it is rendered.
+		
+		First Argument is a function that contains the code we want to run.
+		
+		Second Argument is an array or nothing (this controls whether the function is executed or renders)
+		
+		
+		Time	|	Initial Render
+				|	
+				|		Component is called.
+				|		JSX returned
+				|		DOM updated
+				|	
+				|			| function passed to useEffect always called !
+				|			| state updated !
+				|			|
+				|			V
+				|	
+				|	Second Render
+		Time	|
+				|		Component called
+				|		JSX returned
+				|		DOM updated
+				|	
+				|			| function passed to useEffect maybe called ! (depends on second argument)
+				|			| state updated !
+				|			|
+				|			V
+				|	
+				|	Third Render
+				|
+		Time	|		Component called
+				|		JSX returned
+				|		DOM updated
+				|			
+				|			| process repeats over and over !
+				|			| function passed to useEffect maybe called ! (depends on second argument)
+				|			| state updated !
+				|			V
+				V	
+			
+		Variations
+		
+			1. If you want to log some information when your component is first rendered to the screen and never again
+	
+				useEffect(() => {
+					console.log("Some info");
+				}, []);
+	
+			2. If you want to log some information when your component is first rendered to the screen and whenever it re-renders
+		
+				useEffect(() => {
+					console.log("Some info");
+				});
+		
+			3. Imagine you are creating a component that has a state variable called counter.
+
+					You want to log info about counter at the following points in time:
+
+						1. When the component is first rendered to the screen
+
+						2. When the component is re-rendered, but only log info if counter changed
+	
+					useEffect(() => {
+						console.log("Some info");
+					}, [counter]);
+		
+	
+		- You can use/return cleanUp functions inside useEffect if your arrow function is about to be called again.
+	
+			Use it to do some work or undo something the next time useEffect runs
+	
+			function App() {
+		
+				const[counter, setCounter] = useState(0);
+		
+				useEffect(() => {
+			
+					const listener = () => {
+						console.log(counter);
+					};
+			
+					document.body.addEventListener("click", listener);
+			
+					const cleanUp = () => {
+						document.body.removeEventListener("click", listener);
+					};
+			
+					return cleanUp;
+					
+				}, [counter]);
+		
+				return (
+					<div>
+						<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+						<div>Count: {counter}</div>
+					</div>
+				);
+		
+			}
+	
+	
+			function App() {
+		
+				const[counter, setCounter] = useState(0);
+		
+				useEffect(() => {
+			
+					const listener = () => {
+						console.log(counter);
+					};
+			
+					document.body.addEventListener("click", listener);
+			
+					return () => {
+						document.body.removeEventListener("click", listener);
+					};
+					
+				}, [counter]);
+		
+				return (
+					<div>
+						<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+						<div>Count: {counter}</div>
+					</div>
+				);
+		
+			}
+			
+	- Context (Check books and books with context projects)
+			
+		- Context is not a replacement for Props.
+		- Context is not a replacement for Redux. (Redux is about organization of data)
+		
+		- Using context
+			
+			1. Create the context.
+			2. Specify the data that will be shared.
+			3. Consume the data in a component.
+			
+		- Example
+			
+			- BookContext
+			
+				- Provider: Component used to specify what data we want to share.
+				
+					<BookContext.Provider value={5}>
+						<MyComponent />
+					</BookContext.Provider>
+					
+					- value prop is what will be shared with the rest of app
+					
+					- MyComponent (and its children) can now access the value shared in context (5)
+					
+				- Consumer: Component used to get access to data. (Not often used)
+				
+					MyComponent.js
+					
+						import { useContext } from 'react';
+						import BookContext from './book';
+					
+						function MyComponent() {
+							const num = useContext(BookContext);
+							return <div>{num}</div>
+						}
+			
+				Example:
+				
+					BookContext.js
+						
+						import {createContext} from 'react';
+						
+						const BookContext = createContext();
+						
+						export default BookContext;
+					
+					index.js
+					
+						import './index.css';
+						import React from "react";
+						import ReactDom from 'react-dom/client';
+						import App from "./App";
+						import { BookContext } from './context/BookContext';
+
+						const rootElement = document.getElementById('root');
+						const root = ReactDom.createRoot(rootElement);
+						
+						root.render(
+							<OtherComponent /> --> This one will not have access to the value prop. Only App.
+							<BookContext.Provider value={5}>
+								<App />
+							</BookContext.Provider>
+						);
+						
+					BookList.js
+						
+						import BookShow from "./BookShow";
+						import BookContext from "../content/BookContext";
+						import { useContext } from 'react';
+
+						export default function BookList() {
+						
+							const value = useContext(BookContext);
+
+							const { books } = useBooksContext();
+
+							const renderedBooks = books.map((book) => {
+								return <BookShow key={book.id} book={book} />
+							});
+
+							return (
+								<div className="book-list">
+									{value}
+									{renderedBooks}
+								</div>
+							);
+
+						}
+				
+					
+				Custom Provider: When count state is updated this component will rerender along with all its children.
+					
+					import { createContext, useState } from 'react';
+					
+					const BookContext = createContext();
+					
+					function Provider({ children }) {
+						
+						const [count, setCount ] = useState(0);
+						
+						const valueToShare = {
+							count: count,
+							incrementCount: () => { 
+								setCount(count + 1);
+							}
+						};
+						
+						return (
+							<BookContext.Provider value={valueToShare}>
+								{children}
+							</BookContext.Provider>
+						);
+						
+					}
+					
+					export { Provider };
+					
+					export default BookContext;
+					
+					
+					On index.js:
+					
+						import './index.css';
+						import React from "react";
+						import ReactDom from 'react-dom/client';
+						import App from "./App";
+						import { Provider } from './context/BookContext';
+
+						const rootElement = document.getElementById('root');
+						const root = ReactDom.createRoot(rootElement);
+						
+						root.render(
+							<Provider>
+								<App />
+							</Provider>
+						);
+						
+					On BookList:
+						
+						import BookShow from "./BookShow";
+						import BookContext from "../content/BookContext";
+						import { useContext } from 'react';
+
+						export default function BookList() {
+						
+							const { count, incrementCount } = useContext(BookContext);
+
+							const renderedBooks = books.map((book) => {
+								return <BookShow key={book.id} book={book} />
+							});
+
+							return (
+								<div className="book-list">
+									{count}
+									<button onClick={incrementCount}>Click</button>
+									{renderedBooks}
+								</div>
+							);
+
+						}
+						
+	- Application State vs Component State
+		
+		Both of these are still the same exact state we've been working with.
+		
+		These terms are a way to figure out how to best design your state.
+		
+			1. Application State: 	Data that is used by many different components.
+		
+			2. Component State: 	Data that is being used by very few components.
+						
+	
+	- Hooks
+	
+		Functions that add additional features to a component.
+		
+			useState 	-> 	Allows a component to use the state system.
+			
+			useEffect 	->	Allows a component to run code at specific points in time.
+			
+			useContext  ->  Allows a component to access values stored in context.
+			
+		Custom Hooks:
+		
+			Functions we write to make reusable bits of logic.
+			
+			Usually reuse basic hooks like 'useState', 'useEffect', etc
+			
+			Can do a lot or very little.
+			
+			Usually easiest to extract logic into a hook, rather than making a hook first.
+			
+			Example
+			
+				import { useState, useEffect } from 'react';
+				import Button from '../components/Button';
+
+				export default function CounterPage({ initialCount }) {
+
+					const [count, setCount] = useState(initialCount);
+
+					useEffect(() => {
+						console.log(count);
+					}, [count]);
+
+					const handleClick = () => {
+						setCount(count + 1);
+					}
+
+					return (
+						<div>
+							<h1>Count is {count}</h1>
+							<Button onClick={handleClick}>Increment</Button>
+						</div>
+					);
+
+				}
+				
+				CounterPage			Useful ! Maybe we should create a hook !
+				--------------------------------------------------------------------------
+				count			---> Creates a number state based on an initial value
+				useEffect		---> Logs that value any time it changes
+				handleClick		---> Provides a way to change that value
+				JSX				
+				
+				How do we extract what we need ? 
+				
+					- Find code in a component related to a single piece of state.
+					
+					- Copy past it all into a helper function.
+					
+					- Fix all the broken references.
+				
+				Our custom hook is useCounter
+				
+					CounterPage			useCounter
+					--------------------------------
+					useCounter()		count
+					JSX					useEffect
+										handleClick
+										
+			Brute-Force Hook Creation
+			
+				1. Make a function called useSomething.
+				
+				2. Find all the non JSX expressions that refer to 1-2 related pieces of state.
+				
+				3. Cut them all out, paste them into useSomething.
+				
+				4. Find not defined errors in your component.
+				
+				5. In your hook, return an object that contains the variables the component needs.
+				
+				6. In the component, call your hook. Destructure the properties the components needs.
+				
+				7. Find not defined errors in the hook. Pass the missing variables in as arguments to the hook.
+				
+				8. Rename the hook to something more meaningful.
+				
+				9. Rename returned properties to something more descriptive.
+				
+				Refactor previous code:
+				
+					import { useState, useEffect } from 'react';
+					import Button from '../components/Button';
+
+					function useSomething(initialCount) {
+
+						const [count, setCount] = useState(initialCount);
+
+						useEffect(() => {
+							console.log(count);
+						}, [count]);
+
+						const handleClick = () => {
+							setCount(count + 1);
+						}
+
+						return {
+							count,
+							handleClick
+						}
+
+					}
+
+					export default function CounterPage({ initialCount }) {
+
+						const {count, handleClick } = useSomething(initialCount);
+    
+						return (
+							<div>
+								<h1>Count is {count}</h1>
+								<Button onClick={handleClick}>Increment</Button>
+							</div>
+						);
+
+					}
+			
+			Think on the sortable table:
+			
+				Sortable Table				useSort						Final Sortable Table 
+				----------------------------------------------------------------------------------
+				sortOrder					sortOrder					useSort
+				sortBy						sortBy						updatedConfig
+				handleClick					handleClick					JSX
+				updatedConfig				~ sorting logic ~
+				~ sorting logic ~
+				JSX				
+				
+			Original code (initial implementation)
+				
+				import { useState } from 'react';
+				import { GoArrowDown, GoArrowUp } from 'react-icons/go';
+				import Table from './Table';
+
+				export default function SortableTable(props) {
+
+					const { config, data } = props;
+
+					const [sortOrder, setSortOrder] = useState(null);
+
+					const [sortBy, setSortBy] = useState(null);
+
+					const handleClick = (label) => {
+						if (sortBy && label !== sortBy) {
+							setSortOrder('asc');
+							setSortBy(label);
+							return;
+						}
+						if (sortOrder === null) {
+							setSortOrder('asc');
+							setSortBy(label);
+						} else if (sortOrder === 'asc') {
+							setSortOrder('desc');
+							setSortBy(label);
+						} else if (sortOrder === 'desc') {
+							setSortOrder(null);
+							setSortBy(null);
+						}
+					};
+
+					const updatedConfig = config.map((column) => {
+						if (!column.sortValue) {
+							return column;
+						}
+						return {
+							...column, 
+							header: () => (
+								<th className='cursor-pointer hover:bg-gray-100' onClick={() => handleClick(column.label) }>
+									<div className='flex items-center'>
+										{getIcons(column.label, sortBy, sortOrder)}
+										{column.label}
+									</div>
+								</th>
+							) 
+						}
+					});
+
+					// Only sort data if sortOrder && sortBy are not null
+					// Make a copy of the data prop
+					// Bind the correct sort value function and use it for sorting
+    
+					let sortedData = data;
+
+					if (sortOrder && sortBy) {
+						const { sortValue } = config.find(column => column.label === sortBy);
+						// make a copy
+						sortedData = [...data].sort((a, b) => {
+            
+							const valueA = sortValue(a);
+							const valueB = sortValue(b);
+            
+							const reverseOrder = sortOrder === 'asc' ? 1 : -1;
+
+							if (typeof valueA === 'string') {
+								return valueA.localeCompare(valueB) * reverseOrder;
+							} else {
+								return (valueA - valueB) * reverseOrder;
+							}
+
+						});
+					}
+
+					return <Table {...props} data={sortedData} config={updatedConfig}></Table>;
+				}
+
+				function getIcons(label, sortBy, sortOrder) {
+					if (label !== sortBy) {
+						return <div><GoArrowUp size={10}/><GoArrowDown size={10}/></div>;
+					}
+					if (sortOrder === null) {
+						return <div><GoArrowUp size={10}/><GoArrowDown size={10}/></div>;
+					} else if (sortOrder === 'asc') {
+						return <div><GoArrowUp size={10}/></div>;
+					} else if (sortOrder === 'desc') {
+						return <div><GoArrowDown size={10}/></div>;
+					}
+				}
+				
+			Final version with useSort hook
+			
+				import { useState } from 'react';
+
+				export default function useSort(data, config) {
+
+					const [sortOrder, setSortOrder] = useState(null);
+
+					const [sortBy, setSortBy] = useState(null);
+
+					const setSortColumn = (label) => {
+						if (sortBy && label !== sortBy) {
+							setSortOrder('asc');
+							setSortBy(label);
+							return;
+						}
+						if (sortOrder === null) {
+							setSortOrder('asc');
+							setSortBy(label);
+						} else if (sortOrder === 'asc') {
+							setSortOrder('desc');
+							setSortBy(label);
+						} else if (sortOrder === 'desc') {
+							setSortOrder(null);
+							setSortBy(null);
+						}
+					};
+
+					// Only sort data if sortOrder && sortBy are not null
+					// Make a copy of the data prop
+					// Bind the correct sort value function and use it for sorting
+					
+					let sortedData = data;
+
+					if (sortOrder && sortBy) {
+						const { sortValue } = config.find(column => column.label === sortBy);
+						// make a copy
+						sortedData = [...data].sort((a, b) => {
+							
+							const valueA = sortValue(a);
+							const valueB = sortValue(b);
+							
+							const reverseOrder = sortOrder === 'asc' ? 1 : -1;
+
+							if (typeof valueA === 'string') {
+								return valueA.localeCompare(valueB) * reverseOrder;
+							} else {
+								return (valueA - valueB) * reverseOrder;
+							}
+
+						});
+					}
+
+					return {
+						sortOrder,
+						sortBy,
+						sortedData,
+						setSortColumn
+					};
+
+				}
+				
+				function getIcons(label, sortBy, sortOrder) {
+					if (label !== sortBy) {
+						return <div><GoArrowUp size={10}/><GoArrowDown size={10}/></div>;
+					}
+					if (sortOrder === null) {
+						return <div><GoArrowUp size={10}/><GoArrowDown size={10}/></div>;
+					} else if (sortOrder === 'asc') {
+						return <div><GoArrowUp size={10}/></div>;
+					} else if (sortOrder === 'desc') {
+						return <div><GoArrowDown size={10}/></div>;
+					}
+				}
+				
+			import useSort from '../hooks/UseSort';
+			import { GoArrowDown, GoArrowUp } from 'react-icons/go';
+			import Table from './Table';
+
+			export default function SortableTable(props) {
+
+				const { config, data } = props;
+				
+				const { sortOrder, sortBy, sortedData, setSortColumn } = useSort(data, config);
+
+				const updatedConfig = config.map((column) => {
+					if (!column.sortValue) {
+						return column;
+					}
+					return {
+						...column, 
+						header: () => (
+							<th className='cursor-pointer hover:bg-gray-100' onClick={() => setSortColumn(column.label) }>
+								<div className='flex items-center'>
+									{getIcons(column.label, sortBy, sortOrder)}
+									{column.label}
+								</div>
+							</th>
+						) 
+					}
+				});
+
+				return <Table {...props} data={sortedData} config={updatedConfig}></Table>;
+			}
+			
+	- How to fix bugs around useEffect (Check Return to Use Effect lesson)
+	
+		- Understanding when our arrow function gets called.
+		
+		- Understanding the arrow function's return value.
+			
+			- Can't return numbers
+			
+				function App() {
+				
+					useEffect(() => {
+						return 5;
+					}, []);
+					
+				}
+				
+			- Can't return Strings
+				
+				function App() {
+				
+					useEffect(() => {
+						return 'hi';
+					}, []);
+					
+				}
+				
+			- Can't use async/await (it returns a promise automatically)
+			
+				function App() {
+				
+					useEffect(async () => {
+						const res = await axios.get('...');
+					}, []);
+					
+				}
+				
+			Can return a function !!!
+			
+				function App() {
+				
+					useEffect(() => {
+						return () => {
+							console.log("I'm allowed!");
+						};
+					}, []);
+					
+				}
+			
+				
+			- useEffect cleanup functions
+			
+				import { useState, useEffect } from "react";
+
+				function App() {
+				
+					const [counter, setCounter] = useState(0);
+				
+					useEffect(()=> {
+						
+						document.body.onclick = () => {
+							console.log(counter);
+						};
+						
+						const cleanUp = () => {
+							console.log("cleanup");
+						};
+						
+						return cleanUp;
+						
+					}, [counter]);
+
+					return (
+						<div>
+							<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+							<div>Count: {counter}</div>
+						</div>
+					);
+				}
+
+				export default App;
+				
+		
+			The cleanUp function is only going to be called if the arrow function is about to the called again ! 
+			This is our case since we have the counter variable in the dependency array of the useEffect function.
+				
+		
+		Time	|	Initial Render
+				|	
+				|		Function passed to useEffect always called !
+				|		We return cleanUp
+				|					
+				|	
+				|	Second Render
+		Time	|
+				|		cleanUp that we had during the first render is called
+				|		function passed to useEffect called
+				|		return new cleanUp function
+				|	
+				|
+				|	Third Render
+				|
+		Time	|		cleanUp function called (React holds a reference of the previous render)
+				|		function passed to useEffect called
+				|		return new cleanUp function
+				|			
+				V
+				
+			
+			Small refactor:
+			
+				import { useState, useEffect } from "react";
+
+				function App() {
+				
+					const [counter, setCounter] = useState(0);
+				
+					useEffect(()=> {
+						
+						const listener = () => {
+							console.log(counter);
+						}
+						document.body.addEventListener('click', listener);
+						
+						const cleanUp = () => {
+							document.body.removeEventListener("click", listener);
+						};
+						
+						return cleanUp;
+						
+					}, [counter]);
+
+					return (
+						<div>
+							<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+							<div>Count: {counter}</div>
+						</div>
+					);
+				}
+
+				export default App
+				
+				
+				Or we can also return the cleanUp function directly:
+					
+					import { useState, useEffect } from "react";
+
+					function App() {
+				
+						const [counter, setCounter] = useState(0);
+				
+						useEffect(()=> {
+						
+							const listener = () => {
+								console.log(counter);
+							}
+							document.body.addEventListener('click', listener);
+						
+							return () => {
+								document.body.removeEventListener("click", listener);
+							};
+					
+						}, [counter]);
+
+						return (
+							<div>
+								<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+								<div>Count: {counter}</div>
+							</div>
+						);
+					}
+
+					export default App
+				
+			
+				Everytime that the component re renders we are creating a new event listener watching for clicks. 
+				This is not desirable, we need to have a way of undoing or a way to remove the listener everytime.
+				We are undoing something before the next useEffect call.
+				
+				
+		Time	|	Initial Render
+				|	
+				|		Function passed to useEffect always called !
+				|		Return fn to clean up the event handler
+				|					
+				|	
+				|	Second Render
+		Time	|
+				|		Clean up the last event handler
+				|		Func passed to useEffect called
+				|		Return fn to clean up the event handler
+				|	
+				|
+				|	Third Render
+				|
+		Time	|		Clean up the last event handler
+				|		function passed to useEffect called
+				|		Return fn to clean up the event handler
+				|			
+				V
+				
+			
+		
+		- Understanding stale variable references.
+			
+			https://codesandbox.io/p/sandbox/hungry-fog-0ev1ec 
+			
+			Anytime our use effect function creates or contains a function that refers to a variable. This is a possible bug. (stale variable)
+			
+			Create-React-App includes an ESLint rule to help you find this kind of bug but following ESLint can lead to more bugs.
+			
+			We want to have the ability to click anywhere on the screen and increase the value of counter.
+			
+			The code below will print the correct value of counter in the html but the console log will be always 0. This is inconsistent.
+			
+				import { useState } from "react";
+
+				function App() {
+				
+					const [counter, setCounter] = useState(0);
+				
+					useEffect(()=> {
+						document.body.onclick = () => {
+							console.log(counter);
+						};
+					}, []);
+
+					return (
+						<div>
+							<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+							<div>Count: {counter}</div>
+						</div>
+					);
+				}
+
+				export default App;
+
+			Understanding the issue:
+				
+				Everytime (every new render) we are going to have a new set of variables.
+				
+				In the first render:
+					
+					We are going to have a counter variable with the value of 0.
+					
+					useEffect is going to be executed.
+					
+					We also have a function that is going to take a look at the counter variable. Is a reference to the counter with the value of 0.
+					
+				
+				In the second render (user clicks on the button)
+					
+					Use effect is not going to be called because we specified an empty array of dependencies.
+					
+					We are going to have a new variable with the value of 1. Then, we have two variables. One counter === 0 and other counter === 1
+				
+				The fix:
+				
+					import { useState } from "react";
+
+					function App() {
+					
+						const [counter, setCounter] = useState(0);
+				
+						useEffect(()=> {
+							document.body.onclick = () => {
+								console.log(counter);
+							};
+						}, [counter]); // here's the fix
+
+						return (
+							<div>
+								<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+								<div>Count: {counter}</div>
+							</div>
+						);
+					}
+
+					export default App;
+					
+					
+			Potential bug introduced when following ESLint
+			
+				The code below is an example of an ESLint warning. It suggest that fetchBooks should be included in the dependency array.
+			
+					import { useEffect } from "react";
+					import BookCreate from "./components/BookCreate";
+					import BookList from "./components/BookList";
+					import useBooksContext from "./hooks/UseBooksContext";
+
+					export default function App() {
+	
+						const { fetchBooks } = useBooksContext();
+
+						useEffect(() => { 
+							fetchBooks(); 
+						}, []); // Here we have an ESLint warning.
+
+						return (
+							<div className="app">
+								<h1>Reading List</h1>
+								<BookList />
+								<BookCreate />
+							</div>
+						);
+
+					}
+					
+				We might think that we can fix the warning by including fetchBooks into the dependencies array.
+					
+					import { useEffect } from "react";
+					import BookCreate from "./components/BookCreate";
+					import BookList from "./components/BookList";
+					import useBooksContext from "./hooks/UseBooksContext";
+
+					export default function App() {
+	
+						const { fetchBooks } = useBooksContext();
+
+						useEffect(() => { 
+							fetchBooks(); 
+						}, [fetchBooks]); // fixing the warning 
+
+						return (
+							<div className="app">
+								<h1>Reading List</h1>
+								<BookList />
+								<BookCreate />
+							</div>
+						);
+
+					}
+				
+				A new issue is introduced since we are going to have endless HTTP calls.
+				
+					function Provider() {
+						
+						const [books, setBooks] = useState([]);
+						
+						const fetchBooks = () => {
+							// ... code to fetch books
+							setBooks(updatedBooks);
+						};
+						
+						return <BookContext.Provider value={{ books, fetchBooks}} />
+						
+					}
+					
+					function App() {
+						
+						const { fetchBooks } = useContext(BookContext);
+						
+						useEffect(() => {
+							fetchBooks();
+						}, [fetchBooks]);
+					}
+				
+				First render
+					
+					1. The fetchBooks function is placed into the memory
+					2. useEffect is executed.
+				
+				Second Render (Books are updated)
+				
+					1. The Provider is executed again.
+					2. Another fetchBooks variable is created but it has the same same of the function that was created in the first render.
+					3. A brand new reference (variable is created in the memory. At this point we have 2 arrow functions doing the same thing.)
+					4. useEffect is executed again because fetchBooks changed. (We have two different arrow functions in memory, same name but different variables)
+					5. This cicle repeats over and over.
+
+		- Stable references with useCallback
+		
+			Based on the previous code, we need to tell React that our fetchBook function is not changing overtime or between re renders.
+					
+				- useCallback
+	
+					- Hook to help you tell React that your function isn't actually changing over time.
+	
+					- Fixes bugs around useEffect and other similar situations
+	
+					- Follow similar conventions as useEffect (second argument is an array)
+					
+					- If second argument is an empty array, useCallback gives you back the original fetchBooks from first render.
+					
+					- If second argument has elements that have changed since last render, useCallback gives you the new version of fetchBooks.
+	
+	
+					function Provider() {
+						
+						const fetchBooks = () => {
+							// ...
+						}
+						
+						const stableFetchBooks = useCallBack(fetchBooks, []);
+					
+					}
+					
+					First Render
+					
+						- In this code, fetchBooks is not executed. useCallback does not ever run your function. 
+						- We are using useCallback to tell React that our function is not changing.
+						- Unlike useEffect the array is mandatory. It could be empty or it could have something but it is required. 
+						- For now, we are using an empty array. In other cases when it has something, useCallback will work differently.
+						- We get the same function back. 
+						- In this case, fetchBooks and stableFetchBooks point to the same reference function in memory.
+						
+						
+						We have two variables
+						
+							fetchBooks: Points to () => fetchBooks V1
+							
+							stableFetchBooks: Points to () => fetchBooks V1
+						
+						
+						-------------------------------------------------------------------------
+												Memory in the computer
+						-------------------------------------------------------------------------
+						|			|												|			|						
+						-------------------------------------------------------------------------
+						|			|			|			|			|			|			|			
+						-------------------------------------------------------------------------
+						|			|			() => fetchBooks V1	 				|			|
+						-------------------------------------------------------------------------
+						|			|			|			|			|			|			|
+						-------------------------------------------------------------------------
+						|			|												| 			|
+						-------------------------------------------------------------------------
+						
+					Second Render
+					
+						- If second argument is an empty array, useCallback gives you back the original fetchBooks from first render.
+						
+						- If second argument has elements have changed since last render, useCallback gives you the new version of fetchBooks.
+						
+						When the code runs:
+						
+							- We still have the original fetchBooks function. This is a new arrow function that is going to be placed in memory.
+						
+							- We create a new variable called fetchBooks and stableFetchBooks.
+							
+							Variables
+								
+								fetchBooks: Points to fetchBooks V2 arrow function.
+								
+								stableFetchBooks: Points to the fetchBooks V1 arrow function. (That happens because useCallback has an empty array)
+						
+						
+						-------------------------------------------------------------------------
+												Memory in the computer
+						-------------------------------------------------------------------------
+						|			|			() => fetchBooks V2					|			|	  <------- This one is not used at all (Only will be used if useCallback has array of elements)			
+						-------------------------------------------------------------------------
+						|			|			|			|			|			|			|			
+						-------------------------------------------------------------------------
+						|			|			() => fetchBooks V1	 				|			|     <------- fetchBooks from last render
+						-------------------------------------------------------------------------
+						|			|			|			|			|			|			|
+						-------------------------------------------------------------------------
+						|			|												| 			|
+						-------------------------------------------------------------------------
+						
+			BookContext
+			
+				function Provider() {
+					
+					const [books, setBooks] = useState([]);
+					
+					const fetchBooks = () => {
+						// ...
+					}
+					
+					const stableFetchBooks = useCallback(fetchBooks, []);
+					
+					return <BooksContext.Provider value={{ books, stableFetchBooks }} />
+				}
+				
+				
+				function App() {
+							
+					const { stableFetchBooks } = useContext(BookContext);
+							
+					useEffect(() => {
+						stableFetchBooks();
+					}, [stableFetchBooks])
+							
+					return ...
+				}
+				
+				First Render:
+				
+					1. fetchBooks and stableFetchBooks points to () => fetchBooks V1
+					2. Inside App, useEffect is executed.
+					
+				|
+				|	Books updated !!
+				|
+				v
+				
+				Second Render
+				
+					1. We still have a reference to () => fetchBooks V1.
+					2. New fetchBooks is created and points to () => fetchBooks V2.
+					3. New stableFetchBooks is created and useCallback is called and it returns the fetchBooks V1 reference because we have an empty array.
+					3. Inside App, useEffect is not executed again because stableFetchBooks did not change between renders.
+			
+			The right thing to do is to use useCallback like this:
+			
+				function Provider({ children }) {
+					
+					const [books, setBooks] = useState([]);
+					
+					const fetchBooks =  useCallback(async () => {
+						const response = await axios.get(BOOKS_API_URL);
+						setBooks(response.data);
+					}, []);
+					
+					// ...
+				}
+				
+				function App() {
+				
+					const { fetchBooks } = useBooksContext();
+
+					useEffect(() => { fetchBooks(); }, [fetchBooks]);
+
+					return (
+						<div className="app">
+							<h1>Reading List</h1>
+							<BookList />
+							<BookCreate />
+						</div>
+					);
+				}
+						
+					
+	- The children property
+	
+		Pass down the text "Click!" as children from App to the Button component.
+	
+		Example 1:
+		
+			function App() {
+				return <Button>Click!</Button>
+			}
+		
+			-------------------------
+				      Props
+			-------------------------
+			key 		| value
+			-------------------------
+			children	| "Click!"
+			-------------------------
+		
+			function Button({ children }) {
+				return <button>{children}</button>
+			}
+			
+		Example 2:
+		
+			function App() {
+				return (
+					<Button>
+						<Icon />
+					</Button>
+				);
+			}
+		
+			-------------------------
+				      Props
+			-------------------------
+			key 		| value
+			-------------------------
+			children	| <Icon />
+			-------------------------
+		
+			function Button({ children }) {
+				return <button>{children}</button>
+			}
+			
+		Props validation
+		
+			Prop-Types library (prop-types)
+			
+				- Optional
+				- JS library to validate the props that get passed into your component.
+				- If someone passes down the incorrect kind of value (number instead of boolean) a warning will appear in console.
+				- Used to be very popular. Now Typescript does almost the same thing and more.
+				
+				Example
+				
+					function Card({ title, content, showImage }) {
+						...
+						
+					}
+					
+					Card.propTypes = {
+						title: PropTypes.string.isRequired,
+						content: PropTypes.string,w
+						showImage: PropTypes.bool
+					};
+			
+			
+			First approach
+		
+				function Button({
+					children,
+					primary,
+					secondary,
+					success,
+					warning,
+					danger,
+					outline,
+					rounded
+				}) {
+					if (primary && secondary) {
+						throw new Error('only one primary and secondary should be provided');
+					}
+					return <button>{children}</button>;
+				}
+			
+				export default Button;
+				
+			Second approach: Create a custom validator
+			
+				The values of primary, secondary, etc can be either true or undefined inside the props object. 
+				We need to find a way to turn true and undefined to numbers add them all up and make that the total is no greater than 1.
+				
+				In JavaScript
+					
+					Number(true) will return 1.
+					Number(undefined) will return NaN. This is not what we want.
+					Number(!!undefined) will return 0.
+					!!undefined will return false
+					Number(false) will return 0.
+				
+				import PropTypes from 'prop-types';
+				
+				function Button({
+					children,
+					primary,
+					secondary,
+					success,
+					warning,
+					danger,
+					outline,
+					rounded
+				}) {
+					
+					return <button>{children}</button>;
+				}
+				
+				Button.propTypes = {
+				
+					checkVariationValue: ({ primary, secondary, success, warning, danger }) => {
+					
+						const count = Number(!!primary) + Number(!!secondary) + Number(!!success) + Number(!!warning) + Number(!!danger);
+						
+						if (count > 1) {
+							return new Error('Only one of primary, seconday, success, warning, danger can be true');
+						}
+						
+					}
+				};
+				
+				export default Button;
+				
+	- State Design Process Overview
+
+		When should I use state?
+			
+			When we need to change content on the screen.
+			
+		What should it be called?
+		
+		What type of data will my state be?
+		
+		Which component should it be defined in?
+				
+		--------------------------------------------------------------------------------------------------
+		Events + State Design Process
+		--------------------------------------------------------------------------------------------------
+			1. List out what a user will do and changes they will see while using your app.		|
+																								|
+			2. Categorize each step as 'state' or 'event handler'.								| --> What state + event handlers are there?
+																								|			
+			3. Group common steps. Remove duplicates. Rewrite descriptions.						|
+			
+			4. Look at mockup. Remove or simplify parts that are not changing.					|
+																								|
+			5. Replace remaining elements with text descriptions.								|
+																								| --> What name and type?
+			6. Repeat #4 and #5 with a different variation.										|
+																								|
+			7. Imagine you have to write a function that returns the text of steps #5 and #6. 	|
+			   In addition to your component props, what other arguments would you need?		|
+			   
+			8. Decide where each event handler + state will be defined.							| --> Where's it defined?
+		--------------------------------------------------------------------------------------------------
+		
+		Accordion Component (comps) - Delayed state updates
+		
+			What we want that it is not happening
+		
+				expandedIndex === 0
+			
+				User clicks first header (index 0)
+				Event handler executed
+				Because expandedIndex === index, we call 'setExpandedIndex(-1)'
+				Component rerenders, first section is collapsed -> expandedIndex === -1
+				User clicks first header again (index 0)
+				Event handler executed
+				expandedIndex !== index, so we call setExpandedIndex(0)
+				Component rerenders, first section is expanded -> expandedIndex === 0
+			
+			What's actually happening (bad)
+			
+				expandedIndex === 0
+				
+				User clicks first header (index 0)
+				Event handler executed.
+				Because expandedIndex === index, we call 'setExpandedIndex(-1)'
+				React: Oh, you want to update state... yeah. I'll get around to it in the future...
+				User clicks first header again (index 0)
+				Event handler executed
+				expandedIndex has not been updated yet !
+				Because expandedIndex === index, we call setExpandedIndex(-1)
+				React: Oh, you want to update state... yeah. I'll get around to it in the future...
+				...
+				... time passes
+				...
+				React: Guess I'll finally do that state update. expandedIndex --> -1
+				First Panel is collapsed
+				
+			Possible solutions
+			
+				1. Get React to process state updates instantly.
+				
+				2. Get access to the most up to date value of expandedIndex in handleClick
+			
+				Remember
+				
+					State Updates
+					
+						Simple version: Use if value does not depend on old.
+						
+							const handleClick = () => {
+								setCounter(10);
+							}
+							
+						Functional version: Use if new value depends on old.
+						
+							const [counter, setCounter] = useState(0);
+							
+							const handleClick = () => {
+								setCounter(currentCounter => { // Here, it is guaranteed that currentCounter is the most updated version of counter. 
+									if (currentCounter > 10) {
+										return 20;
+									} else {
+										return currentCounter + 1;
+									}
+								});
+							}
+					
+					Technically, this is only an issue if state updates occur really quickly ... We can get pretty far only using the simple version.
+					
+	- Event Capturing and Bubbling with JavaScript
+	
+		The issue: Dropdown component
+		
+			If we have two dropdown menus on the screen, if we click on the second one the first is not closed automatically.
+			
+			Solution: Detect click events outside of the dropdown area.
+			
+				Select a color
+		
+					Select...     v
+					_______________
+					Red
+					Green
+					Blue
+				
+						^
+						|
+						|----> User clicks outside this area? Then, set is open to false.
+						
+				
+				Think on this:
+				
+					<body>
+						<div id="root">
+							<label>Select a color</label>  	|
+						<div>								|	
+							<div>							|
+								Select...					|
+							</div>							|
+							<div>							|------> HTML created by Dropdown
+								<div>Red</div>				|
+								<div>Green</div>			|
+								<div>Blue</div>				|
+							</div>							|
+						</div>								|
+					
+						<button>							|
+							Click here !					|------> HTML created by Button
+						</button>							|
+					</body>
+					
+					
+					For this case we need to somehow what for click events for elements that are not created by the dropdown (for example, the button).
+					
+					The Dropdown cannot listen to clicks on elements created by Button using the onClick technique we've seen.
+					
+					Our technique works only to watch for events on elements that are created for our component. In this case we want to listen for events that are 
+					not triggered by our component.
+					
+					How could be do this in plain JS?
+					
+						- Document wide click handlers
+							
+							Detect a click event anywhere on the screen
+								
+								const handleClick = (event) => {
+									console.log(event.target); // ---> tells us which element was clicked on
+								}
+								
+								document.addEventListener('click', handleClick); // ---> watches for a click on any element
+							
+						- Event capturing/bubbling
+						
+							When an event occurs, browser wants to find event handlers to call. The order in which this search occurs is divided into three phases:
+
+								Capture Phase
+		
+									Go to the most parent of clicked element and see if it has a handler. (Up to down)
+			
+								Target Phase
+		
+									Go to the clicked element, check to see if it has event handler.
+		
+								Bubble Phase
+		
+									Go to the parent of clicked element and see if it has a handler. Then go to parent's parent, etc.
+		
+		
+							Example:
+							
+								<body>
+									<div>
+										<button>Click Me!</button>
+									</div>
+								</body>
+								
+								Basically:
+								
+								   body  
+									|
+									|
+									v
+								   div
+									|
+									|
+									v
+								  button	
+									
+								User clicks button !
+									
+									Browser needs to find click event handlers to call.
+									
+									Capture:
+										
+										Go to the most parent of clicked element, see if it has a handler. Go to second most parent, etc
+										
+										Most parent element is the body. Do you have a handler? if so, I'll call it.
+									
+										When the browser finds the button the capture phase will stop.
+									
+									Target:
+										
+										Go to the clicked element, check to see if it has an event handler. Hey button do you have a handler? If so, I'll call it.
+										
+									Bubble:
+									
+										Go to parent of clicked element, see it has a handler. Then go to parent's parent, etc.
+										
+										Go to the button's parent, the div. Hey div do you have a handler? If so, I'll call it.
+										
+										Go to the div's parent, the body. Hey body do you have a handler? If so, I'll call it.
+										
+										
+									Overall breakdown
+									
+									   body  	|
+										|		| ---> Capture (frequently disabled)	
+										v		|
+									   div		|
+										|
+										v
+									  button	| ---> Target
+										|
+										v
+									   div		|
+										|		| ---> Bubble
+										v		|
+									   body
+									
+									Disabling the Capture Phase:
+									
+										document.addEventListener('click', handleClick);			----> Sets up event handler for the bubbling phase
+	
+										document.addEventListener('click', handleClick, false);		----> Sets up event handler for the bubbling phase
+	
+							
+									Enabling the Capture Phase
+										
+										document.addEventListener('click', handleClick, true);		----> Sets up event handler for the capture phase
+	
+							Putting all together
+							
+								1. Get reference to dropdown element.
+								2. Check to see if clicked element is inside dropdown
+								3. User clicked outside dropdown.
+								4. Need to close the dropdown.
+							
+								const dropdown = document.querySelector('.w-48'); // 1
+								
+								const handleClick = (event) => {
+									if (dropdown.contains(event.target)) { // 2
+										console.log('Inside dropdown');
+									} else {
+										console.log('Outside dropdown'); // 3 and 4
+									}
+								}
+								
+								document.addEventListener('click', handleClick, true);
+							
+						- Checking element inclusion
+						
+					How do we implement these techniques with React?
+						
+						- useEffect hook
+						
+								Time 	|First component render
+										|
+										|	useEffect function called (Good place to set up an event handler)
+										|	
+										|	
+										|	
+										|Second component render
+										|
+										|	useEffect function might be called
+										|	
+										|
+										V
+										
+							Remainder
+							
+								This is what happens when second argument is an empty array
+									
+									useEffect(() => {
+									
+										//... do something
+									
+										const cleanUp = () => {
+											
+										};
+										return cleanUp;
+									}, []);
+								
+								
+									Time 	|First component render
+											|
+											|	useEffect function called 
+											|	We return a cleanup function
+											|	
+											|	
+											|Second component render
+											|
+											|	React calls the cleanUp function
+											|	
+											|
+											V
+											
+								This is what happens when second argument is an array with something in it.
+									
+									useEffect(() => {
+									
+										//... do something
+									
+										const cleanUp = () => {
+											
+										};
+										return cleanUp;
+									}, [counter]);
+									
+									
+									Time 	|First component render
+											|
+											|	useEffect function called 
+											|	We return a cleanup function
+											|	
+											|	
+											|Second component render
+											|
+											|	Previous cleanUp function is called.
+											|	useEffect function called.
+											|	We return a cleanUpFunction
+											V
+											|Third component render
+											|
+											|	Previous cleanUp function is called.
+											|	useEffect function called.
+											|	We return a cleanUpFunction
+											V
+								
+						- useRef hook
+							
+							1. Allows a component to get a reference to a DOM element that it creates.
+							
+							2. 95% of the time used with DOM elements, but can hold a reference to any value.
+							
+							Previous code
+								
+								// This is not going to work if we think on a case where we need to show many dropdowns.
+								// Every new dropdown will have an element with a className equals to '.w-48'
+								
+								We need to figure out a way that every dropdown gets a reference to it's own div
+								
+								<div>
+									<div className="w-48"></div>	// did the click occurr in this div?
+									<div className="w-48"></div>	// did the click occurr in this div?
+									<div className="w-48"></div>	// did the click occurr in this div?
+								</div>
+								<article>
+									<Panel>
+										<div className="w-48"></div> // did the click occurr in this div?
+									</Panel>
+								</article>
+								
+								const dropdown = document.querySelector('.w-48'); 
+								
+								const handleClick = (event) => {
+									if (dropdown.contains(event.target)) { 
+										console.log('Inside dropdown');
+									} else {
+										console.log('Outside dropdown'); 
+									}
+								}
+								
+								document.addEventListener('click', handleClick, true);
+								
+						useRef implementation
+						
+							1. Create a ref at the top of the component by calling useRef.
+							2. Assign the ref to a JSX element as prop called ref.
+							3. Access that DOM element with ref.current
+							
+							By using useRef we get an object with a 'current' property inside of it.
+							
+							export default function Dropdown({ options, value, onChange }) {
+							
+								const [isOpen, setIsOpen] = useState(false);
+
+								// Reference to a div element
+								const divEl = useRef();
+
+								useEffect(() => {
+									
+									const handler = (event) => {
+									
+										/*
+											In this case we know the div is going to be always shown at the screen. That means we will always get a refence to the div.
+											In other scenarios a div might be hidden (toggle the visibility) therefore, there will be cases where the reference will be null.
+											That's the reason of this condition: if (!divEl.current) {...}
+										*/
+										if (!divEl.current) {
+											return;
+										}
+										/*
+											If this condition is true, means the users clicked inside the dropdown.
+
+												if (divEl.current.contains(event.target)) {...}
+
+											If it is false then we need to update the isOpen state to false.
+										*/
+										if (!divEl.current.contains(event.target)) {
+											setIsOpen(false);
+										} 
+									};
+
+									document.addEventListener('click', handler, true); // Sets up event handler for the capture phase
+
+									return () => {
+										document.removeEventListener('click', handler);
+									};
+								}, []);	
+							
+								... // more code
+								
+								return (
+									<div className="w-48 relative" ref={divEl}>
+										<Panel className="flex justify-between items-center cursor-pointer" onClick={onMenuChangeHandler}>
+											{value?.label || 'Select...'}
+											<GoChevronDown className="text-lg" />
+										</Panel>
+										{isOpen && <Panel className="absolute top-full">{renderedOptions}</Panel>}  
+									</div>
+								);
+							}
+							
+	- Traditional Browser Navigation
+
+		Navigation on a plain HTML app
+			
+			
+				   HTML page			     Request						           Server
+			-------------------------      GET myapp.com		-----------------------------------------------------
+			|      myapp.com		|    -----------------> 	|		               Router                   	|
+			-------------------------							-----------------------------------------------------
+			|	landing page.html	|	<-----------------		| Request to myapp.com ---> landing page.html 		|
+			|						|		 Response			|											  		|
+			|						|	 landing page.html		|                                             		|
+			|						|							|											  		|
+			|						|	 						|											  		|
+			|	dashboard.html		|	----------------->		| Request to myapp.com/dasboard ---> dashboard.html	|
+			|						|	<-----------------		|											  		|	
+			-------------------------							-----------------------------------------------------
+				
+			Standard browser behavior
+			
+				When the browser loads a new html document, all existing JS variables and code is dumped.
+				It does not really matter for a traditional html app but it's kind of bad for a React app.
+				With one request user will be able to see something in the screen.
+				
+				With react (following the same navigation principles) it takes more requests: 
+					
+					In this example it takes at least 3 requests to a list of images or blogposts.
+				
+													Server
+													-------------------------------------
+								myapp.com 	--->    index.html (base html for react)
+											
+					index.html, bundle.js	--->	bundle.js 
+										 
+								   images	--->	images (api endpoint to get a list of images)
+										 
+								   posts   	--->	posts (api endpoint to get a list of blogposts)
+		
+		
+			How Navigation works with React
+			
+				User types our address in
+				
+					---> Always send back the index.html file.	(Create React App already does this)
+					
+					---> When app loads up, look at the address bar and use it to decide what content to show. 
+						
+							- How do we look at the address bar?
+							
+								window.location.pathname
+							
+							- What part of it do we care about?
+								
+								We care about the path:
+									
+									Example:
+										
+										/dropdown, /accordion, /images/preview, /
+							
+					During initial load
+					
+					- Regardless of the address, a request is always made to index.html. 
+					- The html file has a tag that tell the browser to issue a request to get the bundle.js file.
+					- This is consider as the startup process.
+					
+																 Server
+													-------------------------------------
+								myapp.com 	--->    index.html (base html for react)
+											
+					index.html, bundle.js	--->	bundle.js 
+					
+					
+					
+					- Once the startup process is complete, React will take a look at the address bar:
+					
+						If it is /posts   ---> 	Display PostList component
+						
+						If it is /images  ---> 	Display ImageList component
+					
+					
+					
+				User clicks a link or presses back button
+					
+					---> Stop the browser's default page switching behavior.
+					
+							- How do we detect a user clicking a link?
+							
+								function Link({ to }) {
+									const handleClick = (event) => {
+										event.preventDefault();								--> stops the standard navigation
+										console.log('User navigationg to: ', to);
+									}
+									return <a onClick={handleClick} href={to}>Click</a>		--> detectss a click
+								}
+							
+							- How do we detect a user clicking on a back or forward button?
+							
+								If we use pushState there is no need of stopping the default browser's behavior.
+							
+								
+								Example:
+								
+									No full refresh 		/b2							added with pushState
+									No full refresh 		/a1							added with pushState	
+									Full page refresh		localhost:3000/accordion	I typed url
+									Full page refresh		localhost:3000				I typed url
+									---------------------------------------------------------------------
+															Browser History
+								
+								
+					---> Figure out where the user was trying to go.
+						
+						Window emits a popstate event if the user current url was added by pushState.
+						We need to watch this popstate event.
+							
+					
+					---> Update content on the screen to trick the user into thinking they swapped pages.
+					
+							- How do we update content on the screen?
+							
+					---> Update address bar to trick the user into thinking they swapped pages.
+						
+							- How do we update the address bar?
+							
+								1. window.location = 'http://localhost:3000/dropdown';
+								
+									Causes a full page refresh.
+									
+								2. window.history.pushState({}, '', '/dropdown');
+								
+									Updates the address bar but does not cause a refresh.
+					
+					When user navigates:
+					
+						- User clicked a link.
+						- Intercept the navigation event.
+						- Where was the user going to?
+						- Update the address bar so they think they navigated.
+						
+				JS environment no longer being reset with navigation. This only works if the state is not defined in the component.
+				
+				Popular Navigation Libraries
+				
+					- React-Router
+					- Wouter
+					- React-Location
+					- Reach-Router
+						
+					
+	- Reminder about the position CSS property (Modal component)
+
+		- static
+		- relative
+		- absolute
+		- fixed
+		- sticky
+		
+		Let's review the position absolute and tailwind inset-0
+			
+			Postion absolute: 
+			
+				Puts the element:
+				
+					- At the top left corner of the closest parent with a position other than static.
+				
+				Example: 
+				
+					<p>
+						Hi there this is a long block of text
+					</p>
+					<div className="relative">
+						<div className="absolute">
+							Hi
+						</div>
+					</div>
+				
+				Other example:
+				
+					<div>
+						<section>
+							<div className="absolute">
+								Hi
+							</div>
+						</section>
+					</div>
+			
+			inset-0 (top: 0; left: 0; right: 0; bottom: 0;)
+			
+				- If the element is position absolute:
+					
+					- The element will expand to fill the height and width of the closest parent with a non-static position.
+					
+					Example: 
+				
+						<p>
+							Hi there this is a long block of text
+						</p>
+						<div className="relative">
+							<div className="absolute inset-0">
+								Hi
+							</div>
+						</div>
+						
+					Other Example:
+						
+						<div>
+							<section>
+								<div className="absolute inset-0">
+									Hi
+								</div>
+							</section>
+						</div>
+	
+		The modal is only working correctly because e do not have a positioned parent.
+		
+		If we had a positioned parent, it would display incorrectly.
+		
+		Real projects use positioned parents! Sometimes it can't be avoided.
+		
+		We can create modals in React by using a Portal.
+		
+		Usually we create something like this:
+		
+			<div className="modal">
+			
+			</div>
+		
+		Using this technique have the following advantages:
+		
+			1. This div will never have a positioned parent.
+			2. Modal will be positioned relative to the HTML doc.
+			3. It will always fill the entire screen.
+			
+		With React we do something like this:
+		
+			function Modal() {
+			
+				/* Tells React to place HTML produced by this component somewhere else */
+				return ReactDOM.createPortal(
+					<div>
+						I'm a modal !
+					</div>
+					
+					/* Reference to an element in our index.html file */
+					document.querySelector('.modal-container')
+				);
+			}
+			
+			We need to go to our index.html file and add an element to render our modal component into.
+			
+				<!DOCTYPE html>
+				<html lang="en">
+					<head>
+						<meta charset="utf-8" />
+						<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+						<meta name="viewport" content="width=device-width, initial-scale=1" />
+						<meta name="theme-color" content="#000000" />
+						<meta
+							name="description"
+							content="Web site created using create-react-app"
+						/>
+						<link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+						<link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+						<title>React App</title>
+					</head>
+					<body>
+						<noscript>You need to enable JavaScript to run this app.</noscript>
+						<div id="root"></div>
+						<div class="modal-container"></div> <!-- Here !!!! -->
+					</body>
+				</html>
+			
+		
+		
+		
+	- Fragment (Table component)
+	
+		This code is going to throw errors since a th cannot be nested inside another th. If we use a div we'll get a similar issue.
+		
+		Error: Each child in a list should have a unique key prop.
+		
+			at th
+			at Table
+			at div
+			at TablePage
+			at Route
+			
+			...
+			
+	
+			const renderedHeaders = config.map((column) => {
+				if (column.header) {
+					return <th key={column.label}>{column.header()}</th>;
+				}
+				return <th key={column.label}>{column.label}</th>
+			});
+
+		We can properly fix our issue by using a Fragment
+	
+			import { Fragment } from "react";
+	
+			const renderedHeaders = config.map((column) => {
+				if (column.header) {
+					return <Fragment key={column.label}>{column.header()}</Fragment>;
+				}
+				return <th key={column.label}>{column.label}</th>
+			});
+	
+	
+	- Reducers
+	
+		useReducer: Defines a state in a component, just like useState !
+		
+		This is a hook for managing state.
+	
+		Defines a state in a component, just like useState.
+	
+		useState 	---> 	Absolutely fine hook to use whenever a component needs state.
+	
+		useReducer 	--->  	Alternative to useState
+							Produces state
+							Changing this state makes component rerender.
+							Useful when you have several different closely-related pieces of state.
+							Useful when future state values depend on the current state.
+							
+							
+		Example (CounterPage.js)
+		
+											useState
+			----------------------------------------------------------------------------------
+			const [count, 			setCount] 		= 			useState(initialCount);
+			const [valueToAdd, 		setValueToAdd] 	= 			useState(0);
+					^						^							^
+					|						|							|
+					|						|							|
+			State variable			Function to change state	Initial value for this state
+					|						|							|
+					|						|							|
+					v						v							v
+			const [state, dispatch] =  useReducer(reducer,		{count: initialCount, valueToAdd: 0})
+			----------------------------------------------------------------------------------
+											useReducer
+											
+			
+			Conventions of useState						Conventions of useReducer
+			----------------------------------------------------------------------
+			count										{
+			state - number									count: 10,
+															valueToAdd: 20
+			valueToAdd									}
+			state - number								state - object
+			
+			Each piece of state defined as a 			All state for the whole component
+			separate variable							defined in a single object
+			
+			
+			In general if we have
+				
+				const [state, dispatch] = useReducer(reducer, { count: 10, valueToAdd: 20});
+				
+				- state is an object that has count and valueToAdd properties.
+				- If we want to refer to count then we have to use state.count
+				- If we want to refer to valueToAdd then we have to use state.valueToAdd
+				
+				
+			State Updates with useState
+			
+						setCount
+							|
+							|
+							v
+					Component rerenders
+							|
+							|
+							v
+				const [count, setCount] = useState(initialCount);
+			
+			State Updates with useReducer
+				
+				- Anytime we need to update the state we call dispatch function.
+				
+				- When we call dispatch, React is going to find the reducer function that we just defined. 
+				
+				- This reducer function is the first argument of the useReducer function.
+				
+				- The second argument is called action. That is whatever we pass to dispatch.
+				
+				- When calling dispatch we can pass one argument or no arguments. If we pass more than one, all the extras are ignored.
+				
+				
+				Current State (state)	dispatch(5): Function we get back from calling useReducer
+				-----------------			|
+				{							|
+					count: 10,				|
+					valueToAdd: 20			|
+				}							|
+											v
+				const reducer = (state, action) => {
+					// Whatever gets returned will be the new state !!
+				}
+								|
+								|
+								|
+								v
+						{
+							count: 200,
+							valueToAdd: 300  ---> Reducer returns an object like this one. This is going to be the New State !
+						}
+								|
+								|
+								|
+								v
+						Component rerenders
+								|
+								|
+								|
+								v
+									
+				const [state, dispatch] = useReducer(reducer, { /* initial state */ })
+						|
+						|
+						|
+						v
+					{
+						count: 200,
+						valueToAdd: 300
+					}
+							
+		- Rules around Reducer Functions
+		
+			const reducer = (state, action) => {
+				
+			}
+			
+			1. Whatever you return will be your new state.
+			
+			2. If you return nothing then, your state will be undefined.
+			
+			3. No async/await, no requests, no promises, no outside variables.
+			
+			
+			Like almost everywhere else in React, do not directly modify the state object !
+			
+				Bad
+					
+					const reducer = (state, action) => {
+						state.count = state.count + 1;
+						return state;
+					}
+					
+				Good 
+				
+					// Need to update count
+				
+					const reducer = (state, action) => {
+						return {
+							...state,
+							count: state.count + 1
+						};
+					}
+					
+					
+					// Need to update valueToAdd
+					
+					const reducer = (state, action) => {
+						return {
+							...state,
+							valueToAdd: state.valueToAdd + 1
+						};
+					}
+					
+					// Need to completely reset state
+					
+					const reducer = (state, action) => {
+						return {
+							count: 0,
+							valueToAdd: 0
+						};
+					}
+					
+		- Understanding Action Objects
+		
+			User clicks increment button			User types in input
+						|									|
+						|									|
+						v									v
+				State update needed !				State update needed !
+				  Call dispatch							Call dispatch
+						|									|
+						|									|
+						v									v
+					dispatch();							dispatch();
+						|									|
+						|									|
+						-------------------------------------
+										  |
+										  |
+										  v
+						const reducer = (state, action) => {
+							// OK... I'm running... am I supposed to
+							// be updating count or valueToAdd?
+						}
+									
+			When we call dispatch we need to pass along some info to tell the reducer how the state should be updated.
+			
+			There are billion ways to do this.
+			
+			The React community has come up with a convention on how to tell the reducer what it needs to do.
+			
+			Solution, an Event Handler !
+			
+				When we need to modify state, we will call dispatch and always pass in an action object.
+				
+				The action object will always have a type property that is a string.
+				This helps tell the reducer what state update it needs to make.
+				
+				If we need to communicate some data to the reducer, it will be placed on the payload property of the action object.
+				
+				This is a very common community convention, not a requirement. React does not treat these action objects any differently.
+			
+				
+				const increment = () => {
+					dispatch({
+						type: 'increment-count'
+					});
+				}
+				
+				const handleChange = (event) => {
+					const value = parseInt(event.target.value) || 0;
+					dispatch({
+						type: 'change-value',
+						payload: value
+					});
+				}
+				
+				User clicks increment				User types in the input
+				-------------------------------------------------------------
+				{									{
+					type: 'increment-count'				type: 'change-value',
+				}										payload: value
+													}
+													
+							|								|						
+							|								|
+							---------------------------------
+											|
+											|
+											v
+							const reducer = (state, action) => {
+								if (action.type === 'increment-count') {
+									// Ah, I know what I need to do ! I need to update the count property by 1
+									return {
+										...state,
+										count: state.count + 1
+									};
+								}
+								if (action.type === 'change-value') {
+									return {
+										...state,
+										valueToAdd: action.payload
+									};
+								}
+								return state;
+							}
+			
+			A few design considerations around reducers
+			
+				Current State
+				
+					{
+						count: 10,
+						valueToAdd: 20
+					}
+					
+				Case in the reducer
+					
+					case ADD_VALUE_TO_COUNT:
+						return {
+							...state,
+							count: state.count + state.valueToAdd,
+							valueToAdd: 0
+						}
+						
+				What it's happening?
+				
+					{
+						count: 10,		--->  ...state
+						valueToAdd: 20, ---> 
+						count: 30,      --->  state.count + state.valueToAdd
+						valueToAdd: 0	--->  valueToAdd
+					}
+					
+				In JS key value pairs that are identical to earlier keys are overwritten
+					
+					{
+						count: 30,      --->  state.count + state.valueToAdd
+						valueToAdd: 0	--->  valueToAdd
+					}
+					
+				What's the point of having ...state?
+				
+					What if we need to add other properties?
+					
+						{
+							count: 10,
+							valueToAdd: 20,
+							anotherProperty: true
+						}
+						
+					Updated case in the reducer that does not copy over properties
+						
+						case ADD_VALUE_TO_COUNT:
+							return {
+								count: state.count + state.valueToAdd,
+								valueToAdd: 0
+							}
+					
+					What is going to happen without ...state ? New properties are going to be lost.
+						
+						{
+							count: 30,
+							valueToAdd: 0
+						}
+						
+				A better design
+
+					1. 
+						
+						dispatch({
+							type: SET_COUNT_AND_RESET_VALUE_TO_ADD,
+							payload: state.count + state.valueToAdd
+						})
+						
+						case SET_COUNT_AND_RESET_VALUE_TO_ADD:
+							return {
+								...state,
+								count: action.payload,
+								valueToAdd: 0
+							};
+					
+					2.
+						dispatch({
+							type: SET_COUNT_AND_VALUE,
+							payload: {
+								count: state.count + state.valueToAdd,
+								valueToAdd: 0
+							}
+						})
+					
+						case SET_COUNT_AND_VALUE:
+							return {
+								...state,
+								...action.payload
+							};
+					
+					3. In a larger React App this is the typical scenario:
+					
+						-------------------------------------------------------------------------------------------------------------------------------------------
+						Dispatch in Event Handler A						Dispatch in Event Handler B						 Dispatch in Event Handler C
+						-------------------------------------------------------------------------------------------------------------------------------------------
+						dispatch({										dispatch({										 dispatch({
+							type: SET_COUNT_AND_RESET_VALUE_TO_ADD,			type: SET_COUNT_AND_RESET_VALUE_TO_ADD,			type: SET_COUNT_AND_RESET_VALUE_TO_ADD,			
+							payload: state.count + state.valueToAdd			payload: state.count + state.valueToAdd			payload: state.count - state.valueToAdd
+						})												})												 })
+						-------------------------------------------------------------------------------------------------------------------------------------------
+										|													|												|
+										|													|												|
+										-----------------------------------------------------------------------------------------------------
+																							|
+																							V
+																				-------------------------
+																				      Case in Reducer
+																				-------------------------
+																		   case SET_COUNT_AND_RESET_VALUE_TO_ADD:
+																				return {
+																					...state,
+																					count: action.payload,
+																					valueToAdd: 0
+																				};
+																						
+																						
+						There is a typo in the Dispatch in Event Handler C. Common error !
+						
+						Usually makes more sense to stuff logic into the reducer and keep the dispatches simple.
+						
+						Less duplicated code if you need to dispatch the same action in multiple places.
+						
+						Part of the goal of reducers is to have a very specific set of ways that state can be changed.
+		
+		- Final code before immer
+		
+			import { useReducer } from 'react';
+			import Button from '../components/Button';
+			import Panel from '../components/Panel';
+
+
+			const INCREMENT_COUNT = 'increment';
+			const DECREMENT_COUNT = 'decrement';
+			const SET_VALUE_TO_ADD = 'change_value_to_add';
+			const ADD_VALUE_TO_COUNT = 'add_value_to_count';
+
+			const reducer = (state, action) => {
+				switch (action.type) {
+					case INCREMENT_COUNT:
+						return {
+							...state,
+							count: state.count + 1
+						};
+					case SET_VALUE_TO_ADD:
+						return {
+							...state,
+							valueToAdd: action.payload
+						};
+					case DECREMENT_COUNT:
+						return {
+							...state,
+							count: state.count - 1
+						};
+					case ADD_VALUE_TO_COUNT:
+						return {
+							...state,
+							count: state.count + state.valueToAdd,
+							valueToAdd: 0
+						}
+					default: 
+						return state;    
+				}
+			};
+
+			export default function CounterPage({ initialCount }) {
+
+				//const [count, setCount] = useState(initialCount);
+
+				//const [valueToAdd, setValueToAdd] = useState(0);
+
+				const [state, dispatch] = useReducer(reducer, {
+					count: initialCount,
+					valueToAdd: 0
+				});
+
+				console.log(state);
+
+				const increment = () => {
+					dispatch({
+						type: INCREMENT_COUNT
+					});
+				}    
+
+				const decrement = () => {
+					dispatch({
+						type: DECREMENT_COUNT
+					});
+				}
+
+				const handleChange = (event) => {
+					/* 
+						Even if we have an input type number, event.target.value is of type string.
+						That's the reason of the parse function.
+
+						Second issue, if we press delete we will get NaN. This happens when we pass 
+						an empty string to parseInt.
+					*/
+					const value = parseInt(event.target.value) || 0;
+
+					dispatch({
+						type: SET_VALUE_TO_ADD,
+						payload: value
+					});
+				}
+
+				const handleSubmit = (event) => {
+					event.preventDefault();
+					dispatch({
+						type: ADD_VALUE_TO_COUNT
+					});
+				}
+				
+				return (
+					<Panel className="m-3">
+						<h1 className="text-lg">Count is {state.count}</h1>
+						<div className="flex flex-row">
+							<Button onClick={increment}>Increment</Button>
+							<Button onClick={decrement}>Decrement</Button>
+						</div>
+						<form onSubmit={handleSubmit}>
+							<label>Add a lot</label>
+							<input 
+								value={state.valueToAdd || 0}
+								onChange={handleChange}
+								type='number' 
+								className='p1 m-3 bg-gray-50 border border-gray-300'  
+							/>
+							<Button>Add it!</Button>
+						</form>
+					</Panel>
+				);
+
+			}
+
+		
+		- Immer 
+			
+			This is a libray that let us write code to directly mutate state.
+			
+			
+			Normal Reducer											Reducer with Immer
+			=======================================================================================================
+			
+			const reducer = (state, action) => {					const reducer = (state, action) => {
+				switch (action.type) {									switch (action.type) {
+					case INCREMENT_COUNT:									case INCREMENT_COUNT:
+						return	{												state.count = state.count + 1;
+							...state,											return;	
+							count: state.count + 1							default:
+						}														return;
+					default:											}
+						return state;								}
+				}														
+			}														
+			
+			
+			No directly changing state								You can mutate state
+			Must return a new value to use for state				Do not have to return a new value 
+																	Still return in each case, otherwise you get fallthrough
+	
+	- Redux (https://codesandbox.io/s/completed-media-project-zyz2mx)
+	
+		Is a library for managing state using the same techniques as useReducer.
+		
+							useReducer
+						-----------------
+		action ----->   Dispatch Function
+								|
+								|
+								v
+							  Reducer
+								|
+								|
+								v
+							  State
+			
+		Same with Redux
+		
+							  Redux
+						-----------------
+		action ----->   Dispatch Function
+								|
+								|
+								v
+							  Reducer
+								|
+								|
+								v
+							  State
+							  
+		Differences
+		
+			- With useReducer, all of our state was created + maintained in the React world.
+			- One single reducer function to manage state.
+			
+			- With Redux, we create a store to create + maintain our state.
+			- Individual components can connect to the store and access state.
+			- The Redux library does not assume you are using React !
+			- Multiple reducer functions managing a different part of state.
+			 
+			
+			   Redux Store
+			------------------							
+			Dispatch Function									App
+					|									 		 |
+					|		<------- React-Redux ------->		 |
+					v							                 v
+				 Reducer									Counter Page
+					|									         |
+					|								        ------------	
+					v								        |	       |
+				  State								        v		   v
+												         Button	     Panel
+			
+			
+			
+			
+				State
+				
+					{
+						users: {
+							currentUser: { id: 23 }				----> Reducer to manage state related to users
+						},
+						videos: {
+							playlist: [
+								{ title: 'Surfing Video' }		----> Reducer to manage state related to videos
+							] 
+						},
+						messages: {
+							unread: [	
+								{ content: 'Msg me' }			----> Reducer to manage state related to messages
+							]
+						}
+					}
+					
+			
+			Redux vs Redux Toolkit
+				
+				- If we want to change state in any way, we must call dispatch!
+				
+				- This is good and bad. Think on a giant pile of React components. 
+				
+				- Is really hard to understand why state is being updated and which component is initiating that state.
+				
+				- A huge big important reason of using Redux is the central point of initiating any change of state. The dispatch function.
+				
+				- Anytime we want to change the state we have to dispatch an action.
+				
+				- So with Redux, it's easier to understand why state is changing and what component is triggering that change/update.
+				
+				- We can also add additional debugging features.
+				
+				Not so great thing:
+					
+					- We have to write out a lot of boilerplate code just to make sure the reducer knows what to do !
+					
+				Then:
+				
+					Option 1 Use classic Redux
+					
+						Redux <----> React App
+						
+					Option 2 Use Redux Toolkit
+					
+						Redux <----> Redux Toolkit (RTK) <----> React App 
+						
+						
+						- RTK is wrapper around plan Redux.
+						- It automatically includes Immer inside all reducer functions.
+						- Specifically simplifies the action type creation process!
+						- This is the recommended way moving forward.
+					
+					
+		- Redux Store
+		
+			The store is an object that will hold all of our state.
+			
+			We usually do not have to interact with it directly. The React-Redux library will handle the store for us.
+			
+			To dispatch an action
+				
+				store.dispatch({ type: 'songs/addSong' });
+				
+			To see what state exists in the store
+				
+				store.getState();
+				
+			
+			Keys for the big object are set when the store is created.
+			Values for those keys are produced by the individual reducers.
+			
+			Slices:
+				
+				Slices automatically create reducers and action types.
+				
+				- Defines some initial state.
+					
+					1. Get this slices initial state property (songsSlice)
+					
+					const store = configureStore({
+						reducer: {
+							songs: songsSlice.reducer
+						}
+					});
+					
+					Redux store
+						
+						state 
+						{
+							songs: [   ]
+						}
+					
+				- Combines mini reducers into a big reducer.
+				
+					With useReducer we used to have:
+					
+						const ADD_SONG = 'add_song';
+						const REMOVE_SONG = 'remove_song';
+						
+						const reducer = (state, action) => {
+							switch (action.type) {
+								case ADD_SONG
+									//
+								case REMOVE_SONG:
+									//
+								default:
+									//
+							}
+						
+						}
+						
+						That is a lot of boilerplate code. With slices we do not need to write that.
+						We do not need to write the action types, the switch statements and so on..
+						
+						const songsSlice = createSlice({
+							name: "song",
+							initialState: [],
+							reducers: {
+								addSong(state, action) {
+									state.push(action.payload);
+								},
+								removeSong(state, action) {
+									
+								}
+							}
+						});
+						
+						We can view the reducers property as some mini reducers. Each of those are like case statements inside of larger switch statement.
+						
+							reducers object --> songsSlice --> combined reducer created by songsSlice
+							
+						The combined reduced gets loaded into the redux store.
+											  
+												  ---------------  
+													Redux Store
+												  ---------------  
+								Action  ----->	 dispatch function
+														|
+														v
+												  Combined Reducer
+														|  
+														v
+													  State
+													  
+													  
+						In our example, songsSlice has a property called reducers.
+						
+						Our store has on object called reducer and inside of it we have the propery reducer. 
+						
+						Big mega reducer
+							
+							songsSlice.reduce is like a big mega reducer, it wraps up all the individual reducing functions.
+						
+							const store = configureStore({
+								reducer: {
+									songs: songsSlice.reducer
+								}
+							});
+							
+							How does the mega reduce know which function to run?
+							
+								Pattern: 'song' + '/' + 'addSong' = 'song/addSong'. 
+								
+									If there is any action object with that type, the correspondent reducer is going to be executed.
+								
+								store.dispatch({
+									type: 'song/addSong',
+									payload: 'New Song!!!'
+								});
+						
+						State
+							
+							On the addSong reducer the state is not the big state object.
+							It is the piece of state managed by this reducer.
+							
+							
+							const songsSlice = createSlice({
+							
+								name: "song",
+								
+								initialState: [],
+
+								reducers: {
+									addSong(state, action) {
+										state.push(action.payload);
+									},
+									removeSong(state, action) {}
+								}
+							});
+						
+				- Creates a set of action creator functions.
+				
+					const songsSlice = createSlice({		
+						name: "song",												Action Creators Object
+						initialState: [],											-----------------------
+						reducers: {							---------				{
+							addSong(state, action) {				|					addSong(payload) {
+								state.push(action.payload);			|------------>			return {
+							},										|							type: 'songs/addSong',
+							removeSong(state, action) {} 	---------							payload: payload
+							}																};
+					});																	},
+																						removeSong(payload) {
+																							return {
+																								type: 'songs/removeSong',
+																								payload: payload
+																							};
+																						}
+																					}
+																					
+				The createSlice function is going to take a look at the reducers property and it's going to create an Action Creators object.
+				
+				When called, they return an action that we can dispatch.
+				
+				The most import thing is that it saves us from having to manually write out action objects.
+				
+				
+					import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+					const songsSlice = createSlice({
+					  name: "song",
+					  initialState: [],
+
+					  reducers: {
+						addSong(state, action) {
+						  state.push(action.payload);
+						},
+						removeSong(state, action) {}
+					  }
+					});
+
+					const store = configureStore({
+					  reducer: {
+						songs: songsSlice.reducer 	--> Combined reducer that is injected into the Redux Store
+					  }
+					});
+
+					console.log(songsSlice.actions); --> Console log to check action creators.
+					
+					console.log(songsSlice.actions.addSong());
+					
+					const startingState = store.getState();
+					console.log(JSON.stringify(startingState));
+
+					store.dispatch(
+					  songsSlice.actions.addSong('Some song!')
+					);
+
+					const finalState = store.getState();
+					console.log(JSON.stringify(finalState));
+			
+			
+			- Connecting React to Redux
+			------------------------------------------					------------------------------------------------------------
+			|	           Redux Store				 |		----->		|                  React Redux Provider					   |
+			------------------------------------------		|			------------------------------------------------------------
+			|										 |		|			|						   App                             |
+			|			Dispatch Function		     |		|			|						    |                              |
+			|					|					 |		|			|		----------------------------------------		   | 
+			|					v					 |		|			|		|		  							   |           |
+			|	 Reducer to manage a list of songs	 |	----			|		v									   v       	   |
+			|					|					 |					|	Songs Playlist							Movie Playlist |
+			|			    	v					 |					|	Needs the list of songs								   |
+			|		  		  State					 |					|	Needs to dispatch fn to change state                   |
+			------------------------------------------					------------------------------------------------------------
+			
+			Once per project:
+			
+				1. Export the store from whatever file it is created in.
+				2. Import the store into the root index.js file.
+				3. Import Provider from the react-redux library.
+				4. Wrap the App component with the Provider, pass the store to the Provider.
+				
+			
+				src/index.js
+			
+					import "bulma/css/bulma.css";
+					import { createRoot } from "react-dom/client";
+					import App from "./App";
+					import { store } from "./store"; 
+					import { Provider } from 'react-redux';
+
+					const rootElement = document.getElementById("root");
+					const root = createRoot(rootElement);
+
+					root.render(
+					  <Provider store={store}>
+						<App />
+					  </Provider>
+					);
+			
+				src/store/index.js
+			
+					import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+					const songsSlice = createSlice({
+					  name: "song",
+					  initialState: [],
+
+					  reducers: {
+						addSong(state, action) {
+						  state.push(action.payload);					----> Important !
+						},
+						removeSong(state, action) {}
+					  }
+					});
+
+					const store = configureStore({
+					  reducer: {
+						songs: songsSlice.reducer						----> Combined reducer
+					  }
+					});
+
+					export { store };									----> Important !
+					
+					export const  { addSong } = songsSlice.actions;		----> Important ! These are action creators that are created automatically
+				
+			Changing state (many times per project)
+			
+				Reducer functions in a slice can't see or change state that is being produced by another slice.
+				
+				1. Add a reducer to one of your slices that changes the state in some particular way.
+				2. Export the action creator that the slice automatically creates.
+				3. Find the component that you want to dispatch from.
+				4. Import the action creator function and useDispatch from react-redux.
+				5. Call the useDispatch hook to get access to the dispatch function.
+				6. When the user does something, call the action creator to get an action, then dispatch it.
+				
+				src/components/SongPlaylist.js
+				
+					import { useDispatch } from "react-redux";		----> Important !
+					import { createRandomSong } from "../data";
+					import { addSong } from "../store";				----> Important !
+
+					function SongPlaylist() {
+
+						const dispatch = useDispatch();				----> Important !
+
+						// To Do:
+						// Get list of songs
+						const songPlaylist = [];
+
+						const handleSongAdd = (song) => {
+							dispatch(addSong(song));				----> Important !
+						};
+				  
+						const handleSongRemove = (song) => {
+							// To Do:
+							// Remove song from list of songs
+						};
+
+						const renderedSongs = songPlaylist.map((song) => {
+							return (
+								<li key={song}>
+									{song}
+									<button
+										onClick={() => handleSongRemove(song)}
+										className="button is-danger"
+									>
+										X
+									</button>
+								</li>
+							);
+						});
+
+						return (
+							<div className="content">
+								<div className="table-header">
+									<h3 className="subtitle is-3">Song Playlist</h3>
+									<div className="buttons">
+										<button
+											onClick={() => handleSongAdd(createRandomSong())}
+											className="button is-link"
+										>
+											+ Add Song to Playlist
+										</button>
+									</div>
+								</div>
+								<ul>{renderedSongs}</ul>
+							</div>
+						);
+					}
+
+					export default SongPlaylist;
+			
+			Accessing State (many times per project)
+			
+				1. Find the component that needs to access some state.
+				2. Import the useSelector hook from react-redux.
+				3. Call the hook, passing in a selector function.
+				4. Use the state! Anytime state changes, the component will automatically rerender.
+				
+				Reminder:
+					
+					- Reducers in a slice only see their own part of the overall state object.
+					- In a reducer state means the state I'm in control of.
+					- Everywhere else, state means the whole state object in the store.
+					
+					For example:
+					
+						State
+						
+							{
+								songs: ['New Song!']
+							}
+							
+						Slice
+							
+							const songSlice = createSlice({
+								name: "song",
+								initialState: [],
+								reducers: {
+									addSong(state, action) {			---> state refers to the songs array.
+										state.push(action.payload);
+									},
+									removeSong(state, action) {			---> state refers to the songs array.
+										//
+									}
+								}
+							});
+							
+				Then
+				
+					src/components/SongPlaylist.js
+					
+						import { useDispatch, useSelector } from "react-redux";   	----> Important !
+						import { createRandomSong } from "../data";
+						import { addSong } from "../store";
+
+						function SongPlaylist() {
+
+						  const dispatch = useDispatch();
+
+						  const songPlaylist = useSelector((state) => {				----> Important !
+							// State is a reference to the whole state object
+							return state.songs;										----> Important !
+						  });
+
+						  const handleSongAdd = (song) => {
+							dispatch(addSong(song));
+						  };
+
+						  const handleSongRemove = (song) => {
+							// To Do:
+							// Remove song from list of songs
+						  };
+
+						  const renderedSongs = songPlaylist.map((song) => {
+							return (
+							  <li key={song}>
+								{song}
+								<button
+								  onClick={() => handleSongRemove(song)}
+								  className="button is-danger"
+								>
+								  X
+								</button>
+							  </li>
+							);
+						  });
+
+						  return (
+							<div className="content">
+							  <div className="table-header">
+								<h3 className="subtitle is-3">Song Playlist</h3>
+								<div className="buttons">
+								  <button
+									onClick={() => handleSongAdd(createRandomSong())}
+									className="button is-link"
+								  >
+									+ Add Song to Playlist
+								  </button>
+								</div>
+							  </div>
+							  <ul>{renderedSongs}</ul>
+							</div>
+						  );
+						}
+
+						export default SongPlaylist;
+
+				Remove content
+
+					src/store/index.js
+						
+						import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+						const songsSlice = createSlice({
+						  name: "song",
+						  initialState: [],
+
+						  reducers: {
+							addSong(state, action) {
+							  // State is not the big state object in the store.
+							  // It is the piece of state managed by this reducer.
+							  state.push(action.payload);
+							},
+							removeSong(state, action) {
+							  // action.payload === string, the song we want to remove
+							  const index = state.indexOf(action.payload);					---> Important !
+							  state.splice(index, 1);
+							}
+						  }
+						});
+
+						const store = configureStore({
+						  reducer: {
+							songs: songsSlice.reducer										---> Combined reducer
+						  }
+						});
+
+						export { store };
+						export const  { addSong, removeSong } = songsSlice.actions;			---> Important !	These are action creators that are created automatically
+						
+					src/components/SongPlaylist.js
+					
+						import { useDispatch, useSelector } from "react-redux";
+						import { createRandomSong } from "../data";
+						import { addSong, removeSong } from "../store";					---> Important !
+
+						function SongPlaylist() {
+
+						  const dispatch = useDispatch();								---> Important !
+
+						  const songPlaylist = useSelector((state) => {
+							// State is a reference to the whole state object
+							return state.songs;
+						  });
+
+						  const handleSongAdd = (song) => {
+							dispatch(addSong(song));
+						  };
+
+						  const handleSongRemove = (song) => {
+							dispatch(removeSong(song));									---> Important !
+						  };
+
+						  const renderedSongs = songPlaylist.map((song) => {
+							return (
+							  <li key={song}>
+								{song}
+								<button
+								  onClick={() => handleSongRemove(song)}
+								  className="button is-danger"
+								>
+								  X
+								</button>
+							  </li>
+							);
+						  });
+
+						  return (
+							<div className="content">
+							  <div className="table-header">
+								<h3 className="subtitle is-3">Song Playlist</h3>
+								<div className="buttons">
+								  <button
+									onClick={() => handleSongAdd(createRandomSong())}
+									className="button is-link"
+								  >
+									+ Add Song to Playlist
+								  </button>
+								</div>
+							  </div>
+							  <ul>{renderedSongs}</ul>
+							</div>
+						  );
+						}
+
+						export default SongPlaylist;
+
+				Reset State
+				
+					Remember the pattern: Here we have: song/addSong, song/removeSong
+					
+						Combined Songs Reducer: I only care about actions with types: song/addSong, song/removeSong
+					
+						Combined Movies Reducer: I only care about actions with types: movie/addMovie, movie/removeMovie, movie/reset
+						
+					When an action is dispatched, it is sent to every reducer in the store
+					
+						Action { type: 'movie/reset' }
+						
+					Up to this point, we have not really cared about this, because the combined reducers are configured to only care about particular action types.
+					
+					Our goal is to convince the combined songs reducer that it should also care about 'movie/reset'.
+					
+					We can do that by using extraReducers and using the builder object. With this approach we tell to the songsSlice to also care about 'movie/reset'.
+
+					src/App.js
+					
+						import "./styles.css";
+						import MoviePlaylist from "./components/MoviePlaylist";
+						import SongPlaylist from "./components/SongPlaylist";
+						import { useDispatch } from "react-redux";				---> Important!
+						import { reset } from "./store";						---> Important!
+
+						export default function App() {
+
+						  const dispatch = useDispatch();
+
+						  const handleResetClick = () => {
+							dispatch(reset());									---> Important! 
+						  };
+
+						  return (
+							<div className="container is-fluid">
+							  <button onClick={() => handleResetClick()} className="button is-danger">
+								Reset Both Playlists
+							  </button>
+							  <hr />
+							  <MoviePlaylist />
+							  <hr />
+							  <SongPlaylist />
+							</div>
+						  );
+						}
+						
+					src/store/index.js
+					
+						import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+						const songsSlice = createSlice({
+						  name: "song",
+						  initialState: [],
+						  reducers: {
+							addSong(state, action) {
+							  // State is not the big state object in the store.
+							  // It is the piece of state managed by this reducer.
+							  state.push(action.payload);
+							},
+							removeSong(state, action) {
+							  // action.payload === string, the song we want to remove
+							  const index = state.indexOf(action.payload);
+							  state.splice(index, 1);
+							}
+						  },
+						  extraReducers(builder) {												---> Important!
+							// First argument must be 'movie/reset' but we can replace the string with moviesSlice.actions.reset.toString()
+							builder.addCase(moviesSlice.actions.reset, (state, action) => {		---> Important! 
+							  return [];
+							});
+						  }
+						});
+
+						const moviesSlice = createSlice({
+						  name: "movie",
+						  initialState: [],
+						  reducers: {
+							addMovie(state, action) {
+							  state.push(action.payload);
+							},
+							removeMovie(state, action) {
+							  state.splice(state.indexOf(action.payload), 1);
+							},
+							reset(state, action) {											---> Important!
+							  return [];
+							}
+						  }
+						});
+
+						const store = configureStore({
+						  reducer: {
+							songs: songsSlice.reducer,
+							movies: moviesSlice.reducer
+						  }
+						});
+
+						export { store };
+						export const  { addSong, removeSong } = songsSlice.actions;
+						export const { addMovie, removeMovie, reset } = moviesSlice.actions;	---> Important! These are action creators that are created automatically
+					
+					In this case is much better to create a new standalone reset action and get both slices to watch for it.
+					
+						import { 
+							configureStore, 
+							createSlice, 
+							createAction 				---> Important!
+						} from "@reduxjs/toolkit";
+
+						export const reset = createAction('app/reset');		---> Important!
+
+						const songsSlice = createSlice({
+							name: "song",
+							initialState: [],
+							reducers: {
+								addSong(state, action) {
+									// State is not the big state object in the store.
+									// It is the piece of state managed by this reducer.
+									state.push(action.payload);
+								},
+								removeSong(state, action) {
+									// action.payload === string, the song we want to remove
+									const index = state.indexOf(action.payload);
+									state.splice(index, 1);
+								}
+							},
+							extraReducers(builder) {							---> Important!
+								builder.addCase(reset, (state, action) => {		---> Important!
+									return [];									---> Important!
+								});
+							}
+						});
+
+						const moviesSlice = createSlice({
+							name: "movie",
+							initialState: [],
+							reducers: {
+								addMovie(state, action) {
+									state.push(action.payload);
+								},
+								removeMovie(state, action) {
+									state.splice(state.indexOf(action.payload), 1);
+								}
+							},
+							extraReducers(builder) {							---> Important!
+								builder.addCase(reset, (state, action) => {		---> Important!
+									return [];									---> Important!
+								});
+							}
+						});
+
+						const store = configureStore({
+							reducer: {
+								songs: songsSlice.reducer,
+								movies: moviesSlice.reducer
+							}
+						});
+
+						export { store };
+						export const  { addSong, removeSong } = songsSlice.actions;
+						export const { addMovie, removeMovie } = moviesSlice.actions;
+						
+			- Redux Project Structure
+	
+				Organize by File Function (what's the goal of the file)
+				
+					src/
+						components/						---> All components go in here.
+							MovieList.js
+							SongsList.js
+						store/
+							actions/
+								actions.js
+							slices/						---> All slices go in here.
+								moviesSlice.js
+								songsSlice.js
+							index.js					---> Create and export the Redux store here.
+						App.js
+						index.js
+						
+				Organize by Feature
+				
+					src/
+						movies/							---> Everything related to the movies feature goes here
+							MovieList.js
+							moviesSlice.js
+						songs/							---> Everything related to the songs feature goes here
+							SongsList.js
+							songsSlice.js
+						store/
+							actions.js
+							index.js
+						App.js
+						index.js
+						
+				
+		
+			- Redux Store Design
+				
+				1. Identify what state exists in the app.
+				2. Identify how that state changes over time.
+				3. Group together common pieces of state.
+				4. Create a slice for each group.
+				
+			- Reminder on Application Level State and Component Level State
+					
+				Application Level State:
+						
+					State that many components will care about. Best stored in Redux.
+						
+				Component Level State: 
+					
+					State that only one component will care about. Best stored in a component.
+				
+			-Fetching Techniques (Media project)
+			
+				Async Thunk Functions
+				
+					1. Create a new file for your thunk. Name it after the purpose of the request.
+					2. Create the thunk. Give it a base type that describes the purpose of the request.
+					3. In the thunk, make the request, return the data that you want to use in the reducer.
+					4. In the slice, add extraReducers, watching for the action types made by the thunk.
+				
+					An Action has a type and a value of pending, fulfilled and rejected.
+				
+					When creating a thunk like const fetchUsers = createAsyncThunk('users/fetch') we have the following action:
+					
+						type | users/fetch/pending
+					
+						type | users/fetch/fulfilled
+					
+						type | users/fetch/rejected
+					
+					- Fine Grained Loading state
+			
+						Maintaining separate state variables for each kind of request.
+				
+						Strategy 1: Move all loading + error state to components
+					
+					
+											App									Redux Store
+											 |
+										 UsersList								{
+							-------------------------------------					users: {					
+							isLoadingUsers		loadingUsersError						data: [											
+							is creatingUser		creatingUseError							{ id: 1, name: 'Myra' }
+							-------------------------------------						]																	
+											 |										}
+										UserListItem							}
+							-------------------------------------
+										isDeletingUser
+									   deletingUseError
+					
+					
+					
+							Wait ... state in components when using Redux?
+						
+							Yes, you can still have state in components when using Redux.
+						
+							In some cases, you absolutely will want to !
+					
+							If we are working with a small application then this option is better.
+						
+						
+						Strategy 2: Track requests in the store, allow components to remember requests they create. (Harder than option 1)
+				
+									App						Redux Store
+									 |						{
+								 UsersList						users: {
+								-----------							data: [
+								 requestId								{ id: 1, name: 'Myra' }
+																	]
+																},
+																requests: [
+																	{ id: requestId, status: 'rejected' }
+																]
+															}
+												
+												
+							Example: (Media Project, UserList.js)
+					
+								useEffect(() => {
+									dispatch(fetchUsers())
+								}, [dispatch]);
+								
+								The dispatch function returns a Promise and it has a request id. We can review it by using console.log
+								
+								useEffect(() => {
+									console.log(dispatch(fetchUsers()))
+								}, [dispatch]);
+						
+						
+							In general, this approach is better if we are working with a larger applications.
+						
+						
+					- Local fine grained
+			
+						On real projects the recommendation is to use Redux Toolkit Query, which manages this loading state for you.
+					
+						We are going to partially implement option 1 anyways.
+					
+					
+						This might be a useful technique in some corner cases.
+					
+						Tedious to implement, so we will create a custom hook. More hook practice.
+					
+						Useful example to better understand async thunks.
+					
+						You might have to work on a project that uses Option 1.
+							
+							
+						When we call dispatch along with a thunk we get a Promise.
+					
+						The promise's .then() gets called whether the request succeeds or fails.
+					
+						Argument to the .then() is the fulfilled or rejected action object.
+					
+						We need to use the unwrap method so can handle a Promise as usual.
+					
+						Example:
+					
+							useEffect(() => {
+								setIsLoadingUsers(true);
+								dispatch(fetchUsers()).unwrap()
+									.then(() => {
+									//setIsLoadingUsers(false);
+								})
+								.catch((error) => {
+									setLoadingUsersError(error);
+									//setIsLoadingUsers(false);
+								})
+								.finally(() => {
+									setIsLoadingUsers(false);
+								})
+							}, [dispatch]);
+					
+				Redux Toolkit Query
+		
+					- Do not make requests in reducers.
+				
+					- Reducers should always be 100% synchronous
+				
+					- Reducers should only operate on their arguments (no outside variables)
+					
+					- Handles tons of earch corner cases! Almost all aspects of making a request.
+					
+					- Fine grained loading state.
+					
+					- Fine grained error state.
+					
+					- Data catching and refetching.
+					
+					Creating a RTK Query API
+					
+						1. Identify a group of related requests that your app needs to make.
+						2. Make a new file that will create the API.
+						3. The API needs to store a ton of state related to data, request status, errors. Add a reducerPath.
+						4. The API needs to know how and where to send requests. Add a baseQuery.
+						5. Add enpoints, one for each kind of request you want to make. Reqs that read data are queries, write data are mutations.
+						6. Export all of the automatically generated hooks.
+						7. Connect to the API to the store. Reducer, middleware, and listeners.
+						8. Export the hooks from the store/index.js file.
+						9. Use the generated hooks in a component.
+					
+					Introduction
+						
+						- @reduxjs/toolkit/query gives you a version of createApi that does not create custom hooks.
+						
+						- @reduxjs/toolkit/query/react gives you a version of createApi that does create custom hooks.
+						
+						import { createApi } from '@reduxjs/toolkit/query/react'; 
+						
+						const albumsApi = createApi({
+							// ton of config
+						});
+						
+						- We do not really see or interact with slice nor thunks.
+						
+						- We want hooks !!!
+						
+						Endpoints - How to create them?
+						
+							What's the goal?								| I want to fetch a list of albums 		| I want to create an album | I want to remove an album |
+																			|										|							|							|
+							Give a simplified name							| fetchAlbums							| createAlbum				| removeAlbum				|
+																			|										|							|							|
+							Is this a query or a mutation?					| query									| mutation					| mutation					|
+																			|										|							|							|
+							What's the path for this request, 				| /albums								| /albums					| /albums/userId			|
+							relative to the base url?						|										|							|							|
+																			|										|							|							|
+							What's the query string for this request?		| ?userId = userId						| -							| -							|
+																			|										|							|							|
+							What's the method for this request?				| GET									| POST						| DELETE					|
+																			|										|							|							|
+							What's the body for this request?				| -										| { title, userId}			| -							|
+						
+						Blueprint
+						
+							Hooks:
+								
+								useFetchAlbumsQuery
+								
+								useAddAlbumMutation
+								
+								useRemoveAlbumMutation
+							
+							import { createApi } from '@reduxjs/toolkit/query/react';
+						
+							const albumsApi = createApi({
+								endpoints(builder) {
+									return {
+										fetchAlbums: /* Instructions on how to make a req to fetch albums */		--> useFetchAlbumsQuery
+										
+										addAlbum: /* Instructions on how to make a req to add an album */			--> useAddAlbumMutation
+										
+										removeAlbum: /* Instructions on how to make a req to remove an album */		--> useRemoveAlbumMutation
+									}
+								
+								}
+							});
+							
+						Usage
+							
+							function AlbumList({ user }) {
+								const { data, error, isLoading } = useGetAlbumsQuery();
+								// do something
+							}
+								
+						What is happening in the store?										Store
+																					----------------------
+																							State
+																					{
+																						users: { 
+																							isLoading: false,
+																							error: null,
+																							data: []
+																					},
+							reducerPath: Property on the big state    ------------->	albums: {
+							object where all of the API state								queries: { /* stuff */ },			|
+							should be maintained. It creates a slice.						mutations: { /* stuff */ },			|
+																							provided: { /* stuff */ },			|------> tons of state added by the api to handle requests
+																							subscriptions: { /* stuff */ },		|
+																							queries: { /* stuff */ }			|
+																						}
+																					}
+				
+					When creating an api and by setting fetchAlbums we are automatically creating the useFetchAlbumsQuery hook.
+					When called in a component, will immediately start fetching data.
+					
+					In the component:
+					
+						const { data, error, isLoading } = useFetchAlbumsQuery(user);
+						
+						We are destructuring from the results object that contains:
+						
+							- data: Data returned from the server.
+							- error: Error, if one occurred
+							- isLoading: True if currently loading data for the first time only.
+							- isFetching: True if currently loading data.
+							- refetch: Function tell the query to rerun.
+							
+					Difference between query and mutation:
+						
+						- 	Queries run immediately when the component is displayed on the screen. (by default).
+							
+								const {data, error, isLoading} = useFetchAlbumsQuery(user);
+								
+						- 	Mutations give you a function to run when you want to change some data.
+							The second element is an object that has some properties like isLoading, isError, etc
+							
+								const [addAlbum, results] = useAddAlbumMutation();
+								
+					Difference between isLoading and isFetching
+					
+						isLoading is going to be set to true whenever we are in the process of making the request.
+						
+								
+					Options for refetching data (Add album feature)
+					
+						1. Take the newly created album from the response and add it into our list of albums.
+						
+							Pros:
+							
+								- Only one request.
+								
+							Cons:
+								
+								- All code becomes more complicated.
+								- Response might not contain the needed data.
+								
+						2. After creating a new album, make a second request to get all albums.
+							
+							Pros:
+							
+								- Easier to picture data flow in the app.
+								
+							Cons:
+								
+								- Two requests.
+						
+						We are going to use option 2.
+						
+							- Automatic data refetching is implemented using the tag system.
+							
+							- Tags are a lot easier if you first understand how RTKQ tracks requests.
+							
+							- Quick aside on RTKQ internals...
+						
+						Tag System
+							
+							Understanding the issue:
+							
+								In the store:
+								
+									Endpoint		Argument						Result
+									
+									fetchAlbums		{ id: 1, name: 'Myra' }			[Album1, Album2]
+									
+								When we add an album for this user using the addAlbum mutation we end up with an out of sync issue
+								
+								In the server:
+									
+									Album for Myra: [Album1, Album2, Album3]
+									
+							Tag system is used to mark certain queries as being out of date (like fetchAlbums) after specific mutations are executed.
+							
+							In our example we want to set a rule that says something like "anytime we call this mutation automatically go up and refetch the list of albums"
+							
+								
+								Endpoint		Argument						Result					Tags
+									
+								fetchAlbums		{ id: 1, name: 'Myra' }			[Album1, Album2]		'Album'
+								
+							At some point in time we are going to run the addAlbum mutation to add a new album for the user. In addition to that
+							we are going to going to update the configuration for addAlbum mutation. When we run this mutation we want to find
+							all the queries that were ever made that has a tag of Album in order to mark it as stale or out of date.
+							
+							When that happens we wiped out all the data (the data that we get from fetchAlbums) and run the same request to get
+							the updated list of items.
+										
+								import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+								import { faker } from "@faker-js/faker";
+							
+								const albumsApi = createApi({
+									reducerPath: 'albums',
+									baseQuery: fetchBaseQuery({
+										baseUrl: 'http://localhost:3005'
+									}),
+									endpoints(builder) {
+										return {
+											addAlbum: builder.mutation({
+												invalidatesTags: ['Album'],							---> Important
+												query: (user) => {
+													return {
+														url: '/albums',
+														method: 'POST',
+														body: {
+															userId: user.id,
+															title: faker.commerce.productName()
+														} 
+													};
+												}
+											}),
+											fetchAlbums: builder.query({
+												providesTags: ['Album'],							---> Important
+												query: (user) => {
+													return {
+														url: '/albums',
+														params: {
+															userId: user.id
+														},
+														method: 'GET'
+													};
+												}
+											})
+										};
+									}
+								});
+
+								export const { useFetchAlbumsQuery, useAddAlbumMutation } = albumsApi;
+								export { albumsApi };
+								
+							Fine-Grained tag validation
+							
+								The previous code works fine but there is one issue. If another user is expanded (userId = 3) and we are trying to 
+								add an album for Myra (userId = 1) we will get another get request to refetch data for userId = 3.
+								
+								We do not want this since we are adding an album only for Myra, we want to refetch data only for Myra.
+								
+								Basically, when we have three expanded panels we are fetching data for three different users.
+								
+								In the store:
+								
+									Endpoint		Argument						Result				Tags
+									
+									fetchAlbums		{ id: 1, name: 'Myra' }			[Album1, Album2]	'Album'
+									fetchAlbums		{ id: 2, name: 'Elsie' }		[Album1, Album2]	'Album'
+									fetchAlbums		{ id: 3, name: 'Harold' }		[Album1, Album2]	'Album'
+									
+								Again we follow the process of invalidating the previous queries, then we go to the server but only Myra has a new album.
+								
+								We need to fine tuned our query for the scenario where addAlbum mutation is called for a very specific user so we can mark that
+								specific record as out of sync.
+								
+								Tags can be strings or an object with an id/type
+								
+									Endpoint		Argument						Result				Tags
+									
+									fetchAlbums		{ id: 1, name: 'Myra' }			[Album1, Album2]	{ type: 'Album', id: 1 }
+									fetchAlbums		{ id: 2, name: 'Elsie' }		[Album1, Album2]	{ type: 'Album', id: 2 }
+									fetchAlbums		{ id: 3, name: 'Harold' }		[Album1, Album2]	{ type: 'Album', id: 3 }
+									
+								Then, we want to invalidate the tag of the user that we are creating the album for. 
+								
+								We want to calculate the tags on the fly.
+								
+								In the query:
+								
+									providesTags: (result, error, user) => {
+										return [{ type: 'Album', id: user.id }]
+									}
+									
+								The user param is called arg, in our context is a user. Is the argument that you pass to the hook (useFetchAlbumsQuery(user))
+									
+								In the mutation:
+								
+									invalidateTags: (result, error, user) => {
+										return [{ type: 'Album', id: user.id }];
+									}
+								
+								The user param is what we passed to the mutation:
+								
+									const [addAlbum, results] = useAddAlbumMutation();
+									
+									const handleAddAlbum = () => {
+										addAlbum(user); ------> this 
+									}
+								
+								
+								import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+								import { faker } from "@faker-js/faker";
+
+								const albumsApi = createApi({
+									reducerPath: 'albums',
+									baseQuery: fetchBaseQuery({
+										baseUrl: 'http://localhost:3005'
+									}),
+									endpoints(builder) {
+										return {
+											addAlbum: builder.mutation({
+												invalidatesTags: (result, error, user) => {
+													return [{ type: 'Album', id: user.id }];
+												},
+												query: (user) => {
+													return {
+														url: '/albums',
+														method: 'POST',
+														body: {
+															userId: user.id,
+															title: faker.commerce.productName()
+														} 
+													};
+												}
+											}),
+											fetchAlbums: builder.query({
+												providesTags: (result, error, user) => {
+													return [{ type: 'Album', id: user.id }];
+												},
+												query: (user) => {
+													return {
+														url: '/albums',
+														params: {
+															userId: user.id
+														},
+														method: 'GET'
+													};
+												}
+											})
+										};
+									}
+								});
+
+								export const { useFetchAlbumsQuery, useAddAlbumMutation } = albumsApi;
+								export { albumsApi };
+								
+								
+								The result of the above code is going to be one POST request to create the album for the user and
+								one GET request to refetch the user albums on the fly.
+								
+								In our scenarios we are using the user argument but it does not mean that the third argument is always used.
+								We might want to invalidateTags based upon the result argument or based upon an error.
+							
+								When removing an album for a user we do not have direct access to the user object.
+								
+								Easy solution: 
+									
+									- This works because the album has the user id. 
+									- How can we resolve this if the user id is not around?
+									
+									
+								import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+								import { faker } from "@faker-js/faker";
+
+								const albumsApi = createApi({
+									reducerPath: 'albums',
+									baseQuery: fetchBaseQuery({
+										baseUrl: 'http://localhost:3005'
+									}),
+									endpoints(builder) {
+										return {
+											removeAlbum: builder.mutation({
+												invalidatesTags: (result, error, album) => {
+													return [{ type: 'Album', id: album.userId }];  -----> important change !
+												},
+												query: (album) => {
+													return {
+														url: `/albums/${album.id}`,
+														method: 'DELETE'
+													};
+												}
+											}),
+											addAlbum: builder.mutation({
+												invalidatesTags: (result, error, user) => {
+													return [{ type: 'Album', id: user.id }];
+												},
+												query: (user) => {
+													return {
+														url: '/albums',
+														method: 'POST',
+														body: {
+															userId: user.id,
+															title: faker.commerce.productName()
+														} 
+													};
+												}
+											}),
+											fetchAlbums: builder.query({
+												providesTags: (result, error, user) => {
+													return [{ type: 'Album', id: user.id }];
+												},
+												query: (user) => {
+													return {
+														url: '/albums',
+														params: {
+															userId: user.id
+														},
+														method: 'GET'
+													};
+												}
+											})
+										};
+									}
+								});
+								
+								Clever tag implementation:
+								
+									We can assign multiple tags for a single endpoint.
+									
+									Endpoint		Argument						Result				Tags
+									
+									fetchAlbums		{ id: 1, name: 'Myra' }			[Album1, Album2]	{ type: 'Album', id: album.id }, { type: 'UsersAlbum', id: user.id }
+									fetchAlbums		{ id: 2, name: 'Elsie' }		[Album1, Album2]	{ type: 'Album', id: album.id }, { type: 'UsersAlbum', id: user.id }
+									fetchAlbums		{ id: 3, name: 'Harold' }		[Album1, Album2]	{ type: 'Album', id: album.id }, { type: 'UsersAlbum', id: user.id }
+									
+									
+									The above structure is a much better design. RemoveAlbum only knows about album id and Add album knows about the user id.
+									
+										RemoveAlbum Mutation						addAlbum Mutation
+										----------------------------				----------------------------
+										Remove album with id 30						Add album for user id 1
+										
+										Invalidates tags							Invalidate tags
+										----------------------------				----------------------------
+										{ type: 'Albums', id: 30 }					{ type: 'UsersAlbums', id: 1 }
+										
+										
+										
+									import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+									import { faker } from "@faker-js/faker";
+
+									/* Not recommended for production, dev and test only */
+									const pause = (duration) => {
+										return new Promise((resolve) => {
+											setTimeout(resolve, duration);
+										});
+									};
+
+									const albumsApi = createApi({
+										reducerPath: 'albums',
+										baseQuery: fetchBaseQuery({
+											baseUrl: 'http://localhost:3005',
+											/* 
+												RTKQ is going to use the fetch that is built into the the browser to make requests.
+												In some cases we want to overwrite the fetch function therefore, we have fetchFn.
+											*/
+											fetchFn: async (...args) => {
+												await pause(1000); 
+												return fetch(...args); 
+											}
+										}),
+										endpoints(builder) {
+											return {
+												removeAlbum: builder.mutation({
+													invalidatesTags: (result, error, album) => {
+														return [{ type: 'Album', id: album.id }];
+													},
+													query: (album) => {
+														return {
+															url: `/albums/${album.id}`,
+															method: 'DELETE'
+														};
+													}
+												}),
+												addAlbum: builder.mutation({
+													invalidatesTags: (result, error, user) => {
+														return [{ type: 'UsersAlbums', id: user.id }];
+													},
+													query: (user) => {
+														return {
+															url: '/albums',
+															method: 'POST',
+															body: {
+																userId: user.id,
+																title: faker.commerce.productName()
+															} 
+														};
+													}
+												}),
+												fetchAlbums: builder.query({
+													// result is the data that we fetch from the backend server
+													providesTags: (result, error, user) => {
+														const tags = result.map(album => {
+															return { type: 'Album', id: album.id }
+														});
+														tags.push({ type: 'UsersAlbums', id: user.id });
+														return tags;
+													},
+													query: (user) => {
+														return {
+															url: '/albums',
+															params: {
+																userId: user.id
+															},
+															method: 'GET'
+														};
+													}
+												})
+											};
+										}
+									});
+
+									export const { useFetchAlbumsQuery, useAddAlbumMutation, useRemoveAlbumMutation } = albumsApi;
+									export { albumsApi };
+									
+									Invalidate tags when removing or adding a photo:
+									
+										RemovePhoto Mutation						addPhoto Mutation
+										----------------------------				----------------------------
+										Remove photo with id 30						Add photo to album id 10
+										
+										Invalidates tags							Invalidate tags
+										----------------------------				----------------------------
+										{ type: 'Photo', id: 30 }					{ type: 'AlbumsPhotos', id: 10 }
+										
+	- Typescript
+		
+		- Helps you catch errors during development.
+		- Helps provide documentation for your components.
+		- Compiles to plain Javascript.
+		- Does not improve performance.
+		
+		Type Annotations
+		
+			Type annotations help TS understand the data flowing through our app.
+			There are many places where we can add in annotations.
+			
+			Basic Types:
+			
+				const color: string = 'string';
+				const isRed: boolean = color === 'red';
+				const age: number = 25;
+				const colors: string[] = ['red', 'green', 'blue'];
+				const areColorsRed: boolean[] = [true, false, false];
+				const ages: number[] = [10, 20,30];
+				
+			Function Types:
+			
+				function add(a: number, b: number): number {
+					return a + b;
+				}
+
+				function printColors(colors: string[]) {
+					console.log(colors);
+				}
+
+				printColors(['red', 'gray', 'green']);
+
+				function printAge(age: number) {
+					console.log(age);
+				}
+
+				printAge(123);
+				
+			Type inference
+			
+				Typescript is smart since it can guess the types of your variables.
+				
+					const hours = 10;
+					
+					const ocean = 'Pacific';
+					
+					function getName() {
+						return 'Me'
+					}
+					
+					
+					function add(a: number, b: number): number {
+						return a + b;
+					}
+					
+					function add(a: number, b: number) {
+						return a + b;
+					}
+					
+					const sum = add(1, 5);
+					
+			Describing objects with Interfaces
+			
+				Option 1:
+				
+					function formatCar(car: {year: number, model: string, make: string}) {
+						return `Year: ${car.year}, model: ${car.model}, make: ${car.make}`;
+					}
+
+					formatCar({
+						year: 2015,
+						make: 'Ford',
+						model: 'Mustang'
+					});
+					
+				Option 2:
+					
+					interface Car {
+						year: number,
+						make: string,
+						model: string
+					}
+
+					function formatCar(car: Car) {
+						return `Year: ${car.year}, model: ${car.model}, make: ${car.make}`;
+					}
+
+					formatCar({
+						year: 2015,
+						make: 'Ford',
+						model: 'Mustang'
+					});
+					
+			Function Types:
+			
+				interface Car {
+					model: string;
+					year: number;
+					setYear: (nextYear: number) => void;
+					setModel: (nextModel: string) => void;
+					getDescription: () => string;
+				}
+
+				const mustang: Car = {
+					model: 'Mustang',
+					year: 2015,
+					setYear(nextYear: number) {
+						this.year = nextYear;
+					},
+					setModel(nextModel: string) {
+						this.model = nextModel;
+					},
+					getDescription() {
+						return `Year: ${this.year}, Model: ${this.model}`;
+					}
+				};
+
+				mustang.setModel("M-111");
+				
+			Function types in Props Interfaces
+			
+				import React from 'react';
+
+				interface ColorPickerProps {
+					colors: string[];
+					handleColorSelect: (color: string) => void;
+				}
+
+				function ColorPicker({ colors, handleColorSelect }: ColorPickerProps) {
+					const renderedColors = colors.map(color => {
+						return <button key={color} onClick={() => handleColorSelect(color)}>
+							{color}
+						</button>
+					});
+					return <div>{renderedColors}</div>
+				}
+
+				<ColorPicker 
+					colors={['red', 'green', 'blue']} 
+					handleColorSelect={(color: string) => console.log(color)}
+				/>
+				
+			Extending an Interfaces
+			
+			
+				Initial code:
+			
+					import React from 'react';
+
+					interface ButtonProps {
+						label: string;
+						onClick: () => void;
+					}
+
+					interface IconButtonProps {
+						label: string;
+						onClick: () => void;
+						icon: string;
+					}
+
+					function Button({ label, onClick }: ButtonProps) {
+						return <button onClick={() => onClick()}>{label}</button>
+					}
+
+					function IconButton({ label, onClick, icon }: IconButtonProps) {
+						return <button onClick={() => onClick()}>{icon} {label}</button>
+					}
+					
+				Refactor:
+				
+					import React from 'react';
+
+					interface ButtonProps {
+						label: string;
+						onClick: () => void;
+					}
+
+					interface IconButtonProps extends ButtonProps {
+						icon: string;
+					}
+
+					function Button({ label, onClick }: ButtonProps) {
+						return <button onClick={() => onClick()}>{label}</button>
+					}
+
+					function IconButton({ label, onClick, icon }: IconButtonProps) {
+						return <button onClick={() => onClick()}>{icon} {label}</button>
+					}
+					
+			Type Unions
+			
+				In real projects we do not write functions like these:
+			
+					function printNumber(value: number) {
+					}
+				
+					function printString(value: string) {
+					}
+					
+				We probably will code something like this:
+					
+					function print(value: OneOfSeveralDifferentTypes) {}
+					
+				Type unions combine several other types
+					
+					function logOutput(value: string | number | string[] | Image) {
+					}
+				
+				Type Narrowing with typeof
+				
+					typeof 	"text"		->	'string'
+					typeof 	123			-> 	'number'
+					typeof	true		->	'boolean'
+					typeof undefined	->	'undefined'
+					typeof {}			->	'object'
+					typeof () => {}		->	'function'
+					Array.isArray([])	->	true
+					
+					interface Image {
+						src: string;
+					}
+
+					function logOutput(value: string | number | string[] | Image) { ----> Type Union separated by | 
+						if (typeof value === 'string') {			
+							console.log(value.toUpperCase());
+						}
+						if (typeof value === 'number') {       	 ----> Type Guard
+							console.log(Math.round(value));		
+						}
+						if (Array.isArray(value)) {
+							console.log(value.join(''));
+						}
+						if (typeof value === 'object' && !Array.isArray(value)) {
+							console.log(value.src);
+						}
+					}
+
+					logOutput("hi there");
+					logOutput(123);
+					logOutput(['hi', 'there']);
+					logOutput({ src: 'img.jpg' });
+					
+				Type Predicates
+					
+					It's a function that will narrow down a type for you.
+					
+						interface Image {
+							src: string;
+						}
+
+						interface User {
+							username: string;
+						}
+
+						function logOutput(value: User | Image) {
+							if ('username' in value) {
+								console.log(value.username);
+							}
+							if ('src' in value) {
+								console.log(value.src);
+							}
+						}
+
+						logOutput({ username: 'ossant' });
+						logOutput({ src: 'img.jpg' });
+					
+					Update:
+						
+						interface Image {
+							src: string;
+						}
+
+						interface User {
+							username: string;
+						}
+
+						function isUser(value: Image | User): value is User { ---> Type Predicate
+							return 'username' in value;
+						}
+
+						function logOutput(value: User | Image) {
+							if (isUser(value)) {
+								console.log(value.username);
+							} else {
+								console.log(value.src);
+							}
+						}
+
+						logOutput({ username: 'ossant' });
+						logOutput({ src: 'img.jpg' });
+						
+						
+				Optional properties
+				
+					Brand new user
+						
+						const user = {
+							id: 'abc',
+							username: 'new user'
+						};
+						
+					User who has signed up and created a profile
+					
+						const user = {
+							id: 'abc',
+							username: 'new user',
+							profile: {
+								likes: ['cats']
+							}
+						};
+						
+					Question mark (?) means that the User object might have a profile or not.
+					
+						interface UserProfile {
+							likes: string[];
+						}
+
+						interface User {
+							id: string;
+							username: string;
+							profile?: UserProfile;
+
+						}
+
+						const user: User = {
+							id: 'abc',
+							username: 'me',
+							profile: {
+								likes: ['cats']
+
+							}
+						};
+
+						// if statement is working as a type guard
+						if (user.profile) {
+							user.profile.likes;
+						}
+
+						/* 
+							If user.profile exists and is defined then go ahead and access likes.
+						*/
+						user.profile?.likes;
+
+						/*
+							message argument is optional
+						*/
+						function logValue(value: string, message?: string) {
+							if (message) {
+								console.log(message, value);
+							} else {
+								console.log(value);
+							}
+						}
+
+						logValue("test");
+						logValue("test", "message");
+						
+				Any and Unknown
+					
+					Any: 
+						
+						- Special type that tells Typescript to ignore type checking around this variable.
+						
+						- Try to avoid using in your own code!
+						
+						- You can use an as type assertion to forcibly tell Typescript what an any variable type is.
+						
+							interface Book {
+								title: string;
+							}
+
+							async function fetchBook() {
+								const res = await fetch('/book');
+								const data = await res.json();
+								return data as Book; // this is a type assertion
+							}
+
+							async function run() {
+								const book = await fetchBook();
+							}
+							
+						
+					Unknown:
+					
+						- Special type that tells Typescript this variable can be anything.
+						
+						- We have to do aggresive type narrowing before assuming what an unknown variable's real type is.
+						
+							interface Book {
+								title: string;
+							}
+
+							async function fetchBook(): Promise<Book> {
+								
+								const res = await fetch('/book');
+								
+								const data: unknown = await res.json();
+								
+								if (data && typeof data === 'object' && 'title' in data && typeof data.title === 'string') {
+									return data as Book;
+								}
+								throw new Error('Expected to get a book, but did not');
+							}
+
+							async function run() {
+								const book = await fetchBook();
+							}
+				
+				Type alias
+					
+					Type alias can be used interchangeably with interfaces almost in all cases.
+					
+					We want to use an interface when we are trying to describe an object.
+					
+						interface Image {
+							src: string;
+						}
+						
+					We are going to use interfaces anytime we want to extend one type with another
+					
+					Type alias cannot be extended.
+					
+					We are going to use Type alias very often when we need to compute a new type.
+					
+					
+						type Image = {
+							src: string;
+						}
+
+						type LoggableValue = string | number | string[] | Image;
+
+
+						function logValue(value: LoggableValue) {
+
+						}
+				
+				Generics
+					
+					Makes it easier to write functions, interfaces and more that work with multiple different types.
+					
+					Example:
+					
+						function wrapInArray(value: string): string[] {
+							return [value];
+						}
+
+						const result = wrapInArray('test');
+						const result2 = wrapInArray(10);
+												
+					How to fix?
+					
+						Type Union
+							
+							function wrapInArray(value: string | number): (string | number)[]  {
+								return [value];
+							}
+
+							const result = wrapInArray('test');
+							const result2 = wrapInArray(10);
+							
+						Creating another function
+							
+							function wrapInArray(value: string): string[]  {
+								return [value];
+							}
+
+							function wrapNumberInArray(value: number): number[]  {
+								return [value];
+							}
+
+							const result = wrapInArray('test');
+							const result2 = wrapNumberInArray(10);
+							
+						Generic function
+						
+							wrapInArray<TypeToWrap>(value);
+							
+							function wrapInArray<TypeToWrap>(value: TypeToWrap): TypeToWrap[] {
+								return [value]
+							}
+															|
+															|
+															V
+							
+							/* TypeToWrap can be replaced by T */
+							function wrapInArray<TypeToWrap>(value: TypeToWrap): TypeToWrap[]  {
+								return [value];
+							}
+
+							const result = wrapInArray<string>('test');
+
+							const result2 = wrapInArray<number>(10);
+							
+						More on function Generics
+						
+							function toRecord<TypeOfId>(id: TypeOfId, value: string) {
+								return {
+									id,
+									value
+								};
+							}
+
+							const result = toRecord<number>(123, 'osantamaria@gmail.com');
+
+							const result2 = toRecord<string>('ea01', 'myemail@gmail.com');
+							
+						Multiiple Generic Types
+							
+							function toRecord<TypeOfId, TypeOfValue>(id: TypeOfId, value: TypeOfValue) {
+								return {
+									id,
+									value
+								};
+							}
+
+							const result = toRecord<number, string>(123, 'osantamaria@gmail.com');
+
+							const result2 = toRecord<string, number[]>('ea01', [1, 5, 6]);
+							
+							
+							-- The order in which I pass in the generic types do not have to match the order of arguments in the function definition
+							
+							function toRecord<TypeOfValue, TypeOfId>(id: TypeOfId, value: TypeOfValue) {
+								return {
+									id,
+									value
+								};
+							}
+
+							const result = toRecord<string, number>(123, 'osantamaria@gmail.com');
+
+							const result2 = toRecord<number[], string>('ea01', [1, 5, 6]);
+							
+							- Use abbreviations
+							
+								function toRecord<T, V>(id: T, value: V) {
+									return {
+										id,
+										value
+									};
+								}
+						
+						More generic examples
+						
+							function randomElement<T>(arr: T[]) {
+								return arr[Math.floor(Math.random() * arr.length)];
+							}
+
+							const result = randomElement<number>([1,2,3]);
+
+							const result2 = randomElement<string>(['a', 'b', 'c']);
+							
+						Generics with Fetch
+						
+							Common case:
+						
+								interface User {
+									username: string;
+								}
+
+								interface Message {
+									content: string;
+								}
+
+								interface Image {
+									url: string;
+								}
+
+								async function fetchUser() {
+									const res = await fetch('/users');
+									const json = await res.json();
+									return json as User; // type assertion
+								}
+								
+								async function fetchMessage() {
+									const res = await fetch('/messages');
+									const json = await res.json();
+									return json as Message; // type assertion
+								}
+								
+								const run = async () => {
+									const user = await fetchUser();
+									const message = await fetchMessage();
+								};
+								
+							Refactor
+							
+								interface User {
+									username: string;
+								}
+
+								interface Message {
+									content: string;
+								}
+
+								interface Image {
+									url: string;
+								}
+
+								async function fetchData<T>(path: string): Promise<T> {
+									const res = await fetch(path);
+									const json = await res.json();
+									return json as T;
+								}
+
+								const run = async () => {
+									const user = await fetchData<User>('/users');
+									const message = await fetchData<Message>('/messages');
+									const image = await fetchData<Image>('/images');
+								};
+								
+						Generic type inference		
+							
+							Check:
+							
+								function wrapInArray<TypeOfValue>(value: TypeOfValue): TypeOfValue[] {
+									return [value];
+								}
+
+								const result = wrapInArray<string>('a');
+								const result2 = wrapInArray<number>(123);
+							
+							Check:
+							
+								function wrapInArray<TypeOfValue>(value: TypeOfValue): TypeOfValue[] {
+									return [value];
+								}
+
+								const result = wrapInArray('a'); 	// type inference
+								const result2 = wrapInArray(123);	// type inference
+								
+						More on Generic Type Inference
+						
+							function callAndReturn<T>(fn: () => T): T {
+								return fn();
+							}
+
+							const result = callAndReturn(() => 5);
+							const result2 = callAndReturn(() => 'test');
+							
+						Issues with Generic Type Inference
+						
+							Type string is not assignable to type never
+							
+								import {useState} from 'react';
+
+								function ColorPicker() {
+
+									const [colors, setColors] = useState([]);
+
+									const handleClick = () => {
+										setColors([...colors, 'red']);
+									};
+									
+									return <button onClick={handleClick}>Click</button>
+								}
+								
+							Solution
+							
+								If you have a piece of state that starts with an empty array you must add the generic type
+								
+								import {useState} from 'react';
+
+								function ColorPicker() {
+
+									const [colors, setColors] = useState<string[]>([]); ---> add the type here
+
+									const handleClick = () => {
+										setColors([...colors, 'red']);
+									};
+
+									return <button onClick={handleClick}>Click</button>
+								}
+								
+						Generic Type Constraints
+						
+							Base case:
+							
+								function merge<T, U>(objA: T, objB: U) {
+									return { ...objA, ...objB };
+								}
+
+								const result = merge({id: 'ossant'}, {color: 'red'});
+
+								console.log(result.id);
+								console.log(result.color);
+							
+							What if?
+								
+								const result = merge(5, 'text');
+								
+								There is nothing wrong but we need to specify some kind of rule to accept only objects.
+								
+								Solution:
+								
+									- extends means 'must be'
+								
+									function merge<T extends object, U extends object>(objA: T, objB: U) {
+										return { ...objA, ...objB };
+									}
+
+									const result = merge({id: 'ossant'}, {color: 'red'});
+
+									console.log(result.id);
+									console.log(result.color);
+									
+								Interesting: check the return type
+									
+									function merge<T extends object, U extends object>(objA: T, objB: U): T & U {
+										return { ...objA, ...objB };
+									}
+									
+						More on Generic Type Constraints
+						
+							// T must be a valid key off of these U objects
+							function collect<T extends keyof U, U extends object>(key: T, arr: U[]) {
+								return arr.map(element => element[key]);
+							}
+
+							const result = collect('name', [
+								{ count: 1, name: 'value1' },
+								{ count: 2, name: 'value2' },
+								{ count: 3, name: 'value3' }
+							]);

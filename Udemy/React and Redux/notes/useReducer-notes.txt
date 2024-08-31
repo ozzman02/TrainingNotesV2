@@ -1,0 +1,516 @@
+- Reducers
+	
+		useReducer: Defines a state in a component, just like useState !
+		
+		This is a hook for managing state.
+	
+		Defines a state in a component, just like useState.
+	
+		useState 	---> 	Absolutely fine hook to use whenever a component needs state.
+	
+		useReducer 	--->  	Alternative to useState
+							Produces state
+							Changing this state makes component rerender.
+							Useful when you have several different closely-related pieces of state.
+							Useful when future state values depend on the current state.
+							
+							
+		Example (CounterPage.js)
+		
+											useState
+			----------------------------------------------------------------------------------
+			const [count, 			setCount] 		= 			useState(initialCount);
+			const [valueToAdd, 		setValueToAdd] 	= 			useState(0);
+					^						^							^
+					|						|							|
+					|						|							|
+			State variable			Function to change state	Initial value for this state
+					|						|							|
+					|						|							|
+					v						v							v
+			const [state, dispatch] =  useReducer(reducer,		{count: initialCount, valueToAdd: 0})
+			----------------------------------------------------------------------------------
+											useReducer
+											
+			
+			Conventions of useState						Conventions of useReducer
+			----------------------------------------------------------------------
+			count										{
+			state - number									count: 10,
+															valueToAdd: 20
+			valueToAdd									}
+			state - number								state - object
+			
+			Each piece of state defined as a 			All state for the whole component
+			separate variable							defined in a single object
+			
+			
+			In general if we have
+				
+				const [state, dispatch] = useReducer(reducer, { count: 10, valueToAdd: 20});
+				
+				- state is an object that has count and valueToAdd properties.
+				- If we want to refer to count then we have to use state.count
+				- If we want to refer to valueToAdd then we have to use state.valueToAdd
+				
+				
+			State Updates with useState
+			
+						setCount
+							|
+							|
+							v
+					Component rerenders
+							|
+							|
+							v
+				const [count, setCount] = useState(initialCount);
+			
+			State Updates with useReducer
+				
+				- Anytime we need to update the state we call dispatch function.
+				
+				- When we call dispatch, React is going to find the reducer function that we just defined. 
+				
+				- This reducer function is the first argument of the useReducer function.
+				
+				- The second argument is called action. That is whatever we pass to dispatch.
+				
+				- When calling dispatch we can pass one argument or no arguments. If we pass more than one, all the extras are ignored.
+				
+				
+				Current State (state)	dispatch(5): Function we get back from calling useReducer
+				-----------------			|
+				{							|
+					count: 10,				|
+					valueToAdd: 20			|
+				}							|
+											v
+				const reducer = (state, action) => {
+					// Whatever gets returned will be the new state !!
+				}
+								|
+								|
+								|
+								v
+						{
+							count: 200,
+							valueToAdd: 300  ---> Reducer returns an object like this one. This is going to be the New State !
+						}
+								|
+								|
+								|
+								v
+						Component rerenders
+								|
+								|
+								|
+								v
+									
+				const [state, dispatch] = useReducer(reducer, { /* initial state */ })
+						|
+						|
+						|
+						v
+					{
+						count: 200,
+						valueToAdd: 300
+					}
+							
+		- Rules around Reducer Functions
+		
+			const reducer = (state, action) => {
+				
+			}
+			
+			1. Whatever you return will be your new state.
+			
+			2. If you return nothing then, your state will be undefined.
+			
+			3. No async/await, no requests, no promises, no outside variables.
+			
+			
+			Like almost everywhere else in React, do not directly modify the state object !
+			
+				Bad
+					
+					const reducer = (state, action) => {
+						state.count = state.count + 1;
+						return state;
+					}
+					
+				Good 
+				
+					// Need to update count
+				
+					const reducer = (state, action) => {
+						return {
+							...state,
+							count: state.count + 1
+						};
+					}
+					
+					
+					// Need to update valueToAdd
+					
+					const reducer = (state, action) => {
+						return {
+							...state,
+							valueToAdd: state.valueToAdd + 1
+						};
+					}
+					
+					// Need to completely reset state
+					
+					const reducer = (state, action) => {
+						return {
+							count: 0,
+							valueToAdd: 0
+						};
+					}
+					
+		- Understanding Action Objects
+		
+			User clicks increment button			User types in input
+						|									|
+						|									|
+						v									v
+				State update needed !				State update needed !
+				  Call dispatch							Call dispatch
+						|									|
+						|									|
+						v									v
+					dispatch();							dispatch();
+						|									|
+						|									|
+						-------------------------------------
+										  |
+										  |
+										  v
+						const reducer = (state, action) => {
+							// OK... I'm running... am I supposed to
+							// be updating count or valueToAdd?
+						}
+									
+			When we call dispatch we need to pass along some info to tell the reducer how the state should be updated.
+			
+			There are billion ways to do this.
+			
+			The React community has come up with a convention on how to tell the reducer what it needs to do.
+			
+			Solution, an Event Handler !
+			
+				When we need to modify state, we will call dispatch and always pass in an action object.
+				
+				The action object will always have a type property that is a string.
+				This helps tell the reducer what state update it needs to make.
+				
+				If we need to communicate some data to the reducer, it will be placed on the payload property of the action object.
+				
+				This is a very common community convention, not a requirement. React does not treat these action objects any differently.
+			
+				
+				const increment = () => {
+					dispatch({
+						type: 'increment-count'
+					});
+				}
+				
+				const handleChange = (event) => {
+					const value = parseInt(event.target.value) || 0;
+					dispatch({
+						type: 'change-value',
+						payload: value
+					});
+				}
+				
+				User clicks increment				User types in the input
+				-------------------------------------------------------------
+				{									{
+					type: 'increment-count'				type: 'change-value',
+				}										payload: value
+													}
+													
+							|								|						
+							|								|
+							---------------------------------
+											|
+											|
+											v
+							const reducer = (state, action) => {
+								if (action.type === 'increment-count') {
+									// Ah, I know what I need to do ! I need to update the count property by 1
+									return {
+										...state,
+										count: state.count + 1
+									};
+								}
+								if (action.type === 'change-value') {
+									return {
+										...state,
+										valueToAdd: action.payload
+									};
+								}
+								return state;
+							}
+			
+			A few design considerations around reducers
+			
+				Current State
+				
+					{
+						count: 10,
+						valueToAdd: 20
+					}
+					
+				Case in the reducer
+					
+					case ADD_VALUE_TO_COUNT:
+						return {
+							...state,
+							count: state.count + state.valueToAdd,
+							valueToAdd: 0
+						}
+						
+				What it's happening?
+				
+					{
+						count: 10,		--->  ...state
+						valueToAdd: 20, ---> 
+						count: 30,      --->  state.count + state.valueToAdd
+						valueToAdd: 0	--->  valueToAdd
+					}
+					
+				In JS key value pairs that are identical to earlier keys are overwritten
+					
+					{
+						count: 30,      --->  state.count + state.valueToAdd
+						valueToAdd: 0	--->  valueToAdd
+					}
+					
+				What's the point of having ...state?
+				
+					What if we need to add other properties?
+					
+						{
+							count: 10,
+							valueToAdd: 20,
+							anotherProperty: true
+						}
+						
+					Updated case in the reducer that does not copy over properties
+						
+						case ADD_VALUE_TO_COUNT:
+							return {
+								count: state.count + state.valueToAdd,
+								valueToAdd: 0
+							}
+					
+					What is going to happen without ...state ? New properties are going to be lost.
+						
+						{
+							count: 30,
+							valueToAdd: 0
+						}
+						
+				A better design
+
+					1. 
+						
+						dispatch({
+							type: SET_COUNT_AND_RESET_VALUE_TO_ADD,
+							payload: state.count + state.valueToAdd
+						})
+						
+						case SET_COUNT_AND_RESET_VALUE_TO_ADD:
+							return {
+								...state,
+								count: action.payload,
+								valueToAdd: 0
+							};
+					
+					2.
+						dispatch({
+							type: SET_COUNT_AND_VALUE,
+							payload: {
+								count: state.count + state.valueToAdd,
+								valueToAdd: 0
+							}
+						})
+					
+						case SET_COUNT_AND_VALUE:
+							return {
+								...state,
+								...action.payload
+							};
+					
+					3. In a larger React App this is the typical scenario:
+					
+						-------------------------------------------------------------------------------------------------------------------------------------------
+						Dispatch in Event Handler A						Dispatch in Event Handler B						 Dispatch in Event Handler C
+						-------------------------------------------------------------------------------------------------------------------------------------------
+						dispatch({										dispatch({										 dispatch({
+							type: SET_COUNT_AND_RESET_VALUE_TO_ADD,			type: SET_COUNT_AND_RESET_VALUE_TO_ADD,			type: SET_COUNT_AND_RESET_VALUE_TO_ADD,			
+							payload: state.count + state.valueToAdd			payload: state.count + state.valueToAdd			payload: state.count - state.valueToAdd
+						})												})												 })
+						-------------------------------------------------------------------------------------------------------------------------------------------
+										|													|												|
+										|													|												|
+										-----------------------------------------------------------------------------------------------------
+																							|
+																							V
+																				-------------------------
+																				      Case in Reducer
+																				-------------------------
+																		   case SET_COUNT_AND_RESET_VALUE_TO_ADD:
+																				return {
+																					...state,
+																					count: action.payload,
+																					valueToAdd: 0
+																				};
+																						
+																						
+						There is a typo in the Dispatch in Event Handler C. Common error !
+						
+						Usually makes more sense to stuff logic into the reducer and keep the dispatches simple.
+						
+						Less duplicated code if you need to dispatch the same action in multiple places.
+						
+						Part of the goal of reducers is to have a very specific set of ways that state can be changed.
+		
+		- Final code before immer
+		
+			import { useReducer } from 'react';
+			import Button from '../components/Button';
+			import Panel from '../components/Panel';
+
+
+			const INCREMENT_COUNT = 'increment';
+			const DECREMENT_COUNT = 'decrement';
+			const SET_VALUE_TO_ADD = 'change_value_to_add';
+			const ADD_VALUE_TO_COUNT = 'add_value_to_count';
+
+			const reducer = (state, action) => {
+				switch (action.type) {
+					case INCREMENT_COUNT:
+						return {
+							...state,
+							count: state.count + 1
+						};
+					case SET_VALUE_TO_ADD:
+						return {
+							...state,
+							valueToAdd: action.payload
+						};
+					case DECREMENT_COUNT:
+						return {
+							...state,
+							count: state.count - 1
+						};
+					case ADD_VALUE_TO_COUNT:
+						return {
+							...state,
+							count: state.count + state.valueToAdd,
+							valueToAdd: 0
+						}
+					default: 
+						return state;    
+				}
+			};
+
+			export default function CounterPage({ initialCount }) {
+
+				//const [count, setCount] = useState(initialCount);
+
+				//const [valueToAdd, setValueToAdd] = useState(0);
+
+				const [state, dispatch] = useReducer(reducer, {
+					count: initialCount,
+					valueToAdd: 0
+				});
+
+				console.log(state);
+
+				const increment = () => {
+					dispatch({
+						type: INCREMENT_COUNT
+					});
+				}    
+
+				const decrement = () => {
+					dispatch({
+						type: DECREMENT_COUNT
+					});
+				}
+
+				const handleChange = (event) => {
+					/* 
+						Even if we have an input type number, event.target.value is of type string.
+						That's the reason of the parse function.
+
+						Second issue, if we press delete we will get NaN. This happens when we pass 
+						an empty string to parseInt.
+					*/
+					const value = parseInt(event.target.value) || 0;
+
+					dispatch({
+						type: SET_VALUE_TO_ADD,
+						payload: value
+					});
+				}
+
+				const handleSubmit = (event) => {
+					event.preventDefault();
+					dispatch({
+						type: ADD_VALUE_TO_COUNT
+					});
+				}
+				
+				return (
+					<Panel className="m-3">
+						<h1 className="text-lg">Count is {state.count}</h1>
+						<div className="flex flex-row">
+							<Button onClick={increment}>Increment</Button>
+							<Button onClick={decrement}>Decrement</Button>
+						</div>
+						<form onSubmit={handleSubmit}>
+							<label>Add a lot</label>
+							<input 
+								value={state.valueToAdd || 0}
+								onChange={handleChange}
+								type='number' 
+								className='p1 m-3 bg-gray-50 border border-gray-300'  
+							/>
+							<Button>Add it!</Button>
+						</form>
+					</Panel>
+				);
+
+			}
+
+		
+		- Immer 
+			
+			This is a libray that let us write code to directly mutate state.
+			
+			
+			Normal Reducer											Reducer with Immer
+			=======================================================================================================
+			
+			const reducer = (state, action) => {					const reducer = (state, action) => {
+				switch (action.type) {									switch (action.type) {
+					case INCREMENT_COUNT:									case INCREMENT_COUNT:
+						return	{												state.count = state.count + 1;
+							...state,											return;	
+							count: state.count + 1							default:
+						}														return;
+					default:											}
+						return state;								}
+				}														
+			}														
+			
+			
+			No directly changing state								You can mutate state
+			Must return a new value to use for state				Do not have to return a new value 
+																	Still return in each case, otherwise you get fallthrough
+	

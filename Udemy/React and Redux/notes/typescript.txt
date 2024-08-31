@@ -1,0 +1,725 @@
+- Typescript
+		
+		- Helps you catch errors during development.
+		- Helps provide documentation for your components.
+		- Compiles to plain Javascript.
+		- Does not improve performance.
+		
+		Type Annotations
+		
+			Type annotations help TS understand the data flowing through our app.
+			There are many places where we can add in annotations.
+			
+			Basic Types:
+			
+				const color: string = 'string';
+				const isRed: boolean = color === 'red';
+				const age: number = 25;
+				const colors: string[] = ['red', 'green', 'blue'];
+				const areColorsRed: boolean[] = [true, false, false];
+				const ages: number[] = [10, 20,30];
+				
+			Function Types:
+			
+				function add(a: number, b: number): number {
+					return a + b;
+				}
+
+				function printColors(colors: string[]) {
+					console.log(colors);
+				}
+
+				printColors(['red', 'gray', 'green']);
+
+				function printAge(age: number) {
+					console.log(age);
+				}
+
+				printAge(123);
+				
+			Type inference
+			
+				Typescript is smart since it can guess the types of your variables.
+				
+					const hours = 10;
+					
+					const ocean = 'Pacific';
+					
+					function getName() {
+						return 'Me'
+					}
+					
+					
+					function add(a: number, b: number): number {
+						return a + b;
+					}
+					
+					function add(a: number, b: number) {
+						return a + b;
+					}
+					
+					const sum = add(1, 5);
+					
+			Describing objects with Interfaces
+			
+				Option 1:
+				
+					function formatCar(car: {year: number, model: string, make: string}) {
+						return `Year: ${car.year}, model: ${car.model}, make: ${car.make}`;
+					}
+
+					formatCar({
+						year: 2015,
+						make: 'Ford',
+						model: 'Mustang'
+					});
+					
+				Option 2:
+					
+					interface Car {
+						year: number,
+						make: string,
+						model: string
+					}
+
+					function formatCar(car: Car) {
+						return `Year: ${car.year}, model: ${car.model}, make: ${car.make}`;
+					}
+
+					formatCar({
+						year: 2015,
+						make: 'Ford',
+						model: 'Mustang'
+					});
+					
+			Function Types:
+			
+				interface Car {
+					model: string;
+					year: number;
+					setYear: (nextYear: number) => void;
+					setModel: (nextModel: string) => void;
+					getDescription: () => string;
+				}
+
+				const mustang: Car = {
+					model: 'Mustang',
+					year: 2015,
+					setYear(nextYear: number) {
+						this.year = nextYear;
+					},
+					setModel(nextModel: string) {
+						this.model = nextModel;
+					},
+					getDescription() {
+						return `Year: ${this.year}, Model: ${this.model}`;
+					}
+				};
+
+				mustang.setModel("M-111");
+				
+			Function types in Props Interfaces
+			
+				import React from 'react';
+
+				interface ColorPickerProps {
+					colors: string[];
+					handleColorSelect: (color: string) => void;
+				}
+
+				function ColorPicker({ colors, handleColorSelect }: ColorPickerProps) {
+					const renderedColors = colors.map(color => {
+						return <button key={color} onClick={() => handleColorSelect(color)}>
+							{color}
+						</button>
+					});
+					return <div>{renderedColors}</div>
+				}
+
+				<ColorPicker 
+					colors={['red', 'green', 'blue']} 
+					handleColorSelect={(color: string) => console.log(color)}
+				/>
+				
+			Extending an Interfaces
+			
+			
+				Initial code:
+			
+					import React from 'react';
+
+					interface ButtonProps {
+						label: string;
+						onClick: () => void;
+					}
+
+					interface IconButtonProps {
+						label: string;
+						onClick: () => void;
+						icon: string;
+					}
+
+					function Button({ label, onClick }: ButtonProps) {
+						return <button onClick={() => onClick()}>{label}</button>
+					}
+
+					function IconButton({ label, onClick, icon }: IconButtonProps) {
+						return <button onClick={() => onClick()}>{icon} {label}</button>
+					}
+					
+				Refactor:
+				
+					import React from 'react';
+
+					interface ButtonProps {
+						label: string;
+						onClick: () => void;
+					}
+
+					interface IconButtonProps extends ButtonProps {
+						icon: string;
+					}
+
+					function Button({ label, onClick }: ButtonProps) {
+						return <button onClick={() => onClick()}>{label}</button>
+					}
+
+					function IconButton({ label, onClick, icon }: IconButtonProps) {
+						return <button onClick={() => onClick()}>{icon} {label}</button>
+					}
+					
+			Type Unions
+			
+				In real projects we do not write functions like these:
+			
+					function printNumber(value: number) {
+					}
+				
+					function printString(value: string) {
+					}
+					
+				We probably will code something like this:
+					
+					function print(value: OneOfSeveralDifferentTypes) {}
+					
+				Type unions combine several other types
+					
+					function logOutput(value: string | number | string[] | Image) {
+					}
+				
+				Type Narrowing with typeof
+				
+					typeof 	"text"		->	'string'
+					typeof 	123			-> 	'number'
+					typeof	true		->	'boolean'
+					typeof undefined	->	'undefined'
+					typeof {}			->	'object'
+					typeof () => {}		->	'function'
+					Array.isArray([])	->	true
+					
+					interface Image {
+						src: string;
+					}
+
+					function logOutput(value: string | number | string[] | Image) { ----> Type Union separated by | 
+						if (typeof value === 'string') {			
+							console.log(value.toUpperCase());
+						}
+						if (typeof value === 'number') {       	 ----> Type Guard
+							console.log(Math.round(value));		
+						}
+						if (Array.isArray(value)) {
+							console.log(value.join(''));
+						}
+						if (typeof value === 'object' && !Array.isArray(value)) {
+							console.log(value.src);
+						}
+					}
+
+					logOutput("hi there");
+					logOutput(123);
+					logOutput(['hi', 'there']);
+					logOutput({ src: 'img.jpg' });
+					
+				Type Predicates
+					
+					It's a function that will narrow down a type for you.
+					
+						interface Image {
+							src: string;
+						}
+
+						interface User {
+							username: string;
+						}
+
+						function logOutput(value: User | Image) {
+							if ('username' in value) {
+								console.log(value.username);
+							}
+							if ('src' in value) {
+								console.log(value.src);
+							}
+						}
+
+						logOutput({ username: 'ossant' });
+						logOutput({ src: 'img.jpg' });
+					
+					Update:
+						
+						interface Image {
+							src: string;
+						}
+
+						interface User {
+							username: string;
+						}
+
+						function isUser(value: Image | User): value is User { ---> Type Predicate
+							return 'username' in value;
+						}
+
+						function logOutput(value: User | Image) {
+							if (isUser(value)) {
+								console.log(value.username);
+							} else {
+								console.log(value.src);
+							}
+						}
+
+						logOutput({ username: 'ossant' });
+						logOutput({ src: 'img.jpg' });
+						
+						
+				Optional properties
+				
+					Brand new user
+						
+						const user = {
+							id: 'abc',
+							username: 'new user'
+						};
+						
+					User who has signed up and created a profile
+					
+						const user = {
+							id: 'abc',
+							username: 'new user',
+							profile: {
+								likes: ['cats']
+							}
+						};
+						
+					Question mark (?) means that the User object might have a profile or not.
+					
+						interface UserProfile {
+							likes: string[];
+						}
+
+						interface User {
+							id: string;
+							username: string;
+							profile?: UserProfile;
+
+						}
+
+						const user: User = {
+							id: 'abc',
+							username: 'me',
+							profile: {
+								likes: ['cats']
+
+							}
+						};
+
+						// if statement is working as a type guard
+						if (user.profile) {
+							user.profile.likes;
+						}
+
+						/* 
+							If user.profile exists and is defined then go ahead and access likes.
+						*/
+						user.profile?.likes;
+
+						/*
+							message argument is optional
+						*/
+						function logValue(value: string, message?: string) {
+							if (message) {
+								console.log(message, value);
+							} else {
+								console.log(value);
+							}
+						}
+
+						logValue("test");
+						logValue("test", "message");
+						
+				Any and Unknown
+					
+					Any: 
+						
+						- Special type that tells Typescript to ignore type checking around this variable.
+						
+						- Try to avoid using in your own code!
+						
+						- You can use an as type assertion to forcibly tell Typescript what an any variable type is.
+						
+							interface Book {
+								title: string;
+							}
+
+							async function fetchBook() {
+								const res = await fetch('/book');
+								const data = await res.json();
+								return data as Book; // this is a type assertion
+							}
+
+							async function run() {
+								const book = await fetchBook();
+							}
+							
+						
+					Unknown:
+					
+						- Special type that tells Typescript this variable can be anything.
+						
+						- We have to do aggresive type narrowing before assuming what an unknown variable's real type is.
+						
+							interface Book {
+								title: string;
+							}
+
+							async function fetchBook(): Promise<Book> {
+								
+								const res = await fetch('/book');
+								
+								const data: unknown = await res.json();
+								
+								if (data && typeof data === 'object' && 'title' in data && typeof data.title === 'string') {
+									return data as Book;
+								}
+								throw new Error('Expected to get a book, but did not');
+							}
+
+							async function run() {
+								const book = await fetchBook();
+							}
+				
+				Type alias
+					
+					Type alias can be used interchangeably with interfaces almost in all cases.
+					
+					We want to use an interface when we are trying to describe an object.
+					
+						interface Image {
+							src: string;
+						}
+						
+					We are going to use interfaces anytime we want to extend one type with another
+					
+					Type alias cannot be extended.
+					
+					We are going to use Type alias very often when we need to compute a new type.
+					
+					
+						type Image = {
+							src: string;
+						}
+
+						type LoggableValue = string | number | string[] | Image;
+
+
+						function logValue(value: LoggableValue) {
+
+						}
+				
+				Generics
+					
+					Makes it easier to write functions, interfaces and more that work with multiple different types.
+					
+					Example:
+					
+						function wrapInArray(value: string): string[] {
+							return [value];
+						}
+
+						const result = wrapInArray('test');
+						const result2 = wrapInArray(10);
+												
+					How to fix?
+					
+						Type Union
+							
+							function wrapInArray(value: string | number): (string | number)[]  {
+								return [value];
+							}
+
+							const result = wrapInArray('test');
+							const result2 = wrapInArray(10);
+							
+						Creating another function
+							
+							function wrapInArray(value: string): string[]  {
+								return [value];
+							}
+
+							function wrapNumberInArray(value: number): number[]  {
+								return [value];
+							}
+
+							const result = wrapInArray('test');
+							const result2 = wrapNumberInArray(10);
+							
+						Generic function
+						
+							wrapInArray<TypeToWrap>(value);
+							
+							function wrapInArray<TypeToWrap>(value: TypeToWrap): TypeToWrap[] {
+								return [value]
+							}
+															|
+															|
+															V
+							
+							/* TypeToWrap can be replaced by T */
+							function wrapInArray<TypeToWrap>(value: TypeToWrap): TypeToWrap[]  {
+								return [value];
+							}
+
+							const result = wrapInArray<string>('test');
+
+							const result2 = wrapInArray<number>(10);
+							
+						More on function Generics
+						
+							function toRecord<TypeOfId>(id: TypeOfId, value: string) {
+								return {
+									id,
+									value
+								};
+							}
+
+							const result = toRecord<number>(123, 'osantamaria@gmail.com');
+
+							const result2 = toRecord<string>('ea01', 'myemail@gmail.com');
+							
+						Multiiple Generic Types
+							
+							function toRecord<TypeOfId, TypeOfValue>(id: TypeOfId, value: TypeOfValue) {
+								return {
+									id,
+									value
+								};
+							}
+
+							const result = toRecord<number, string>(123, 'osantamaria@gmail.com');
+
+							const result2 = toRecord<string, number[]>('ea01', [1, 5, 6]);
+							
+							
+							-- The order in which I pass in the generic types do not have to match the order of arguments in the function definition
+							
+							function toRecord<TypeOfValue, TypeOfId>(id: TypeOfId, value: TypeOfValue) {
+								return {
+									id,
+									value
+								};
+							}
+
+							const result = toRecord<string, number>(123, 'osantamaria@gmail.com');
+
+							const result2 = toRecord<number[], string>('ea01', [1, 5, 6]);
+							
+							- Use abbreviations
+							
+								function toRecord<T, V>(id: T, value: V) {
+									return {
+										id,
+										value
+									};
+								}
+						
+						More generic examples
+						
+							function randomElement<T>(arr: T[]) {
+								return arr[Math.floor(Math.random() * arr.length)];
+							}
+
+							const result = randomElement<number>([1,2,3]);
+
+							const result2 = randomElement<string>(['a', 'b', 'c']);
+							
+						Generics with Fetch
+						
+							Common case:
+						
+								interface User {
+									username: string;
+								}
+
+								interface Message {
+									content: string;
+								}
+
+								interface Image {
+									url: string;
+								}
+
+								async function fetchUser() {
+									const res = await fetch('/users');
+									const json = await res.json();
+									return json as User; // type assertion
+								}
+								
+								async function fetchMessage() {
+									const res = await fetch('/messages');
+									const json = await res.json();
+									return json as Message; // type assertion
+								}
+								
+								const run = async () => {
+									const user = await fetchUser();
+									const message = await fetchMessage();
+								};
+								
+							Refactor
+							
+								interface User {
+									username: string;
+								}
+
+								interface Message {
+									content: string;
+								}
+
+								interface Image {
+									url: string;
+								}
+
+								async function fetchData<T>(path: string): Promise<T> {
+									const res = await fetch(path);
+									const json = await res.json();
+									return json as T;
+								}
+
+								const run = async () => {
+									const user = await fetchData<User>('/users');
+									const message = await fetchData<Message>('/messages');
+									const image = await fetchData<Image>('/images');
+								};
+								
+						Generic type inference		
+							
+							Check:
+							
+								function wrapInArray<TypeOfValue>(value: TypeOfValue): TypeOfValue[] {
+									return [value];
+								}
+
+								const result = wrapInArray<string>('a');
+								const result2 = wrapInArray<number>(123);
+							
+							Check:
+							
+								function wrapInArray<TypeOfValue>(value: TypeOfValue): TypeOfValue[] {
+									return [value];
+								}
+
+								const result = wrapInArray('a'); 	// type inference
+								const result2 = wrapInArray(123);	// type inference
+								
+						More on Generic Type Inference
+						
+							function callAndReturn<T>(fn: () => T): T {
+								return fn();
+							}
+
+							const result = callAndReturn(() => 5);
+							const result2 = callAndReturn(() => 'test');
+							
+						Issues with Generic Type Inference
+						
+							Type string is not assignable to type never
+							
+								import {useState} from 'react';
+
+								function ColorPicker() {
+
+									const [colors, setColors] = useState([]);
+
+									const handleClick = () => {
+										setColors([...colors, 'red']);
+									};
+									
+									return <button onClick={handleClick}>Click</button>
+								}
+								
+							Solution
+							
+								If you have a piece of state that starts with an empty array you must add the generic type
+								
+								import {useState} from 'react';
+
+								function ColorPicker() {
+
+									const [colors, setColors] = useState<string[]>([]); ---> add the type here
+
+									const handleClick = () => {
+										setColors([...colors, 'red']);
+									};
+
+									return <button onClick={handleClick}>Click</button>
+								}
+								
+						Generic Type Constraints
+						
+							Base case:
+							
+								function merge<T, U>(objA: T, objB: U) {
+									return { ...objA, ...objB };
+								}
+
+								const result = merge({id: 'ossant'}, {color: 'red'});
+
+								console.log(result.id);
+								console.log(result.color);
+							
+							What if?
+								
+								const result = merge(5, 'text');
+								
+								There is nothing wrong but we need to specify some kind of rule to accept only objects.
+								
+								Solution:
+								
+									- extends means 'must be'
+								
+									function merge<T extends object, U extends object>(objA: T, objB: U) {
+										return { ...objA, ...objB };
+									}
+
+									const result = merge({id: 'ossant'}, {color: 'red'});
+
+									console.log(result.id);
+									console.log(result.color);
+									
+								Interesting: check the return type
+									
+									function merge<T extends object, U extends object>(objA: T, objB: U): T & U {
+										return { ...objA, ...objB };
+									}
+									
+						More on Generic Type Constraints
+						
+							// T must be a valid key off of these U objects
+							function collect<T extends keyof U, U extends object>(key: T, arr: U[]) {
+								return arr.map(element => element[key]);
+							}
+
+							const result = collect('name', [
+								{ count: 1, name: 'value1' },
+								{ count: 2, name: 'value2' },
+								{ count: 3, name: 'value3' }
+							]);

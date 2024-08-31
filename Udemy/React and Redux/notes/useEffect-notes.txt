@@ -1,0 +1,130 @@
+- useEffect *** Very important information ***
+	
+		Used to run code when a component is initially rendered and (sometimes) when it is rendered.
+		
+		First Argument is a function that contains the code we want to run.
+		
+		Second Argument is an array or nothing (this controls whether the function is executed or renders)
+		
+		
+		Time	|	Initial Render
+				|	
+				|		Component is called.
+				|		JSX returned
+				|		DOM updated
+				|	
+				|			| function passed to useEffect always called !
+				|			| state updated !
+				|			|
+				|			V
+				|	
+				|	Second Render
+		Time	|
+				|		Component called
+				|		JSX returned
+				|		DOM updated
+				|	
+				|			| function passed to useEffect maybe called ! (depends on second argument)
+				|			| state updated !
+				|			|
+				|			V
+				|	
+				|	Third Render
+				|
+		Time	|		Component called
+				|		JSX returned
+				|		DOM updated
+				|			
+				|			| process repeats over and over !
+				|			| function passed to useEffect maybe called ! (depends on second argument)
+				|			| state updated !
+				|			V
+				V	
+			
+		Variations
+		
+			1. If you want to log some information when your component is first rendered to the screen and never again
+	
+				useEffect(() => {
+					console.log("Some info");
+				}, []);
+	
+			2. If you want to log some information when your component is first rendered to the screen and whenever it re-renders
+		
+				useEffect(() => {
+					console.log("Some info");
+				});
+		
+			3. Imagine you are creating a component that has a state variable called counter.
+
+					You want to log info about counter at the following points in time:
+
+						1. When the component is first rendered to the screen
+
+						2. When the component is re-rendered, but only log info if counter changed
+	
+					useEffect(() => {
+						console.log("Some info");
+					}, [counter]);
+		
+	
+		- You can use/return cleanUp functions inside useEffect if your arrow function is about to be called again.
+	
+			Use it to do some work or undo something the next time useEffect runs
+	
+			function App() {
+		
+				const[counter, setCounter] = useState(0);
+		
+				useEffect(() => {
+			
+					const listener = () => {
+						console.log(counter);
+					};
+			
+					document.body.addEventListener("click", listener);
+			
+					const cleanUp = () => {
+						document.body.removeEventListener("click", listener);
+					};
+			
+					return cleanUp;
+					
+				}, [counter]);
+		
+				return (
+					<div>
+						<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+						<div>Count: {counter}</div>
+					</div>
+				);
+		
+			}
+	
+	
+			function App() {
+		
+				const[counter, setCounter] = useState(0);
+		
+				useEffect(() => {
+			
+					const listener = () => {
+						console.log(counter);
+					};
+			
+					document.body.addEventListener("click", listener);
+			
+					return () => {
+						document.body.removeEventListener("click", listener);
+					};
+					
+				}, [counter]);
+		
+				return (
+					<div>
+						<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+						<div>Count: {counter}</div>
+					</div>
+				);
+		
+			}

@@ -1,0 +1,200 @@
+- How to fix bugs around useEffect (Check Return to Use Effect lesson)
+	
+		- Understanding when our arrow function gets called.
+		
+		- Understanding the arrow function's return value.
+			
+			- Can't return numbers
+			
+				function App() {
+				
+					useEffect(() => {
+						return 5;
+					}, []);
+					
+				}
+				
+			- Can't return Strings
+				
+				function App() {
+				
+					useEffect(() => {
+						return 'hi';
+					}, []);
+					
+				}
+				
+			- Can't use async/await (it returns a promise automatically)
+			
+				function App() {
+				
+					useEffect(async () => {
+						const res = await axios.get('...');
+					}, []);
+					
+				}
+				
+			Can return a function !!!
+			
+				function App() {
+				
+					useEffect(() => {
+						return () => {
+							console.log("I'm allowed!");
+						};
+					}, []);
+					
+				}
+			
+				
+			- useEffect cleanup functions
+			
+				import { useState, useEffect } from "react";
+
+				function App() {
+				
+					const [counter, setCounter] = useState(0);
+				
+					useEffect(()=> {
+						
+						document.body.onclick = () => {
+							console.log(counter);
+						};
+						
+						const cleanUp = () => {
+							console.log("cleanup");
+						};
+						
+						return cleanUp;
+						
+					}, [counter]);
+
+					return (
+						<div>
+							<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+							<div>Count: {counter}</div>
+						</div>
+					);
+				}
+
+				export default App;
+				
+		
+			The cleanUp function is only going to be called if the arrow function is about to the called again ! 
+			This is our case since we have the counter variable in the dependency array of the useEffect function.
+				
+		
+		Time	|	Initial Render
+				|	
+				|		Function passed to useEffect always called !
+				|		We return cleanUp
+				|					
+				|	
+				|	Second Render
+		Time	|
+				|		cleanUp that we had during the first render is called
+				|		function passed to useEffect called
+				|		return new cleanUp function
+				|	
+				|
+				|	Third Render
+				|
+		Time	|		cleanUp function called (React holds a reference of the previous render)
+				|		function passed to useEffect called
+				|		return new cleanUp function
+				|			
+				V
+				
+			
+			Small refactor:
+			
+				import { useState, useEffect } from "react";
+
+				function App() {
+				
+					const [counter, setCounter] = useState(0);
+				
+					useEffect(()=> {
+						
+						const listener = () => {
+							console.log(counter);
+						}
+						document.body.addEventListener('click', listener);
+						
+						const cleanUp = () => {
+							document.body.removeEventListener("click", listener);
+						};
+						
+						return cleanUp;
+						
+					}, [counter]);
+
+					return (
+						<div>
+							<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+							<div>Count: {counter}</div>
+						</div>
+					);
+				}
+
+				export default App
+				
+				
+				Or we can also return the cleanUp function directly:
+					
+					import { useState, useEffect } from "react";
+
+					function App() {
+				
+						const [counter, setCounter] = useState(0);
+				
+						useEffect(()=> {
+						
+							const listener = () => {
+								console.log(counter);
+							}
+							document.body.addEventListener('click', listener);
+						
+							return () => {
+								document.body.removeEventListener("click", listener);
+							};
+					
+						}, [counter]);
+
+						return (
+							<div>
+								<button onClick={() => setCounter(counter + 1)}>+ Increment</button>
+								<div>Count: {counter}</div>
+							</div>
+						);
+					}
+
+					export default App
+				
+			
+				Everytime that the component re renders we are creating a new event listener watching for clicks. 
+				This is not desirable, we need to have a way of undoing or a way to remove the listener everytime.
+				We are undoing something before the next useEffect call.
+				
+				
+		Time	|	Initial Render
+				|	
+				|		Function passed to useEffect always called !
+				|		Return fn to clean up the event handler
+				|					
+				|	
+				|	Second Render
+		Time	|
+				|		Clean up the last event handler
+				|		Func passed to useEffect called
+				|		Return fn to clean up the event handler
+				|	
+				|
+				|	Third Render
+				|
+		Time	|		Clean up the last event handler
+				|		function passed to useEffect called
+				|		Return fn to clean up the event handler
+				|			
+				V
+	

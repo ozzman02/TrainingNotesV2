@@ -1,0 +1,163 @@
+- Stable references with useCallback
+		
+			Based on the previous code, we need to tell React that our fetchBook function is not changing overtime or between re renders.
+					
+				- useCallback
+	
+					- Hook to help you tell React that your function isn't actually changing over time.
+	
+					- Fixes bugs around useEffect and other similar situations
+	
+					- Follow similar conventions as useEffect (second argument is an array)
+					
+					- If second argument is an empty array, useCallback gives you back the original fetchBooks from first render.
+					
+					- If second argument has elements that have changed since last render, useCallback gives you the new version of fetchBooks.
+	
+	
+					function Provider() {
+						
+						const fetchBooks = () => {
+							// ...
+						}
+						
+						const stableFetchBooks = useCallBack(fetchBooks, []);
+					
+					}
+					
+					First Render
+					
+						- In this code, fetchBooks is not executed. useCallback does not ever run your function. 
+						- We are using useCallback to tell React that our function is not changing.
+						- Unlike useEffect the array is mandatory. It could be empty or it could have something but it is required. 
+						- For now, we are using an empty array. In other cases when it has something, useCallback will work differently.
+						- We get the same function back. 
+						- In this case, fetchBooks and stableFetchBooks point to the same reference function in memory.
+						
+						
+						We have two variables
+						
+							fetchBooks: Points to () => fetchBooks V1
+							
+							stableFetchBooks: Points to () => fetchBooks V1
+						
+						
+						-------------------------------------------------------------------------
+												Memory in the computer
+						-------------------------------------------------------------------------
+						|			|												|			|						
+						-------------------------------------------------------------------------
+						|			|			|			|			|			|			|			
+						-------------------------------------------------------------------------
+						|			|			() => fetchBooks V1	 				|			|
+						-------------------------------------------------------------------------
+						|			|			|			|			|			|			|
+						-------------------------------------------------------------------------
+						|			|												| 			|
+						-------------------------------------------------------------------------
+						
+					Second Render
+					
+						- If second argument is an empty array, useCallback gives you back the original fetchBooks from first render.
+						
+						- If second argument has elements have changed since last render, useCallback gives you the new version of fetchBooks.
+						
+						When the code runs:
+						
+							- We still have the original fetchBooks function. This is a new arrow function that is going to be placed in memory.
+						
+							- We create a new variable called fetchBooks and stableFetchBooks.
+							
+							Variables
+								
+								fetchBooks: Points to fetchBooks V2 arrow function.
+								
+								stableFetchBooks: Points to the fetchBooks V1 arrow function. (That happens because useCallback has an empty array)
+						
+						
+						-------------------------------------------------------------------------
+												Memory in the computer
+						-------------------------------------------------------------------------
+						|			|			() => fetchBooks V2					|			|	  <------- This one is not used at all (Only will be used if useCallback has array of elements)			
+						-------------------------------------------------------------------------
+						|			|			|			|			|			|			|			
+						-------------------------------------------------------------------------
+						|			|			() => fetchBooks V1	 				|			|     <------- fetchBooks from last render
+						-------------------------------------------------------------------------
+						|			|			|			|			|			|			|
+						-------------------------------------------------------------------------
+						|			|												| 			|
+						-------------------------------------------------------------------------
+						
+			BookContext
+			
+				function Provider() {
+					
+					const [books, setBooks] = useState([]);
+					
+					const fetchBooks = () => {
+						// ...
+					}
+					
+					const stableFetchBooks = useCallback(fetchBooks, []);
+					
+					return <BooksContext.Provider value={{ books, stableFetchBooks }} />
+				}
+				
+				
+				function App() {
+							
+					const { stableFetchBooks } = useContext(BookContext);
+							
+					useEffect(() => {
+						stableFetchBooks();
+					}, [stableFetchBooks])
+							
+					return ...
+				}
+				
+				First Render:
+				
+					1. fetchBooks and stableFetchBooks points to () => fetchBooks V1
+					2. Inside App, useEffect is executed.
+					
+				|
+				|	Books updated !!
+				|
+				v
+				
+				Second Render
+				
+					1. We still have a reference to () => fetchBooks V1.
+					2. New fetchBooks is created and points to () => fetchBooks V2.
+					3. New stableFetchBooks is created and useCallback is called and it returns the fetchBooks V1 reference because we have an empty array.
+					3. Inside App, useEffect is not executed again because stableFetchBooks did not change between renders.
+			
+			The right thing to do is to use useCallback like this:
+			
+				function Provider({ children }) {
+					
+					const [books, setBooks] = useState([]);
+					
+					const fetchBooks =  useCallback(async () => {
+						const response = await axios.get(BOOKS_API_URL);
+						setBooks(response.data);
+					}, []);
+					
+					// ...
+				}
+				
+				function App() {
+				
+					const { fetchBooks } = useBooksContext();
+
+					useEffect(() => { fetchBooks(); }, [fetchBooks]);
+
+					return (
+						<div className="app">
+							<h1>Reading List</h1>
+							<BookList />
+							<BookCreate />
+						</div>
+					);
+				}
