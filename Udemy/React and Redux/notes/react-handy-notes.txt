@@ -5374,3 +5374,209 @@ React general
 								{ count: 2, name: 'value2' },
 								{ count: 3, name: 'value3' }
 							]);
+							
+	- React Router (registry project)
+		
+		When using React Router we are using a Browser Router that is going to watch the path in the address bar.
+		
+		The path is the part after the domain and port.
+		
+			http://localhost:5173/search -> path is /search
+			
+		Setup
+		
+			npm install react-router-dom
+			
+		Outlet component
+		
+			It reaches up to that browser router through the context system and it says.
+			
+			What is the currently selected component?
+		
+			import { Outlet } from "react-router-dom";
+			import Header from "../components/Header";
+
+			export default function Root() {
+				return (
+					<div>
+						<Header />
+						<Outlet />
+					</div>
+				) 
+			}
+			
+			When we run our application Outlet is gonna kind of magically turn into our HomePage, SearchPage or DetailsPage
+			
+		Navigation
+			
+			1.  Link component: We use a Link to show an a tag to the user. Users navigates themselves.
+			
+			2.  Programmatic Navigation: When we want to implement programmatic navigation we do not use a Link component. 
+				We are forcing the user to navigate.
+			
+			3.  Based on form submission: 
+				
+					import { Form } from 'react-router-dom';
+					
+					function Page() {
+						return (
+							<Form action="/search">
+								<button>Submit</button>
+							</Form>
+						);
+					}
+					
+		Fetching Data with React Router
+		
+							   Browser Router
+				------------------------------------------			   
+				|					 |					 |
+				v					 v					 v
+			homeLoader			searchLoader		detailsLoader  ------> functions to fetch data for the page
+				|					 |					 |
+				v					 v					 v
+			HomePage			Search Page			Details Page
+			
+			
+			App.tsx
+			
+				const router = createBrowserRouter([
+					{	
+						path: '/',
+						element: <Root />,
+						children: [
+							{
+								index: true,
+								element: <HomePage />
+							},
+							{
+								path: "/search",
+								element: <SearchPage />,
+								loader: async ({ request }) => {
+									// this request argument represents a user trying to navigate to a page, url property -----> important
+									// console.log(request);
+									//return ['react', 'react-redux', 'redux']
+									
+									const { searchParams } = new URL(request.url);
+          
+									const term =  searchParams.get('term');
+          
+									if (!term) {
+										throw new Error('Search term must be provided');
+									}
+
+									//console.log("term: ", term);
+
+									const res = await fetch(
+										`https://registry.npmjs.org/-/v1/search?text=${term}`
+									);
+
+									const data = await res.json();
+          
+									return data.objects;
+ 
+								}
+							},
+							{
+								path: "/packages/:name",
+								element: <DetailsPage />
+							}
+						]
+					}
+				]);
+				
+			SearchPage.tsx
+			
+				import { useLoaderData } from "react-router-dom";
+
+				export default function SearchPage() {
+
+					const data = useLoaderData();
+
+					console.log(data);
+    
+					return <div>Search Page</div>;
+				}
+		
+		
+		Review
+		
+			RouterConfig:
+			
+				const router = createBrowserRouter([{
+					path: "/",
+					element: <Root />,
+					children: [
+						{
+							path: "/books/:title",
+							element: <BookPage />,
+							loader: bookLoader
+						}
+					]
+				}])
+			
+			Loader
+			
+				interface BookLoaderResult {
+					book: Book;
+				}
+				
+				async function bookLoader({ request, params}): Promise<BookLoaderResult> {
+					
+					console.log(request.url); // url the user is visiting
+					
+					console.log(params); // {title: 'name of book'}
+					
+					const book = await getBook(params.name);
+					
+					return {
+						book
+					};
+				}
+				
+			Navigate user around
+				
+				Show a Link
+					
+					import {Link} from 'react-router-dom';
+					
+					function Page() {
+						return <Link to={"/search"}>Go !</Link>
+					}
+				
+				Based on an event	
+					
+					import {useNavigate} from 'react-router-dom';
+					
+					function Page() {
+						const navigate = useNavigate();
+						const handleClick = async () => {
+							const canGo = await axios.get('/users/cango');
+							if (canGo) {
+								navigate('/search');
+							}
+						}
+						return <button onClick={handleClick}>Go !</button>
+					}
+				
+				Based on form submission
+				
+					import {Form} from 'react-router-dom';
+					
+					function Page() {
+						return <Form action="/search">
+							<button>Submit<button>
+						</Form>
+					}
+				
+				
+			Page
+			
+				import type {BookLoaderResult} from './loader';
+				
+				import {useLoaderData} from 'react-router-dom';
+				
+				function BookPage() {
+					const { book } = useLoaderData() as BookLoaderResult;
+					return <div>{book.title}</div>
+				}

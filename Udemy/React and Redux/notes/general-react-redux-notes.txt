@@ -20,7 +20,19 @@ Tool for making a tiny React App
 	full code
 		
 		codesandbox.io/s/react-forked-m5bz37
+		
+Create React application
+
+	Create React App
 	
+		npx create-react-app <projectName>
+		
+	Vite
+	
+		npm create vite <project name> -- --template react-ts
+		
+		npm run dev
+		
 		
 Babel:
 	
@@ -82,7 +94,7 @@ Tailwind
 	
 	https://tailwindcss.com/docs/installation
 	
-	Check
+	Check tailwind.config.js and update the content prop
 		
 		/** @type {import('tailwindcss').Config} */
 		module.exports = {
@@ -92,6 +104,37 @@ Tailwind
 			},
 			plugins: [],
 		}
+		
+	If using vite
+		
+		tailwindcss.com/docs/guides/vite
+		
+		npm install -D tailwindcss postcss autoprefixer
+		npx tailwindcss init -p
+		
+		find tailwind.config.js and update the content prop
+		
+			/** @type {import('tailwindcss').Config} */
+			export default {
+			  content: [
+				"./index.html",
+				"./src/**/*.{js,ts,jsx,tsx}",
+			  ],
+			  theme: {
+				extend: {},
+			  },
+			  plugins: [],
+			}
+		
+		find src/index.css file and paste this:
+		
+			@tailwind base;
+			@tailwind components;
+			@tailwind utilities;
+		
+		delete src/App.css
+		
+		delete assets directory src/assets
 
 classnames library
 	
@@ -136,6 +179,16 @@ react redux and redux toolkit
 faker and react icons
 	
 	npm install --save-exact @faker-js/faker@7.6.0 react-icons@4.6.0 @reduxjs/toolkit axios classnames json-server
+	
+leaflet
+	
+	npm install @types/leaflet leaflet react-leaflet
+	
+
+react-router
+
+	npm install react-router-dom
+
 	
 /************************************************************************************************************************************************************************/
 Old Notes
