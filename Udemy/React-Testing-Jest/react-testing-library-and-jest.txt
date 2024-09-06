@@ -1,0 +1,207 @@
+First practice project
+	
+	https://stackblitz.com/edit/vitejs-vite-6mjdmj
+	
+	
+Example
+
+	import { render, screen, waitFor } from '@testing-library/react';
+	import user from '@testing-library/user-event';
+	import App from './App';
+
+	test('shows 6 products by default', async () => {
+	  render(<App />);
+	  const titles = await screen.findAllByRole('heading');
+	  expect(titles).toHaveLength(6);
+	});
+
+	test('clicking on the button loads 6 more products', async () => {
+	  render(<App />);
+	  const button = await screen.findByRole('button', {
+		name: /load more/i
+	  });
+	  user.click(button); 
+	  await waitFor(async () => {
+		const titles = await screen.findAllByRole('heading');
+		expect(titles).toHaveLength(12);
+	  });
+	});
+	
+What are those imports?
+
+	Library							Purpose
+	------------------------------------------------------------------------------------
+	@testing-library/react			Uses ReactDom to render a component for testing
+	@testing-library/user-event		Helps simulate user input like typing and clicking
+	@testing-library/dom			Helps find elements that are rendered by our components
+	jest							Runs our tests, reports results
+	jsdom							Simulates browser when running in a Node environment
+	
+How were our tests found?
+
+	- Jest finds all files in the src folder that meets the following criteria:
+	
+		End with .spec.js
+		End with .test.js
+		Are placed in a folder called __test__
+	
+What did all the testing code do?
+	
+	test('shows 6 products by default', async () => {
+	  render(<App />);
+	  const titles = await screen.findAllByRole('heading');
+	  expect(titles).toHaveLength(6);
+	});
+	
+	1. Executes the built in test function. 
+	2. Renders the component.
+	3. Find all elements that are headers (h1, h2, h3 ...)
+	4. Asserts the result.
+	
+Create a simple project
+	
+	npx create-react-app users
+	
+Test Writing Process
+
+	1. Pick one out component to test all by itself.
+	
+	2. Make a test file for the component if one does not exist.
+	
+	3. Decide what the important parts of the component are.
+	
+	4. Write a test to make sure each part works as expected.
+	
+	5. Run all tests at the command line.
+	
+Command to run all tests
+	
+	npm run test
+	
+Command to run only one test
+
+	jest -t 'fix-order-test'
+	
+	Another way is to run tests in watch mode, jest --watch, and then press P to filter the tests by typing the test file name or T to run a single test name.
+
+Element Query System
+
+	Code sample:
+		
+		import { render, screen } from '@testing-library/react';
+		import user from '@testing-library/user-event';
+		import UserForm from './UserForm';
+
+	
+		test('it shows two inputs and a button', () => {
+			render(<UserForm />);
+			const inputs = screen.getAllByRole('textbox');
+			const button =  screen.getByRole('button');
+			expect(inputs).toHaveLength(2);
+			expect(button).toBeInTheDocument();	
+		});
+
+	When we execute a test it run in a Node.js environment, there is no browser.
+	When we call the render method a fake browser environment is created by a library called jest-dom.
+	By using the screen object we can access elements created in the fake browser env.
+	
+	Queries
+		
+		A super important part of testing is finding the elements that our component has created.
+		
+		Need to test form submission?
+			
+			You need to find a button to click.
+			
+		Need to test navigation?
+			
+			You need to find a link to click.
+			
+		Need to make sure a header is visible
+			
+			You need to find a header.
+			
+	Querying elements by labels
+	
+		code sample:
+			
+			<label htmlFor="email">Enter Email</label>
+			<input id="email" />
+			
+		input can be selected with
+	
+			screen.getByLabelText(/enter email/i);
+		
+			screen.getByRole('textbox', {name: /enter email/i});
+		
+		
+	Aria Role
+		
+		Aria roles clarify the purpose of an HTML element.
+
+		Traditionally used by screen readers - software to help people undestand the content on the screen.
+		
+		Many html elements have an implicit or automatically assigned role.
+		
+		Elements can be assigned manually assigned a role. Even trained engineers do this incorrectly.
+		
+		
+	Jest matchers
+		
+		Assertions created using the expect function.
+		
+	User from '@testing-library/user-event';
+		
+		user.click(element) 		--> Simulates clicking on the provided element.
+		
+		user.keyboard('text') 		--> Simulates types text
+		
+		user.keyboard('{Enter}') 	--> Simulates pressing the enter key
+		
+Mock Functions
+
+	- Fake functions that does not do anything.
+	- Records whenever it gets called and the arguments it was called with.
+	- Used very often when we need to make sure a component calls a callback.
+	
+	Not the best implementation: 
+	
+		test('it calls onUserAdd when the form is submitted', () => {
+    
+			const argList = [];
+			
+			// callback function needed by onUserAdd
+			const callback = (...args) => {
+				argList.push(args);
+			};
+
+			// 1. Render the component.
+			render(<UserForm onUserAdd={callback} />);
+			
+			// 2. Find the two inputs.
+			const [nameInput, emailInput] = screen.getAllByRole('textbox');
+			
+			// 3. Simulate typing in a name.
+			user.click(nameInput);
+			user.keyboard('jane');
+
+			// 4. Simulate typing in an email.
+			user.click(emailInput);
+			user.keyboard('jane@jane.com');
+
+			// 5. Find the button
+			const button = screen.getByRole('button');
+
+			// 6. Simulate clicking the button.
+			user.click(button);
+
+			// 7. Assertion to make sure onUserAdd gets called with name and email.
+			expect(argList).toHaveLength(1);
+			expect(argList[0][0]).toEqual({ name: 'jane', email: 'jane@jane.com' });
+
+		});
+		
+	A mock function has some internal storage.
+	
+		1. It records how many time it has been called.
+		2. Records all arguments that it is going to receive.
