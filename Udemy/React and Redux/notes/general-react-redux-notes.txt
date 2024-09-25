@@ -43,6 +43,11 @@ Babel:
 Install Bulma (css framework)
 
 	npm install bulma
+	
+
+Install Bootstrap
+	
+	npm install react-bootstrap bootstrap
 
 	
 Install json server
@@ -188,7 +193,18 @@ leaflet
 react-router
 
 	npm install react-router-dom
+	
+axios
+	
+	npm install --save axios
 
+react-paginate
+
+	npm install react-paginate --save
+	
+jwt-decode
+	
+	npm install jwt-decode
 	
 /************************************************************************************************************************************************************************/
 Old Notes
