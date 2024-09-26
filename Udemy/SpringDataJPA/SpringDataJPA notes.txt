@@ -1,0 +1,48 @@
+Spring Data JPA 
+
+@SpringBootTest
+
+	- With the @SpringBootTest annotation, Spring Boot provides a convenient way to start up an application context to be used in a test.
+
+@DataJpaTest
+
+	- The @DataJpaTest annotation is used to test JPA repositories in Spring Boot applications. It’s a specialized test annotation that provides 
+	  a minimal Spring context for testing the persistence layer. This annotation can be used in conjunction with other testing annotations 
+	  like @RunWith and @SpringBootTest.
+	  
+	- If you have some class to bootstrap data, this annotation will not execute the initializer by default.
+	
+	- If you want to do that include a @ComponentScan like this: @ComponentScan(basePackages = {"com.ossant.bootstrap"})
+
+@Rollback - @Commit
+
+	Not a good practice to use @Commit when working with tests. If you need to commit data for an specific test it's better to use @Rollback.
+	
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+
+	Order of testing. This is a class level annotation. It works along with @Order which has to be placed in the test methods.
+	
+	@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+	@DataJpaTest
+	@ComponentScan(basePackages = {"com.ossant.bootstrap"})
+	@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+	public class SpringBootJpaTestSlice {
+	
+		@Order(1)
+		@Test
+		void testJpaTestSplice() {
+			long countBefore = bookRepository.count();
+			assertThat(countBefore).isEqualTo(2);
+			bookRepository.save(new Book("My Book", "1235555", "Self", null));
+			long countAfter = bookRepository.count();
+			assertThat(countBefore).isLessThan(countAfter);
+		}
+
+		@Order(2)
+		@Test
+		void testJpaTestSpliceTransaction() {
+			long countBefore = bookRepository.count();
+			assertThat(countBefore).isEqualTo(3);
+		}
+
+	}
