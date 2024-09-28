@@ -46,3 +46,547 @@ Spring Data JPA
 		}
 
 	}
+	
+Hibernate DDL Update Modes
+
+	- none: Disables schema generation tool
+	- create-only: Create database schema from JPA entities
+	- drop: drop database tables related to JPA entities
+	- create: drops database schema and recreates from JPA entities
+	- create-drop: drops database schema and recreates from JPA entities then will drop when shutting down
+	- validate: validates schema, fatal error if wrong
+	- update: updates schema from JPA entities
+	
+Hibernate Default is camel case to snake case
+
+	productDescription -> PRODUCT_DESCRIPTION
+	
+
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+
+	With this annotation we are telling Spring Boot to "do not proceed with datasource autoconfig".
+	
+	The reason for this is that when @@DataJpaTest the default behavior is to bring up the h2 in memory database and sometimes 
+	we are using another datasource (like MySQL for example).
+	
+H2 Compatibility Mode
+
+	In application.properties
+	
+		spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;CASE_INSENSITIVE_IDENTIFIERS=TRUE
+		spring.datasource.username=sa
+		spring.datasource.password=password
+		spring.jpa.database=mysql
+		spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+		spring.jpa.hibernate.ddl-auto=validate
+		
+Schema Initialization with Hibernate
+	
+	Initialize a Database Using Basic SQL Scripts
+		
+		By default, it loads schema scripts from optional:classpath*:schema.sql and data scripts from optional:classpath*:data.sql. 
+		The locations of these schema and data scripts can be customized using spring.sql.init.schema-locations and spring.sql.init.data-locations respectively. 
+		The optional: prefix means that the application will start even when the files do not exist. 
+		To have the application fail to start when the files are absent, remove the optional: prefix.
+		
+		By default, SQL database initialization is only performed when using an embedded in-memory database. 
+		To always initialize an SQL database, irrespective of its type, set spring.sql.init.mode to always. 
+		Similarly, to disable initialization, set spring.sql.init.mode to never. 
+		By default, Spring Boot enables the fail-fast feature of its script-based database initializer. 
+		This means that, if the scripts cause exceptions, the application fails to start. 
+		You can tune that behavior by setting spring.sql.init.continue-on-error.
+		
+		Script-based DataSource initialization is performed, by default, before any JPA EntityManagerFactory beans are created. 
+		The schema.sql can be used to create the schema for JPA-managed entities and data.sql can be used to populate it.
+		
+		While we do not recommend using multiple data source initialization technologies, if you want script-based DataSource initialization to be able to 
+		build upon the schema creation performed by Hibernate, set spring.jpa.defer-datasource-initialization to true. 
+	
+	In our application we are using Flyway migrations therefore:
+	
+		spring.jpa.defer-datasource-initialization=false
+		
+	For MySQL configuration
+		
+		Always use the initialization script: spring.sql.init.mode=always
+		
+DAO Pattern
+	
+	- Data Access Object
+	- Pattern was a precursor of JPA, before ORMs became popular.
+	- Older and uses JDBC for data access.
+	- Purpose is to isolate persistent operations from the application layer.
+	- When the application needs to persist an object it should not need to understand the underlying persistence technology.
+	- Will not use JPA annotations.
+	
+	
+		Business Layer <-------> DAO Interface
+									|
+									|
+									|
+									v
+								DAO Impl  <-----> Database
+							 
+							 
+	
+Spring JDBC Template
+	
+	https://docs.spring.io/spring-data/jdbc/docs/2.4.18/reference/html/#preface
+	
+	
+Hibernate DAO
+
+	- Implements the Java JPA specification.
+	- Coding to the Java API specification will keep your code independent of Hibernate.
+	- Hibernate also has a native API. Coding to this API will keep your code dependent on Hibernate.
+	
+		SessionFactory <--------- SessionFactoryImpl				Session <--------- SessionImpl
+				|														|
+				|														|
+				|														|
+				v														v
+		EntityManagerFactory										EntityManager
+	
+		
+				
+		Transaction <--------- TransactionImpl
+			 |
+			 |
+			 |
+			 v
+		EntityTransaction
+		
+	
+	Terminology
+		
+		- Session Factory: Expensive to create, your application should only have one instance.			(Hibernate)
+		- Entity Manager Factory: JPA Equivalent of Session Factory.									(JPA)
+		- Session: Single threaded, short lived object. Cheap to create. It wraps a JDBC connection.	(Hibernate)
+		- Entity Manager: JPA Equivalent of Session.													(JPA)
+		- Transaction: Single threaded, short lived object to define transaction boundaries.			(Hibernate)
+		- Entity Transaction: JPA equivalent of Transaction.											(JPA)
+	
+	
+	Persistence Context
+	
+		- Session / Entity Manager: Creates a context for dealing with persistent data.
+	
+		- Transient: The entity has just been instantiated and is not associated with a persistence context. It has no persistent representation in
+		  the database and typically no identifier value has been assigned (unless the assigned generator was used).
+	  
+		- Managed or Persistent: The entity has an associated identifier and is associated with a persistence context. It may or may not physically 
+		  exists in the database yet.
+	
+		- Detached: The entity has an associated identifier but is no longer associated with a persistence context (usually because the persistence 
+		  context was closed or the instance was evicted from the context).
+	  
+		- Removed: The entity has an associated identifier and is associated with a persistence context, however, it is scheduled for removal from
+	      the database.
+	  
+	
+	Detached Entities
+	
+		- Common root cause is working outside of the session scope, or a closed session.
+		
+		- Spring Data JPA by default will do an implicit transaction.
+		
+			- Meaning you can see this error when accessing entity properties outside of a transaction.
+			
+			
+	Caching
+		
+		- Persistence Context / First Level Cache: By default Hibernate will cache entities in the persistence context.
+			
+			- Changes outside the context might not be seen.
+			- Very efficient for doing work within the context of a session.
+			
+		- Second Level Cache: Disabled by default. JVM or cluster level cache.
+			
+			- Recommended to enable on a per entity basis.
+			- Broad support for popular options such as jCache, Ehcache and Infinispan.
+		
+Hibernate Queries
+
+	Query
+	
+		String GET_AUTHORS_BY_LASTNAME_LIKE_QUERY = "SELECT a FROM Author a WHERE a.lastName like :last_name";
+		
+		@Override
+		public List<Author> listAuthorsByLastNameLike(String lastName) {
+			try (EntityManager entityManager = getEntityManager()) {
+				Query query = entityManager.createQuery(GET_AUTHORS_BY_LASTNAME_LIKE_QUERY, Author.class);
+				query.setParameter("last_name", lastName + "%");
+				return query.getResultList();
+			}
+		}
+		
+		private EntityManager getEntityManager() { return entityManagerFactory.createEntityManager(); }
+		
+	Typed Query
+	
+		String GET_AUTHORS_BY_LASTNAME_LIKE_QUERY = "SELECT a FROM Author a WHERE a.lastName like :last_name";
+		
+		@Override
+		public List<Author> listAuthorsByLastNameLike(String lastName) {
+			try (EntityManager entityManager = getEntityManager()) {
+				TypedQuery<Author> query = entityManager.createQuery(GET_AUTHORS_BY_LASTNAME_LIKE_QUERY, Author.class);
+				query.setParameter("last_name", lastName + "%");
+				return query.getResultList();
+			}
+		}
+		
+		private EntityManager getEntityManager() { return entityManagerFactory.createEntityManager(); }
+	
+	NamedQuery
+	
+		String FIND_ALL_AUTHORS_QUERY_NAME = "author_find_all";
+
+		String FIND_ALL_AUTHORS_QUERY = "FROM Author";
+		
+		String FIND_AUTHOR_BY_NAME_QUERY_NAME = "find_by_name";
+
+		String FIND_AUTHOR_BY_NAME_QUERY = "FROM Author a WHERE a.firstName = :first_name AND a.lastName = :last_name";
+		
+		@NamedQueries({
+			@NamedQuery(name = FIND_ALL_AUTHORS_QUERY_NAME, query = FIND_ALL_AUTHORS_QUERY),
+			@NamedQuery(name = FIND_AUTHOR_BY_NAME_QUERY_NAME, query = FIND_AUTHOR_BY_NAME_QUERY)
+		})
+		@Entity
+		public class Author {
+			...
+		}
+		
+		@Component
+		public class AuthorDaoImpl implements AuthorDao {
+			
+			private final EntityManagerFactory entityManagerFactory;
+
+			public AuthorDaoImpl(EntityManagerFactory entityManagerFactory) {
+				this.entityManagerFactory = entityManagerFactory;
+			}
+			
+			@Override
+			public List<Author> findAll() {
+				try (EntityManager entityManager = getEntityManager()) {
+					TypedQuery<Author> query = entityManager.createNamedQuery(FIND_ALL_AUTHORS_QUERY_NAME, Author.class);
+					return query.getResultList();
+				}
+			}
+			
+			@Override
+			public Author getByName(String firstName, String lastName) {
+				try (EntityManager entityManager = getEntityManager()) {
+					TypedQuery<Author> query = entityManager.createNamedQuery(FIND_AUTHOR_BY_NAME_QUERY_NAME, Author.class);
+					query.setParameter("first_name", firstName);
+					query.setParameter("last_name", lastName);
+					return query.getSingleResult();
+				}
+			}
+			
+			private EntityManager getEntityManager() {
+				return entityManagerFactory.createEntityManager();
+			}
+		
+		}
+		
+	Criteria Query
+		
+		@Override
+		public Author findAuthorByNameCriteria(String firstName, String lastName) {
+        try (EntityManager entityManager = getEntityManager()) {
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+            CriteriaQuery<Author> criteriaQuery =
+                    criteriaBuilder.createQuery(Author.class);
+
+            Root<Author> root = criteriaQuery.from(Author.class);
+
+            ParameterExpression<String> firstNameParam =
+                    criteriaBuilder.parameter(String.class);
+
+            ParameterExpression<String> lastNameParam =
+                    criteriaBuilder.parameter(String.class);
+
+            Predicate firstNamePredicate =
+                    criteriaBuilder.equal(root.get("firstName"), firstNameParam);
+
+            Predicate lastNamePredicate =
+                    criteriaBuilder.equal(root.get("lastName"), lastNameParam);
+
+            criteriaQuery.select(root)
+                    .where(criteriaBuilder.and(firstNamePredicate, lastNamePredicate));
+
+            TypedQuery<Author> query = entityManager.createQuery(criteriaQuery);
+			
+            query.setParameter(firstNameParam, firstName);
+            query.setParameter(lastNameParam, lastName);
+
+            return query.getSingleResult();
+        }
+	
+	Native Query
+	
+		String FIND_AUTHOR_BY_NAME_NATIVE_QUERY = "SELECT * FROM author a WHERE a.first_name = ? AND a.last_name = ?";
+		
+		@Override
+		public Author findAuthorByNameNative(String firstName, String lastName) {
+			try (EntityManager entityManager = getEntityManager()) {
+				Query query = entityManager.createNativeQuery(FIND_AUTHOR_BY_NAME_NATIVE_QUERY, Author.class);
+				query.setParameter(1, firstName);
+				query.setParameter(2, lastName);
+				return (Author) query.getSingleResult();
+			}
+		}
+		
+		private EntityManager getEntityManager() { return entityManagerFactory.createEntityManager(); }
+		
+Spring Data JPA Queries
+
+	Query Methods:
+		
+		https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
+		
+	Return Types:
+		
+		https://docs.spring.io/spring-data/jpa/reference/repositories/query-return-types-reference.html
+		
+	Null Handling of Repository Methods:
+		
+		https://docs.spring.io/spring-data/jpa/reference/repositories/null-handling.html
+		
+		
+	Examples:
+
+		Query Methods:
+		
+			Optional<Book> findByTitle(String title);
+			
+		Null Handling:
+		
+			@Nullable
+			Book getByTitle(@Nullable String title);
+			
+		Stream:
+		
+			Stream<Book> findAllByTitleNotNull();
+			
+			Test Example:
+			
+				@Test
+				void bookWithStream() {
+					AtomicInteger count = new AtomicInteger();
+					bookRepository.findAllByTitleNotNull().forEach(book -> {
+						count.incrementAndGet();
+					});
+					assertThat(count.get()).isGreaterThanOrEqualTo(5);
+				}
+		
+		Asynchronous
+			
+			@Async
+			Future<Book> queryByTitle(String title);
+			
+			Test Example:
+				
+				@Test
+				void bookWithFuture() throws ExecutionException, InterruptedException {
+					Future<Book> bookFuture = bookRepository.queryByTitle("Clean Code");
+					Book book = bookFuture.get();
+					assertNotNull(book);
+				}
+			
+		@Query annotation:
+		
+			@Query("SELECT b FROM Book b WHERE b.title = ?1")
+			Book findBookByTitleWithQuery(String title);
+			
+		@Query annotation with named parameters:
+			
+			@Query("SELECT b FROM Book b WHERE b.title = :title")
+			Book findBookByTitleQueryWithNamedParams(@Param("title") String title);
+			
+		@Query annotation with Native Query
+			
+			@Query(value = "SELECT * FROM book WHERE title = :title", nativeQuery = true)
+			Book findBookByTitleNativeQuery(@Param("title") String title);
+			
+			
+		JPA Named Queries
+			
+			public interface BookRepository extends JpaRepository<Book, Long> {
+				Book findBookByTitle(@Param("title") String title);
+			}
+			
+			@NamedQuery(name = "Book.findBookByTitle", query = "FROM Book b WHERE b.title = :title")
+			@Entity
+			public class Book { ... }
+			
+Paging and Sorting
+	
+	- Paging: Is a way to get a page of data from a long list of values.
+		
+	- Sorting: How the data is ordered. (natural or by one or more columns)
+	
+	- SQL Paging: Uses SQL clauses of limit and offset.
+		
+		- Limit: Limits the number of rows returned.
+		- Offset: Number of rows to skip over.
+			
+	- SQL Sorting: Uses SQL order by clause. (ASC or DESC)
+		
+	- Physical Order: When no sort clause is provided.
+			
+	Paging with Spring Data JPA
+	
+		List<Book> findAllBooks(int pageSize, int offset);
+		
+			@Override
+			public List<Book> findAllBooks(int pageSize, int offset) {
+				Pageable pageable = PageRequest.ofSize(pageSize);
+				if (offset > 0) {
+					pageable = pageable.withPage(offset / pageSize);
+				} else {
+					pageable = pageable.withPage(0);
+				}
+				return this.findAllBooks(pageable);
+			}
+		
+		
+		List<Book> findAllBooks(Pageable pageable);
+	
+			@Override
+			public List<Book> findAllBooks(Pageable pageable) { return bookRepository.findAll(pageable).getContent(); }
+		
+		
+		List<Book> findAllBooksSortByTitle(Pageable pageable);
+		
+			@Override
+			public List<Book> findAllBooksSortByTitle(Pageable pageable) {
+				Page<Book> bookPage = bookRepository.findAll(pageable);
+				return bookPage.getContent();
+			}
+			
+			@Test
+			void findAllBooksSortByTitleTest() {
+				List<Book> books = bookDao.findAllBooksSortByTitle(PageRequest.of(0, 5, Sort.by(Sort.Order.desc("title"))));
+				assertThat(books).isNotNull();
+				assertThat(books.size()).isEqualTo(5);
+			}
+			
+		
+		Page<Author> findAuthorByLastName(String lastName, Pageable pageable); 
+				
+			List<Author> findAllByLastNameSortByFirstName(String lastName, Pageable pageable);
+		
+			@Override
+			public List<Author> findAllByLastNameSortByFirstName(String lastName, Pageable pageable) {
+				return authorRepository.findAuthorByLastName(lastName, pageable).getContent();
+			}
+			
+			@Test
+			void findAllAuthorsByLastNameSortLastNameDesc() {
+				List<Author> authors = authorDao.findAllByLastNameSortByFirstName("Smith", PageRequest.of(0, 10, Sort.by(Sort.Order.desc("firstName"))));
+				assertThat(authors).isNotNull();
+				assertThat(authors.size()).isEqualTo(10);
+				assertThat(authors.get(0).getFirstName()).isEqualTo("Yugal");
+			}
+
+			@Test
+			void findAllAuthorsByLastNameSortLastNameAsc() {
+				List<Author> authors = authorDao.findAllByLastNameSortByFirstName("Smith", PageRequest.of(0, 10, Sort.by(Sort.Order.asc("firstName"))));
+				assertThat(authors).isNotNull();
+				assertThat(authors.size()).isEqualTo(10);
+				assertThat(authors.get(0).getFirstName()).isEqualTo("Ahmed");
+			}
+
+			@Test
+			void findAllAuthorsByLastNameAllRecs() {
+				List<Author> authors = authorDao.findAllByLastNameSortByFirstName("Smith", PageRequest.of(0, 100));
+				assertThat(authors).isNotNull();
+				assertThat(authors.size()).isEqualTo(40);
+			}
+		
+JPA Inheritance
+
+	- The relational model does not exactly support inheritance.
+	- In a JPA context with inheritance you are concerned with the persistence of properties.
+	
+	Types:
+	
+		- Mapped Super Class: Top level entities inherit properties and have one table per top level entity.
+ 		- Single Table: Object hierarchy is mapped to a single table. 
+		- Default: when using @Inheritance mapping annotation 
+		- Joined Table: Base Classes and subclasses have their own table, fetching subclass requires a join.
+		- Table Per Class: Each object is mapped to a table, joins are used to create top level entities.
+		
+	JPA Inheritance Downsides
+	
+		- Leakage: A term to describe when the concepts of one paradigm ‘leak’ into another.
+		- The Primary Key / Id property is an example of the relational model ‘leaking’ into the object model.  
+		- Mapped Superclass: Does not allow for polymorphic queries. 
+		- Single Table: Requires discriminator column and columns for all properties of child classes. 
+		- Joined Table: Requires SQL Joins and object id in child object tables. 
+		- Table Per Class: Requires complex union joins to support polymorphic queries.
+		
+Database Relationships
+
+	- One to One: Both tables have only one record on each side of the relationship.
+	- One to Many: The primary table has one record that relates to zero or many records in the related table.
+	- Many to Many: Each record in both tables may be related to zero or many records in the related table.
+	
+Relationship Direction
+	
+	- Bi-Directional: Relationship can be accessed from either side of the relationship. 
+	- Uni-Directional: Relationship can be access from either side of the relationship.
+
+Cascade Operations
+		
+	- Hibernate has the ability to Cascade persistence operations.
+	
+	JPA Specific Cascade Types
+	
+		- ALL: 		Propagates all operations.
+		- PERSIST: 	Will also save child objects (transient instances).
+		- MERGE: 	Merge copies the state of a given object to the persistent object. MERGE includes child entities.
+		- REMOVE: 	Cascades delete operations to child objects.
+		- REFRESH: 	Cascades refresh operations to child objects.
+		- DETACH: 	Detaches child objects from persistence context.
+		
+	Hibernate Specific Cascade Types
+		
+		- DELETE: 		Same as JPA REMOVE
+		- SAVE_UPDATE: 	Cascades Hibernate Save and Update operations to child objects
+		- REPLICATE: 	Replicates child objects to second data source
+		- LOCK: 		Reattaches entity and children to persistence context - without refresh
+	
+Foreign Key Declaration
+
+	- JPA does have a @ForeignKey annotation.
+	- This is meta-data information only.
+	- Hibernate will reference this for schema generation only.
+	- It is not enforced nor generated if missing.
+	- When using schema migration tools like Liquibase or Flyway it is not needed.
+	
+	
+Fetch Operations
+
+	- Lazy vs Eager
+	
+	- Hibernate N + 1 Select Problem
+	
+		@Entity
+		public class OrderHeader extends BaseEntity {
+			
+			// Other fields
+			
+			@OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+			@Fetch(FetchMode.SUBSELECT)
+			private Set<OrderLine> orderLines;
+		
+			@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+			@Fetch(FetchMode.SELECT)
+			private OrderApproval orderApproval;
+			
+			// Other fields
+			
+		}
