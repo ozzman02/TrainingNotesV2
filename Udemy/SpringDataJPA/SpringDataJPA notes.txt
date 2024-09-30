@@ -6,13 +6,13 @@ Spring Data JPA
 
 @DataJpaTest
 
-	- The @DataJpaTest annotation is used to test JPA repositories in Spring Boot applications. It’s a specialized test annotation that provides 
+	- The @DataJpaTest annotation is used to test JPA repositories in Spring Boot applications. It's a specialized test annotation that provides 
 	  a minimal Spring context for testing the persistence layer. This annotation can be used in conjunction with other testing annotations 
 	  like @RunWith and @SpringBootTest.
 	  
 	- If you have some class to bootstrap data, this annotation will not execute the initializer by default.
 	
-	- If you want to do that include a @ComponentScan like this: @ComponentScan(basePackages = {"com.ossant.bootstrap"})
+	- If you want to do that, include a @ComponentScan like this: @ComponentScan(basePackages = {"com.ossant.bootstrap"})
 
 @Rollback - @Commit
 
@@ -110,6 +110,58 @@ Schema Initialization with Hibernate
 		
 		Always use the initialization script: spring.sql.init.mode=always
 		
+UUID as @Id
+
+	As varchar
+	
+		create table author_uuid(
+			id         	varchar(36) not null,
+			first_name 	varchar(255),
+			last_name 	varchar(255),
+			primary key (id)
+		) engine = InnoDB;
+	
+		@Entity
+		public class AuthorUuid {
+			
+			@Id
+			@GeneratedValue(strategy = GenerationType.AUTO)
+			@JdbcTypeCode(value = Types.VARCHAR)
+			@Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false )
+			private UUID id;
+			
+			...
+		}
+		
+		public interface AuthorUuidRepository extends JpaRepository<AuthorUuid, UUID> { }
+		
+	As binary(16)
+	
+		create table book_uuid (
+			id 			binary(16) not null,
+			isbn 		varchar(255),
+			publisher 	varchar(255),
+			title 		varchar(255),
+			primary key (id)
+		) engine=InnoDB;
+	
+	
+		@Entity
+		public class BookUuid {
+			
+			@Id
+			@GeneratedValue(generator = "uuid2")
+			@GenericGenerator(name = "uuid2", strategy = "uuid2")
+			@Column(columnDefinition = "VARBINARY(16)", updatable = false, nullable = false)
+			private UUID id;
+			
+			...
+		}
+
+		public interface BookUuidRepository extends JpaRepository<BookUuid, UUID> { }
+	
+	
+	
 DAO Pattern
 	
 	- Data Access Object
@@ -521,8 +573,8 @@ JPA Inheritance
 		
 	JPA Inheritance Downsides
 	
-		- Leakage: A term to describe when the concepts of one paradigm ‘leak’ into another.
-		- The Primary Key / Id property is an example of the relational model ‘leaking’ into the object model.  
+		- Leakage: A term to describe when the concepts of one paradigm â€˜leakâ€™ into another.
+		- The Primary Key / Id property is an example of the relational model â€˜leakingâ€™ into the object model.  
 		- Mapped Superclass: Does not allow for polymorphic queries. 
 		- Single Table: Requires discriminator column and columns for all properties of child classes. 
 		- Joined Table: Requires SQL Joins and object id in child object tables. 
@@ -609,7 +661,7 @@ Database Transactions
 
 		- Commit: Indicates the end of the transaction and tells database to make changes permanent. 
 			
-			- More efficient to do multiple operations in a transaction. There is a ‘cost’ with commits.
+			- More efficient to do multiple operations in a transaction. There is a â€˜costâ€™ with commits.
 
 		- Rollback: Revert all changes of the transaction.
 
@@ -630,12 +682,12 @@ Database Transactions
 		- Read Uncommitted.
 		- Serializable.
 		
-		Using the default transaction isolation level, your transaction see’s a snapshot of the database as it is at the start of the transaction. 
+		Using the default transaction isolation level, your transaction seeâ€™s a snapshot of the database as it is at the start of the transaction. 
  
 			- Changes made in other sessions and committed WILL NOT be visible.
 			- Changes made by your session WILL NOT be visible to other sessions until commit.
 
-	The “Lost” Update
+	The Lost Update
 	
 		- Database record has quantity of 10
 		
@@ -649,7 +701,7 @@ Database Transactions
 		
 		- Session B released, updates database record to 15
 		
-			- Thus the update of Session A is “Lost”
+			- Thus the update of Session A is lost
 			
 	JDBC Locking Modes
 	
@@ -700,7 +752,8 @@ Database Transactions
 
 Spring Data JPA Transactions
 
-	Spring Data JPA by default supports implicit transactions. Meaning repository methods will create a transaction by default, if there is not an active transaction.
+	Spring Data JPA by default supports implicit transactions. Meaning repository methods will create a transaction by default, 
+	if there is not an active transaction.
 	
 	Spring Data JPA has two types of implicit transactions:
 	
@@ -722,9 +775,9 @@ Declared with the @Transactional Annotation
 	
 	- Spring Framework provides an @Transactional annotation in the package "org.springframework.transaction.annotation". (Recommended)
 	
-	- JEE also provides a @Transactional annotation in the package “javax.transaction”
+	- JEE also provides a @Transactional annotation in the package "javax.transaction"
 	
-Spring’s @Transactional Annotation
+Spring @Transactional Annotation
 	
 	Attributes:
 	
@@ -740,7 +793,7 @@ Spring’s @Transactional Annotation
 @Transactional - Transaction Manager
 
 	- Spring Boot will auto-configure an instance of a Transaction Manager depending on your dependencies. 
-	- Auto-Configured instance named ‘transactionManager’
+	- Auto-Configured instance named "transactionManager"
 	
 @Transactional - Transaction Propagation
 
@@ -849,3 +902,118 @@ Java Bean Validation
 		
 		- Persistence Validation - last line of defense, validate data, provide rich data in exception. Should be HTTP 400, but might be HTTP 500.
 	
+JPA Inheritance
+
+	- In a JPA context we are looking at how inherited properties can be mapped into the relational model of the database.
+	
+	Strategies:
+	
+	- MappedSuperclass: Abstract parent class, parent is not in the database.
+	- Table per Class: Similar to MappedSuperClass, but each type is assigned a database table.
+	- Single Table: Single table is used, has properties for all types, uses discriminator value to determine the type database row is mapped to.
+	- Joined Table: Each type has a table, sub-types are joined.
+	
+	JPA Inheritance Which to Use?
+	
+		- MappedSuperclass: Good for common entity properties
+		
+		- Table per Class: Best option for performance, optimal for most use cases.
+		
+		- Single Table: Best when you need to make polymorphic queries, but can’t use not null constraints on subclass attributes 
+		  & can lead to data inconsistencies.
+		  
+		- Joined Table: When you need polymorphic queries and need data consistency (you can use Not Null constraints on subtypes)
+		
+Legacy Database Mapping
+	
+	Legacy Database: An older database, originally not written for use with JPA.
+	
+	Some annotations:
+	
+		@Lob: Use when you need to store a large object. For example MySQL longtext datatype.
+	
+		@Basic: The simplest type of mapping to a database column. We can replace 
+
+			@Column(name = "display_name", nullable = false)
+			private String displayName;
+			
+			with
+			
+			@Basic(optional = false)
+			private String displayName;
+	
+	Database indexes:
+	
+		@Entity
+		@Table(name = "wp_users", indexes = {
+			@Index(name = "user_login_key", columnList = "user_login"),
+			@Index(name = "user_nicename", columnList = "user_nicename"),
+			@Index(name = "user_email", columnList = "user_email")
+		})
+		public class User { ... }
+			
+Hibernate Interceptors and Listeners
+
+	- Interceptors and Listeners can be used together. Significant overlap in functionality.
+	
+	- Both will be applied to all entities.
+	
+	- Listeners should be considered stateless. Shared between requests, and should NOT save state.
+	
+	Hibernate Interceptors
+	
+		Hibernate Interceptors are callbacks registered in Hibernate’s internal operations
+	
+			- Can be session scoped or session factory scoped
+			- Can be used for security, auditing, or to alter data
+
+		Implemented via:
+		
+			- org.hibernate.Interceptor interface
+			- org.hibernate.EmptyInterceptor class
+
+	
+		Deprecated in Hibernate 6.x - migrating to default interface methods
+		
+	Hibernate Listeners
+	
+		- Hibernate has an event system.
+		
+		- Hibernate event listeners subscribe to Hibernate Events.
+
+		- Hibernate Events are defined by org.hibernate.event.spi.EventType
+
+		- Roughly 36 Event types defined - SAVE, PRE_INSERT, POST_INSERT, etc
+
+		- Each type defines a default listener, which can be extended to define a custom listener
+	
+		- Once created, the customer Listener must be registered with the Hibernate SessionFactory
+
+	JPA Callbacks
+	
+		- JPA defines 7 Callbacks via annotations 
+		
+		- Callbacks are entity specific and can be: 
+
+			- On an entity method 
+			
+			- Or on a Entity Listener Class
+				
+				- Entity Listeners must:
+					
+					- Be stateless and have no-arg constructor
+					
+					- Methods must return void
+					
+					- Do not use Entity Manage
+
+
+		- Annotations
+		
+			@PrePersist: 	Before persist operation.
+			@PreRemove: 	Before remove operation.
+			@PostPersist: 	After persist operation is completed.
+			@PostRemove: 	After remove operation is completed.
+			@PreUpdate: 	Before update operation.
+			@PostUpdate: 	After update operation.
+			@PostLoad: 		After entity is loaded or refreshed.
