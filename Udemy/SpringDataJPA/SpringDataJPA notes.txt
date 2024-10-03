@@ -1017,3 +1017,174 @@ Hibernate Interceptors and Listeners
 			@PreUpdate: 	Before update operation.
 			@PostUpdate: 	After update operation.
 			@PostLoad: 		After entity is loaded or refreshed.
+			
+	Basically to handle encrypted properties we can use:
+	
+		- Hibernate Interceptors
+		- Hibernate Listeners
+		- JPA Callbacks
+		- JPA Converters
+		
+
+Multiple Datasources
+
+	- Create Datasource Properties
+	- Create Datasource Connections
+	- Create Entity Managers
+	- Create Transaction Managers
+	- Create Repositories
+	
+Spring Data REST
+
+	application.properties
+		
+		spring.data.rest.base-path=/api/v1
+		
+	Customize URL path to http://localhost:8080/api/v1/beer
+
+		@RepositoryRestResource(path = "beer")
+		public interface BeerRepository extends JpaRepository<Beer, UUID> {...}
+		
+	Response
+	
+		{
+			"_embedded": {
+				"beers": [
+					{
+						"beerName": "Mango Bobs",
+						"beerStyle": "ALE",
+						"upc": "0631234200036",
+						"quantityOnHand": 4667,
+						"price": 22.69,
+						"createdDate": "2024-10-03T17:17:40.328+00:00",
+						"lastModifiedDate": "2024-10-03T17:17:40.328+00:00",
+						"_links": {
+							"self": {
+								"href": "http://localhost:8080/api/v1/beer/8612b485-41af-4028-81be-0c9ad47f0cc5"
+							},
+							"beer": {
+								"href": "http://localhost:8080/api/v1/beer/8612b485-41af-4028-81be-0c9ad47f0cc5"
+							}
+						}
+					},
+					...
+				]
+			},
+			"_links": {
+				"first": {
+					"href": "http://localhost:8080/api/v1/beer?page=0&size=20"
+				},
+				"self": {
+					"href": "http://localhost:8080/api/v1/beer"
+				},
+				"next": {
+					"href": "http://localhost:8080/api/v1/beer?page=1&size=20"
+				},
+				"last": {
+					"href": "http://localhost:8080/api/v1/beer?page=1&size=20"
+				},
+				"profile": {
+					"href": "http://localhost:8080/api/v1/profile/beer"
+				},
+				"search": {
+					"href": "http://localhost:8080/api/v1/beer/search"
+				}
+			},
+			"page": {
+				"size": 20,
+				"totalElements": 30,
+				"totalPages": 2,
+				"number": 0
+			}
+		}
+		
+	Emmbeded attribute is "beers" but you can change the resource rel:
+	
+		@RepositoryRestResource(path = "beer", collectionResourceRel = "beer")
+		public interface BeerRepository extends JpaRepository<Beer, UUID> {...}
+		
+	Response:
+	
+		{
+			"_embedded": {
+				"beer": [
+					{
+						"beerName": "Mango Bobs",
+						"beerStyle": "ALE",
+						"upc": "0631234200036",
+						"quantityOnHand": 2103,
+						"price": 23.29,
+						"createdDate": "2024-10-03T17:22:09.982+00:00",
+						"lastModifiedDate": "2024-10-03T17:22:09.982+00:00",
+						"_links": {
+							"self": {
+								"href": "http://localhost:8080/api/v1/beer/8af42db8-5984-4b4b-ba2c-114376ad4499"
+							},
+							"beer": {
+								"href": "http://localhost:8080/api/v1/beer/8af42db8-5984-4b4b-ba2c-114376ad4499"
+							}
+						}
+					}
+				],
+				...
+			}
+			...
+		}
+
+	Version
+	
+		Version attribute will not be visible in the response. It is exposed in a Response Header called ETAG.
+		
+	API profile
+		
+		Semanthics about API operations
+		
+		http://localhost:8080/api/v1/profile/beer
+		
+	
+	POST 
+		
+		http://localhost:8080/api/v1/beer
+		
+		{
+			"beerName": "Mango Bobs",
+			"beerStyle": "ALE",
+			"upc": "0631234200036",
+			"quantityOnHand": 830,
+			"price": 86.00
+		}
+		
+	UPDATE
+	
+		http://localhost:8080/api/v1/beer/6ecb2da5-58c0-4e9a-88f3-8b1adeaf0442
+		
+		{
+			"beerName": "Mango Bobs Update",
+			"beerStyle": "ALE",
+			"upc": "0631234200036",
+			"quantityOnHand": 830,
+			"price": 86.00
+		}
+		
+	DELETE
+	
+		http://localhost:8080/api/v1/beer/6ecb2da5-58c0-4e9a-88f3-8b1adeaf0442
+	
+	
+	Respository Methods:
+		
+		@RepositoryRestResource(path = "beer", collectionResourceRel = "beer")
+		public interface BeerRepository extends JpaRepository<Beer, UUID> {
+
+			Page<Beer> findAllByBeerName(String beerName, Pageable pageable);
+
+			Page<Beer> findAllByBeerStyle(BeerStyleEnum beerStyle, Pageable pageable);
+
+			Page<Beer> findAllByBeerNameAndBeerStyle(String beerName, BeerStyleEnum beerStyle, Pageable pageable);
+
+			Beer findByUpc(String upc);
+		}
+		
+		From Postman:
+			
+			findByUpc: GET http://localhost:8080/api/v1/beer/search/findByUpc?upc=0631234200036
