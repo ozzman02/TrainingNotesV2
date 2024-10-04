@@ -1,0 +1,280 @@
+Kotlin for Java Developers
+
+Parameter hints
+
+	Basically from Intellij you can enable parameter hints. In this case height and width are parameter hints but
+	if another developer uses a different IDE they will not be visible for them because parameter hints are not code.
+	
+	If you disable parameter hints, you can still pass height and width but that means they are going to be code that 
+	the compiler will read.
+	
+	Example:
+	
+		fun main(args: Array<String>) {
+			area(height = 20, width = 10)
+		}
+	
+		fun area(width: Int, height: Int) {
+			println("width = $width and height = $height")
+		}
+		
+What is Kotlin
+	
+	JetBrains decided to create its own language to overcome the challenges of working with a large Java code base.
+	
+		- Runs anywhere the JVM can run.
+	
+		- Statically typed.
+	
+		- Objected oriented.
+	
+		- Functional programming.
+	
+		- Conciseness.
+	
+		- Safety.
+	
+		- Pragmatism.
+		
+		- Interoperability.
+		
+	
+IDEA's Java to Kotlin Converter
+
+	Copy the java code into a Kotlin file and follow the IDE instructions.
+
+	
+Kotlin Standard Library
+
+	https://kotlinlang.org/api/latest/jvm/stdlib/
+	
+	Default imports:
+		
+		- kotlin.*
+		- kotlin.annotation.*
+		- kotlin.collections.*
+		- kotlin.comparisons.*
+		- kotlin.io.*
+		- kotlin.ranges.*
+		- kotlin.sequences.*
+		- kotlin.text.*
+		- kotlin.jvm.* (JVM only)
+		- java.lang.* (JVM only)
+		
+Variable Declarations
+
+	var -> mutable
+	val -> inmmutable
+	
+	fun main(args: Array<String>) {
+
+		val number = 25
+		val number2: Int = 25
+		val number3: Short = 25
+		val number4 = 100;
+
+		val employee1 = Employee("Lynn Jones", 500)
+		employee1.name = "Lynn Smith"
+
+		val employee2: Employee
+
+		if (number < number4) {
+			employee2 = Employee("Jane Smith", 400)
+		} else {
+			employee2 = Employee("Mike Watson", 150)
+		}
+		
+		val names = arrayListOf("John", "Jane", "Mary")
+		println(names[1])
+		
+	}
+
+	class Employee(var name: String, val id: Int) {
+
+	}
+	
+Type Aliases
+	
+	package declarations
+
+	typealias EmployeeSet = Set<Employee>
+
+	fun main(args: Array<String>) {
+		val employees: EmployeeSet
+	}
+
+	class Employee(var name: String, val id: Int) {
+	}
+	
+Equality
+
+	fun main(args: Array<String>) {
+
+		val employee1 = Employee("Mary", 1)
+		val employee2 = Employee("John", 2)
+		val employee3 = Employee("John", 2)
+
+		// For structural equality we use == instead of equals method
+
+		println(employee1 == employee2)         // In Kotlin -> false   In Java -> false
+		println(employee2 == employee3)         // In Kotlin -> true    In Java -> false
+		println(employee1.equals(employee2))    // In Kotlin -> false   In Java -> false
+		println(employee2.equals(employee3))    // In Kotlin -> true    In Java -> true
+
+		// For referential equality we use ===
+
+		println(employee1 === employee2)   // false
+		println(employee2 === employee3)   // false
+
+		println(employee1 != employee2)    // true
+		println(employee3 !== employee3)   // false
+	}
+
+	class Employee(var name: String, val id: Int) {
+
+		override fun equals(other: Any?): Boolean {
+			if (other is Employee) {
+				return name == other.name && id == other.id
+			}
+			return false
+		}
+
+		override fun hashCode(): Int {
+			var result = name.hashCode()
+			result = 31 * result + id
+			return result
+		}
+	}
+	
+Bit Operators and Smart Casting
+	
+	package declarations
+
+
+	fun main(args: Array<String>) {
+
+		val employee1 = Employee("Fred", 1)
+		val employee2 = Employee("John", 1)
+
+		val x = 0x00101101
+		val y = 0x11011011
+
+		val something: Any = employee1
+		val something2: Any = employee2;
+
+		if (something is Employee) {
+			val newEmployee = something as Employee;
+			println(newEmployee.name)
+		}
+
+		if (something2 is Employee) {
+			println(something2.name)
+		}
+
+	}
+
+	class Employee(var name: String, val id: Int) {
+
+		override fun equals(other: Any?): Boolean {
+			if (other is Employee) {
+				return name == other.name && id == other.id
+			}
+			return false
+		}
+
+		override fun hashCode(): Int {
+			var result = name.hashCode()
+			result = 31 * result + id
+			return result
+		}
+	}
+	
+String templates
+
+	package declarations
+
+	fun main(args: Array<String>) {
+
+		val employee1 = Employee("Fred", 1)
+		val employee2 = Employee("John", 2)
+
+		println(employee1)
+
+		val change = 4.22
+
+		println("To show the value of change, we use \$change")
+		println("To show the value of change, we use $change")
+		println("To show the value of change, we use $$change")
+		println("Your change is $")
+
+		val numerator = 10.99
+		val denominator = 20.00
+
+		println("The value of $numerator divided by $denominator is ${numerator / denominator}")
+
+		println("The employee's id is ${employee1.id}")
+
+	}
+
+	class Employee(var name: String, val id: Int) {
+
+		override fun toString(): String {
+			return "Employee(name=$name, id=$id)"
+		}
+
+	}
+	
+Raw Strings
+
+	fun main(args: Array<String>) {
+    
+		val numerator = 10.99
+		val denominator = 20.00
+
+		println("The value of $numerator divided by $denominator is ${numerator / denominator}")
+		
+		val filePath = """c:\somedir\somedir2"""
+
+		val longText = """
+			Test Test Test Test Test Test Test Test Test Test Test
+			Test Test Test Test Test 
+			Test Test
+			Test
+		""".trimIndent()
+
+		val longText2 = """
+			*Test Test Test Test Test Test Test Test Test Test Test
+			*Test Test Test Test Test 
+			*Test Test
+			*Test
+		""".trimMargin("*")
+
+		val otherTest = "Other test"
+
+		// default is |
+		val longText3 = """$otherTest
+			|$otherTest Test Test Test Test Test Test Test Test Test Test
+			|$otherTest Test Test Test Test 
+			|$otherTest Test
+			|$otherTest
+		""".trimMargin()
+
+
+
+		println(filePath)
+
+		println(longText)
+
+		println(longText2)
+
+		println(longText3)
+
+	}
+	
+REPL (Read Eval Print Loop)
+
+	Tools -> Kotlin -> Kotlin RELP
+	
+Data Types and Null Reference Handling
+
+	
