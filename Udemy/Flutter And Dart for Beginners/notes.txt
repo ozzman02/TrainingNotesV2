@@ -1,0 +1,175 @@
+Flutter, Dart and Java
+
+Installation
+
+	https://docs.flutter.dev/get-started/install/windows/mobile
+	
+Commands
+
+	flutter doctor
+	
+	flutter --version
+
+Create new app
+
+	flutter create {project name}
+	
+	code {project name}
+	
+	
+Widgets
+
+	Are building blocks of flutter. We can have Stateless Widgets and StateFul Widgets
+	
+	https://docs.flutter.dev/ui/widgets
+
+
+Project structure
+	
+	android folder: stores native android code
+	
+	web: web files
+	
+	pubspec.yaml: project configuration (add a package or plugin)
+	
+	lib: (all dart code)
+		
+		main.dart
+
+Visual Studio Run and Debug
+
+	The application will be launched as windows app but we can connect our mobile emulators or run it on chrome as web app.
+
+
+
+The Role of Java in Flutter
+	
+	- Android App Development: 
+		
+		- Flutter uses a Dart framework to build the UI. 
+		- For Android platform-specific functionalities and plugins, Java (or Kotlin) is necessary. 
+		- Java facilitates communication between the Dart codebase and native Android modules.
+		
+Try Dart in the browser
+
+	Example 1:
+
+		void main() {
+	  
+		  String name = 'Oscar';
+		  
+		  int marks = 20;
+		  
+		  bool pass = false;
+		  
+		  print("Hello $name");
+		  
+		  print("Marks: $marks");
+		  
+		  print("Pass: $pass");
+		}
+	
+	Example 2: 
+		
+		void main() {
+		  getInfo("Oscar", 1);
+		}
+
+		getInfo (String name, int rollNo) {
+		  print(name);
+		  print(rollNo);
+		}
+		
+	Example 3:
+	
+		void main() {
+		  getInfo(rollNo: 24);
+		}
+
+		getInfo ({String name = "Adi", required int rollNo}) {
+		  print(name);
+		  print(rollNo);
+		}
+		
+	Example 4:
+	
+		void main() {
+		  print(getInfo(rollNo: 24));
+		}
+
+		String getInfo ({String name = "Adi", required int rollNo}) {
+		  print(name);
+		  print(rollNo);
+		  return "Done";
+		}
+	
+	Example 5:
+	
+		void main() {
+		  int num = 6;
+		  if (num > 5) {
+			print("Hello World");
+		  } else if (num > 3) { 
+			print("Hello");
+		  } else {
+			print('Else');
+		  }
+		}
+		
+	Example 6:
+	
+		void main() {
+		  int num = 4;
+		  
+		  switch(num) {
+			case 1:
+			  print("Hello");
+			  break;
+			case 2:
+			  print("World");
+			  break;
+			default:
+			  print("Done");
+		  }
+		}
+	
+	Example 7:
+	
+		void main() {
+
+			for (var i = 0; i < 5; i++) {
+				print("Flutter is love ! ");  
+			} 
+		}
+
+	Example 8:
+		
+		void main() {
+
+		  int n = 0;
+		 
+		  while (n < 5) {
+			if (n == 3) {
+			  break;
+			}
+			print("Flutter is awesome! $n");
+			n++;
+		  }
+		  
+		  
+		}
+	
+	Example 9:
+	
+		void main() {
+
+		  int n = 0;
+		  
+		  do {
+			print("Hello World $n");
+			n++;
+		  } while (n < 5);
+		  
+		  
+		}
+
