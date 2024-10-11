@@ -1,0 +1,67 @@
+Kotlin's Access Modifiers
+
+	Access Modifiers	Kotlin								Java
+	------------------------------------------------------------------------------
+	private				Visible within the same file		Can't be used
+	
+	protected			Can't be used						Can't be used
+	
+	public				Visible everywhere					Visible everywhere
+	
+	internal			Visible within the same module		N/A
+	
+
+Declaring Classes and Using Constructors
+
+	Primary constructor
+	
+		    	
+		class Employee constructor(firstName: String) {
+			
+			val firstName: String
+			
+			init {
+				this.firstName = firstName
+			}
+		}
+			
+		class Employee constructor(firstName: String) {
+
+			val firstName: String = firstName
+		}
+		
+		class Employee constructor(val firstName: String) { }
+		
+		class Employee (val firstName: String) {}
+		
+		class Employee protected constructor(val firstName: String) {}
+	
+	
+	Secondary constructor
+	
+		class Employee(val firstName: String) {
+
+			var fullTime: Boolean = true
+
+			constructor(firstName: String, fullTime: Boolean): this(firstName) {
+				this.fullTime = fullTime
+			}
+		}
+		
+	Instead of using a secondary constructor you can use a primary constructor
+		
+		class Employee(val firstName: String, var fullTime: Boolean = true) {
+		}
+		
+	You can have a class without a primary constructor
+	
+		class Demo {
+
+			val dummy: String
+
+			constructor() { dummy = "Dummy" }
+		}
+		
+		
+		
+		
