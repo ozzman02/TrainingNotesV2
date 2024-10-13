@@ -1,5 +1,6 @@
 Kotlin for Java Developers
 
+
 Parameter hints
 
 	Basically from Intellij you can enable parameter hints. In this case height and width are parameter hints but
@@ -486,5 +487,12 @@ Null References
 	-----------------------------------------------------------------------------------
 	Arrays
 	
+	// all elements are initialize to null
+    val nullableInts = arrayOfNulls<Int?>(5)
+
+    println(nullableInts.contentToString())
+
+    println(nullableInts[3].toString())
 	
+
 	
