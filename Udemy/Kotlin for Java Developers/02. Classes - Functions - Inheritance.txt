@@ -496,3 +496,4 @@ Enums
 	
 Imports in Kotlin
 
+	Package structure does not have to match the directory structure.
