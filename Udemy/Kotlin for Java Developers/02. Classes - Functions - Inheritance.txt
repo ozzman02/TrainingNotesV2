@@ -190,4 +190,309 @@ Functions Basics
 		data class Car(val color: String, val model: String, val year: Int) {}
 
 			
+Extension Functions
+	
+	class Utils {
+
+		fun upperFirstAndLast(str: String): String {
+			val upperFirst = str.substring(0, 1).uppercase() + str.substring(1)
+			return upperFirst.substring(0, upperFirst.length - 1) +
+					upperFirst.substring(upperFirst.length - 1, upperFirst.length).uppercase()
+		}
+
+	}
+	
+	fun main() {
+	
+		println(Utils().upperFirstAndLast("this is al in lowercase"))
+		
+		val s = "this is all in lower case again"
+		
+		println(s.upperFirstAndLast())
+		
+		
+	
+	}
+	
+	/*
+		String is the receiver type. This is some sort of illusion since we are associating
+		our function with the String class.
+	*/
+	fun String.upperFirstAndLast(): String {
+		val upperFirst = this.substring(0, 1).uppercase() + this.substring(1)
+		return upperFirst.substring(0, upperFirst.length - 1) +
+				upperFirst.substring(upperFirst.length - 1, upperFirst.length).uppercase()
+	}
+		
+	// We can remove this
+	fun String.upperFirstAndLast(): String {
+		val upperFirst = substring(0, 1).uppercase() + substring(1)
+		return upperFirst.substring(0, upperFirst.length - 1) +
+				upperFirst.substring(upperFirst.length - 1, upperFirst.length).uppercase()
+	}
+
+Inline Functions
+
+	The compile will check if a function might need to be inlined. It provides better performance.
+	In this case is not needed but it has been used as an example.
+
+
+	inline fun labelMultiply(operand1: Int, 
+							 operand2: Int,
+							 label: String = "The answer is:"): String = "$label ${operand1 * operand2}"
+
+	
+Inheritance
+
+	We can use the open keyword. 
+
+		open class Printer(val modelName: String) {}
+
+		class LaserPrinter(modelName: String): Printer(modelName) {}
+		
+	Using open with abstract classes is redundant.
+	
+		fun main() {
+			val laserPrinter = LaserPrinter("Brother 1234")
+			laserPrinter.printModel()
+			println(laserPrinter.bestSellingPrice())
+		}
+
+		abstract class Printer(val modelName: String) {
+
+			open fun printModel() = println("The model name of this printer is $modelName")
+
+			abstract fun bestSellingPrice(): Double
+
+		}
+
+		class LaserPrinter(modelName: String): Printer(modelName) {
+
+			override fun printModel() = println("The model name of this laser printer is $modelName")
+
+			override fun bestSellingPrice(): Double = 129.99
+
+		}
+	
+	More complete examples:
+	
+		package inheritance
+
+		fun main() {
+			val laserPrinter = LaserPrinter("Brother 1234", 15)
+			laserPrinter.printModel()
+			println(laserPrinter.bestSellingPrice())
+
+			SomethingElse("whatever")
+		}
+
+		abstract class Printer(val modelName: String) {
+
+			open fun printModel() = println("The model name of this printer is $modelName")
+
+			abstract fun bestSellingPrice(): Double
+
+		}
+
+		open class LaserPrinter(modelName: String, ppm: Int): Printer(modelName) {
+
+			final override fun printModel() = println("The model name of this laser printer is $modelName")
+
+			override fun bestSellingPrice(): Double = 129.99
+
+		}
+
+		class SpecialLasePrinter(modelName: String, ppm: Int): LaserPrinter(modelName, ppm) {
+
+		}
+
+		open class Something {
+
+			val someProperty: String
+
+			constructor(someParameter: String) {
+				someProperty = someParameter
+				println("I'm in the parent's constructor")
+			}
+
+		}
+
+		class SomethingElse: Something {
+			constructor(someOtherParameter: String): super(someOtherParameter) {
+				println("I'm in the child's constructor")
+			}
+		}
+
+		// data classes can't be extended
+		data class DataClass(val number: Int) {
+
+		}
+		
+Interfaces
+	
+	interface MyInterface {
+
+		val number: Int
+
+		val number2: Int
+			get() = number * 100
+
+		fun myFunction(str: String): String
+
+	}
+
+	interface MySubInterface: MyInterface {
+		fun mySubFunction(num: Int): String
+	}
+	
+	open class Something: MySubInterface {
+
+		val someProperty: String
+
+		override val number: Int = 25
+
+		constructor(someParameter: String) {
+			someProperty = someParameter
+			println("I'm in the parent's constructor")
+		}
+
+		override fun mySubFunction(num: Int): String {
+			TODO("Not yet implemented")
+		}
+
+		override fun myFunction(str: String): String {
+			TODO("Not yet implemented")
+		}
+
+	}
 			
+Singletons
+
+	package inheritance
+
+	import java.time.Year
+
+	fun main() {
+		println(CompanyCommunications.getTagLine())
+		println(CompanyCommunications.getCopyrightLine())
+	}
+
+	object CompanyCommunications {
+
+		val currentYear = Year.now().value
+
+		fun getTagLine() = "Our company rocks!"
+
+		fun getCopyrightLine() = "Copyright \u00A9 $currentYear Our Company. All rights reserved."
+		
+	}
+	
+Companion Objects
+	
+	In Kotlin, a companion object is a special object which is bound to (i.e. is a part of) a class definition. 
+	It can be accessed using the name of the enclosing class.
+	
+		package inheritance
+
+		import java.time.Year
+
+		fun main() {
+			
+			println(CompanyCommunications.getTagLine())
+			println(CompanyCommunications.getCopyrightLine())
+			println(SomeClass.Companion.accessPrivateVar())
+
+			// Companion can be removed that's why we write SomeClass.justAssign("this is the string as it is")
+			val someClass1 = SomeClass.justAssign("this is the string as it is")
+			val someClass2 = SomeClass.upperOrLowerCase("this isn't the string as it is", false)
+
+			println(someClass1.someString)
+			println(someClass2.someString)
+
+		}
+
+		object CompanyCommunications {
+
+			val currentYear = Year.now().value
+
+			fun getTagLine() = "Our company rocks!"
+
+			fun getCopyrightLine() = "Copyright \u00A9 $currentYear Our Company. All rights reserved."
+
+		}
+
+		class SomeClass private constructor(val someString: String) {
+
+			companion object {
+
+				private var privateVar = 6
+
+				fun accessPrivateVar() = "I'm accessing privateVar: $privateVar"
+
+				fun justAssign(str: String) = SomeClass(str)
+
+				fun upperOrLowerCase(str: String, lowercase: Boolean): SomeClass {
+					if (lowercase) {
+						return SomeClass(str.lowercase())
+					} else {
+						return SomeClass(str.uppercase())
+					}
+				}
+
+			}
+
+		}
+
+Anonymous Objects
+	
+	interface SomeInterface {
+		fun mustImplement(num: Int): String
+	}
+
+	fun wantsSomeInterface(si: SomeInterface) {
+		println("Printing from wantsSomeInterface ${si.mustImplement(22)}")
+	}
+	
+	fun main() {
+
+		var thisIsMutable = 45
+
+		wantsSomeInterface(object: SomeInterface {
+			override fun mustImplement(num: Int): String {
+				thisIsMutable++
+				return "This is from mustImplement: ${num * 100}"
+			}
+		})
+
+		println(thisIsMutable)
+
+	}
+	
+Object keyword
+
+	Basically we have seen three cases where we can use the object keyword:
+	
+	- Singletons
+	- Companion objects
+	- Anonymous instances
+	
+Enums
+	
+	enum class Department(val fullName: String, val numEmployees: Int) {
+		
+		HR("Human Resources", 5),
+		IT("Information Technology", 10),
+		ACCOUNTING("Accounting", 3),
+		SALES("Sales", 20);
+
+		fun getDepartmentInfo() = "The $fullName department has $numEmployees employees"
+	}
+	
+	fun main() {
+
+		println(Department.ACCOUNTING.getDepartmentInfo())
+
+	}
+	
+Imports in Kotlin
+

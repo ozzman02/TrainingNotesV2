@@ -39,6 +39,8 @@ What is Kotlin
 		
 		- Interoperability.
 		
+	Everything in Kotlin is public and final by default.
+		
 	
 IDEA's Java to Kotlin Converter
 
