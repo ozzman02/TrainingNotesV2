@@ -1,0 +1,8 @@
+Lambda Expressions, Collections and Generics
+
+
+Lambda Expressions
+
+	The rule is that you can move a lambda outside the parentheses when it's the last parameter in the function call.
+	
+	
