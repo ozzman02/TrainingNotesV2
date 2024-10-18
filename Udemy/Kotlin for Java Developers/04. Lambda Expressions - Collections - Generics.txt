@@ -5,4 +5,164 @@ Lambda Expressions
 
 	The rule is that you can move a lambda outside the parentheses when it's the last parameter in the function call.
 	
+	fun main() {
+
+		run { println("I'm in a lambda!") }
+
+		val employees = listOf(
+			Employee("John", "Smith", 2012),
+			Employee("Jane", "Wilson", 2015),
+			Employee("Mary", "Johnson", 2010),
+			Employee("Mike", "Jones", 2002)
+		)
+
+		println(employees.minBy { e: Employee -> e.startYear })
+		println(employees.minBy { e -> e.startYear })
+		println(employees.minBy { it.startYear })
+		println(employees.minBy(Employee::startYear))
+
+		println()
+
+		var num = 10
+		run {
+			num += 15
+			println(num)
+		}
+
+		println()
+
+		run(::topLevel)
+
+		println()
+
+		println(countTo100())
+		println(countTo100With())
+		println(countTo100Apply())
+
+		println()
+
+		findByLastName(employees, "Wilson")
+		findByLastName(employees, "Smithson")
+
+		println()
+
+		"Some String".apply someString@ {
+			"Another String".apply {
+				println(lowercase())
+				println(this@someString.uppercase())
+			}
+		}
+	}
+
+	fun topLevel() = println("I'm in a function")
+
+	fun useParameter(employees: List<Employee>, num: Int) {
+		employees.forEach {
+			println(it.firstName)
+			println(num)
+		}
+	}
+
+	fun countTo100(): String {
+		val numbers = StringBuilder()
+		for (i in 1..99) {
+			numbers.append(i)
+			numbers.append(", ")
+		}
+		numbers.append(100)
+		return numbers.toString()
+	}
+
+	fun countTo100With() = with(StringBuilder()) {
+		for (i in 1..99) {
+			append(i)
+			append(", ")
+		}
+		append(100)
+		toString()
+	}
+
+	fun countTo100Apply() = StringBuilder().apply {
+		for (i in 1..99) {
+			append(i)
+			append(", ")
+		}
+		append(100)
+	}.toString()
+
+	fun findByLastName(employees: List<Employee>, lastName: String) {
+		// return from the lambda not from the function
+		employees.forEach returnBlock@{
+			if (it.lastName == lastName) {
+				println("Yes, there's an employee with the last name $lastName")
+				return@returnBlock
+			}
+		}
+		// this line will be executed
+		println("No, there's no employee with the last name $lastName")
+	}
+
+	data class Employee(val firstName: String, val lastName: String, val startYear: Int) {
+
+	}
 	
+Collections
+	
+	- Kotlin has the notion of mutable and immutable collections. You can operate on an immutable collection.
+
+	- You can add and remove items when you call some functions but the result will be a brand new instance.
+	
+	- So, when you're working with an immutable instance the instance itself is never changed.
+	
+	- Now all collections take a generic type and all the read only interfaces are covariant.
+	
+	- For now all you have to understand that because all the read only interfaces are covariant that means 
+	  you can do something like assign a list of big decimal to a list of any because when something is covariant you
+	can treat a class like one of its parent classes.
+	
+	
+	fun main() {
+		val strings = listOf("spring", "summer", "fall", "winter")
+		println(strings.javaClass) // class java.util.Arrays$ArrayList -> Immutable
+		println(strings)
+
+		val emptyList = emptyList<String>()
+		println(emptyList.javaClass) // class kotlin.collections.EmptyList
+
+		val emptyIntList: List<Int> = emptyList()
+
+		val strings1 = listOf<String>() // Immutable list
+
+		if (!emptyList.isEmpty()) {
+			println(emptyList[0])
+		}
+
+		val notNullList = listOfNotNull("hello", null, "goodbye")
+		println(notNullList) // [hello, goodbye]
+
+		val arrayList = arrayListOf(1, 2, 4)
+		println(arrayList.javaClass) // class java.util.ArrayList -> Mutable
+
+		val mutableList = mutableListOf<Int>(1, 2, 3)
+		println(mutableList.javaClass) // class java.util.ArrayList -> Mutable
+		println(mutableList[2])
+		mutableList[1] = 20
+		println(mutableList)
+
+
+		/*** Convert array to list begin ***/
+		val array = arrayOf("black", "white", "green")
+		val colorList = listOf(array)
+		println(colorList) // [[Ljava.lang.String;@4edde6e5] -> List with one element, the array
+
+		val colorList2 = listOf(*array)
+		println(colorList2) // [black, white, green]
+
+		val colorList3 = array.toList()
+		println(colorList3) // better way ! ->  [black, white, green]
+
+		val ints = intArrayOf(1, 2, 3)
+		println(ints.toList()) // [1, 2, 3]
+		/*** Convert array to list ends ***/
+
+	}
