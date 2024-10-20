@@ -1,0 +1,68 @@
+File I/O
+
+	Text Files
+	
+		package textfiles
+
+		import java.io.File
+
+		fun main() {
+
+			/* Reads entire file. The use function closes the resource in this case, the reader. */
+			val lines = File("testfile.txt").reader().use { it.readText() }
+			println(lines)
+
+			val lines2 = File("testfile.txt").bufferedReader().use { it.readText() }
+			println(lines2)
+
+			val lines3 = File("testfile.txt").readText()
+			println(lines3)
+
+			/* Reads file line by line and close the resource */
+			File("testfile.txt").reader().forEachLine { println(it) }
+
+		}
+		
+	Binary Files
+	
+		package binaryfiles
+
+		import java.io.DataInputStream
+		import java.io.EOFException
+		import java.io.FileInputStream
+
+		fun main() {
+
+			val di = DataInputStream(FileInputStream("testfile.bin"))
+			var si: String
+
+			try {
+				while (true) {
+					si = di.readUTF()
+					println(si)
+				}
+			} catch (_: EOFException) {
+
+			}
+
+		}
+		
+	Walk file tree
+		
+		package walkfiletree
+
+		import java.io.File
+
+		fun main() {
+			File(".").walkTopDown().forEach { println(it) }
+
+			println()
+
+			File(".").walkTopDown()
+				.filter { it.name.endsWith(".kt") }
+				.forEach { println(it) }
+
+		}
+		
+		
+		

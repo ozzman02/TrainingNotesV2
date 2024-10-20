@@ -1,0 +1,218 @@
+Java Interoperability
+
+Call Java from Kotlin
+
+	javacode
+		
+		package javacode;
+
+
+		import org.jetbrains.annotations.Nullable;
+
+		public class Car {
+
+			public static int x = 5;
+
+			private String color;
+
+			private String model;
+
+			private int year;
+
+			private Object anObject;
+
+			public Car(String color, String model, int year) {
+				this.color = color;
+				this.model = model;
+				this.year = year;
+			}
+
+			public void demoMethod(Runnable r) {
+				new Thread(r).start();
+			}
+
+			public String getColor() {
+				return color;
+			}
+
+			public void setColor(@Nullable String color) {
+				this.color = color;
+			}
+
+			public @Nullable String getModel() {
+				return model;
+			}
+
+			public void setModel(String model) {
+				this.model = model;
+			}
+
+			public int getYear() {
+				return year;
+			}
+
+			public void setYear(int year) {
+				this.year = year;
+			}
+
+			public Object getAnObject() {
+				return anObject;
+			}
+
+			public void setAnObject(Object anObject) {
+				this.anObject = anObject;
+			}
+
+			public void variableMethod(int num, String... strings) {
+				for (String string : strings) {
+					System.out.println(string);
+				}
+			}
+
+			public void wantsIntArray(int[] theArray) {
+				for (int i : theArray) {
+					System.out.println("Here's the int: " + i);
+				}
+			}
+
+			public static String xString() {
+				return "This is x: " + ++x;
+			}
+
+			@Override
+			public String toString() {
+				return "Car{" +
+						"color='" + color + '\'' +
+						", model='" + model + '\'' +
+						", year=" + year +
+						", anObject=" + anObject +
+						'}';
+			}
+
+		}
+
+	kotlin code
+	
+		package calljava
+
+		import javacode.Car
+
+		fun main() {
+
+			val car = Car("blue", "Ford", 2015)
+
+			car.color = "green" // using setter
+
+			println(car)
+
+			car.variableMethod(5, "hello", "goodbye")
+
+			val strings = arrayOf("hello", "goodbye")
+
+			car.variableMethod(10, *strings)
+
+			car.wantsIntArray(arrayOf(1, 2, 3).toIntArray())
+			car.wantsIntArray(intArrayOf(1, 2, 3))
+
+			// (car.anObject as java.lang.Object).notify()
+			// car.anObject.javaClass
+
+			println("x = ${Car.x}")
+			println(Car.xString())
+
+			car.demoMethod { println("I'm in a thread!") }
+
+		}
+	
+Call Kotlin from Java
+
+	javacode
+	
+		package javacode;
+
+
+		import kotlincode.Car;
+		import kotlincode.SingletonObj;
+		import kotlincode.StaticCar;
+
+		import java.io.IOException;
+
+		public class Main {
+
+			public static void main(String[] args) {
+
+				StaticCar.topLevel();
+				StaticCar.print("Print this Java string");
+				Car car = new Car("blue", "BMW", 2011, true);
+				System.out.println(car.getColor());
+				System.out.println(car.model);
+				System.out.println(car.isAutomatic());
+
+				Car.Companion.carComp();
+				Car.carComp();
+				System.out.println("isAuto = " + Car.isAuto);
+				System.out.println("constant = " + Car.constant);
+
+				SingletonObj.INSTANCE.doSomething();
+				SingletonObj.doSomething();
+
+				car.printMe("null");
+				try {
+					StaticCar.doIO();
+				} catch (IOException e) {
+					System.out.println("IOException !");
+				}
+
+				StaticCar.defaultArgs("The number is:");
+				
+			}
+
+		}
+		
+	kotlincode
+		
+		@file:JvmName("StaticCar")
+
+		package kotlincode
+
+		import java.io.IOException
+		import kotlin.jvm.Throws
+
+		fun main() {
+			"Print this".print()
+			Car.carComp()
+		}
+
+		fun topLevel() = println("I'm in the Car file!")
+
+		@JvmOverloads fun defaultArgs(str: String, num: Int = 25) {
+			println("Printing $str $num")
+		}
+
+		@Throws(IOException::class)
+		fun doIO() { throw IOException() }
+
+		object SingletonObj {
+			@JvmStatic fun doSomething() = println("I'm doing something in the singleton object")
+		}
+
+		class Car(val color: String, @JvmField val model: String, val year: Int, val isAutomatic: Boolean) {
+
+			companion object {
+				const val constant = 25
+				@JvmField val isAuto = false
+				@JvmStatic fun carComp() = println("I'm in Car's companion object")
+			}
+
+			fun printMe(text: String) {
+				println("I don't expect a null value: $text")
+			}
+
+		}
+
+		fun String.print() {
+			println(this)
+		}
+
+
+
