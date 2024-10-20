@@ -107,62 +107,676 @@ Lambda Expressions
 	}
 	
 Collections
-	
-	- Kotlin has the notion of mutable and immutable collections. You can operate on an immutable collection.
 
-	- You can add and remove items when you call some functions but the result will be a brand new instance.
-	
-	- So, when you're working with an immutable instance the instance itself is never changed.
-	
-	- Now all collections take a generic type and all the read only interfaces are covariant.
-	
-	- For now all you have to understand that because all the read only interfaces are covariant that means 
-	  you can do something like assign a list of big decimal to a list of any because when something is covariant you
-	can treat a class like one of its parent classes.
+	List
 	
 	
-	fun main() {
-		val strings = listOf("spring", "summer", "fall", "winter")
-		println(strings.javaClass) // class java.util.Arrays$ArrayList -> Immutable
-		println(strings)
+		- Kotlin has the notion of mutable and immutable collections. You can operate on an immutable collection.
 
-		val emptyList = emptyList<String>()
-		println(emptyList.javaClass) // class kotlin.collections.EmptyList
+		- You can add and remove items when you call some functions but the result will be a brand new instance.
+	
+		- So, when you're working with an immutable instance the instance itself is never changed.
+	
+		- Now all collections take a generic type and all the read only interfaces are covariant.
+	
+		- For now all you have to understand that because all the read only interfaces are covariant that means 
+		  you can do something like assign a list of big decimal to a list of any because when something is covariant you
+		  can treat a class like one of its parent classes.
+	
+	
+		fun main() {
+			val strings = listOf("spring", "summer", "fall", "winter")
+			println(strings.javaClass) // class java.util.Arrays$ArrayList -> Immutable
+			println(strings)
 
-		val emptyIntList: List<Int> = emptyList()
+			val emptyList = emptyList<String>()
+			println(emptyList.javaClass) // class kotlin.collections.EmptyList
 
-		val strings1 = listOf<String>() // Immutable list
+			val emptyIntList: List<Int> = emptyList()
 
-		if (!emptyList.isEmpty()) {
-			println(emptyList[0])
+			val strings1 = listOf<String>() // Immutable list
+
+			if (!emptyList.isEmpty()) {
+				println(emptyList[0])
+			}
+
+			val notNullList = listOfNotNull("hello", null, "goodbye")
+			println(notNullList) // [hello, goodbye]
+
+			val arrayList = arrayListOf(1, 2, 4)
+			println(arrayList.javaClass) // class java.util.ArrayList -> Mutable
+
+			val mutableList = mutableListOf<Int>(1, 2, 3)
+			println(mutableList.javaClass) // class java.util.ArrayList -> Mutable
+			println(mutableList[2])
+			mutableList[1] = 20
+			println(mutableList)
+
+
+			/*** Convert array to list begin ***/
+			val array = arrayOf("black", "white", "green")
+			val colorList = listOf(array)
+			println(colorList) // [[Ljava.lang.String;@4edde6e5] -> List with one element, the array
+
+			val colorList2 = listOf(*array)
+			println(colorList2) // [black, white, green]
+
+			val colorList3 = array.toList()
+			println(colorList3) // better way ! ->  [black, white, green]
+
+			val ints = intArrayOf(1, 2, 3)
+			println(ints.toList()) // [1, 2, 3]
+			/*** Convert array to list ends ***/
+
+		}
+		
+	Functions
+	
+		package functions
+
+		fun main() {
+			val strings = listOf("spring", "summer", "fall", "winter", "summer")
+			val colorList = listOf("black", "white", "red", "red")
+
+			val mutableSeasons = strings.toMutableList()
+			mutableSeasons.add("other season")
+			println(mutableSeasons)
+
+			println(strings.last())
+
+			println(strings.reversed())
+
+			println(strings.getOrNull(5))
+
+			val ints = listOf(1, 2, 3, 4, 5)
+
+			println(ints.max())
+
+			// Zip create pair elements, Pair is a class
+			println(colorList.zip(strings)) // [(black, spring), (white, summer), (red, fall)]
+
+			val mergedLists = listOf(colorList, strings)
+			println(mergedLists) // [[black, white, red], [spring, summer, fall, winter]]
+
+			val combinedList = colorList + strings
+			println(combinedList) // [black, white, red, spring, summer, fall, winter]
+
+			val noDuplicatesList = colorList.union(strings)
+			println(noDuplicatesList) // [black, white, red, spring, summer, fall, winter]
+
+			val noDuplicateColors = colorList.distinct()
+			println(noDuplicateColors) // [black, white, red]
+		}
+		
+		Collection Stuff
+			
+			package functions.stuff
+
+			fun main() {
+
+				val setInts = setOf(10, 15, 19, 5, 3, -22)
+
+				println(setInts.filter { it % 2 != 0 }) // [15, 19, 5, 3]
+
+				val immutableMap = mapOf(
+					1 to Car("green", "Toyota", 2015),
+					2 to Car("red", "Ford", 2016),
+					3 to Car("silver", "Honda", 2013),
+					17 to Car("red", "BMW", 2015),
+					8 to Car("green", "Ford", 2010)
+				)
+
+				val cars = immutableMap.values
+
+				// {1=Car(color=green, model=Toyota, year=2015), 2=Car(color=red, model=Ford, year=2016), 3=Car(color=silver, model=Honda, year=2013), 8=Car(color=green, model=Ford, year=2010), 17=Car(color=red, model=BMW, year=2015)}
+				println(immutableMap.toSortedMap())
+
+				// first item in the list that matches the predicate -> Car(color=green, model=Toyota, year=2015)
+				println(cars.find { it.year > 2014 })
+
+				// {green=[Car(color=green, model=Toyota, year=2015), Car(color=green, model=Ford, year=2010)], red=[Car(color=red, model=Ford, year=2016), Car(color=red, model=BMW, year=2015)], silver=[Car(color=silver, model=Honda, year=2013)]}
+				println(cars.groupBy { it.color })
+
+				// [Car(color=green, model=Ford, year=2010), Car(color=silver, model=Honda, year=2013), Car(color=green, model=Toyota, year=2015), Car(color=red, model=BMW, year=2015), Car(color=red, model=Ford, year=2016)]
+				println(cars.sortedBy { it.year })
+
+				println(immutableMap.all { it.value.year > 2014 }) // false
+
+				println(immutableMap.any { it.value.year > 2014 }) // true
+
+				println(immutableMap.count { it.value.year > 2014 }) // 3
+
+				println(immutableMap.filter { it.value.model == "Ford" }
+					.map { it.value.color }) // [red, green]
+
+				println(immutableMap.map { it.value.year }) // [2015, 2016, 2013]
+
+				println(immutableMap.filter { it.value.year == 2016 }) // {2=Car(color=red, model=Ford, year=2016)}
+
+				val mutableMap = mutableMapOf(
+					1 to Car("green", "Toyota", 2015),
+					2 to Car("red", "Ford", 2016),
+					3 to Car("silver", "Honda", 2013)
+				)
+
+				mutableMap.filter { it.value.color == "silver" } // needs to return another instance
+				println("The filters map is $mutableMap") // no filter applied
+
+				println()
+
+				val ints = arrayOf(1, 2, 3, 4, 5)
+				val add10List: MutableList<Int> = mutableListOf()
+				for (i in ints) {
+					add10List.add(i + 10)
+				}
+				println(add10List) // [11, 12, 13, 14, 15]
+				println(add10List.javaClass)
+
+				println()
+
+				val ints2 = arrayOf(1, 2, 3, 4, 5)
+				val add10List2 = ints2.map { it + 10 }
+				println(add10List2) // [11, 12, 13, 14, 15]
+				println(add10List2.javaClass)
+
+			}
+
+			data class Car(val color: String, val model: String, val year: Int) {
+
+			}
+		
+		
+	Maps
+	
+		package maps
+
+		fun main() {
+
+			val immutableMap = mapOf<Int, Car>(
+				1 to Car("green", "Toyota", 2015),
+				2 to Car("red", "Ford", 2016),
+				3 to Car("silver", "Honda", 2013)
+			)
+
+			println(immutableMap.javaClass) // class java.util.LinkedHashMap
+			println(immutableMap.map { "${it.key}: ${it.value}" }.joinToString(", "))
+
+			val mutableMap = mutableMapOf<String, Car>(
+				"John's car" to Car("red", "Range Rover", 2010),
+				"Jane's car" to Car("blue", "Hyundai", 2012)
+			)
+
+			println(mutableMap.javaClass) // class java.util.LinkedHashMap
+			println(mutableMap.map { "${it.key}: ${it.value}" }.joinToString(", "))
+
+			val mutableHashMap = hashMapOf<String, Car>(
+				"John's car" to Car("red", "Range Rover", 2010),
+				"Jane's car" to Car("blue", "Hyundai", 2012)
+			)
+
+			mutableHashMap.put("Mary's car", Car("red", "Corvette", 1965))
+
+			println(mutableHashMap.javaClass) // class java.util.HashMap
+			println(mutableHashMap.map { "${it.key}: ${it.value}" }.joinToString(", "))
+
+			/*
+				val pair = Pair(10, "ten")
+				val firstValue = pair.first
+				val secondValue = pair.second
+
+				We can use destructuring declaration like this:
+
+					val pair = Pair(10, "ten")
+					val (firstValue, secondValue) = pair // destructuring declaration
+					println(firstValue)
+					println(secondValue)
+
+				We don't get destructuring out of the box.
+				We need component functions
+
+				Destructuring is provided out of the box for data classes
+			*/
+
+			val pair = Pair(10, "ten")
+			//val firstValue = pair.first
+			//val secondValue = pair.second
+			val (firstValue, secondValue) = pair // destructuring declaration
+			println(firstValue)
+			println(secondValue)
+
+			val car = Car("blue", "Corvette", 1959)
+			val (color, model, year) = car
+			println("$color - $model - $year")
+
+			// Map Iteration
+			for (entry in mutableMap) {
+				println("$entry.key - ${entry.value}")
+			}
+
+			for ((key, value) in mutableMap) {
+				println("$key - $value")
+			}
+
 		}
 
-		val notNullList = listOfNotNull("hello", null, "goodbye")
-		println(notNullList) // [hello, goodbye]
+		/*class Car(val color: String, val model: String, val year: Int) {
 
-		val arrayList = arrayListOf(1, 2, 4)
-		println(arrayList.javaClass) // class java.util.ArrayList -> Mutable
+			override fun toString(): String {
+				return "Car(color='$color', model='$model', year=$year)"
+			}
 
-		val mutableList = mutableListOf<Int>(1, 2, 3)
-		println(mutableList.javaClass) // class java.util.ArrayList -> Mutable
-		println(mutableList[2])
-		mutableList[1] = 20
-		println(mutableList)
+			operator fun component1() = color
+			operator fun component2() = model
+			operator fun component3() = year
+
+		}*/
+
+		data class Car(val color: String, val model: String, val year: Int) {
+
+		}	
+		
+	Sets
+	
+		fun main() {
+		
+			val setInts = setOf(10, 15, 19, 5, 3, -22)
+			
+			println(setInts.plus(20))
+			println(setInts.plus(10)) // not added
+			println(setInts.minus(19))
+			println(setInts.minus(100)) // nothing happens
+			println(setInts.average())
+			println(setInts.drop(3)) // drop first 3 elements -> [5, 3, -22]
+
+			val mutableInts = mutableSetOf(1, 2, 3, 4, 5)
+			
+			mutableInts.plus(10) // not added
+			println(mutableInts) // [1, 2, 3, 4, 5]
+		}
+		
+	Sequences
+		
+		package sequences
 
 
-		/*** Convert array to list begin ***/
-		val array = arrayOf("black", "white", "green")
-		val colorList = listOf(array)
-		println(colorList) // [[Ljava.lang.String;@4edde6e5] -> List with one element, the array
+		fun main() {
 
-		val colorList2 = listOf(*array)
-		println(colorList2) // [black, white, green]
+			val immutableMap = mapOf(
+				1 to Car("green", "Toyota", 2015),
+				2 to Car("red", "Ford", 2016),
+				3 to Car("silver", "Honda", 2013),
+				17 to Car("red", "BMW", 2015),
+				8 to Car("green", "Ford", 2010)
+			)
 
-		val colorList3 = array.toList()
-		println(colorList3) // better way ! ->  [black, white, green]
+			println(immutableMap.filter { it.value.model == "Ford" }
+				.map { it.value.color })
 
-		val ints = intArrayOf(1, 2, 3)
-		println(ints.toList()) // [1, 2, 3]
-		/*** Convert array to list ends ***/
+			println(immutableMap.asSequence()
+				.filter { it.value.model == "Ford" }
+				.map { it.value.color })
 
+			// toList is a terminal operation
+			listOf("Joe", "Mary", "Jane").asSequence()
+				.filter { println("filtering $it"); it[0] == 'J' } // each item is evaluated
+				.map { println("mapping $it"); it.uppercase() }
+				.toList()
+
+			println()
+
+			listOf("Joe", "Mary", "Jane").asSequence()
+				.filter { println("filtering $it"); it[0] == 'J' }
+				.map { println("mapping $it"); it.uppercase() }
+				.find { it.endsWith("E") }
+
+			println()
+
+			listOf("Joe", "Mary", "Jane")
+				.map { println("mapping $it"); it.uppercase() }
+				.filter { println("filtering $it"); it[0] == 'J' }
+				.find { it.endsWith("E") }
+
+			println()
+
+			listOf("Mary", "Jane", "Joe").asSequence()
+				.map { println("mapping $it"); it.uppercase() }
+				.filter { println("filtering $it"); it[0] == 'J' }
+				.find { it.endsWith("E") }
+
+		}
+
+		data class Car(val color: String, val model: String, val year: Int) {
+
+		}
+
+Generics
+
+	Generic types are invariant.
+	
+	package generics
+
+	import java.math.BigDecimal
+
+	fun main() {
+
+		val list: MutableList<String> = mutableListOf("Hello")
+
+		list.add("another string")
+
+		printCollection(list)
+		list.displayCollection()
+
+		println()
+
+		val bdList = mutableListOf(BigDecimal(-33.45), BigDecimal(3503.99), BigDecimal(0.329))
+
+		printCollection(bdList)
+		bdList.displayCollection()
+
+		println()
+		
 	}
+
+	fun <T> printCollection(collection: List<T>) {
+		for (item in collection) {
+			println(item)
+		}
+	}
+
+	// Extension Function on List
+	fun <T> List<T>.displayCollection() {
+		for (item in this) {
+			println(item)
+		}
+	}
+		
+	UpperBound
+		
+		package generics.upperbound
+
+		fun main() {
+
+			val ints = listOf(1, 2, 3, 4, 5)
+			val shorts: List<Short?> = listOf(10, 20, 30, 40)
+			val floats: List<Float?> = listOf(100.3f, -459.43f)
+			val strings = listOf("1", "2", "3")
+
+			if (strings is List<String>) {
+				println("This list contains strings")
+			}
+
+			val listAny: Any = listOf("str1", "str2")
+			if (listAny is List<*>) {
+				println("Yes, this is a list. Thank you star projection!")
+			}
+
+			if (listAny is List<*>) {
+				println("This list contains strings")
+				val strList = listAny as List<String>
+				println(strList[1].replace("str", "string"))
+			}
+
+			println()
+
+			convertToInt(ints)
+			println()
+			convertToInt(shorts)
+			println()
+			convertToInt(floats)
+			println()
+			append(StringBuilder("String1"), StringBuilder("String2"))
+			println()
+			//printCollection(shorts)
+			printCollection(ints)
+			//printCollection(floats)
+		}
+
+		fun <T: Number?> convertToInt(collection: List<T>) {
+			for (num in collection) {
+				println("${num?.toInt()}")
+			}
+		}
+
+		fun <T> append(item1: T, item2: T) where T: CharSequence, T: Appendable {
+			println("Result is ${item1.append((item2))}")
+		}
+
+		// Restrict a function to accept a non-nullable type
+		fun <T: Any> printCollection(collection: List<T>) {
+			for (item in collection) {
+				println(item)
+			}
+		}
+	
+	Reified
+	
+		Reification is a Kotlin feature that prevents the type from being erased at runtime.
+		
+			package reified
+
+			import java.math.BigDecimal
+
+			fun main() {
+
+				val mixedList: List<Any> = listOf("string", 1, BigDecimal(22.5), "fall", BigDecimal(-5938.393849))
+
+				val bigDecimalsOnly = getElementsOfType<BigDecimal>(mixedList)
+
+				for (item in bigDecimalsOnly) {
+					println(item)
+				}
+
+			}
+
+			// Reification is a Kotlin feature that prevents the type from being erased at runtime.
+			inline fun <reified T> getElementsOfType(list: List<Any>): List<T> {
+				var newList: MutableList<T> = mutableListOf()
+				for (element in list) {
+					if (element is T) {
+						newList.add(element)
+					}
+				}
+				return newList
+			}
+			
+	Covariance
+	
+		When dealing with ImmutableList, subtype is preserved so its Covariant. This does not happen with MutableList.
+		
+		We want to accept a super class or any of its subclasses
+		
+		Kotlin has the notion of in and out positions. In positions are function parameters and Out positions are the return types.
+		
+		Constructors does not have in and out positions.
+		
+			package covariance
+
+			fun main() {
+
+				val shortList: List<Short> = listOf(1, 2, 3, 4, 5)
+				convertToInt(shortList)
+			}
+
+			fun convertToInt(collection: List<Number>) {
+				for (num in collection) {
+					println("${num.toInt()}")
+				}
+			}
+
+			fun tendGarden(roseGarden: Garden<Rose>) {
+				waterGarden(roseGarden)
+			}
+
+			fun waterGarden(garden: Garden<Flower>) {
+
+			}
+
+			open class Flower {
+
+			}
+
+			class Rose: Flower() {
+
+			}
+
+			class Garden<out T: Flower>(private var something: T) {
+
+				val flowers: List<T> = listOf()
+
+				fun pickFlower(i: Int): T = flowers[i]
+
+				//fun plantFlower(flower: T) {}
+
+			}
+			
+	Contravariance
+		
+		Contravariance is the opposite of covariance since we are preserving the subtype.
+		
+		We are starting at the subclass and we want to accept instances of that subclass or any of its super classes.
+		
+		So when it comes to contravariant we're looking up the inheritance tree rather than down the inheritance tree.
+		
+		Repetitive Code:
+		
+			package contravariance
+
+			fun main() {
+
+				val roseTender = object: FlowerCare<Rose> {
+					override fun prune(flower: Rose) = println("I'm pruning a rose!")
+				}
+
+				val roseGarden = Garden<Rose>(listOf(Rose(), Rose()), roseTender)
+
+				roseGarden.tendFlower(0)
+
+				val daffodilTender = object: FlowerCare<Daffodil> {
+					override fun prune(flower: Daffodil) = println("I'm pruning a daffodil!")
+				}
+
+				val daffodilGarden = Garden<Daffodil>(listOf(Daffodil(),Daffodil(), Daffodil()), daffodilTender)
+
+				daffodilGarden.tendFlower(2)
+
+			}
+
+
+			class Garden<T: Flower>(val flowers: List<T>, val flowerCare: FlowerCare<T>) {
+				fun pickFlower(i: Int) = flowers[i]
+				fun tendFlower(i: Int) {
+					flowerCare.prune(flowers[i])
+				}
+			}
+
+			open class Flower {
+
+			}
+
+			class Rose: Flower() {
+
+			}
+
+			class Daffodil: Flower() {
+
+			}
+
+			interface FlowerCare<T> {
+				fun prune(flower: T)
+			}
+			
+			
+			-------------------------------------------------------------------------------------------------------------------------------
+			
+			package contravariance
+
+			fun main() {
+
+				val flowerTender = object: FlowerCare<Flower> {
+					override fun prune(flower: Flower) = println("I'm pruning a ${flower.name}!")
+				}
+
+				val tulipGarden = Garden<Tulip>(listOf(Tulip(), Tulip(), Tulip(), Tulip()), flowerTender)
+				tulipGarden.tendFlower(2) // I'm pruning a Tulip!
+
+			
+				val roseGarden = Garden<Rose>(listOf(Rose(), Rose()), flowerTender)
+				roseGarden.tendFlower(0) // I'm pruning a rose!
+
+				
+				val daffodilGarden = Garden<Daffodil>(listOf(Daffodil(),Daffodil(), Daffodil()), flowerTender)
+				daffodilGarden.tendFlower(2) // I'm pruning a daffodil!
+
+			}
+
+			class Garden<T: Flower>(val flowers: List<T>, val flowerCare: FlowerCare<T>) {
+				
+				fun pickFlower(i: Int) = flowers[i]
+				
+				fun tendFlower(i: Int) {
+					flowerCare.prune(flowers[i])
+				}
+				
+			}
+
+			open class Flower(val name: String) {
+
+			}
+
+			class Rose: Flower("Rose") {
+
+			}
+
+			class Daffodil: Flower("Daffodil") {
+
+			}
+
+			class Tulip: Flower("Tulip") {
+
+			}
+
+			// Contravariant
+			interface FlowerCare<in T> {
+				fun prune(flower: T)
+			}
+			
+	Use-Site Variance
+		
+		package usesitevariance
+
+		fun main() {
+
+			val cars1 = mutableListOf(Car(), Car())
+			val cars2: MutableList<Car> = mutableListOf()
+
+			copyCars(cars1, cars2)
+
+			val fords1 = mutableListOf(Ford(), Ford())
+			val fords2: MutableList<Ford> = mutableListOf()
+
+			copyCars(fords1, fords2)
+
+			copyCars(fords1, cars2)
+
+			val cars3: MutableList<Car> = mutableListOf(Ford(), Ford())
+		}
+
+
+		fun <T: Car> copyCars(source: MutableList<out T>, destination: MutableList<T>) {
+			for (car in source) {
+				destination.add(car)
+			}
+		}
+
+		open class Car {
+
+		}
+
+		class Toyota: Car() {
+
+		}
+
+		class Ford: Car() {
+
+		}
+				
