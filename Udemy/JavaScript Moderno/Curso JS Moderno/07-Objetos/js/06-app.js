@@ -1,0 +1,23 @@
+const productoV5 = {
+    name: "Monitor de 20 pulgadas",
+    price: 300,
+    availability: true,
+    information: {
+        measures: {
+            weight: "1KG",
+            measure: "1m"
+        },
+        manufacturing: {
+            country: "China"
+        }
+    }
+}
+
+console.log(productoV5);
+
+const { price, information, information: { manufacturing: { country } } } = productoV5;
+
+console.log(price);
+console.log(information);
+console.log(country);
+
