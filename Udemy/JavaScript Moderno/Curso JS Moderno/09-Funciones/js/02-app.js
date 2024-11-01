@@ -5,7 +5,7 @@ function sumarV2() {
 }
 
 
-sumar2V2();
+//sumar2V2();
 const sumar2V2 = function() {
     console.log(3+3);
 }
