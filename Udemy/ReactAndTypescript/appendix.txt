@@ -1,0 +1,97 @@
+Typescript 
+
+Overview
+	
+	- Help us catch errors during development.
+	- Uses type annotations to analyze our code.
+	- Only active during development.
+	- Does not provide any performance optimization.
+	
+Syntax + Features vs Design Patterns with TS
+	
+	Syntax + Features
+		
+		- What is an interface?
+		- What is the syntax for defining an interface?
+	
+		1. Understanding basic types in TS.
+		
+			Types:
+				
+				Primitive Types:
+					
+					- number, boolean, void, undefined, string, symbol, null
+					
+				Object Types:
+					
+					- functions, arrays, classes, objects
+			
+				
+				
+		2. Function typing + annotations.
+			
+			Type Annotations: Code we add to tell Typescript what type of value a variable will refer to.
+			
+			Type inference: Typescript tries to figure out what type of value a variable refers to.
+			
+			
+		
+		3. Type definition files.
+		4. Arrays in TS.
+		5. Modules systems.
+		6. Classes + Refresher on OOP.
+		
+	
+	Design Patterns with TS
+		
+		- How do we use interfaces to write reusable code?
+		
+		1. Projects
+		
+		
+
+	
+Environment
+
+	Install Typescript
+	
+		npm install -g typescript ts-node
+		
+		tsc --help
+	
+	To use the latest versions of axios, we need to install the @types/node library:
+	
+		npm install --save-dev @types/node
+	
+	Also, Typescript 5.6 introduced some breaking changes a few weeks ago related to imports. ts-node is currently not in sync with this since it has not seen an update since 2023.
+
+	To address this, please install the latest 5.5 version of TypeScrip
+	
+		npm uninstall -g typescript
+	
+		npm install -g typescript@5.5
+	
+
+First App
+
+	- mkdir fetchjson
+	
+	- cd fetchjson
+	
+	- npm init -y
+	
+	- npm install axios
+	
+	- create an index.ts file and write some code
+	
+	- compile the code => tsc .\index.ts
+	
+	- index.js file will be created
+	
+	- execute => node index.js
+	
+	- response =>	{ userId: 1, id: 1, title: 'delectus aut autem', completed: false }
+	
+	- ts-node combines tsc .\index.ts and node index.js commands
+	
+	- ts-node index.ts => { userId: 1, id: 1, title: 'delectus aut autem', completed: false }
