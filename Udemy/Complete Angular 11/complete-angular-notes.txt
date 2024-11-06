@@ -30,6 +30,9 @@ Create new app
 
 	ng new AppName --style=scss --routing
 	
+	ng new AppName --style=scss --routing --no-standalone --ssr=false
+	
+	
 Run the app
 	
 	ng serve --open
