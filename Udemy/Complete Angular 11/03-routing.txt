@@ -1,0 +1,45 @@
+Routing
+
+	What is Routing?
+
+		Page Navigation, to create "Single-Page-Application".
+
+		Route maps an URL to a component.
+		
+Importing "@angular/router" package in "package.json" file
+
+	"@angular/router": "~7.2.0"
+	
+Define Base URL in "index.html" file
+
+	<base href="/">
+
+
+Create hyperlink for route
+
+	<a routerLink="/path"> Link text </a>
+	
+Routing Steps
+
+	Create Router Module
+
+		const routes: Routes = [
+			{ path: "path1", component: Component1 },
+			{ path: "path2", component: Component2 },
+			…
+		];
+ 
+		---
+ 
+		@NgModule({
+			imports: [ RouterModule.forRoot(routes) ],
+			exports: [ RouterModule ]
+		})
+		export class AppRoutingModule
+		{
+		}
+
+	Create Router Outlet in app.component.html
+
+		<router-outlet> </router-outlet>
+

@@ -32,6 +32,37 @@ Create new app
 	
 	ng new AppName --style=scss --routing --no-standalone --ssr=false
 	
+
+Adding Bootstrap to Angular
+
+	npm install jquery --save
+
+	npm install popper.js --save
+
+	npm install bootstrap --save
+
+	npm install jquery@3 popper.js@1 bootstrap@4 font-awesome@4 --save
+	
+	Go to angular.json
+	
+		"styles": [
+			"src/styles.scss",
+            "node_modules/bootstrap/dist/css/bootstrap.css",
+            "node_modules/font-awesome/css/font-awesome.css"
+        ],
+        "scripts": [
+			"node_modules/jquery/dist/jquery.js",
+            "node_modules/popper.js/dist/umd/popper.js",
+            "node_modules/bootstrap/dist/js/bootstrap.js"
+        ],
+
+Error: Cannot find module 'node-sass'
+
+	In case if you get above error while "npm install", try the following command:
+
+		npm install --save-dev  --unsafe-perm node-sass@4
+ 
+		npm rebuild node-sass --force
 	
 Run the app
 	

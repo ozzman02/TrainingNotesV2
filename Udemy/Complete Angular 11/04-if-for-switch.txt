@@ -1,0 +1,38 @@
+ngIf
+
+	Simple ngIf
+
+		<tag *ngIf="condition">
+		</tag>
+
+
+	ngIf and else
+
+		<tag *ngIf="condition; then TrueTemplate; else FalseTemplate">
+		</tag>
+
+
+ngFor
+	
+	Reads data from an array.
+
+	Executes a template once-per-one item in an array.
+	
+	ngFor
+
+		<tag *ngFor="let variableName of arrayName">
+		</tag>
+		
+		
+ngSwitch
+
+	Used to check the value of a property, whether it matches with any of the cases or not.
+
+	ngSwitch
+
+		<tag [ngSwitch]="property">
+		<tag *ngSwitchCase=" 'value1' "> Content here </tag>
+		<tag *ngSwitchCase=" 'value2' "> Content here </tag>
+		<tag *ngSwitchCase=" 'value3' "> Content here </tag>
+		<tag *ngSwitchDefault> Content here </tag>
+		</tag>

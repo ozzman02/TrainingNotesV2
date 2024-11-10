@@ -1,0 +1,38 @@
+Data Bindings
+	
+	Relationship between "Template's HTML Element" and "Component's Property".
+	
+	The value of "Template's HTML Element" will be automatically updated into "Component's Property" and vice versa.
+
+	
+	Interpolation Binding
+
+		Component				Template
+
+					  {{ }}
+
+		Property	 ------> 	HTML Element
+
+	Property Binding
+
+		Component				Template
+
+					   [ ]
+
+		Property	 ------> 	HTML Element
+
+	Event Binding
+
+		Component				Template
+
+					   ( )
+
+		Property	 <------ 	HTML Element
+
+	Two Way Binding
+
+		Component				Template
+
+					   [( )]
+
+		Property	 <------> 	HTML Element

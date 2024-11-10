@@ -1,0 +1,145 @@
+Understanding JWT
+
+	What is JSON Web Token (JWT)?
+
+		A JSON Web Token (JWT) is a JSON object that is defined in RFC 7519 as a safe way to represent a set of information between two parties.
+
+		RFC (Request For Comments) is a formal document released by IETF (Internet Engineering Task Force), who releases Internet Standards.
+
+	How JWT Authentication Works?
+	
+		The most common scenario of JWT is authentication.
+
+		Once the user logs-in, JWT (an encrypted token) will be sent to the client;
+
+		Each subsequent request includes JWT sent to the server; then the server validates JWT and provides response only when the JWT token is valid.
+
+		The signature is generated based on the header and payload; so that receiver can verify the content hasn't been tampered with.
+
+		User Sign-In (using User ID / Password)
+
+		User Authenticated, JWT created, and returned to the user
+
+		User passes JWT as request header, when making API calls
+
+		Authentication Server: Application verifies and processes the API call
+
+
+	Contents of JSON Web Token
+
+		Header (base 64 string)
+
+			eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+
+		Payload (base 64 string)
+
+			eyJ1c2VySWQiOiJiMDhmOZhZi0zNWRhLTQ4ZjItOOTA0NjYwYmQifQ
+
+		Signature (base 64 string)
+
+			-xN_h82PHVTA9vdoHrcZxH-x5mb11y1537t3rGzcM
+
+
+		JWT Token Generation Algorithm
+
+			header
+
+				{
+					"typ": "JWT",
+					"alg": "HS256"
+				}
+
+
+			payload
+
+				{
+					"userId": "b08f86af-35da-48f2-8fab-cef3904660bd"
+				}
+
+
+			secret
+
+				MySecret
+
+			Hashing Algorithms
+
+				• HMAC + SHA256
+
+				• RSASSA + SHA256
+
+				• ECDSA + SHA256
+
+		Algorithm
+
+			data = base64Encode( header ) + "." + base64Encode( payload )
+
+			hashedData = hash( data, secret )
+
+			signature = base64encode( hashedData )
+
+			jwtToken = data + "." + signature
+
+
+
+		Example:
+
+			eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
+
+			eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOOTA0NjYwYmQifQ.
+
+			-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM.
+
+
+
+
+
+	How JWT is verified (in subsequent requests)
+	
+		Example of JWT Token, received from browser's request:
+
+			Header (base 64 string)
+
+				eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+
+			Payload (base 64 string)
+
+				eyJ1c2VySWQiOiJiMDhmOZhZi0zNWRhLTQ4ZjItOOTA0NjYwYmQifQ
+
+			Signature (base 64 string)
+
+				-xN_h82PHVTA9vdoHrcZxH-x5mb11y1537t3rGzcM
+
+
+
+		Verification Algorithm
+
+			data = receivedHeader + "." + receivedPayload
+
+			hashedData = hash( data, secret )
+
+			signatureForVerification = base64encode( hashedData )
+
+			signatureForVerification == receivedSignature
+
+
+	Best Practices for JWT Authentication
+
+		Don’t include sensitive user information, such as Password, PIN etc., in the Payload; User Id and Timestamp is recommended for Payload.
+
+		Don't include too much information in the Payload, as it increases length of the JWT token.
+
+		Since JWT are signed and encoded only, and since JWT are not encrypted, JWT do not guarantee any security for sensitive data.
+
+		If you require, you can encrypt the header and payload, before starting the JWT algorithm.
+
+		Always enable HTTPS, while using JWT, because HTTPS provides end-to-end encryption.
+
+		It is not recommended to store JWT token in cookies, since cookies are accessible by attackers.
+
+
+
+
+
+Http Interceptors
+Http Interceptor is a class, that executes as middleware, between the HttpClient and HttpXhrBackend.
+

@@ -1,0 +1,234 @@
+Angular Overview
+
+What is Angular?
+
+	Most popular frontend framework to create maintainable web applications.
+
+	Completely re-write of AngularJS.
+
+	Developed by Google.
+
+	Angular CLI enables you to create things faster.
+
+
+Features of Angular
+
+	Application State
+
+		[Stored in the Component]
+
+	Application Logic
+
+		[Written in the Component]
+
+
+	Design Logic
+
+		[Written in Template]
+
+
+	Business Logic
+
+		[Written in Service]
+
+
+
+Goals and Advantages of Angular
+
+	- Separation of DOM Manipulation Logic from Application Logic
+	- Separation of HTML Logic from Application Logic
+	- Separation of Business Logic from Application Logic
+	- Make the code Unit Testable
+	- Make the "Single-Page Application Development" easier
+	- Make the code maintainable
+
+Code Compilation Process
+
+	Application Source Code
+
+		[Type Script]
+
+	TypeScript Compiler
+		
+		[tsc]
+
+	Template
+
+		[HTML]
+
+	Angular Compiler
+
+		[ngc]
+
+
+	JavaScript
+
+		Code Executed by the Browser
+
+
+Do's and Don'ts of Angular
+
+	Don'ts
+
+		- Never perform DOM manipulations directly in Angular Components, to make the "application logic" independent of "design logic" and make it unit testable.
+		- Never write JavaScript code in Angular Templates.
+		- Never write Business logic in Components.
+		- Avoid using jQuery to manipulate DOM elements.
+
+	Do's
+
+		- Always use Routing and Modules.
+		- Prefer Routing Guards and JWT for Authentication & Security.
+		- Always manipulate "application data" by writing the "application logic" in the components.
+		- Always place global css styles in "styles.css" file and local css styles in "component.css" file.
+		- Always write "REST-API calls (AJAX)" and Business Logic in Services only; and return Observables from Services.
+		- Prefer to use Bootstrap [or equivalent].
+		- Always use CSS-pre processor, such as SCSS.
+
+Building Blocks of Angular 
+
+	Modules
+
+		[Collection of Components]
+
+	Data Binding
+
+		[Mediates Between Component and Templates]
+
+
+	Components
+
+		[App Data + Event Handlers]
+
+	Templates
+
+		[Design Logic]
+
+
+	Dependency Injection
+
+		[Loads service objects into Components]
+
+	Services
+
+		[Business Logic + REST API calls]
+
+
+	Directives
+
+		[Direct DOM Manipulation]
+
+
+Angular Packages
+	
+	1. @angular/core
+
+		Provides essential pre-defined decorators, classes, interfaces and modules that are needed to run every angular application.
+
+		Ex: @Component, @NgModule, @Pipe, @Directive, @Injectable, @Inject, NgZone, OnChanges, OnInit, ApplicationModule etc.
+
+
+	2. @angular/common
+
+		Provides built-in directives that are useful for most of the real-time applications.
+
+		Ex: ngIf, ngSwitch, ngClass, ngFor etc.
+
+	3. @angular/compiler
+
+		Compiles "templates" (html code) into "javascript code".
+
+	4. @angular/platform-browser-dynamic
+
+		Invokes the angular compiler (JIT compilation) and specifies the startup module and also start executing the application.
+
+	5. @angular/platform-browser
+
+		Provides a set of pre-defined classes that are related to DOM and browser interaction.
+
+		e.g: BrowserModule.
+
+	6. @angular/forms
+
+		Provides necessary pre-defined classes that are related to are needed to create and execute angular forms.
+
+		e.g: FormsModule, ReactiveFormsModule, Validators, ngModel, ngForm etc.
+
+	7. @angular/router
+
+		Provides necessary pre-defined classes that are needed to create and execute angular routes.
+
+		e.g: RouterModule, Routes, ActivatedRoute, CanActivate, routerLink etc.
+
+	8. @angular/animations
+
+		Provides necessary pre-defined classes that are needed to create and execute angular animations.
+
+		e.g: BrowserAnimationsModule, animate, state, style, transition etc.
+
+	9. @angular/cli
+
+		Provides necessary pre-defined commands that are needed to create, compile, build, add items in angular applications.
+
+		e.g: ng new, ng serve, ng build, ng test etc.
+
+	10. rxjs
+
+		Provides necessary pre-defined classes for creating Observables, which are needed to represent the response of REST-API calls of AJAX.
+
+		Ex: Observable, Observer, Subject etc.
+
+	11. zone.js
+
+		Provides necessary pre-defined classes for executing "change detection processes", while executing angular app.
+
+
+Angular App Folder Structure
+
+	e2e:  Contains "end-to-end" test cases.
+
+	src:  Contains source code of the application.
+
+		app
+
+			app.component.scss:	Contains CSS styles of AppComponent.
+
+			app.component.html: Contains template of AppComponent.
+
+			app.component.spec.ts: Contains unit test cases of AppComponent.
+
+			app.component.ts: Contains AppComponent.
+
+			app.module.ts: Contains AppModule.
+
+			app-routing.module.ts: Contains Routing Configuration.
+
+	
+		assets: Contains static files such as images.
+
+		favicon.ico: Contains browser icon.
+
+		index.html: Default page / startup page.
+
+		main.ts: Defines Startup Module.
+
+		polyfills.ts: Defines polyfills (additional scripts) needed to load & run app.
+
+		styles.scss: Contains global CSS styles of entire app.
+
+		angular.json: Contains Angular CLI configuration.
+
+		package.json: Defines current app (package) details and its dependencies.
+
+		tsconfig.json: Contains TypeScript Compiler configuration settings.
+		
+		
+Flow of Execution of Angular App
+	
+	index.html
+
+	main.ts
+
+	app.module.ts
+
+	app.component.ts + app.component.html

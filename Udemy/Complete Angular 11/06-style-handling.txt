@@ -1,0 +1,11 @@
+Style Handling
+
+	[style.property] = "value"
+
+	[style.property] = "(condition)? truevalue : falsevalue"
+
+
+
+	[ngClass] = "value"
+
+	[ngClass] = "(condition)? truevalue : falsevalue"

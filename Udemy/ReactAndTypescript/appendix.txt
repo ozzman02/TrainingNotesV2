@@ -48,8 +48,40 @@ Syntax + Features vs Design Patterns with TS
 		
 		1. Projects
 		
-		
+Using Type Definition Files
 
+	We can install common JavaScript libraries into any TypeScript project using NPM.
+
+	Or we could even reference JavaScript files that you and I write ourselves inside of our project from TypeScript Code.
+
+	But there's one little caveat here.
+	
+	Remember, TypeScript wants to check your code and it checks your code by the use of types. TypeScript wants to know all the different functions that you have, what different type of arguments
+	they take and what type of value they return. And in general, it wants to know all the different types of data that are flowing around your application.
+	If TypeScript doesn't have this information, then it cannot completely check your code.So when we start to think about using JavaScript code inside of our project, naturally all JavaScript
+	code we write or make use of is not going to have any type information attached to it. And TypeScript can't really automatically figure out what different types of values are floating around
+	JavaScript code.
+
+	So to fix this problem, TypeScript has the idea of type definition files.
+	You can think of a type definition file as kind of an adapter between TypeScript code that you would write and JavaScript libraries that we try to work with.
+	A type definition file is going to tell the TypeScript compiler all the different functions that are available inside this JavaScript library, what type of argument they take and what type of value those
+	functions return.
+	
+	Sometimes type definition files will be installed automatically when you install a JavaScript library.
+	
+	All these type definition files are already publicly available for you.
+	
+	- Definitely Typed project
+		
+		@types/{library-name}
+		
+	Type definition files have the following convention filename.d.ts example
+		
+		index.d.ts
+		
+		
+	
+	
 	
 Environment
 
@@ -70,8 +102,20 @@ Environment
 		npm uninstall -g typescript
 	
 		npm install -g typescript@5.5
+		
+	Install parcel (Tool that helps us run Typescript in the browser)
 	
-
+		npx parcel index.html
+		
+		
+	General:
+		
+		npm install -g typescript@5.5 ts-node
+		npm install axios
+		npm install --save-dev @types/node
+		npm install -g parcel-bundler
+		
+		
 First App
 
 	- mkdir fetchjson
@@ -95,3 +139,36 @@ First App
 	- ts-node combines tsc .\index.ts and node index.js commands
 	
 	- ts-node index.ts => { userId: 1, id: 1, title: 'delectus aut autem', completed: false }
+	
+Maps application
+
+	1. create a maps folder
+	
+	2. create index.html
+	
+		<!DOCTYPE html>
+		<html>
+			<body>
+				<script type="module" src="./src/index.ts"></script>
+			</body>
+		</html>
+		
+	3. create an src folder
+	
+	4. inside src folder create index.ts
+	
+	5. Go to the root folder and from terminal run npx parcel index.html
+	
+	6. If you stop the server you can run it again by running "parcel index.html"
+	
+	7. Install faker
+	
+		npm install --save-dev @faker-js/faker@7.6.0 
+			
+			import { faker } from "@faker-js/faker";
+			
+			As of their v6 release, TS support is now native and does not require installing the @types declarations.
+	
+		npm install @types/faker
+
+	

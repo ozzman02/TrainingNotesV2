@@ -1,0 +1,49 @@
+Built-in Pipes
+
+
+	Component			Template
+				Pipe
+	Property --------->	HTML Element
+
+
+
+
+{{property | uppercase }}          				Converts string to upper case.
+
+{{property | lowercase }}             			Converts the string to lower case.
+
+{{property | slice : startIndex : endIndex }}   Gets part of string, between startIndex and endIndex.
+
+{{property | number : .2 }}         			Provides digit grouping and controls decimal places.
+
+{{property | currency : "USD" }}               	Providers currency symbol.
+
+{{property | percent }}                  		Converts the number to percent.
+
+{{property | json }}                       		Converts the "JavaScript object" to "json"
+
+{{property | date }}                       		Specifies date format.
+
+
+
+Date Formats of Date Pipe
+
+	shortDate		31/12/2019
+	mediumDate		Dec 31, 2019
+	longDate		December 31, 2019
+	fullDate		Monday, December 31, 2019
+	shortTime		11:59 AM
+	mediumTime		11:59:59 AM
+	short			31/12/2019, 11:59 AM
+	medium			Dec 31, 2019, 11:59:59 AM
+	d/M/y			31/12/2019
+	y-M-d			2019-12-31
+	h:m:s			11:59:59
+	a				AM
+	H:m				23:59
+	EEE				Tue
+	EEEE			Tuesday
+	MMM				Dec
+	MMMM			December
+	Z				+0530
+	

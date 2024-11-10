@@ -1,0 +1,143 @@
+Modules
+
+	What is Angular's Module?
+
+		Module is a collection of Components, directives, pipes.
+
+		Mainly used to organize the components and others (directives and pipes).
+
+
+	Goals of Modules:
+
+		Consolidate components, directives, pipes into cohesive of functionality.
+
+		Make some of the components, directives, pipes public; so that, other module's component templates can use them.
+
+		Import components, directives, pipes from other modules, that are required by current module's component templates.
+
+		Provide services that the other modules can use.
+
+
+
+	Module
+
+		Components
+
+		Directives
+
+		Pipes
+
+
+	Module Definition and Metadata
+
+		Angular Modules are called NgModules.
+
+		An NgModule is a class that is decorated with "NgModule" decorator, that contains the following metadata;
+
+
+		Module metadata:
+
+			declarations: List of components, directives and pipes, that are part of current module.
+
+			exports: List of components, directives, and pipes, that are public, that can be accessible in other modules, that are importing the current module.
+
+			imports: List of modules, that the current module imports; so, the current module can use components, directives, pipes that are already exported by that particular module.
+
+			providers: List of services that can be used by the components, directives and pipes of current module.
+
+
+		Module
+
+			@NgModule({
+				declarations: [ …, …, … ],
+				exports: [ …, …, … ],
+				imports: [ …, …, … ],
+				providers: [ …, …, … ],
+			})
+			class ModuleName
+			{
+			}
+
+Services
+
+	What is Service in Angular?
+
+		Service is a class, which is a collection of properties & methods, which contains re-usable programming logic, which mainly contains "business logic" and also performs "data source interaction".
+
+		Services can be accessible in components.
+
+	Goals of Services:
+
+		To separate business logic and data access logic from components.
+
+		Make components contain code for only supplying the data to the template and respond to the user actions such as click and also call the necessary services.
+
+	Service
+
+		class Service
+		{
+			properties
+			methods
+		}
+	
+
+	Steps to work with Angular Services
+		
+		1. Create Service class:
+
+			Create a class with one or more properties and methods that contains business logic and data access logic.
+
+
+
+		2. Make ready the Service for Dependency Injection:
+
+			Add @Injectable( ) decorator above the service class.
+
+		3. Provide the service Globally / Locally:
+
+			Add providedIn: "root" option in @Injectable( ) decorator. [or].
+
+			Add providers: [ Service ] in AppModule's metadata. [or].
+
+			Add providers: [ Service ] in any other module's metadata. [or].
+
+			Add providers: [ Service ] in any other component's metadata.
+
+		4. Inject the service into actual component:
+
+			Add @Inject(Service) private referenceVariable : Service in any component's constructor. [or]
+
+			Add private referenceVariable : Service in any component's constructor.
+
+
+
+		Service
+
+			@Injectable({ providedIn: "root" })
+			class Service
+			{
+				properties
+				methods
+			}
+
+		Dependency Injection
+
+			class Component
+			{
+				constructor (@Inject(Service) private service : Service) {}
+			}
+
+
+Hierarchical Dependency Injection
+	
+	AppModule
+
+		Same instance of Service available application-wide
+
+	AppComponent
+
+		Same instance of Service available for all components (but not for services)
+
+	Any other component
+
+		Same instance of Service available for the same component and all its child components.

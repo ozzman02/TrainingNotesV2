@@ -1,0 +1,84 @@
+RxJS - Observables and Observers
+
+	What is Observable and Observer?
+	
+		"Observables and Observer" is a pattern of "message passing" from "publisher" to "subscriber".
+		
+	Flow of functionality:
+
+		Observable is created.
+
+		Observer subscribes to the Observable.
+
+		Observable can pass messages (notifications) to the Observer.
+
+		Each time, when the Observable passes a notification, it is received by Observer.
+
+	Real-time usage of Observables and Observer:
+
+		While receiving response from AJAX.
+
+		While performing large tasks in client (browser).
+
+		Observables execute only when the observer subscribes to it.
+
+		Observable -> Notifications -> Observer
+
+	How "Observable and Observer" work?
+
+		Observable
+
+			(User Inputs / Http Requests / Custom Data Source)
+
+		Observer
+
+			Handle Data
+
+			Handle Error
+
+			Handle Completion
+
+
+Introduction to AJAX
+
+	What is AJAX?
+
+		AJAX (Asynchronous JavaScript And Xml) is NOT a language, but it is a concept, which is used to "send background HTTP request to server" and also "get background HTTP response from server", 
+		without refreshing (reloading) the web page in the browser.
+
+
+	Browser (Client)										Server
+
+		User performs some activity							Receive the request from browser
+										--------------->	
+		Send AJAX request to server											|
+																			|
+																			|
+																			v
+																Do process (db connection)
+																			|
+																			|
+	Same Browser (Client)													|
+																			v
+		Get response from server		<---------------		Send response to browser														
+		Display the response
+	
+
+	Types of Requests
+		
+		Get: 	Used to retrieve / search data from server
+
+		Post: 	Used to insert data to server
+
+		Put: 	Used to update data on server
+
+		Delete: Used to delete data from server
+
+
+	RxJS - Map
+		
+		The "Map" is an RXJS Operator, which executes a function after receiving response from the server.
+
+		Server -> Send Response -> [Business logic & modify the response] -> Subscribe -> Handle Data -> [Receive modified response]
+
+	
