@@ -1,0 +1,49 @@
+Typescript with Redux
+
+	npx create-react-app redux-ts --template typescript
+	
+	inside the redux-ts folder
+	
+		npm install --save-exact react-redux redux @types/react-redux redux-thunk axios
+		
+		npm start
+	
+	
+Small Update for Try / Catch Block
+In the upcoming lecture, we will be adding our searchRepositories action. You will likely see a TS error in the catch block that says Object is of type 'unknown'
+
+There are two ways that you can resolve this for now:
+
+Option #1
+
+    } catch (err: any) {
+Option #2
+
+...
+ 
+    } catch (err) {
+      if (err instanceof Error) {
+        dispatch({
+          type: ActionType.SEARCH_REPOSITORIES_ERROR,
+          payload: err.message,
+        });
+      }
+    }
+...
+
+
+createStore Strikethrough in Code Editor
+
+In the upcoming lecture, we will be creating our store.ts file. You may notice that createStore will have a strikethrough in your code editor. 
+This strikethrough can be ignored as it will have no actual effect on the project or code going forward. 
+This isn't a real deprecation as its only purpose is to encourage the use of Redux Toolkit (which introduces configureStore) instead of using createStore directly. 
+When this course was recorded, we made the purposeful decision to use plain React Redux without any abstractions like Redux Toolkit.
+
+
+Big Issues with Redux/React-Redux + Typescript
+
+	- Imports between files can turn into a mess very quickly.
+	
+	- Communicating types over to your component can be challenging.
+	
+	- Type def files for Redux, React-Redux and others are possibly over-engineered.

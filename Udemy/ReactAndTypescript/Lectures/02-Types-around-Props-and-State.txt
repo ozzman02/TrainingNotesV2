@@ -1,0 +1,323 @@
+Types around props and state
+
+	- Applying types to component props.
+	- Applying types to state in a component.
+	- Types with event handlers.
+	- ... Several other assorted areas.
+	
+Interface to define what props Child expects to receive.
+	
+	Approach 1:
+	
+		interface ChildProps {
+			color: string;
+		}
+
+		export const Child = (props: ChildProps) => {
+			return (
+				<div>Hi There</div>
+			);
+		}
+		
+	Approach 2
+	
+		interface ChildProps {
+			color: string;
+		}
+
+		export const Child = ({ color }: ChildProps) => {
+			return (
+				<div>{color}</div>
+			);
+		}
+		
+	Approach 3 -> Better!
+		
+		interface ChildProps {
+			color: string;
+		}
+		
+		export const Child: React.FC<ChildProps> = ({ color }) => {
+			return (
+				<div>{color}</div>
+			);
+		}
+		
+		- Child will be a React function component.
+		- Child might have a properties assigned to it like propTypes and contextTypes
+		- Child will receive props of type ChildProps.
+	
+		
+	In the Parent
+	
+		import { Child } from './Child'; // using it as named export
+
+		const Parent = () => {
+			return <Child color="red" />
+		};
+
+		export default Parent;
+		
+	Property 'children' does not exist (TS2339: Property 'children' does not exist on type 'ChildProps'.)
+	
+		React 18 introduces a breaking change with the removal of implicit children in React.FunctionComponent types.
+		
+		To fix this, we now must include the children in the interface along with our other props:
+			
+			interface ChildProps {
+				color: string;
+				onClick: () => void;
+				children?: React.ReactNode;
+			}
+			
+			
+		Components annotated with React.FC<ChildProps> expects a children property by default:
+		
+			In the Parent: React understands the value "Some Text" as a children property.
+			
+				
+				import { Child } from './Child'; // using it as named export
+
+				const Parent = () => {
+					return <Child color="red" onClick={() => console.log('Clicked')}>Some Text</Child>
+				};
+
+				export default Parent;
+				
+			In the Child: We do not need to specify the children property in the ChildProps interface.
+			
+				interface ChildProps {
+					color: string;
+					onClick: () => void;	
+				}
+				
+				export const Child: React.FC<ChildProps> = ({ color, onClick, children }) => {
+					return (
+						<div>
+							{color}
+							{children}
+							<button onClick={onClick}>Click Me!</button>
+						</div>
+					);
+				}
+				
+				
+			The other approach is as follows:
+			
+				In the Parent:
+				
+					import { Child } from './Child'; // using it as named export
+
+					const Parent = () => {
+						return <Child color="red" onClick={() => console.log('Clicked')}>Some Text</Child>
+					};
+
+					export default Parent;
+					
+				In the Child:
+				
+					interface ChildProps {
+						color: string;
+						onClick: () => void;
+						children: React.ReactNode;
+					}
+					
+					export const Child = ({ color, onClick, children }: ChildProps) => {
+						return (
+							<div>
+								{color}
+								{children}
+								<button onClick={onClick}>Click Me!</button>
+							</div>
+						);
+					}
+
+State with Typescript
+
+	- It's very important to notice that when handling events, the type inference system will be applied only to inline function calls. 
+		
+		
+		In this case the event is of type React.ChangeEvent<HTMLInputElement>
+			
+			const EventComponent: React.FC = () => {
+				
+				return (
+					<div>
+						<input onChange={e => console.log(e)}/>
+					</div>
+				);
+			};
+			
+			export default EventComponent;
+			
+		If we have a separate onChange function, we'll get an error unless we provide a type annotation for the event argument.
+
+			const EventComponent: React.FC = () => {
+
+				const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+					console.log(event);
+				};
+
+				return (
+					<div>
+						<input onChange={onChange}/>
+					</div>
+				);
+			};
+
+			export default EventComponent;
+		
+						
+	Example 1:
+		
+		import { useState } from "react";
+
+		const GuestList: React.FC = () => {
+
+			const [name, setName] = useState('');
+
+			const [guests, setGuests] = useState<string[]>([]);
+
+			const onClick = () => {
+				setName('');
+				setGuests([...guests, name]);
+			};
+
+			const renderGuests = () => {
+				return guests.map( (guest) => (<li key={guest}>{guest}</li>) ); 
+			}
+
+			return (
+				<div>
+					<h3>Guest List</h3>
+					<ul>{renderGuests()}</ul>
+					<input value={name} onChange={(e) => setName(e.target.value)} />
+					<button onClick={onClick}>Add Guest</button>
+				</div>
+			);
+		};
+
+		export default GuestList;
+
+
+	Example 2:
+		
+		import { useState } from "react";
+
+
+		const users = [
+			{ name: 'Sarah', age: 20 },
+			{ name: 'Alex', age: 20 },
+			{ name: 'Michael', age: 20 }
+		];
+
+		const UserSearch: React.FC = () => {
+
+			const [name, setName] = useState('');
+
+			const [user, setUser] = useState<{ name: string, age: number } | undefined>();
+
+			const onClick = () => {
+				const foundUser = users.find((user) => {
+					return user.name === name;
+				});
+				setUser(foundUser);
+				
+			};
+
+			return (
+				<div>
+					User Search
+					<input value={name} onChange={e => setName(e.target.value)} />
+					<button onClick={onClick}>Find User</button>
+					<div>
+						{/* If user is defined then show user.name */}
+						{user && user.name}
+						{user && user.age}
+					</div>
+				</div>
+			);
+		}
+
+		export default UserSearch;
+
+					
+	Example 3:
+		
+		const EventComponent: React.FC = () => {
+
+			const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+				console.log(event);
+			};
+
+			const onDragStart = (event: React.DragEvent<HTMLDivElement>) => {
+				console.log(event);
+			}
+
+			return (
+				<div>
+					<input onChange={onChange}/>
+					<div draggable onDragStart={onDragStart}>Drag Me!</div>
+				</div>
+			);
+		};
+
+		export default EventComponent;
+	
+		
+Applying Types to Refs		
+
+	import { useEffect, useRef, useState } from "react";
+
+	const users = [
+		{ name: 'Sarah', age: 20 },
+		{ name: 'Alex', age: 20 },
+		{ name: 'Michael', age: 20 }
+	];
+
+	const UserSearch: React.FC = () => {
+
+		const inputRef = useRef<HTMLInputElement | null>(null);
+
+		const [name, setName] = useState('');
+
+		const [user, setUser] = useState<{ name: string, age: number } | undefined>();
+
+		const onClick = () => {
+			const foundUser = users.find((user) => {
+				return user.name === name;
+			});
+			setUser(foundUser);
+			
+		};
+
+		/* Inner function will be invoked one single time, dependency array must be empty */
+		useEffect(() => {
+			if (!inputRef.current) {
+				return;
+			}
+			inputRef.current.focus();
+		}, []);
+
+		return (
+			<div>
+				User Search
+				<input ref={inputRef} value={name} onChange={e => setName(e.target.value)} />
+				<button onClick={onClick}>Find User</button>
+				<div>
+					{/* If user is defined then show user.name */}
+					{user && user.name}
+					{user && user.age}
+				</div>
+			</div>
+		);
+	}
+
+	export default UserSearch;
+		
+		
+		
+		
+		
+		
+		
