@@ -1,0 +1,46 @@
+Class Component
+
+	Statefull:
+		
+		React Lifecycle: componentDidMount, willMount...
+
+	import React, { Component } from 'react';
+
+	class Example extends Component {
+		
+		constructor() {
+			super();
+			this.state({title: 'hello'});
+		}
+		
+		render() {
+			return (
+				<div>
+					State: {this.state.title}
+					Prop: {this.props.name}
+				</div>
+			);
+		}
+		
+	}
+
+
+Functional Component
+
+	Stateless
+		
+		React hooks: useState, useEffect...
+
+	import React, { useState } from 'react';
+	
+	function Example(props) {
+	
+		const [title, setitle] = useState('hello');
+		
+		return (
+			<div>
+				State: {this.state.title}
+				Prop: {this.props.name}
+			</div>
+		);
+	}
