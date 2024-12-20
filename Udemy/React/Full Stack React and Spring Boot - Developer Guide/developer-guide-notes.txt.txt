@@ -1,2 +1,47 @@
 
 Repo https://github.com/darbyluv2code/fullstack-react-and-springboot
+
+Create a React App
+
+	Currently the command is deprecated so we need to run this command first:
+		
+		npm config set legacy-peer-deps true
+	
+	Then
+		
+		npx create-react-app myapp
+
+Run the app
+
+	npm start
+	
+Error Cannot find module 'ajv/dist/compile/codegen'
+	
+	npm install --save-dev ajv@^7 
+	
+Adding css
+	
+	Bootstrap
+		
+		get links for remote bootstrap files
+		
+		add links to index.html
+		
+		apply bootstrap css 
+		
+
+Loading react app
+
+	index.html
+		
+		root div
+		
+	index.js
+	
+		get the element with id root.
+		
+	App Component
+		
+		look for the component
+		
+	
