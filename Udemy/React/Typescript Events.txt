@@ -32,5 +32,13 @@ With Material UI
 			
 			
 Regular Code
+	
+	ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	
+		const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+			const { name, value } = e.target;
+			if (name === 'assigned') setAssigned(value);
+			if (name === 'description') setDescription(value);
+		}
 
 	

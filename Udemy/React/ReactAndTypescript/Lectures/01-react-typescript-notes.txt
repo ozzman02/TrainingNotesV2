@@ -142,4 +142,52 @@ Final version of my preference
 	);
 
 
+Create the bundler project
 
+	mkdir bundler
+	
+	cd bundler
+	
+	generate a package.json file
+
+		npm init -y
+
+	npm install --save-exact webpack@5.88.2 webpack-cli@4.3.0
+	
+	modify the scripts package.json
+		
+		"scripts": {
+			"build": "webpack --mode=development"
+		},
+	
+	npm run build
+	
+		this will generate a dist folder with a main.js file
+
+ESBuild
+	
+	ESBuild can transpile + bundle our code all in the browser.
+	
+	Install
+		
+		npm install --save-exact esbuild-wasm@0.8.27
+		
+	Error
+		
+		Cannot find module 'ajv/dist/compile/codegen'
+			
+		Install
+			
+			npm install --save-dev ajv@^7 
+			
+	Error
+		
+		Failed to load parser '@typescript-eslint/parser' declared in 'package.json » eslint-config-react-app#overrides[0]': Cannot find module 'typescript'
+		
+		Install 
+			
+			npm i --save-dev typescript @typescript-eslint/parser
+
+Get React Archive			
+
+	npm view react dist.tarball

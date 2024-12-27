@@ -44,4 +44,22 @@ Loading react app
 		
 		look for the component
 		
+Convert todo app from js to Typescript
+
+	Install Typescript
+
+		npm install --save typescript @types/node @types/react @types/react-dom @types/jest
+		
+	Create a tsconfig file
+	
+		npx tsc --init
+		
+		go to tsconfig file and enable jsx
+		
+			"jsx": "react-jsx",
+		
+	Add types to each param and variable
+	
+	Create models
+	
 	
