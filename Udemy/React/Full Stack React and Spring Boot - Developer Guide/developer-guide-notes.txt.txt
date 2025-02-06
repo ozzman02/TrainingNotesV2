@@ -18,6 +18,12 @@ Run the app
 Error Cannot find module 'ajv/dist/compile/codegen'
 	
 	npm install --save-dev ajv@^7 
+
+Warning
+
+	babel-preset-react-app, is importing the "@babel/plugin-proposal-private-property-in-object" package without declaring it in its dependencies
+
+		npm install --save-dev @babel/plugin-proposal-private-property-in-object
 	
 Adding css
 	
