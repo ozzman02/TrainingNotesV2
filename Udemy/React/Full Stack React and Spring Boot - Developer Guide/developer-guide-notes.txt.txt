@@ -18,6 +18,12 @@ Run the app
 Error Cannot find module 'ajv/dist/compile/codegen'
 	
 	npm install --save-dev ajv@^7 
+
+Warning
+
+	babel-preset-react-app, is importing the "@babel/plugin-proposal-private-property-in-object" package without declaring it in its dependencies
+
+		npm install --save-dev @babel/plugin-proposal-private-property-in-object
 	
 
 Adding css
@@ -63,4 +69,31 @@ Convert todo app from js to Typescript
 	
 	Create models
 	
+Router
+
+	npm install react-router-dom@5
 	
+	install @types/react-router-dom
+	
+Okta integration
+
+	OIDC Client Setup
+		
+		https://developer.okta.com/
+		
+		https://developer.okta.com/login/
+		
+		dev-85267849.okta.com
+		
+		Client ID: 0oam7ngaa292k1b3h5d7
+		
+		redirectUri: http://localhost:3000/login/callback
+		
+		
+		Test User
+		testuser@email.com
+		testpassword1234!
+
+	npm install @okta/okta-signin-widget@6.6.3
+	
+	npm install @okta/okta-react@6.4.3
