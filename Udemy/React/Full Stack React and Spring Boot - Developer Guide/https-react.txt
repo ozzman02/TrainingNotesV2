@@ -1,0 +1,6 @@
+Development Process
+	
+	1. Generate key and self signed certificate.
+	2. Create our .env file.
+	3. Run React App with the key and self signed certificate.
+	4. Update Spring Boot App with new URL.

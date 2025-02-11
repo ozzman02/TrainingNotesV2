@@ -19,6 +19,7 @@ Error Cannot find module 'ajv/dist/compile/codegen'
 	
 	npm install --save-dev ajv@^7 
 	
+
 Adding css
 	
 	Bootstrap
