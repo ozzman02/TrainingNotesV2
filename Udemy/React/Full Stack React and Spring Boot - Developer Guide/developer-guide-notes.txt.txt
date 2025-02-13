@@ -76,7 +76,14 @@ Router
 	
 Okta integration
 
-	OIDC Client Setup
+	npm install @okta/okta-signin-widget@6.6.3
+	
+	npm install @okta/okta-react@6.4.3
+	
+	npm install @okta/okta-auth-js
+	
+
+	OIDC Client Setup Account 1
 		
 		https://developer.okta.com/
 		
@@ -85,14 +92,53 @@ Okta integration
 		dev-85267849.okta.com
 		
 		Client ID: 0oam7ngaa292k1b3h5d7
-		
+		 
 		redirectUri: http://localhost:3000/login/callback
-		
 		
 		Test User
 		testuser@email.com
 		testpassword1234!
-
-	npm install @okta/okta-signin-widget@6.6.3
+		
+		oktaConfig.ts
+			
+			export const oktaConfig = {
+			clientId: '0oam7ngaa292k1b3h5d7',
+			issuer: 'https://dev-85267849.okta.com/oauth2/default',
+			redirectUri: 'http://localhost:3000/login/callback',
+			scopes: ['openid', 'profile', 'email'],
+			pkce: true,
+			disableHttpsCheck: true
+		}
 	
-	npm install @okta/okta-react@6.4.3
+	OIDC Client Setup Account 2
+		
+		dev-08879210.okta.com
+		
+		Client ID: 0oanatebow5ilLALO5d7
+		
+		redirectUri: http://localhost:3000/login/callback
+	
+		Test User
+		
+			testuser@email.com
+			testpassword1234!
+		
+		Admin User
+			
+			adminuser@email.com
+			testpassword1234!
+			
+		oktaConfig.ts
+			
+			export const oktaConfig = {
+			clientId: '0oanatebow5ilLALO5d7',
+			issuer: 'https://dev-08879210.okta.com/oauth2/default',
+			redirectUri: 'http://localhost:3000/login/callback',
+			scopes: ['openid', 'profile', 'email'],
+			pkce: true,
+			disableHttpsCheck: true
+		}
+
+	
+	
+	
