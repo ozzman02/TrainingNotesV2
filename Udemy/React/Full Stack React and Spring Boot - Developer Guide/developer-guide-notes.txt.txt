@@ -157,9 +157,42 @@ Enable Browser Flags to avoid Browser/Cert warnings about not secure connections
 	
 		Search for localhost or Temporarily unexpire M130 flags
 		
-		Allow invalid certificates for resources loaded from localhost.
+		Allow invalid certificates for resources loaded from l<ocalhost.
 
 	
 Keytool - Generate key and self-signed certificate
 	
 	https://github.com/darbyluv2code/fullstack-react-and-springboot/blob/main/bonus-content/keytool-steps.md
+	
+Stripe
+	
+	React app
+		
+		Install
+		
+			npm install stripe@9.14.0
+			
+			npm install @stripe/stripe-js@1.32.0
+			
+			npm install @stripe/react-stripe-js@1.9.0
+	
+		Add to index.html	
+			
+			<scripts>
+				src="https://js.stripe.com/v3"
+				async
+			</scripts>
+		
+		Add stripe publishable key
+		
+			index.tsx
+			
+				const stripePromise = loadStripe("pk_test_xxyyzz112233...")
+				
+		Create custom PaymentInfoDto
+		
+		Create Payment Page
+		
+		Update Book checkout page
+		
+		
