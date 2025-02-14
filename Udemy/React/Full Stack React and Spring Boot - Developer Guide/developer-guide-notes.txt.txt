@@ -25,7 +25,6 @@ Warning
 
 		npm install --save-dev @babel/plugin-proposal-private-property-in-object
 	
-
 Adding css
 	
 	Bootstrap
@@ -83,13 +82,12 @@ Okta integration
 	
 	npm install @okta/okta-auth-js
 	
-
+	https://developer.okta.com/
+		
+	https://developer.okta.com/login/
+		
 	OIDC Client Setup Account 1
-		
-		https://developer.okta.com/
-		
-		https://developer.okta.com/login/
-		
+				
 		dev-85267849.okta.com
 		
 		Client ID: 0oam7ngaa292k1b3h5d7
