@@ -86,7 +86,7 @@ Okta integration
 		
 	https://developer.okta.com/login/
 		
-	OIDC Client Setup Account 1
+	OIDC Client Setup Account 1 (google)
 				
 		dev-85267849.okta.com
 		
@@ -109,7 +109,7 @@ Okta integration
 			disableHttpsCheck: true
 		}
 	
-	OIDC Client Setup Account 2
+	OIDC Client Setup Account 2 (github)
 		
 		dev-08879210.okta.com
 		
@@ -178,9 +178,7 @@ Stripe
 	
 		Add to index.html	
 			
-			<scripts>
-				src="https://js.stripe.com/v3"
-				async
+			<scripts src="https://js.stripe.com/v3" async>
 			</scripts>
 		
 		Add stripe publishable key

@@ -1,6 +1,28 @@
 Development Process
 	
 	1. Generate key and self signed certificate.
+	
+		https://github.com/darbyluv2code/fullstack-react-and-springboot/blob/main/bonus-content/openssl-setup.md
+	
 	2. Create our .env file.
+	
 	3. Run React App with the key and self signed certificate.
+	
+		set HTTPS=true && react-scripts ...
+		
+		"scripts": {
+			"start": HTTPS=true && react-scripts start,
+			...
+		}
+		
+		For Windows
+		
+		"scripts": {
+			"start": "set HTTPS=true&&react-scripts start",
+			"build": "react-scripts build",
+			"test": "react-scripts test",
+			"eject": "react-scripts eject"
+		},
+	
+		
 	4. Update Spring Boot App with new URL.
