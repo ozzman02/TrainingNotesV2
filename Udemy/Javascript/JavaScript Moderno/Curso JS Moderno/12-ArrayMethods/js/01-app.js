@@ -19,7 +19,7 @@ const carrito = [
 // Si te gustaría saber si nuestro arreglo de meses, tiene el mes de Febrero, podrías hacerlo con un foreach...
 
 meses.forEach(mes => {
-    if(mes === 'Enero') {
+    if (mes === 'Enero') {
         console.log('Enero si existe...')
     }
 })
