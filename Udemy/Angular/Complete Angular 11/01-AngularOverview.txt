@@ -133,50 +133,59 @@ Angular Packages
 		Provides built-in directives that are useful for most of the real-time applications.
 
 		Ex: ngIf, ngSwitch, ngClass, ngFor etc.
+		
 
 	3. @angular/compiler
 
 		Compiles "templates" (html code) into "javascript code".
+		
 
 	4. @angular/platform-browser-dynamic
 
 		Invokes the angular compiler (JIT compilation) and specifies the startup module and also start executing the application.
+		
 
 	5. @angular/platform-browser
 
 		Provides a set of pre-defined classes that are related to DOM and browser interaction.
 
 		e.g: BrowserModule.
+		
 
 	6. @angular/forms
 
 		Provides necessary pre-defined classes that are related to are needed to create and execute angular forms.
 
 		e.g: FormsModule, ReactiveFormsModule, Validators, ngModel, ngForm etc.
+		
 
 	7. @angular/router
 
 		Provides necessary pre-defined classes that are needed to create and execute angular routes.
 
 		e.g: RouterModule, Routes, ActivatedRoute, CanActivate, routerLink etc.
+		
 
 	8. @angular/animations
 
 		Provides necessary pre-defined classes that are needed to create and execute angular animations.
 
 		e.g: BrowserAnimationsModule, animate, state, style, transition etc.
+		
 
 	9. @angular/cli
 
 		Provides necessary pre-defined commands that are needed to create, compile, build, add items in angular applications.
 
 		e.g: ng new, ng serve, ng build, ng test etc.
+		
 
 	10. rxjs
 
 		Provides necessary pre-defined classes for creating Observables, which are needed to represent the response of REST-API calls of AJAX.
 
 		Ex: Observable, Observer, Subject etc.
+		
 
 	11. zone.js
 
@@ -225,10 +234,20 @@ Angular App Folder Structure
 		
 Flow of Execution of Angular App
 	
-	index.html
-
-	main.ts
-
-	app.module.ts
-
-	app.component.ts + app.component.html
+	index.html -> main.ts -> app.module.ts -> app.component.ts + app.component.html
+	
+index.html
+	
+	<app-root></app-root>
+		
+		AppComponent template will be replaced here.
+	
+	- index.html loads main.ts. 
+	- main.ts invoke app.module
+	- app.module invokes AppComponent. AppComponent is the root component. All remaining components of angular must be children of AppComponent.
+	
+app.component.html	
+	
+	<router-outlet></router-outlet>
+	
+		Pages are dynamically replaced here. This is done by Router Outlet.

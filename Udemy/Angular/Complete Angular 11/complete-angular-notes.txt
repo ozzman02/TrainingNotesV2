@@ -30,7 +30,7 @@ Create new app
 
 	ng new AppName --style=scss --routing
 	
-	ng new AppName --style=scss --routing --no-standalone --ssr=false
+	ng new AppName --style=scss --routing --no-standalone --ssr=false (final command to create a new app)
 	
 
 Adding Bootstrap to Angular
@@ -67,4 +67,7 @@ Error: Cannot find module 'node-sass'
 Run the app
 	
 	ng serve --open
+	
+	ng serve --open --port=5200
+
 

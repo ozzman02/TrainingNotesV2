@@ -5,7 +5,7 @@ Data Bindings
 	The value of "Template's HTML Element" will be automatically updated into "Component's Property" and vice versa.
 
 	
-	Interpolation Binding
+	Interpolation Binding (Display value of properties in plain text)
 
 		Component				Template
 
@@ -13,7 +13,7 @@ Data Bindings
 
 		Property	 ------> 	HTML Element
 
-	Property Binding
+	Property Binding (Assign a value from source to target)
 
 		Component				Template
 
