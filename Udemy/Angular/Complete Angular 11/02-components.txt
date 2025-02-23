@@ -8,6 +8,15 @@ What is Component?
 
 	Component class is responsible to supply data to the template.
 
+
+
+Decorator | @Component({
+	Metadata | templateUrl: "templatefile.html"
+			 | selector: "tagName",
+			 | styleUrls: [ "StyleSheet.css" ]
+})
+
+
 Component Class
 
 	class Component {

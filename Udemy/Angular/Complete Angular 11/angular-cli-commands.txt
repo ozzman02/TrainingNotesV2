@@ -1,0 +1,10 @@
+Angular CLI commands
+	
+	
+	ng g component ComponentName
+	
+		- Create a Component
+	
+	ng g module ModuleName
+		
+		- Create a Module

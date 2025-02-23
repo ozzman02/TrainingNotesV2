@@ -6,10 +6,12 @@ Routing
 
 		Route maps an URL to a component.
 		
+
 Importing "@angular/router" package in "package.json" file
 
 	"@angular/router": "~7.2.0"
 	
+
 Define Base URL in "index.html" file
 
 	<base href="/">
@@ -19,15 +21,26 @@ Create hyperlink for route
 
 	<a routerLink="/path"> Link text </a>
 	
+
 Routing Steps
 
-	Create Router Module
+	Create Router Module in app-routing.module.ts (AppRoutingModule)
 
 		const routes: Routes = [
 			{ path: "path1", component: Component1 },
 			{ path: "path2", component: Component2 },
 			…
 		];
+		
+		
+		const routes: Routes = [
+			{ path: "dashboard", component: DashboardComponent },
+			{ path: "about", component: AboutComponent },
+			{ path: "", redirectTo: "dashboard", pathMatch: "full" },
+			…
+		];
+		
+		pathMatch: prefix and full. Prefix is useful for child routes. Parent route is a prefix.
  
 		---
  
@@ -42,4 +55,5 @@ Routing Steps
 	Create Router Outlet in app.component.html
 
 		<router-outlet> </router-outlet>
+
 

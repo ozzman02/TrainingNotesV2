@@ -12,7 +12,10 @@ const medidas = {
 console.log(productoV9);
 console.log(medidas);
 
+// Copiar
 const resultado = Object.assign(productoV9, medidas);
 console.log(resultado);
+
+// Esto es otra forma de copiar.
 const resultado2 = { ...productoV9, ...medidas }
 console.log(resultado2);

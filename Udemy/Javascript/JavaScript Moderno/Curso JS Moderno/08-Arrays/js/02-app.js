@@ -3,4 +3,4 @@ console.log(numerosV2);
 console.table(numerosV2);
 
 console.log(numerosV2[1]);
-console.log(numerosV2[3][0]);
+console.log(numerosV2[3][0]); // 40

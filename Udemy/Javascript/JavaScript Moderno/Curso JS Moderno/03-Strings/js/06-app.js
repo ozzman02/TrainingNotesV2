@@ -1,5 +1,8 @@
 const testProduct = "Monitor 20 Pulgadas ";
 const texto = " en Promocion".repeat(3);
+// const texto = " en Promocion".repeat(2.4) // redondea;
+
+
 console.log(texto);
 console.log(`${producto} ${texto} !!!`);
 

@@ -1,0 +1,12 @@
+const numeros = [10, 20, 30, 40, 50];
+
+const [primero] = numeros; // retorna 10
+
+const [primero, segundo, tercero] = numeros; // retorna 10 20 30
+
+const [, , tercero] = numeros // retorna 30
+
+// queremos el primero y el segundo pero queremos que los demas elementos esten en su propio arreglo
+const [primero, segundo, ...tercero] = numeros;
+console.log(tercero); // retorna [30, 40, 50]
+
