@@ -15,6 +15,33 @@ run the app
 
     npm run start
 	
+Deprecation warning 'onAfterSetupMiddleware' option is deprecated 
+
+	Remove this code from node_modules\react-scripts\config\webpackDevServer.config.js
+	
+		onBeforeSetupMiddleware(devServer) {
+			// Keep `evalSourceMapMiddleware`
+			// middlewares before `redirectServedPath` otherwise will not have any effect
+			// This lets us fetch source contents from webpack for the error overlay
+			devServer.app.use(evalSourceMapMiddleware(devServer));
+  
+			if (fs.existsSync(paths.proxySetup)) {
+			// This registers user provided middleware for proxy reasons
+				require(paths.proxySetup)(devServer.app);
+			}
+		},
+		onAfterSetupMiddleware(devServer) {
+			// Redirect to `PUBLIC_URL` or `homepage` from `package.json` if url not match
+			devServer.app.use(redirectServedPath(paths.publicUrlOrPath));
+		  
+			// This service worker file is effectively a 'no-op' that will reset any
+			// previous service worker registered for the same host:port combination.
+			// We do this in development to avoid hitting the production cache if
+			// it used the same host and port.
+			// https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
+			devServer.app.use(noopServiceWorkerMiddleware(paths.publicUrlOrPath));
+		},
+	
 	
 Code from template:
 	
@@ -191,3 +218,19 @@ ESBuild
 Get React Archive			
 
 	npm view react dist.tarball
+	
+	
+Cache layer
+	
+	localForage
+		
+		npm install localforage --save
+		
+		
+Our App
+	
+	1. We want to run something like 'jbook serve'
+	2. This should start a server on localhost:4005
+	3. User will write code into an editor.
+	4. We bundle in the browser.
+	5. We execute the users code in iframe. (localhost:4006)
