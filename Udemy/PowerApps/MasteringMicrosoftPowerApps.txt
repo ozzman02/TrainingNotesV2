@@ -1,0 +1,22 @@
+Instructor contact
+
+	Fabian@fabianackeret.com
+	
+	
+Syntax Language
+	
+	Browser language other than English
+		
+		Set(gblLanguage; "en");;
+		
+		
+	Browser language set to English
+		
+		Set(gblLanguage, "en");
+		
+	Recommendation: Change the browser language to English/
+	
+UI Language
+	
+	Settings -> PowerApps Settings -> Use Brower Language.
+		

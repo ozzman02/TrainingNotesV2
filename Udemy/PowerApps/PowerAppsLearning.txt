@@ -1,0 +1,345 @@
+Power Apps
+
+	https://make.powerapps.com/
+
+
+Training
+	
+	https://learn.microsoft.com/en-us/training/modules/get-started-with-powerapps/5-powerapps-create-first
+	
+	https://learn.microsoft.com/en-us/training/modules/how-to-build-ui-canvas-app/1-use-themes
+	
+			 
+	Designing a Power Apps app
+		
+		- What do we want our app to do?
+		
+		- Are we replacing or automating an analog process?
+		
+		- Do we need to automate steps in our current process that cause backlogs?
+		
+		- Do we need to create mobile capacity? 
+		
+		- Do we need to account for hundreds of lines of data, or tens of thousands of lines of data?
+		
+	
+	Data Model
+	
+		- With of all these choices how do you decide which data source to use for your solution?
+		 
+		- Maybe you already have a data source implemented that users work with on a day-to-day basis, like SharePoint.
+		
+		- Could you just use this as your data source to build your app? 
+		
+		- Do you need to connect to multiple data sources? 
+		
+		- How much data do you need to store?
+		
+	User experience
+		
+		- Custom Branding (your logo, colors, and fonts)
+		
+		- Pop-ups (confirming user actions)
+
+		- Hide/show buttons based on users' access/permissions
+		
+		- Confirmation prompts
+		
+	Datasources
+		
+		Dataverse
+		Sharepoint
+		Excel
+		SQL
+			
+	Power Automate
+		
+		Use cases:
+			
+			 - Do you need a way to make sure someone acted on the incident report that your app generated? 
+			 
+			 - Or do you need a process to kick off every time new data is created in another system so Power Apps has the data it needs? 
+			 
+			 - Do you need to check each morning to see if an inspection is due that day and then send an email with a link to your Power Apps inspection form? 
+			 
+	Controls
+		
+		A control is a UI element that produces an action or shows information.
+		
+			Galleries:
+				
+				 Controls that are layout containers that hold a set of controls that show records from a data source.
+				 
+			Forms:
+			
+				Controls that show details about your data and let you create and edit records.
+				
+				- Datasource
+				
+				- Item
+				
+				- DataCard
+					
+					DataCardKey
+					DataCardValue
+					StarVisible 
+					ErrorMessage
+			
+			Media:
+			
+				Controls that let you add:
+					
+					- Background images, including a camera button (so that users can take pictures from the app)
+					
+					- A barcode reader for quickly capturing identification information.
+			
+			Charts:
+				
+				Controls that let you add charts, including Power BI data, so that users can perform instant analysis of their data.
+				
+				
+			Personalization
+			
+				User().Email
+				
+				User().FullName
+				
+				User().Image
+				
+	Work with External Data
+	
+		- Office 365 Users connection
+		
+		- Use of Galleries, demonstrating how to display and interact with your data efficiently.
+		
+		- Collections, versatile internal data sources that function like variables in a tabular form. 
+		
+		- Patch and ForAll functions, powerful tools for data manipulation and updates.
+		
+		
+		Datasources
+		
+			- By establishing a connection, you link your app to the data that powers it.
+			
+			- Each connection uses a specific connector, acting as a bridge to your desired data.
+			
+			
+			Connectors (Table based and Action Based)
+	
+				- Some connectors provide tables filled with data.
+				
+				- Others offer actions that allow you to interact with data in unique ways.
+				
+				- Some connectors even offer a combination of both tables and actions.
+				
+				- You can create custom connectors.
+				
+				Overview of connectors for canvas apps
+				
+					https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/connections-list
+					
+					
+				Custom connectors for canvas apps
+					
+					https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/register-custom-api
+				
+				
+			Tables
+			
+				 The core components of connectors providing tabular data.
+				 
+			Actions (Examples: Yammer and Office 365 Outlook)
+				
+				Actions, on the other hand, open the door to dynamic data retrieval.
+				
+				Action Example:
+				
+					Sent an email:
+					
+						On a button, OnSelect -> Formula -> Office365Outlook.SendEmailV2(User().Email, "Subject of the email", "Body of the email")
+						
+						
+			Every user who works with an app based on data in a list in SharePoint needs the appropriate permissions in SharePoint to interact with that data.
+			
+			
+			
+			Office365 Connector
+			
+				Store user profile information using App OnStart
+				
+					On App
+						
+						OnStart -> Set(varUserInfo, Office365Users.MyProfileV2())
+						
+						elipsis -> run on start to populate varUserInfo
+						
+						On a Label
+							
+							Text -> "Welcome " & varUserInfo.displayName
+							
+							
+				UserInformation Action
+					
+					Label				Text Input Default
+					Full Name 			(Display Name)	varUserInfo.displayName
+					Job Title			varUserInfo.jobTitle
+					Department			varUserInfo.department
+					Email				varUserInfo.mail
+					City				varUserInfo.city
+					Country				varUserInfo.country
+					Postal Code			varUserInfo.postalCode
+				
+					
+				
+				If you need to gather data about another user (someone other than the current user), you can use the SearchUser and UserProfile actions.
+				
+					ComboBox
+				
+						Items					Office365Users.SearchUserV2({searchTerm: Self.SearchText, isSearchTermRequired: false}).value		* Important
+						DefaultSelectedItems	Office365Users.SearchUserV2({searchTerm:varUserInfo.displayName}).value								* Important
+						DisplayFields			["DisplayName"]
+						IsSearchable			true
+						SelectMultiple			false
+						OnChange				Set(varSearchUserInfo, Office365Users.UserProfileV2(Self.Selected.Id))
+					
+					
+				SearchUser Action
+					
+					Label				Text Input Default
+					Full Name 			(Display Name)	varSearchUserInfo.displayName
+					Job Title			varSearchUserInfo.jobTitle
+					Department			varSearchUserInfo.department
+					Email				varSearchUserInfo.mail
+					City				varSearchUserInfo.city
+					Country				varSearchUserInfo.country
+					Postal Code			varSearchUserInfo.postalCode
+				
+				
+				Manager Information
+				
+					Combo Box -> OnChange property to: Set(varSearchUserInfo, Office365Users.ManagerV2(Self.Selected.Id)).
+			
+			Collections
+				
+				Collections are a special data source. They're local to the app and not backed by a connection to a service in the cloud, so the 
+				information can’t be shared across devices for the same user or between users. 
+	
+				Collect
+					
+					https://learn.microsoft.com/en-us/training/modules/work-with-external-data/4-move-data-using-collect
+					
+					
+					- The Collect function adds records to a data source. 
+					- It's able to add a single value, a record, or a table to a collection.
+					- It can be used to create a collection and write to a data source, such as a SharePoint list or a Dataverse table. 
+					- It enables you to write bulk data without using a ForAll/Patch function to loop through your data.
+					
+					Example
+					
+						As long as your data source has columns called 'Title' and 'StartDate' (and they're data types, text and date, respectively) 
+						this formula creates a record in your data source where the Title is 'First Try' and the StartDate is today's date.
+						
+							Collect('YourDataSource', {Title: 'First Try', StartDate: Today()})
+							
+						You could also write an entire table to your data source via the Collect statement, again, as long as the data structure matches.
+						
+							Collect('YourDataSource', colMyCollection)
+							
+							
+						In summary, remember these three conditions when using Collect to write to your data source:
+						
+							- The columns in your collection must exist in the data source. 
+								
+								The data source can have other columns (such as system-generated columns), but the columns you're writing from 
+								in your collection must be present in the data source you're writing to. (If your collection has a text column 
+								called Widget, then your data source must also have a text column called Widget.)
+								
+							- The data type (such as Text, Number, or Date) of each column in the collection must match the destination data type
+							
+							- Your collection must include data for any mandatory columns in your data source.
+							
+							
+						If necessary, you can use functions to transform your collection to match your data source such as:
+
+							AddColumns
+							DropColumns
+							RenameColumns
+							ShowColumns
+							
+				
+				Patch and ForAll
+					
+					Patch is a function that allows you to modify or create a record in your data source. 
+					
+					ForAll is a function that allows you to run a formula for each record in a table, and collections are tables.
+					
+	Forms
+		
+		- There are two types of form controls: Edit Form and Display Form. The Edit Form has the View, Edit, and New form modes, while the Display Form only has the View form mode.
+		
+		- Forms work with all tabular data sources except collections.
+		
+		- The two most common ways of returning a record are by connecting the Form control to a Gallery control's selected property or by using a LookUp function.
+		
+		Functions and properties
+		
+		
+			SubmitForm function
+			
+				SubmitForm(YourFormName)
+		
+			OnFailure Property
+			
+				Notify("Your data was not saved. Please try again or contact an administrator.", NotificationType.Error)
+			
+			OnReset property
+		
+			LastSubmit property
+			
+			Special properties
+			
+			Forms have a couple of overlooked properties and named operators. This section covers when and how to use the Error property, Unsaved property, ThisItem named operator, and Parent named operator.
+			
+				Unsaved property: 
+					
+					The Unsaved property is a Boolean property that is true when a form has been edited but not submitted. 
+			
+					- If(YourFormName.Unsaved = false, Navigate(WelcomeScreen, ScreenTransition.Cover))
+					
+				ThisItem named operator: 
+					
+					Within your Form or Gallery control, you can reference the values of the current record by using ThisItem.
+			
+					- ThisItem.FirstName & " " & ThisItem.LastName
+					
+				Parent named operator: 
+				
+					- Within the Form and Gallery controls, there's the concept of a parent object. In the case of an Input or other control in a Form control, 
+					you can pull a property from the data card by using Parent.
+					
+					
+		Connect to gallery
+			
+			Insert > Edit form. Set the DataSource property to FlooringEstimates and the Item property to Gallery1.Selected.
+									   
+		OnSuccess property
+
+			Navigate(Screen1, ScreenTransition.Cover); Notify("You have successfully submitted a record for " & Self.LastSubmit.Name)
+			
+		OnFailure
+		
+			Notify("Your data was not saved. Please try again or contact an administrator.", NotificationType.Error)
+			
+		
+		Gallery
+			
+			OnSelect -> Navigate(Screen2)
+			
+			
+		Button properties
+			
+			OnSelect
+				
+				-> NewForm(Form1)
+				
+				-> SubmitForm(Form1)

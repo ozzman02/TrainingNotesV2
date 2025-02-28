@@ -1,0 +1,51 @@
+Some functions
+
+	Format as currency
+		
+		Text -> Text(Value(ThisItem.'Machine Price'), "$ ##.00")
+		
+	Add Column to data table
+		
+		/* 
+			This expression collects the rows from `colItemsCollection`, adding a new column named `Revenue` that calculates the total revenue by multiplying `UnitPrice` by `UnitsSold`, 
+			and then appends the resulting table to `colAddCollection`.
+		*/
+		OnSelect -> Collect(colAddCollection, AddColumns(colItemsCollection, Revenue, UnitPrice * UnitsSold))
+		
+	Drop Column from data table
+		
+		// This expression collects the rows from the `colItemsCollection` table after removing the `UnitPrice` column and adds them to the `colDropCollection`.
+		OnSelect -> Collect(colDropCollection, DropColumns(colItemsCollection, UnitPrice))
+		
+	Show Column	
+	
+		// This expression collects records from the `colItemsCollection` table, keeping only the column specified by `Name`, and appends them to the `colShowCollection`.
+		Collect(colShowCollection, ShowColumns(colItemsCollection, Name))
+		
+	Rename Column
+	
+		// This expression collects the rows from the `colItemsCollection` table after renaming the column `Name` to `Product`, and appends the result to the `colRenameCollection`.
+		Collect(colRenameCollection, RenameColumns(colItemsCollection, Name, Product))
+	
+	
+	Patch
+		
+		/*
+			Simple way to update our selected product's description.
+			
+			Patch:	Provides the means to modify or create a record in your data source, in this case we're modifying a record.
+			LookUp: Uses our product name to find the specific record we want to modify. LookUp returns the first record that matches our condition: Name = TextInput1.Text.
+		*/
+		Patch(Items,LookUp(Items, Name = TextInput1.Text), { Description: TextInput1_1.Text })
+		
+		
+	Notify
+	
+		Notify("Your data was not saved. Please try again or contact an administrator.", NotificationType.Error)
+		
+	If
+	
+		If(YourFormName.Unsaved = false, Navigate(WelcomeScreen, ScreenTransition.Cover))
+		
+		
+	
