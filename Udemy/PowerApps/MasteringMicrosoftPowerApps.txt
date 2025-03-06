@@ -19,4 +19,277 @@ Syntax Language
 UI Language
 	
 	Settings -> PowerApps Settings -> Use Brower Language.
+	
+	
+Connections
+	
+	- Instances of a connector in use.
+	- Enable data flow between your app and datasource.
+	- Securely store credentials for data access.
+	
+	
+Forms
+
+	Connect a button to an Edit Form
+	
+		OnSelect 
+			
+			SubmitForm(FormName)
+	
+
+	Get the value of a dropdown	
+			
+		DropDownName.Selected.Value
+	
+	NewForm(FormName)
+	
+Galleries
+	
+	Connect the galllery to a data source.
+	
+	Refer to an item of the gallery with ThisItem.DataSourceFieldName
+	
+	Items Property
 		
+		Usually it points to the datasource you are connecting to.
+		
+	Filtering data
+	
+		AND condition
+		
+			Items -> Filter(Employees, Department = "IT", Department = "Finance")
+		
+		OR condition
+		
+			Items -> Filter(Employees, Department = "IT" || Department = "Finance")
+			
+			Items -> Filter(Employees, Department = "IT" OR Department = "Finance")
+			
+			
+		Using a text field to search for keyword
+		
+			Here we are searching by a department
+			
+				Items -> Filter(Employees, StartsWith(Department, txtSearchBar.Text))
+			
+			Here we are searching by display name and department
+				
+				Items -> Filter(Employees, StartsWith(Department, txtSearchBar.Text) OR StartsWith('Display Name', txtSearchBar.Text))
+			
+			Using Search function
+				
+				Items -> Search(Employees, txtSearchBar.Text, Department, FirstName, Surname)
+				
+				
+			Hints
+				
+				Where to use Search and Filter
+				
+					Search will give delegation warning. In our example we are connecting to a sharepoint which is NOT delegable.
+					This warning means that some searcheable columns will not work correctly on large datasets.
+				
+				
+				Filter is suitable to work on large datasets sharepoint list.
+				
+	Show a datasource field value in the gallery
+
+		Text -> ThisItem.DatasourceField
+				
+	Select an item and show it in a different control
+	
+		Label
+			
+			Text -> Gallery.Selected.Q
+				
+				
+Delegation
+	
+	Helps PowerApps work with large sets of data without getting overwhelmed.
+	
+	- Improves app performance.
+	- Handles data sets beyond the default 500/2000 item limit.
+	- Reduces strain on the app and user's device.
+	
+	
+	Depending on the datasource Microsoft provides a list of delegable and non delegable functions
+	
+		Example
+			
+			Not delegable for sharepoint
+				
+				Filter(..., IsBlank(CustomerId))
+				
+			Delegable for sharepoint
+				
+				Filter(..., CustomerId = Blank())
+				
+			These formulas are not equivalent because the second formula won't treat the empty string ("") as empty.
+			On Sharepoint, this approach will work for the equals operator ("=") but not the operator for not equals ("<>")
+			
+Navigation
+	
+	Navigate('Form Screen', ScreenTransition.Cover)
+	
+Custom Form & Gallery
+
+	On a text field (In this case First Name) set the default property
+	
+		default -> GalleryEmployees.Selected.'First Name'
+	
+	Surname	
+		
+		default -> GalleryEmployees.Selected.Surname
+		
+		
+		
+	SubmitButton
+
+		onSelect -> 
+			
+			Patch(
+				Employees, 
+				Defaults(Employees), 
+				{
+					Department: Dropdown2.Selected.Value, 
+					'First Name': txtFirstName.Text, 
+					'Display Name': txtDisplayName.Text
+					Surname: txtSurname.Text,
+					Birthday: dateBirthDay.SelectedDate
+				}
+			);
+			
+			If(
+				IsEmpty(Errors(Employees)),
+				Notify("Successfully saved", NotificationType.Success, 2000);
+				Navigate('Form Screen'),
+				
+				Notify("There was an error saving the form. Please contact your administrator", NotificationType.Error, 2000)
+			)
+			
+			
+			
+		Error with title field. Title field is required but it's some kind of special. We can change it as not required.
+		
+			ListSettings
+				
+				Click on Title and change it as not required (Required that this column contains information)
+				
+			We can also hide the column in column settings from the list view.
+			
+			If you change something in the datasource go and refresh.
+			
+			After refresh, copy and paste the code again.
+		
+		
+		
+Hide Or Show based on values
+
+	Use a button to change a variable that you can use for reference later.
+	
+		Button1 -> OnSelect -> Set(gblShowAnswer, true)
+		Button2 -> OnSelect -> Set(gblShowAnswer, false)
+	
+	Use the visible property (on a label for example..) and reference the variable that was created.
+	
+		Label -> Visible -> gblShowAnswer
+		
+	Button1 -> Visible -> !gblShowAnswer
+	
+	
+Patch Examples
+
+	SubmitButton
+
+		onSelect -> 
+			
+			Patch(
+				Employees, 
+				Defaults(Employees), 
+				{
+					Department: Dropdown2.Selected.Value, 
+					'First Name': txtFirstName.Text, 
+					'Display Name': txtDisplayName.Text
+					Surname: txtSurname.Text,
+					Birthday: dateBirthDay.SelectedDate
+				}
+			);
+			
+			If(
+				IsEmpty(Errors(Employees)),
+				Notify("Successfully saved", NotificationType.Success, 2000);
+				Navigate('Form Screen'),
+				
+				Notify("There was an error saving the form. Please contact your administrator", NotificationType.Error, 2000)
+			)
+			
+	SubmitButton 
+	
+		onSelect -> 
+		
+			Set(gblShowAnswer, false);
+			
+			Patch(
+				FlashCards,
+				Gallery1.Selected,
+				{
+					'Confidence Level': Value(Self.txt)
+				}
+			)
+			
+
+Connect text to gallery for searching
+
+	Text Input -> Hint -> "Search Questions"
+	
+	Gallery -> Items -> 
+		
+		Search(
+			Flashcards,
+			txtSearchBox.Text,
+			"Field"
+		)
+	
+	Go to settings and change row limit to 2000
+	
+
+Global Variables
+	
+	Accessibke throughout entire apps.
+	
+	Ideal for information across screens or components.
+	
+	Use the Set function:
+	
+		Set(UserName, "John Doe")
+		
+		
+	Example Initializing
+		
+		Button
+			OnSelect
+				Set(gblEmployees, Blank())
+		
+	Example Assigning Object
+		
+		Gallery
+			OnSelect
+				Set(gblEmployees, ThisItem)
+	
+Context Variables	
+
+	Accessible only within screen or component.
+	
+	Local to a specific part of your app.
+	
+	Temporary information (Input of user from specific screen or current state of a control).
+	
+	Use UpdateContext function:
+	
+		UpdateContext(
+			{
+				ScreenTitle: "Welcome"
+			}
+		)
+	
+	
+	
