@@ -291,5 +291,61 @@ Context Variables
 			}
 		)
 	
+		UpdateContext({ctxValue1: 30});
+		UpdateContext({ctxBool: true});
+		UpdateContext({ctxText: $"The weather is around {ctxValue1}°C});
 	
 	
+Collections
+
+	- Temporary data storage
+	- Store Multiple Records
+	- Flexible structure
+	
+	Functions
+	
+		Collect function to create a collection.
+		
+			Collect(
+				Tasks, 						-> Name
+				{							
+					Title: "Task1",			-> Items	
+					Status: "Not Started"	
+				}							
+			)
+			
+		Add Columns
+			
+			AddColumns(
+				colEvents,					-> source
+				"Required Registration",	-> column name
+				false						-> expression
+			)
+			
+		Remove Items
+			
+			Remove(
+				colEvents,			-> source
+				First(colEvents)	-> record to be removed
+			)
+			
+		Update Items
+		
+			Update(
+				colEvents,				-> source
+				First(colEvents),		-> record to be updated
+				{
+					Name: "Brunch",		
+					Date: Now(),		-> item
+					Location: "Zurich"
+				}
+			)
+		
+	Display items in a collection
+	
+		- Gallery control
+		
+			Bind collection to Items Property
+			Customize Item Template.
+			
+			
