@@ -301,6 +301,7 @@ Collections
 	- Temporary data storage
 	- Store Multiple Records
 	- Flexible structure
+	- Usually we create a collection with the help of a Button using the onSelect property.
 	
 	Functions
 	
@@ -341,6 +342,40 @@ Collections
 				}
 			)
 		
+		Clear Collect
+		
+			ClearCollect(
+				colOrders,
+				{
+					Employee: "Fabian Ackeret",
+					Order: "Hamburguer"
+				},
+				{
+					Employee: "John Doe",
+					Order: "Salad"
+				}
+			)
+			
+			ClearCollect(
+				colFinance, 
+				Employees	// Employees is a SharePointList
+			)
+			
+			ClearCollect(
+				colFinance,
+				Employees,
+				Department = "Finance"
+			)
+			
+			ClearCollect(
+				colMeals,
+				"Hamburguer", "Salad", "Pasta", "Pizza"
+			)
+			
+			
+			
+			
+		
 	Display items in a collection
 	
 		- Gallery control
@@ -349,3 +384,71 @@ Collections
 			Customize Item Template.
 			
 			
+			ClearCollect(
+				colMeals,
+				"Hamburguer", "Salad", "Pasta", "Pizza"
+			)
+			
+			In a gallery: Items -> colMeals
+			
+			
+	Create a Navigation Bar with a Horizontal Gallery and a Collection
+	
+		Create a Button to create the collection
+			
+			Button -> OnSelect ->
+				
+				ClearCollect(
+					colNavigation,
+					{
+						Title: "Form",
+						Screen: 'Form Screen'  -> This is the name of a Screen Control
+					},
+					{
+						Title: "Custom Form",
+						Screen: 'Form Screen'  -> This is the name of a Screen Control
+					},
+					{
+						Title: "Variables",
+						Screen: 'Variables Screen'  -> This is the name of a Screen Control
+					},
+					{
+						Title: "Collections",
+						Screen: 'Collections Screen'  -> This is the name of a Screen Control
+					},
+					{
+						Title: "Exercise",
+						Screen: 'Exercise Screen'  -> This is the name of a Screen Control
+					}
+				)
+			
+		Create a Horizontal Gallery
+			
+			Get rid off the image and add a button in the first element
+			
+			Gallery -> Items -> colNavigation
+			
+			In the buttons
+				
+				Text -> ThisItem.Title
+				
+			Gallery TemplatePadding -> 15
+			
+			In a gallery we can use the whole width and height of an item
+			
+				One level below the gallery we can set the Width to Parent.TemplateWidth and Height to ParentTemplateHeight
+				
+			On the gallery
+				
+				OnSelect -> Navigate(ThisItem.Screen)
+				
+			On the Button	
+			
+				Fill -> RGBA(56, 96, 178, 0)
+				HoverFill -> ColorFade(RGBA(56,96,178,0), -20%)
+				PressedFill -> Self.Fill
+				Color -> If(App.ActiveScreen = ThisItem.Screen, RGBA(202,202,202,1),RGBA(255,255,255,1))
+				
+				
+				Copy and paste the gallery in all your screens and put it upfront
+	
