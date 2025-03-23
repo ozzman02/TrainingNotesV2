@@ -1,0 +1,23 @@
+Repos
+	
+	mobile-app-ws-quick-start -> https://github.com/simplyi/mobile-app-ws-quick-start
+	
+	SpringCloudVideoCourse -> https://github.com/simplyi/SpringCloudVideoCourse/tree/update-spring-boot-v3.3.2
+	
+		https://github.com/simplyi/SpringCloudVideoCourse/tree/update-spring-boot-v3.3.2/PhotoAppAPIConfigServer
+		
+		https://github.com/simplyi/SpringCloudVideoCourse/tree/update-spring-boot-v3.3.2/PhotoAppApiAlbums
+		
+		https://github.com/simplyi/SpringCloudVideoCourse/tree/update-spring-boot-v3.3.2/PhotoAppApiUsers
+		
+		https://github.com/simplyi/SpringCloudVideoCourse/tree/update-spring-boot-v3.3.2/PhotoAppDiscoveryService
+		
+		https://github.com/simplyi/SpringCloudAPIGateway/tree/update-spring-boot-v3.3.2
+		
+	Config Server Configuration Properties  Only
+	
+		Config Server Native File System -> https://s3-us-west-2.amazonaws.com/appsdeveloperblog.com/config-server-nfs.zip
+		
+	Eureka Server Cluster
+		
+		https://github.com/simplyi/EurekaServerClusterDemo
