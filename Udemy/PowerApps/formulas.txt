@@ -47,5 +47,18 @@ Some functions
 	
 		If(YourFormName.Unsaved = false, Navigate(WelcomeScreen, ScreenTransition.Cover))
 		
+	Switch
+		
+		// If theme is dark then use backgroundDark
+		Switch(gblParameters.theme, "dark", gblAppColors.backgroundDark)
+		
+		// If theme is not dark or contrast then gblAppColors.backgroundDefault
+		Switch(gblParameters.theme, "dark", gblAppColors.backgroundDark, "contrast", gblAppColors.backgroundHighContrast, gblAppColors.backgroundDefault)
+		
+	Coalesce
+		
+		// If source is null or empty use portal
+		Coalesce(Param("source"), "portal")
+		
 		
 	

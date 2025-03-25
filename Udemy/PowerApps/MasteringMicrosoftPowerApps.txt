@@ -452,3 +452,7 @@ Collections
 				
 				Copy and paste the gallery in all your screens and put it upfront
 	
+	
+String interpolation
+
+	$"MyCustomParam: {gblParameters.myCustomParam}"

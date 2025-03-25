@@ -1,0 +1,54 @@
+Expense Tracker App Project
+	
+	LoadingScreen
+	
+		Do not use App OnStart Property to define global variables. Use OnVisible property in the first screen of your app.
+		Use a global variable to control when the app is loading and use in conjuction with a timer component.
+
+			Set(gblAppLoaded, false);
+			...
+			...
+			...
+			Set(gblAppLoaded, true);
+		
+		Timer
+		
+			Auto start -> On
+		
+			Duration -> 500 milliseconds
+			
+			Repeat Property -> !gblAppLoaded
+				
+			OnTimerEnd -> If(gblAppLoaded, Navigate('Home Screen'));
+			
+			Visible -> false
+			
+			
+			
+		On a label
+			
+			Fit perfectly in bottom left corner: 
+			
+				Y -> Parent.Height - Self.Height
+				
+		In a gallery you can use a table
+		
+			Items -> 
+				
+				Table(
+					{
+						Title: "Trip",
+						Action: "",
+						Image: travel
+					},
+					{
+						Title: "Internet",
+						Action: "",
+						Image: internet
+					},
+					{
+						Title: "Lunch",
+						Action: "",
+						Image: lunch
+					}
+				)
