@@ -234,3 +234,31 @@ Our App
 	3. User will write code into an editor.
 	4. We bundle in the browser.
 	5. We execute the users code in iframe. (localhost:4006)
+	
+	
+	Direct access between frames is allowed when...
+	
+		The iframe element does not have a sandbox property or has a sandbox="allow-same-origin" property and	we fetch the parent html doc and the frame HTML doc from the exact same 
+	
+			Domain
+			Port
+			Protocol (http vs https)
+			
+	Currently
+	
+		Frontend App				localhost:3000
+		--------------				--------------
+		Load React App ----------->	index.html
+					   <-----------
+				|
+				|
+				v
+		User changes code
+				|
+				|
+				v
+		Reload iframe sandbox=""
+				|
+				|
+				v
+		Fetch HTML doc
