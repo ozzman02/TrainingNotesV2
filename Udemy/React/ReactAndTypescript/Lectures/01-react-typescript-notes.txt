@@ -262,3 +262,7 @@ Our App
 				|
 				v
 		Fetch HTML doc
+		
+	Downside
+		
+		Users will not be able to use localstorage, cookies, etc.

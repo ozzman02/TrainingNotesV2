@@ -52,3 +52,55 @@ Expense Tracker App Project
 						Image: lunch
 					}
 				)
+				
+	Expense Screen
+		
+		Get items from sharepoint list inside the dropdown
+		
+			Choices([@'Expenses List'].Category)
+			
+		Patch using People field and With
+			
+			With(
+				{
+					varManager: Office365Users.ManagerV2(User().Email)
+				},
+				Patch(
+					'Expenses List',
+					Defaults('Expenses List'), 
+					{
+						Description: txtDescriptionExpense.Text,
+						Date: dteDateExpense.SelectedDate,
+						Category: drpCategoryExpense.Selected,
+						Currency: drpCurrencyExpense.Selected,
+						Person: {
+							Claims: "i:0#.f|membership|" & User().Email,
+							Department: "",
+							DisplayName: User().FullName,
+							Email: User().Email,
+							JobTitle: "",
+							Picture: ""
+						},
+						Manager: {
+							Claims: "i:0#.f|membership|" & varManager.userPrincipalName,
+							Department: "",
+							DisplayName: varManager.displayName,
+							Email: varManager.mail,
+							JobTitle: "",
+							Picture: ""
+						},
+						Total: Value(txtTotalExpense.Text)
+					}
+				)
+			);
+			
+		Filtering
+					
+			Filter(
+				'Expenses List',
+				Person.Email = User().Email
+			)
+			
+		DateTimeFormat
+			
+			Text(ThisItem.Date, DateTimeFormat.ShortDate)
