@@ -1,0 +1,24 @@
+PhotoAppApiUsers
+	
+	In application.properties
+		
+		server.port=${PORT:0}
+		eureka.instance.instance-id=${spring.application.name}:${spring.application.instance_id:${random.value}}
+	
+	Start the application from command line
+	
+		mvn spring-boot:run "-Dspring-boot.run.arguments=--spring.application.instance_id=ossant"
+	
+		mvn spring-boot:run "-Dspring-boot.run.arguments=--spring.application.instance_id=ossant2,--server.port=8999"
+		
+	In Eureka at http://localhost:8761/
+		
+		Application		AMIs		Availability Zones		Status
+		USERS-SERVICE	n/a (4)		(4)						UP (4) - users-service:ossant , users-service:9d610b7a074f73a8b54847e6a8abefd4 , 
+																	 users-service:bea0599a7cd89500a2b5432f4d4c168f , users-service:ossant2,--server.port=8999
+																	 
+																	 
+	Adding h2 console
+	
+		Open Eureka dashboard.
+		Click on the api gateway url and then http://ossantpc.mshome.net:8080/users-service/h2-console
