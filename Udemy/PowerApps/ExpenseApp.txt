@@ -104,3 +104,20 @@ Expense Tracker App Project
 		DateTimeFormat
 			
 			Text(ThisItem.Date, DateTimeFormat.ShortDate)
+
+
+
+		Grouping
+			
+			AddColumns(
+				GroupBy(
+					AddColumns(
+						'Expenses List',
+						Month,
+						Text(Date, "mmmm")
+					),
+					Month, MonthGrouped
+				),
+				Total,
+				Sum(ThisRecord.MonthGrouped, Total)
+			)
