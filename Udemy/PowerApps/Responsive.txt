@@ -1,0 +1,33 @@
+Responsive
+	
+	Create responsive layouts in canvas app
+		
+		https://learn.microsoft.com/en-us/power-apps/maker/canvas-apps/create-responsive-layout
+		
+	Text Label
+	
+		Width: Parent.Width
+		
+		or
+		
+		Width:
+			
+			Switch(
+				App.ActiveScreen.Size,
+				1, Parent.Width,
+				2, Parent.Width,
+				Parent.Width / 2
+			)
+		
+	Image
+		
+		X: Parent.Width - Self.Width
+		
+		
+	App
+	
+		SizeBreakpoints[600,900, 1200]
+		
+		
+	Responsive Design With Containers
+	
