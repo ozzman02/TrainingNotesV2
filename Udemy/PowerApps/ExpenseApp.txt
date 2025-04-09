@@ -23,8 +23,23 @@ Expense Tracker App Project
 			
 			Visible -> false
 			
+		Working with images
 			
+			If you work with svgs remember to replace " with '.
 			
+			Insert a media image and inside the image property paste the svg.
+			
+		Open-source illustrations for any idea you can imagine and create.
+		
+			https://undraw.co/
+			
+		Spinner
+		
+			Remove the background attribute.
+			Edit the stroke attribute.
+			
+	Home Screen
+	
 		On a label
 			
 			Fit perfectly in bottom left corner: 
@@ -52,6 +67,19 @@ Expense Tracker App Project
 						Image: lunch
 					}
 				)
+		
+		Pass the values with a local variable
+		
+			On a Gallery - OnSelect
+			
+				Navigate('Add Expense Screen', ScreenTransition.None,{lclTemplateValue: ThisItem.Title})
+				
+			On another screen for example Add Expense Screen
+				
+				drpCategoryExpense
+					
+					set Default to -> lclTemplateValue
+		
 				
 	Expense Screen
 		
@@ -121,3 +149,5 @@ Expense Tracker App Project
 				Total,
 				Sum(ThisRecord.MonthGrouped, Total)
 			)
+		
+		
