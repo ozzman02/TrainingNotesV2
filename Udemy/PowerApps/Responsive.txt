@@ -30,4 +30,17 @@ Responsive
 		
 		
 	Responsive Design With Containers
-	
+		
+		Vertical
+		
+		Horizontal
+		
+		Gaps
+		
+		Flexible Height (Depends on the container type)
+		
+		Fill portions
+		
+		Horizontal Overflow
+		
+		Vertical Overflow
