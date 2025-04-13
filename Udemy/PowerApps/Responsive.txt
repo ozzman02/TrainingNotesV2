@@ -23,12 +23,7 @@ Responsive
 		
 		X: Parent.Width - Self.Width
 		
-		
-	App
-	
-		SizeBreakpoints[600,900, 1200]
-		
-		
+			
 	Responsive Design With Containers
 		
 		Vertical
@@ -44,3 +39,17 @@ Responsive
 		Horizontal Overflow
 		
 		Vertical Overflow
+		
+	Themes and Screen Templates
+	
+	App Integration
+	
+		SizeBreakpoints[600,900, 1200]
+		
+		OnStart
+		
+		StartScreen
+		
+		ConfirmExit
+		
+		ConfirmExitMessage

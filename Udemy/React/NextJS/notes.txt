@@ -1,0 +1,60 @@
+NextJS
+
+Resources
+	
+	https://github.com/mschwarzmueller/nextjs-complete-guide-course-resources
+	
+	https://academind.com/community/
+	
+	https://github.com/mschwarzmueller/nextjs-course-code
+	
+	https://github.com/academind/react-complete-guide-course-resources/tree/main/code/30%20React%20Summary
+	
+
+Create a NextJS project
+	
+	npx create-next-app@latest
+	
+Two approaches for building NextJS Apps
+
+	Pages Router.
+		
+		- Has been around for many years.
+		
+		- Very stable.
+		
+		- Used in many existing NextJS projects.
+		
+		- Allows you to build feature-rich fullstack apps with React.
+	
+	App Router
+		
+		- Introduced with NextJS 13
+		
+		- Marked as stable but still relatively new and partially buggy.
+		
+		- Supports modern Next and React features (fullstack React apps)
+		
+		- The future on NextJS.
+		
+		
+	
+Run the app
+
+	npm run dev
+	
+Vanilla React Apps Render on the Client
+	
+	Server side only returns one single html file which contains the client side JS code.
+	
+	Client side: The visible content is generated and rendered on the client side by the client side React code.
+	
+	React is a client side Javascript library. It runs in the browser. It edits and manipulates the page in the browser.
+	
+	In React, a page update is performed via client side. The page is not reloaded or re rendered on the server.
+	
+NextJS renders pages on the server
+
+	Page HTML content is rendered on the server and sent to the client.
+	
+	With NextJS you no longer have a client side application, you have a full stack application.
