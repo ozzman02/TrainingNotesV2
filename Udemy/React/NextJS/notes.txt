@@ -58,3 +58,110 @@ NextJS renders pages on the server
 	Page HTML content is rendered on the server and sent to the client.
 	
 	With NextJS you no longer have a client side application, you have a full stack application.
+	
+	
+Reserved File Names
+
+	As you already learned, there are some reserved filenames when working with NextJS.
+
+	Important: 
+		
+		These filenames are only reserved when creating them inside of the app/ folder (or any subfolder). 
+		
+		Outside of the app/ folder, these filenames are not treated in any special way.
+
+	Here's a list of reserved filenames in NextJS - you'll, of course, learn about the important ones throughout this section:
+
+		page.js => Create a new page (e.g., app/about/page.js creates a <your-domain>/about page)
+
+		layout.js => Create a new layout that wraps sibling and nested pages
+
+		not-found.js => Fallback page for "Not Found" errors (thrown by sibling or nested pages or layouts)
+
+		error.js => Fallback page for other errors (thrown by sibling pages or nested pages or layouts)
+
+		loading.js => Fallback page which is shown whilst sibling or nested pages (or layouts) are fetching data
+
+		route.js => Allows you to create an API route (i.e., a page which does NOT return JSX code but instead data, e.g., in the JSON format)
+
+	https://nextjs.org/docs/app/api-reference/file-conventions
+	
+	
+	
+Nested Pages
+	
+	app
+		
+		community				---> /community
+			
+			page.js
+			
+		meals					---> /meals
+			
+			shared				---> /meals/share
+				
+				page.js
+				
+		page.js
+		
+			import Link from "next/link";
+
+			export default function Home() {
+				return (
+					<main>
+						<h1 style={{ color: 'white', textAlign: 'center' }}>
+							Time to get started!
+						</h1>
+						<p><Link href="/meals">Meals</Link></p>
+						<p><Link href="/meals/share">Share Meal</Link></p>
+						<p><Link href="/community">Community</Link></p>
+					</main>
+				);
+			}
+	
+
+Dynamic Routes
+
+	blog
+		
+		[slug]	--> my-page.com/blog/post-1
+					my-page.com/blog/post-2
+					my-page.com/blog/something-else
+					
+	
+	
+	blog
+		
+		[slug]
+			
+			page.js
+				
+				/* 
+					NextJS pass props to the components. With destructuring you can get the params prop.
+					Params is set by NextJS.
+				*/
+				
+				export default function BlogPostPage({ params }) {
+					return (
+						<main>
+							<h1>Blog Post</h1>
+							<p>{params.slug}</p> // --> This will print post-1 or post-2
+						</main>
+					);
+				}
+		
+		page.js
+		
+			import Link from "next/link";
+
+			export default function BlogPage() {
+				return (
+					<main>
+						<h1>The Blog</h1>
+						<p><Link href="/blog/post-1">Post 1</Link></p>
+						<p><Link href="/blog/post-2">Post 2</Link></p>
+					</main>
+				)
+			}
+		
+			
