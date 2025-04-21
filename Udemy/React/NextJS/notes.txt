@@ -37,6 +37,15 @@ Two approaches for building NextJS Apps
 		
 		- The future on NextJS.
 		
+Install SQLite
+	
+	npm install better-sqlite3
+	
+	create an initdb.js file and store it in the root folder.
+	
+	execute the command -> node initdb.js
+		
+	A new db file must be there (meals.db)
 		
 	
 Run the app
@@ -122,13 +131,26 @@ Nested Pages
 
 Dynamic Routes
 
+	Slug is a reserved file name. It's the part that is encoded in the url. How do we access that value?
+	
+	NextJS pass a special props to those special kind of components.
+	
+	We can use params for that. Params has a special object where any dynamic path segment that is configured for the route
+	will be store as a key value pair
+	
+	app	
+	
+		community
+		meals
+			[mealSlug] ---> key  actual value enconded in the url is the value
+
 	blog
 		
 		[slug]	--> my-page.com/blog/post-1
 					my-page.com/blog/post-2
 					my-page.com/blog/something-else
 					
-	
+					
 	
 	blog
 		
@@ -164,4 +186,119 @@ Dynamic Routes
 				)
 			}
 		
+React Server Component vs Client Component
+
+	Vanilla React Apps Render on the client
+	
+		- Server Side (Backend)
+	
+			Only returns one single HTML file which contains the client side js code
+		
+		- Client Side (Frontend)
+		
+			The visible content is generated and rendered on the client side (by the client side react code)
+	
+	With NextJS, you build fullstack applications
+		
+		- Server side + Client side
+		
+	Server and client side working together
+		
+		- Server side (backend)
 			
+			The backend executes the server component functions and hence derives the to be rendered HTML code.
+			
+		- Client side (frontend)
+			
+			The client side receives and renders the to be rendered HTML code.
+		
+	**** Remember React components that you create with NextJS are executed in the server not in the browser.
+	**** Hooks and Event Handlers are not available on the server side.
+	
+	React Server Components:
+	
+		Components that are only rendered on the server.
+		
+		By default, all React components in NextJS are RSCs.
+		
+		Advantage: Less client side js great for SEO (Search Engine Optimization).
+		
+	Client Components:
+	
+		Components that are pre rendered on the server but then also potentially on the client.
+		
+		Opt in via "use client" directive.
+		
+		Advantage: Client-side interactivity.
+		
+Aggresive Caching
+	
+	It caches any page you visited including the data of that page.
+	
+loading.js
+
+	Reserved file name. The file is actived if the page next to it or any nested page is loading data.
+	
+Suspense
+	
+	This is an alternative to loading.js
+	
+	Example
+		
+		import { Fragment, Suspense } from "react";
+		import classes from './page.module.css';
+		import Link from "next/link";
+		import MealsGrid from "@/components/meals/meals-grid";
+		import { getMeals } from "@/lib/meal";
+
+		/* Separate server component to render the data */
+		async function Meals() {
+			const meals = await getMeals();
+			return <MealsGrid meals={meals} />
+		}
+
+		export default function MealsPage() {
+			return (
+				<Fragment>
+					<header className={classes.header}>
+						<h1>
+							Delicious meals, created{''} <span className={classes.highlight}>by you</span>
+						</h1>
+						<p>Choose your favorite recipe and cook it yourself. It is easy and fun!</p>
+						<p className={classes.cta}>
+							<Link href="/meals/share">Share Your Favorite Recipe</Link>
+						</p>
+					</header>
+					<main>
+						<Suspense>
+							<Meals fallback={<p className={classes.loading}>Fetching meals...</p>} />
+						</Suspense>
+					</main>
+				</Fragment>
+			);
+		}
+	
+Error handling with notFound function
+
+	import { Fragment } from 'react';
+	import classes from './page.module.css';
+	import Image from 'next/image';
+	import { getMeal } from '@/lib/meal';
+	import { notFound } from 'next/navigation';
+
+	export default function MealDetailsPage({ params }) {
+
+		const meal = getMeal(params.mealSlug);
+
+		if (!meal) {
+			notFound();
+		}
+		
+		meal.instructions = meal.instructions.replace(/\n/g, '<br />');
+
+		return (
+			...
+		);	
+	}
+	
+	The notFound function will stop the component from executing and will show the closest not found or error page.
