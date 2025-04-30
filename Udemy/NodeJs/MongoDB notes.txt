@@ -1,3 +1,106 @@
+Updated Notes
+
+Check the version:
+
+	mongod --version
+	
+	Output:
+	
+		db version v8.0.8
+		Build Info: {
+			"version": "8.0.8",
+			"gitVersion": "7f52660c14217ed2c8d3240f823a2291a4fe6abd",
+			"modules": [],
+			"allocator": "tcmalloc-gperf",
+			"environment": {
+				"distmod": "windows",
+				"distarch": "x86_64",
+				"target_arch": "x86_64"
+			}
+		}
+
+Execute the following commands:
+	
+	Single Line
+		
+		mongod --directoryperdb --dbpath C:\Users\osantamaria\MongoDB\data\ --logpath C:\Users\osantamaria\MongoDB\log\mongodb.log --logappend --install 
+
+	Or Multiline
+	
+		mongod `  
+			--directoryperdb `
+			--dbpath C:\Users\osantamaria\MongoDB\data\ `
+			--logpath C:\Users\osantamaria\MongoDB\log\mongodb.log `
+			--logappend `
+			--install 
+		
+		
+Mongosh
+
+	Installation Path: C:\Users\osantamaria\AppData\Local\Programs\mongosh
+	
+	Check the version: mongosh --version
+	
+	Open the shell:
+	
+		PS C:\Users\osantamaria> mongosh
+		Current Mongosh Log ID: 6811320fbe407c2c75b5f898
+		Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.0
+		Using MongoDB:          8.0.8
+		Using Mongosh:          2.5.0
+
+		For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+		------
+		   The server generated these startup warnings when booting
+		   2025-04-29T11:47:28.723-06:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+		------
+
+		test>
+		
+Commands:
+
+	db: shows current db
+	use database_name: create new db and switches to it
+	show dbs: show available dbs that are not empty
+	db.createCollection('customers'); create collection
+	show collections: shows available collections
+	
+
+Create a database
+	
+	use nodeauth
+		
+Create a collection
+
+	db.createCollection('users');
+
+Insert records
+	
+	db.users.insert({name: 'Oscar Santamaria', email: 'osantamaria@gmail.com', username: 'brad', password: '1234'});
+	db.users.insert({name: 'Adrian Venegas', email: 'advenegas@gmail.com', username: 'addrian', password: '1234'});
+	db.users.insert({name: 'Stephanie Rodriguez', email: 'steph@gmail.com', username: 'srod', password: '1234'});
+	
+List records
+	
+	db.users.find().pretty()
+	
+Update records
+	
+	db.users.update({username:'brad'}, {$set:{username:'ossant'}});
+	
+Delete records
+
+	db.users.remove({username: 'addran'});   
+	
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Old Notes
+
 C:\mongodb\bin>mongod .\mongod.exe --directoryperdb --dbpath C:\Users\oscar.santamaria\MongoDB\data\ --logpath C:\Users\oscar.santamaria\MongoDB\data\log\mongodb.log --logappend --install 
 C:\mongodb\bin>net start MongoDB
 C:\mongodb\bin>mongo
