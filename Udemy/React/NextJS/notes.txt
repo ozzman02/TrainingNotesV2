@@ -46,7 +46,16 @@ Install SQLite
 	execute the command -> node initdb.js
 		
 	A new db file must be there (meals.db)
-		
+	
+Install slugify
+	
+	npm install slugify --save
+	
+Install xss
+	
+	Helps protecting against cross site scripting attacks.
+	
+	npm install xss --save
 	
 Run the app
 
@@ -302,3 +311,145 @@ Error handling with notFound function
 	}
 	
 	The notFound function will stop the component from executing and will show the closest not found or error page.
+	
+Server Actions
+	
+	You are not allowed to have server action in client components.
+	
+	Use a separate file.
+	
+		lib/actions.js	
+		
+			'use server';
+
+			/* Server Action */
+			export async function shareMeal(formData) {
+				/* form.get('') is using the name attribute of the input element */
+				const meal = {
+					title: formData.get('title'),
+					summary: formData.get('summary'),
+					instructions: formData.get('instructions'),
+					image: formData.get('image'),
+					creator: formData.get('name'),
+					creator_email: formData.get('email'),
+				}
+				console.log(meal);
+			}
+			
+useFormStatus()
+	
+	'use client'
+
+	import { useFormStatus } from "react-dom";
+
+	export default function MealsFormSubmit() {
+
+		const { pending } = useFormStatus();
+
+		return (
+			<button disabled={pending}>
+				{pending ? 'Submitting...' : 'Share Meal'}
+			</button>
+		);
+
+	}
+	
+useFormState() or useActionState
+
+	We'll use a React DOM Hook called useFormState.
+
+	For some unknown reason, the React team decided to suddenly change this Hook's name to useActionState. 
+	In addition, it now must be imported from react instead of react-dom.
+	
+	Use useActionState() instead of useFormState() in any other place.
+	
+		import { useFormState } from 'react-dom';
+		import { useActionState } from 'react';
+		
+		
+	Example of Simple Validation
+	
+		'use server';
+
+		import { redirect } from "next/navigation";
+		import { saveMeal } from "./meal";
+
+
+		function isInvalidText(text) {
+			return !text || text.trim() === '';
+		}
+
+		/* Server Action */
+		export async function shareMeal(formData) {
+			/* form.get('') is using the name attribute of the input element */
+			const meal = {
+				title: formData.get('title'),
+				summary: formData.get('summary'),
+				instructions: formData.get('instructions'),
+				image: formData.get('image'),
+				creator: formData.get('name'),
+				creator_email: formData.get('email'),
+			}
+			//console.log(meal);
+
+			if (
+				isInvalidText(meal.title) ||
+				isInvalidText(meal.summary) ||
+				isInvalidText(meal.instructions) ||
+				isInvalidText(meal.creator) ||
+				isInvalidText(meal.creator_email) ||
+				!meal.creator_email.includes('@') ||
+				!meal.image || meal.image.size === 0
+			) {
+				throw new Error('Invalid input');
+			}
+
+
+			await saveMeal(meal);
+			redirect('/meals');
+		}
+		
+	Example validation with useFormState
+		
+		'use server';
+
+		import { redirect } from "next/navigation";
+		import { saveMeal } from "./meal";
+
+
+		function isInvalidText(text) {
+			return !text || text.trim() === '';
+		}
+
+		/* Server Action */
+		export async function shareMeal(prevState, formData) {
+			/* form.get('') is using the name attribute of the input element */
+			const meal = {
+				title: formData.get('title'),
+				summary: formData.get('summary'),
+				instructions: formData.get('instructions'),
+				image: formData.get('image'),
+				creator: formData.get('name'),
+				creator_email: formData.get('email'),
+			}
+
+			//console.log(meal);
+
+			if (
+				isInvalidText(meal.title) ||
+				isInvalidText(meal.summary) ||
+				isInvalidText(meal.instructions) ||
+				isInvalidText(meal.creator) ||
+				isInvalidText(meal.creator_email) ||
+				!meal.creator_email.includes('@') ||
+				!meal.image || meal.image.size === 0
+			) {
+				return {
+					message: 'Invalid input.'
+				}
+			}
+
+			await saveMeal(meal);
+			redirect('/meals');	
+		}	
+	
