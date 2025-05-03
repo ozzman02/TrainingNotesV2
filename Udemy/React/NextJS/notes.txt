@@ -453,3 +453,397 @@ useFormState() or useActionState
 			redirect('/meals');	
 		}	
 	
+Building for Production and NextJS Caching
+
+	npm run build
+	
+	Optimized code version that pre generates the pages and performs aggresive caching.
+	
+	Downside of this approach
+		
+		Data is not refetched ...
+		
+Run Production app
+	
+	npm start
+	
+Triggering Cache Revalidations
+	
+	We need to tell NextJS to throw away its caching or parts of it.
+	
+		'use server';
+
+		import { redirect } from "next/navigation";
+		import { saveMeal } from "./meal";
+		import { revalidatePath } from "next/cache";
+
+
+		function isInvalidText(text) {
+			return !text || text.trim() === '';
+		}
+
+		/* Server Action */
+		export async function shareMeal(prevState, formData) {
+			/* form.get('') is using the name attribute of the input element */
+			const meal = {
+				title: formData.get('title'),
+				summary: formData.get('summary'),
+				instructions: formData.get('instructions'),
+				image: formData.get('image'),
+				creator: formData.get('name'),
+				creator_email: formData.get('email'),
+			}
+
+			//console.log(meal);
+
+			if (
+				isInvalidText(meal.title) ||
+				isInvalidText(meal.summary) ||
+				isInvalidText(meal.instructions) ||
+				isInvalidText(meal.creator) ||
+				isInvalidText(meal.creator_email) ||
+				!meal.creator_email.includes('@') ||
+				!meal.image || meal.image.size === 0
+			) {
+				return {
+					message: 'Invalid input.'
+				}
+			}
+
+
+			await saveMeal(meal);
+			revalidatePath('/meals');  ---> Revalidates the cache that belongs to a certain route path.
+			redirect('/meals');
+		}
+		
+	With the revalidatePath function only that path will be revalidated not nested paths.
+	If you need to revalidate nested paths you need to do that individually.
+	
+		revalidatePath('/meals', 'layout')
+		
+Use S3 bucket for images
+
+	- Instructions
+		
+		https://www.udemy.com/course/nextjs-react-the-complete-guide/learn/lecture/41162250#questions
+
+	- Update the NextJS code to use those S3 images
+	
+		- As a first step, you can delete the public/images folder (so that an empty public/ folder remains).
+		
+		- Delete .next folder
+		
+		- To bring them back, as a first step, edit the database data by updating the initdb.js file: 
+		
+			Change all the image property values from image: '/images/burger.jpg', to image: 'burger.jpg' (and do that for all meals).
+			
+		- Next, go to the components/meals/meal-item.js file (which contains the MealItem component) and update the <Image>
+		
+			Previous version:
+				
+				import Link from 'next/link';
+				import Image from 'next/image';
+
+				import classes from './meal-item.module.css';
+
+				export default function MealItem({ title, slug, image, summary, creator }) {
+					return (
+						<article className={classes.meal}>
+							<header>
+								<div className={classes.image}>
+									<Image src={image} alt={title} fill />
+								</div>
+								<div className={classes.headerText}>
+									<h2>{title}</h2>
+									<p>by {creator}</p>
+								</div>
+							</header>
+							<div className={classes.content}>
+								<p className={classes.summary}>{summary}</p>
+								<div className={classes.actions}>
+									<Link href={`/meals/${slug}`}>View Details</Link>
+								</div>
+							</div>
+						</article>
+					);
+				}
+				
+			New Version
+				
+				import Link from 'next/link';
+				import Image from 'next/image';
+
+				import classes from './meal-item.module.css';
+
+				export default function MealItem({ title, slug, image, summary, creator }) {
+					const s3BucketUrl = 'https://ossant-nextjs-demo-users-image.s3.us-east-2.amazonaws.com';
+					return (
+						<article className={classes.meal}>
+							<header>
+								<div className={classes.image}>
+									<Image src={`${s3BucketUrl}/${image}`} alt={title} fill />
+								</div>
+								<div className={classes.headerText}>
+									<h2>{title}</h2>
+									<p>by {creator}</p>
+								</div>
+							</header>
+							<div className={classes.content}>
+								<p className={classes.summary}>{summary}</p>
+								<div className={classes.actions}>
+									<Link href={`/meals/${slug}`}>View Details</Link>
+								</div>
+							</div>
+						</article>
+					);
+				}
+		
+		- You should also update the app/meals/[mealSlug]/page.js file and make sure that the image on this page is also fetched from S3.
+		
+			Previous version
+			
+				// localhost:3000/meals/something
+
+				import { Fragment } from 'react';
+				import classes from './page.module.css';
+				import Image from 'next/image';
+				import { getMeal } from '@/lib/meal';
+				import { notFound } from 'next/navigation';
+
+				export default function MealDetailsPage({ params }) {
+
+					const meal = getMeal(params.mealSlug);
+
+					if (!meal) {
+						notFound();
+					}
+					
+					meal.instructions = meal.instructions.replace(/\n/g, '<br />');
+
+					return (
+						<Fragment>
+							<header className={classes.header}>
+								<div className={classes.image}>
+									<Image src={meal.image} alt={meal.title} fill />
+								</div>
+								<div className={classes.headerText}>
+									<h1>{meal.title}</h1>
+									<p className={classes.creator}>
+										by <a href={`mailto:${meal.creator_email}`}>{meal.creator}</a>
+									</p>
+									<p className={classes.summary}>{meal.summary}</p>
+								</div>
+							</header>
+							<main>
+								{/* here there is a vulnerability to cross site scripting attacks */}
+								<p className={classes.instructions} dangerouslySetInnerHTML={{
+									__html: meal.instructions,
+								}}
+								></p>
+							</main>
+						</Fragment>
+					);	
+				}
+			
+			Updated
+				
+				// localhost:3000/meals/something
+
+				import { Fragment } from 'react';
+				import classes from './page.module.css';
+				import Image from 'next/image';
+				import { getMeal } from '@/lib/meal';
+				import { notFound } from 'next/navigation';
+
+				export default function MealDetailsPage({ params }) {
+
+					const s3BucketUrl = 'https://ossant-nextjs-demo-users-image.s3.us-east-2.amazonaws.com';
+
+					const meal = getMeal(params.mealSlug);
+
+					if (!meal) {
+						notFound();
+					}
+					
+					meal.instructions = meal.instructions.replace(/\n/g, '<br />');
+
+					return (
+						<Fragment>
+							<header className={classes.header}>
+								<div className={classes.image}>
+									<Image src={`${s3BucketUrl}/${meal.image}`} alt={meal.title} fill />
+								</div>
+								<div className={classes.headerText}>
+									<h1>{meal.title}</h1>
+									<p className={classes.creator}>
+										by <a href={`mailto:${meal.creator_email}`}>{meal.creator}</a>
+									</p>
+									<p className={classes.summary}>{meal.summary}</p>
+								</div>
+							</header>
+							<main>
+								{/* here there is a vulnerability to cross site scripting attacks */}
+								<p className={classes.instructions} dangerouslySetInnerHTML={{
+									__html: meal.instructions,
+								}}
+								></p>
+							</main>
+						</Fragment>
+					);	
+				}
+			
+		- Reset the database data, delete your meals.db file (i.e., delete the SQLite database file) and re-run: node initdb.js 
+			to re-initialize it (with the updated image values).
+			
+		- Allowing S3 as an image source
+			
+			- This remotePatterns config allows this specific S3 URL as a valid source for images.
+			
+				/** @type {import('next').NextConfig} */
+				const nextConfig = {
+					images: {
+						remotePatterns: [
+							{
+								protocol: 'https',
+								hostname: 'ossant-nextjs-demo-users-image.s3.us-east-2.amazonaws.com',
+								port: '',
+								pathname: '/**',
+							},
+						],
+					},
+				};
+
+				export default nextConfig;
+
+		- Storing uploaded images on S3
+			
+			- Install that package via npm install @aws-sdk/client-s3 --save.
+			- Then, go to your lib/meals.js file and import the AWS S3 SDK (at the top of the file)
+			
+				import { S3 } from '@aws-sdk/client-s3';
+			
+				const s3 = new S3({
+					region:'us-east-2'
+				});
+				
+		- Now, edit the saveMeal() function and remove all code that was related to storing the image on the local file system.
+			
+			- Previous version
+				
+				export async function saveMeal(meal) {
+
+					/* 
+						const slug = slugify(meal.title, { lower: true });
+						const instructions = xss(meal.instructions); --> Sanitizing code
+					*/
+
+					meal.slug = slugify(meal.title, { lower: true });
+					meal.instructions = xss(meal.instructions);
+
+					const extension = meal.image.name.split('.').pop();
+					const fileName = `${meal.slug}.${extension}`
+
+					const stream = fs.createWriteStream(`public/images/${fileName}`);
+					const bufferedImage = await meal.image.arrayBuffer();
+
+					stream.write(Buffer.from(bufferedImage), (error) => {
+						if (error) {
+							throw new Error('Saving image failed');
+						}
+					});
+
+					meal.image = `/images/${fileName}`
+
+					db.prepare(`
+						INSERT INTO meals (
+							title, summary, instructions, creator, creator_email, image, slug
+						)
+						VALUES (
+							@title, @summary, @instructions, @creator, @creator_email, @image, @slug
+						)
+					`).run(meal);
+
+				}
+				
+			- New version
+				
+				import sql from 'better-sqlite3';
+				import slugify from 'slugify';
+				import xss from 'xss';
+				import { S3 } from '@aws-sdk/client-s3';
+
+				const s3 = new S3({
+					region:'us-east-2'
+				});
+
+				const db = sql('meals.db');
+
+				export async function getMeals() {
+					await new Promise((resolve) => setTimeout(resolve, 2000));
+					//throw new Error('Loading meals failed');
+					return db.prepare('SELECT * FROM meals').all();
+				}
+
+				export function getMeal(slug) {
+					return db.prepare('SELECT * FROM meals WHERE slug = ?').get(slug);
+				}
+
+				export async function saveMeal(meal) {
+
+					/* 
+						const slug = slugify(meal.title, { lower: true });
+						const instructions = xss(meal.instructions); --> Sanitizing code
+					*/
+
+					meal.slug = slugify(meal.title, { lower: true });
+					meal.instructions = xss(meal.instructions);
+
+					const extension = meal.image.name.split('.').pop();
+					const fileName = `${meal.slug}.${extension}`
+
+					const bufferedImage = await meal.image.arrayBuffer();
+
+					s3.putObject({
+						Bucket: 'ossant-nextjs-demo-users-image',
+						Key: fileName,
+						Body: Buffer.from(bufferedImage),
+						ContentType: meal.image.type,
+					});
+
+					meal.image = fileName;
+
+					db.prepare(`
+						INSERT INTO meals (
+							title, summary, instructions, creator, creator_email, image, slug
+						)
+						VALUES (
+							@title, @summary, @instructions, @creator, @creator_email, @image, @slug
+						)
+					`).run(meal);
+
+				}
+		
+		- Granting the NextJS backend AWS access permissions
+	
+			We did configure S3 to serve the bucket content to everyone.
+
+			But we did not (and should not!) configure it to allow everyone to write to the bucket or change the bucket contents.
+
+			But that's what our NextJS app (via the S3 AWS SDK) now tries to do!
+
+			To grant our app appropriate permissions, you must set up AWS access keys for your app.
+
+			This is done by adding a .env.local file to your root NextJS project. 
+			
+			This file will automatically be read by NextJS and the environment variables configured in there will be made 
+			available to the backend (!) part of your app.
+			
+			In this .env.local file, you must add two key-value pairs:
+
+				AWS_ACCESS_KEY_ID=<your aws access key>
+				AWS_SECRET_ACCESS_KEY=<your aws secret access key>
+
+
+
+
+
