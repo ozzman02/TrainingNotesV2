@@ -47,6 +47,12 @@ Install SQLite
 		
 	A new db file must be there (meals.db)
 	
+	From powershell
+		
+		sqlite3.exe meals.db
+		
+		select * from meals;
+	
 Install slugify
 	
 	npm install slugify --save
