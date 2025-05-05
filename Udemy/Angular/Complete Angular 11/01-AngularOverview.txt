@@ -251,3 +251,12 @@ app.component.html
 	<router-outlet></router-outlet>
 	
 		Pages are dynamically replaced here. This is done by Router Outlet.
+
+
+
+The flow of an Angular application begins with the main.ts file, which serves as the entry point. It bootstraps the AppModule, the root module of the application. 
+AppModule then loads the root component, typically AppComponent, defined in app.component.ts. The selector of this component, usually app-root, 
+is referenced in the index.html file, acting as a placeholder for the application's content.
+
+When the application runs, Angular processes the component tree, starting from the root. For each component, it performs change detection to determine 
+if re-rendering is needed. If a component requires updating, Angular generates a new DOM structure reflecting the changes. This process occurs from the top of the component tree down to the leaves. 
