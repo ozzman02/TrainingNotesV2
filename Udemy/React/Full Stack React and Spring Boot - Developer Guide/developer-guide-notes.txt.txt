@@ -137,6 +137,14 @@ Okta integration
 			pkce: true,
 			disableHttpsCheck: true
 		}
+		
+		Profile editor: https://dev-08879210-admin.okta.com/admin/universaldirectory
+		
+		People: https://dev-08879210-admin.okta.com/admin/users
+			
+			Admin User   --->  Profile
+		
+		Applications: https://dev-08879210-admin.okta.com/admin/apps/active
 
 	
 	
@@ -157,12 +165,33 @@ Enable Browser Flags to avoid Browser/Cert warnings about not secure connections
 	
 		Search for localhost or Temporarily unexpire M130 flags
 		
-		Allow invalid certificates for resources loaded from l<ocalhost.
+		Allow invalid certificates for resources loaded from localhost.
 
 	
 Keytool - Generate key and self-signed certificate
 	
 	https://github.com/darbyluv2code/fullstack-react-and-springboot/blob/main/bonus-content/keytool-steps.md
+	
+	When cloning the project in another machine we need to import the certificate into the Keystore.
+	
+	Single Line Command:
+	
+		keytool -importkeystore -srckeystore luv2code-keystore.p12 -srcstoretype PKCS12 -destkeystore "C:\Program Files\Java\jdk-21\lib\security\cacerts" -deststoretype JKS -alias luv2code
+	
+	Multiline Command:
+	
+		keytool -importkeystore `
+			-srckeystore luv2code-keystore.p12 `
+			-srcstoretype PKCS12 `
+			-destkeystore "C:\Program Files\Java\jdk-21\lib\security\cacerts" `
+			-deststoretype JKS `
+			-alias luv2code
+			
+			
+	Destination Password: changeit
+	Source Password: secret
+	
+	
 	
 Stripe
 	
