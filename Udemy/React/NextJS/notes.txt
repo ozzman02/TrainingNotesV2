@@ -67,6 +67,10 @@ Run the app
 
 	npm run dev
 	
+icon.jpg 
+	
+	Favicon that will be automatically recognized by NextJS.
+	
 Vanilla React Apps Render on the Client
 	
 	Server side only returns one single html file which contains the client side JS code.
@@ -850,6 +854,30 @@ Use S3 bucket for images
 				AWS_SECRET_ACCESS_KEY=<your aws secret access key>
 
 
-
-
-
+Standard Routes
+	
+	Folder name = route path
+	
+	app/about -> mywebsite.com/about
+	
+Dynamic Routes
+	
+	/posts/<dynamic>
+	
+	Define dynamic segments by wrapping the folder name with []
+	
+	/app/posts/[slug] -> mywebsite.com/posts/next-js-is-awesome
+	
+Layout and Pages	
+	
+	Pages	
+	
+		Created via page.js file.
+		Define page content (jsx) for a route.
+		
+	Layouts
+		
+		Created via layout.js file.
+		Define wrapping layout for one or more pages.
+		
+		

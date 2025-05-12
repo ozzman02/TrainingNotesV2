@@ -3,4 +3,80 @@ Proyect: Message Board
 
 
 @supabase/supabase-js
-https://www.npmjs.com/package/@supabase/supabase-js
+
+	https://www.npmjs.com/package/@supabase/supabase-js
+	
+	npm install @supabase/supabase-js --save 
+
+user
+
+	osantamaria@gmail.com
+	test123
+	
+	
+Project Settings
+	
+	General
+		
+		Project name 
+		Project id
+		
+	Configuration
+		
+		Project URL
+		Project API Keys
+
+	
+Authentication
+	
+	Configuration
+		
+		SignIn / Providers
+			
+			Email
+				
+				Confirm email
+				Secure email change
+Database
+
+	Create a policy that allows authenticated users to save data.
+	
+	AddRLS policy  Role Level Security
+		
+		You can choose from templates.
+		
+		Target Roles
+			
+			authenticated
+			
+			
+	Tables
+			
+	Enable Real Time
+		
+		Edit a table and enable the option.
+		
+		
+	Delete: Delete a post that I made but we want to restrict a user to deleting posts that someone else has made.
+	
+Storage
+	
+	Create buckets
+	
+	Policies
+	
+		Insert
+		
+		Delete (Delete objects that users them selfs created)
+				
+			Select and Delete
+			
+			(bucket_id = 'images') and ((auth.uid())::text = owner_id)
+			
+Table Editor
+	
+	Schema Storage
+		
+		Objects table
+		Migrations table
+		Buckets table
