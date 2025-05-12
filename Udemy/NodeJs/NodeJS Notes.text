@@ -22,7 +22,7 @@ nodeauth project
 	- modifify package.json
 	- npm install
 	- code ....
-	- npm install bcrypt.js --save
+	- npm install bcryptjs --save
 	- npm start
 
 node blog system
