@@ -880,4 +880,31 @@ Layout and Pages
 		Created via layout.js file.
 		Define wrapping layout for one or more pages.
 		
+Not Found pages	
+	
+	app
+		news
+			[slug]
+				not-found.js		---> for cases when newsItem is not found
+				page.js
+			page.js
+		layout.js
+		not-found.js				---> handles all not found cases for all the app
+			
+Parallel Routes
+
+	It's a feature that allows you to render the content of two separate routes with separate paths on the same page.
+	
+		1. Create a layout
+	
+		2. Create one subfolder per parallel route. Folder name should start with @
 		
+	Example	
+		
+		app	
+			archive
+				@archive
+					page.js
+				@latest
+					page.js
+				layout.js
