@@ -891,7 +891,7 @@ Not Found pages
 		layout.js
 		not-found.js				---> handles all not found cases for all the app
 			
-Parallel Routes
+Parallel Routes (@ notation for folders....
 
 	It's a feature that allows you to render the content of two separate routes with separate paths on the same page.
 	
@@ -908,3 +908,104 @@ Parallel Routes
 				@latest
 					page.js
 				layout.js
+				
+Catch All Routes	
+	
+	Standard Dynamic Route to a Catch All Route
+	
+		@archive
+	
+			[year] --> [[...filter]]
+				
+				page.js     ---> will be activated for any path segments after archive
+			
+		
+Server components vs Client Components
+
+	Example: Here this component becomes a client because of the usePathname() usage. A good practice is to 
+			 isolate client components and keep server components behavior as much as possible. 
+		
+		'use client';
+
+		import Link from 'next/link';
+		import { usePathname } from 'next/navigation';
+
+		export default function MainHeader() {
+
+			/* find active path */
+			const path = usePathname();
+
+			return (
+				<header id="main-header">
+					<div id="logo">
+						<Link href="/">NextNews</Link>
+					</div>
+					<nav>
+						<ul>
+							<li>
+								{/*
+									We are using startsWith function thinking on nested paths
+									<Link href="/news" className={path.startsWith('/news') ? 'active' : undefined}>News</Link>
+								*/}
+								<Link href="/news" className={path.startsWith('/news') ? 'active' : undefined}>News</Link>
+							</li>
+							<li>
+								<Link href="/archive" className={path.startsWith('/archive') ? 'active' : undefined}>Archive</Link>
+							</li>
+						</ul>
+					</nav>
+				</header>
+			);
+		}
+		
+	You can break it like this:
+		
+		Client Component
+		
+			'use client';
+
+			import Link from 'next/link';
+			import { usePathname } from 'next/navigation';
+
+			/*
+				We are using startsWith function thinking on nested paths
+				<Link href="/news" className={path.startsWith('/news') ? 'active' : undefined}>News</Link>
+			*/
+			export default function NavLink({ href, children }) {
+
+				/* find active path */
+				const path = usePathname();
+
+				return (
+					<Link
+						href={href}
+						className={path.startsWith(href) ? 'active' : undefined}
+					>
+						{children}
+					</Link>
+				);
+			}
+			
+		Server Component
+			
+			import NavLink from "./nav-link";
+
+			export default function MainHeader() {
+				return (
+					<header id="main-header">
+						<div id="logo">
+							<Link href="/">NextNews</Link>
+						</div>
+						<nav>
+							<ul>
+								<li>
+									<NavLink href="/news">News</NavLink>
+								</li>
+								<li>
+									<NavLink href="/archive">Archive</NavLink>
+								</li>
+							</ul>
+						</nav>
+					</header>
+				);
+			}
