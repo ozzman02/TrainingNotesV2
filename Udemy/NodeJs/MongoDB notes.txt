@@ -67,35 +67,55 @@ Commands:
 	show collections: shows available collections
 	
 
-Create a database
-	
-	use nodeauth
+NodeAuth Project:
+
+	Create a database
 		
-Create a collection
+		use nodeauth
+			
+	Create a collection
 
-	db.createCollection('users');
+		db.createCollection('users');
 
-Insert records
-	
-	db.users.insert({name: 'Oscar Santamaria', email: 'osantamaria@gmail.com', username: 'brad', password: '1234'});
-	db.users.insert({name: 'Adrian Venegas', email: 'advenegas@gmail.com', username: 'addrian', password: '1234'});
-	db.users.insert({name: 'Stephanie Rodriguez', email: 'steph@gmail.com', username: 'srod', password: '1234'});
-	
-List records
-	
-	db.users.find().pretty()
-	
-Update records
-	
-	db.users.update({username:'brad'}, {$set:{username:'ossant'}});
-	
-Delete records
+	Insert records
+		
+		db.users.insert({name: 'Oscar Santamaria', email: 'osantamaria@gmail.com', username: 'brad', password: '1234'});
+		db.users.insert({name: 'Adrian Venegas', email: 'advenegas@gmail.com', username: 'addrian', password: '1234'});
+		db.users.insert({name: 'Stephanie Rodriguez', email: 'steph@gmail.com', username: 'srod', password: '1234'});
+		
+	List records
+		
+		db.users.find().pretty()
+		
+	Update records
+		
+		db.users.update({username:'brad'}, {$set:{username:'ossant'}});
+		
+	Delete records
 
-	db.users.remove({username: 'addran'});   
+		db.users.remove({username: 'addran'});   
 	
+NodeBlog project
 
+	use nodeblog
 
+	db.createCollection('categories');
 
+	db.createCollection('posts');
+
+	db.posts.insert({title: "Blog Post One", category: "Technology", author: "Oscar Santamaria", body: "This is the body", date: ISODate()});
+
+	db.posts.insert({title: "Blog Post Two", category: "Science", author: "John Doe", body: "This is the body of the second post", date: ISODate()});
+	
+	db.posts.find().pretty();
+	
+	db.categories.insert({name: 'Technology'});
+	
+	db.categories.insert({name: 'Science'});
+	
+	db.categories.insert({name: 'Business'});
+	
+	db.categories.find().pretty();
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
