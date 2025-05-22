@@ -26,6 +26,7 @@ nodeauth project
 	- npm start
 
 node blog system
+
 	- npm install -g express-generator
 	- express nodeblog (express is globally installed)
 	- modifify package.json by adding dependencies

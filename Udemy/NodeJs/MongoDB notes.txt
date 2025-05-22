@@ -93,8 +93,12 @@ NodeAuth Project:
 		
 	Delete records
 
-		db.users.remove({username: 'addran'});   
+		db.users.remove({username: 'addran'}); 
+
+	Delete all
 	
+		db.users.remove({});
+		
 NodeBlog project
 
 	use nodeblog
@@ -116,6 +120,8 @@ NodeBlog project
 	db.categories.insert({name: 'Business'});
 	
 	db.categories.find().pretty();
+	
+	db.categories.remove({});
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
