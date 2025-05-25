@@ -1,0 +1,121 @@
+Data Fetching
+	
+	Option 1: Client-side Data Fetching (Not the best way)
+	
+		'use client';
+
+		import NewsList from "@/components/news-list";
+		import { Fragment, useState, useEffect } from "react";
+
+
+		export default function NewsPage() {
+
+			const [error, setError] = useState();
+
+			const [isLoading, setIsLoading] = useState(false);
+
+			const [news, setNews] = useState();
+
+			useEffect(() => {
+				async function fetchNews() {
+					setIsLoading(true);
+					const response = await fetch('http://localhost:8080/news');
+					if (!response.ok) {
+						setError('Failed to fetch news.');
+						setIsLoading(false);
+					}
+					const news = await response.json();
+					setIsLoading(false);
+					setNews(news)
+				}
+				fetchNews();
+			}, []);
+
+			if (isLoading) {
+				return <p>Loading...</p>
+			}
+
+			if (error) {
+				return <p>{error}</p>
+			}
+
+			let newsContent;
+
+			if (news) {
+				newsContent = <NewsList news={news} />
+			}
+
+			return (
+				<Fragment>
+					<h1>News Page</h1>
+					{newsContent}
+				</Fragment>
+			);
+		}
+	
+	Option 2: Server-side Data Fetching (Recommended Approach)
+	
+		import NewsList from "@/components/news-list";
+		import { Fragment } from "react";
+
+
+		export default async function NewsPage() {
+
+			/**
+			 * fetch function can't be used directly in server side components but is available here for two reasons:
+			 * 
+			 * 1- It is supported by NodeJS which executes the server code.
+			 * 2- NextJS extends the fetch function and adds extra caching related features.
+			 */
+
+			const response = await fetch('http://localhost:8080/news');
+
+			if (!response.ok) {
+				throw new Error('Failed to fetch news.');
+			}
+			
+			const news = await response.json();
+
+			return (
+				<Fragment>
+					<h1>News Page</h1>
+					<NewsList news={news} />
+				</Fragment>
+			);
+		}
+		
+	Option 3: Fetch directly from the source
+		
+		//  npm install better-sqlite3 --save
+		//  Move the data.db file to the root directory.
+		// 	Edit the functions in lib/news.js
+		
+		
+		import sql from 'better-sqlite3';
+
+		import { DUMMY_NEWS } from '@/dummy-news';
+
+		const db = sql('data.db');
+
+		export function getAllNews() {
+			const news = db.prepare('SELECT * FROM news').all();
+			return news;
+		}
+		
+		-------------------------------------------------------------
+		import NewsList from "@/components/news-list";
+		import { getAllNews } from "@/lib/news";
+		import { Fragment } from "react";
+
+
+		export default async function NewsPage() {
+
+			const news = getAllNews();
+
+			return (
+				<Fragment>
+					<h1>News Page</h1>
+					<NewsList news={news} />
+				</Fragment>
+			);
+		}

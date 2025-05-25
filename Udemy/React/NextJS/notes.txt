@@ -1008,4 +1008,41 @@ Server components vs Client Components
 						</nav>
 					</header>
 				);
-			}
+			
+Programmatic Navigation
+	
+	'use client'
+	const router = useRouter();
+	
+Route Handlers
+	
+	api
+		route.js
+		
+		export function GET(request) {
+			console.log(request);
+			return new Response('Hello !');
+		}
+
+		//export function POST() {}
+		
+	
+	http://localhost:3000/api
+	
+		Hello !
+		
+Middleware
+	
+	middleware.js: Set up code that will run on every request so that you can inspect, block or redirect the request.
+		
+		import { NextResponse } from "next/server";
+
+		export function middleware(request) {
+			console.log(request);
+			return NextResponse.next();
+		}
+
+		export const config = {
+			matcher: '/news'
+		}
+		

@@ -1,0 +1,29 @@
+Multiple Data Mutation Strategies
+
+Option 1
+	
+	Standalone Backend
+		
+		A separate backend receives requests from the NextJS app and stores / mutates all data.
+		
+	Separate Server	 ---------> NextJS App
+		
+	  POST, PATCH
+	  
+	Problem: Unnecessary complexity, unnecessary extra server.
+	
+Option 2
+
+	Integrated NextJS App
+		
+		The NextJS app itself contains the data mutation code and reaches out directly to the data stores.
+		
+	NextJS App	
+		
+		Renders pages and handles for submissions / data mutation
+		
+	Advantage:
+		
+		Reduced complexity, single codebase and server.
+		
+	
