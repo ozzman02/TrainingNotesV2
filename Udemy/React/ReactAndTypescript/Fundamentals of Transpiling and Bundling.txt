@@ -1,0 +1,48 @@
+Fundamentals of Transpiling & Bundling
+
+	These two processes are crucial for making modern JavaScript run efficiently in the browser.
+	
+Transpiling
+	
+	What it is: Converting code written in one language (or modern JS features) into a format that browsers can understand.
+	
+	Example:
+
+		Writing in ES6+ (let, const, arrow functions) → Converting to older ES5 for compatibility.
+
+		Writing in TypeScript (types, interfaces) → Converting to plain JavaScript.
+	
+	Tools: Babel, Esbuild, SWC
+	
+	Why it’s needed: Older browsers may not support modern JavaScript features.
+	
+Bundling
+	
+	What it is: Combining multiple files/modules into a single optimized file.
+	
+	Example:
+
+		Instead of loading hundreds of JS files, a bundler creates one or a few files with everything inside.
+
+		It also handles dependency resolution (e.g., import React from 'react').
+		
+	Tools: Webpack, Esbuild, Parcel, Rollup
+	
+	Why it’s needed:
+
+		Improves performance (fewer requests, faster loading).
+
+		Handles imports dynamically (especially for browser environments).
+	
+	
+How These Apply to Your Editor
+	
+	- Esbuild is acting as your transpiler AND bundler.
+
+	- When users type code, Esbuild:
+
+		- Transpiles the input (to ensure compatibility).
+
+		- Bundles dependencies (so they can be executed in the browser).
+
+		- Sends the result to the iframe for execution.

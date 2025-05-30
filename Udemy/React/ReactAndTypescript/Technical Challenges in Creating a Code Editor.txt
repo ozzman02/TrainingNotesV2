@@ -1,0 +1,31 @@
+Technical Challenges in Creating a Code Editor
+
+1. Parsing & Syntax Highlighting
+
+	The editor needs to recognize keywords, functions, variables, and other elements in different programming languages.
+
+	Libraries like Monaco Editor (used in VS Code) or CodeMirror help with this.
+	
+2. Real-Time Code Execution
+
+	If you're allowing users to run their code, you need a way to execute it safely (e.g., sandboxing it in an iframe).
+
+	Preventing security vulnerabilities (like infinite loops or access to system functions) is crucial.
+	
+3. Transpiling & Bundling Code on the Fly
+
+	Since browsers don’t support TypeScript or modern JS features directly, you need transpilers like Babel or Esbuild.
+
+	You also have to resolve module imports dynamically (which your Esbuild setup handles well!).
+	
+4. Handling Dependencies & Imports
+
+	Unlike Node.js, browsers don’t have a built-in module system.
+
+	You use plugins (like unpkgPathPlugin) to fetch modules dynamically from CDNs.
+	
+5. State Management & Performance Optimization
+
+	React is great for managing state (like the code input and output).
+
+	You need efficient ways to update the UI without unnecessary re-renders.	

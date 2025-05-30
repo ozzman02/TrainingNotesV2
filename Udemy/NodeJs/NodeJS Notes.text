@@ -31,6 +31,36 @@ node blog system
 	- express nodeblog (express is globally installed)
 	- modifify package.json by adding dependencies
 	- npm install
+	
+bookstore
+	
+	------------- Unable to complete -------------
+	- install python
+	- install MSYS2 to install gcc and make
+	- install gcc pacman -S mingw-w64-x86_64-gcc
+	- set system path C:\msys64\mingw64\bin
+	- install make 
+	- set system path pacman -S make
+	- npm install -g yo generator-kraken bower grunt-cli gulp-cli --force
+	
+	
+	PS C:\Users\osantamaria\git\LearnNodeJS> yo kraken --debug
+	Error kraken --debug
+
+	ReferenceError: primordials is not defined
+		at fs.js:44:5
+		at req_ (C:\Users\osantamaria\AppData\Roaming\npm\node_modules\generator-kraken\node_modules\natives\index.js:143:24)
+		at Object.req [as require] (C:\Users\osantamaria\AppData\Roaming\npm\node_modules\generator-kraken\node_modules\natives\index.js:55:10)
+		at Object.<anonymous> (C:\Users\osantamaria\AppData\Roaming\npm\node_modules\generator-kraken\node_modules\graceful-fs\fs.js:1:37)
+		at Module._compile (node:internal/modules/cjs/loader:1730:14)
+		at Object..js (node:internal/modules/cjs/loader:1895:10)
+		at Module.load (node:internal/modules/cjs/loader:1465:32)
+		at Function._load (node:internal/modules/cjs/loader:1282:12)
+		at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+		at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+
+chatio
+	
 
 
 
