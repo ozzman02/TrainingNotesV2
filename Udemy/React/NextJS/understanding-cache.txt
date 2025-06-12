@@ -1,0 +1,266 @@
+Understanding and configuring Caching
+
+Caching in Next.js
+
+	https://nextjs.org/docs/app/deep-dive/caching
+	
+	
+	Next 14
+	
+		Very Aggressive
+		
+	Next 15+
+		
+		Less Aggressive
+		
+		
+	Request Memoization
+	
+		- NextJS stores data requests with the same configuration.
+		- This avoids unnecessary duplicate data fetches.
+		- Cache only persists during request duration.
+		
+	Data Cache
+		
+		- NextJS stores and reuses fetched data until its revalidated.
+		- This avoid unn	ecessary requests to the data source and speeds up the application.
+				- The cache 	persists until it is revalidated (manually or after a set ti			me)
+					
+	Full Rout	
+	
+			...e Cache
+		
+		- NextJS stores the rendered HTML and RSC (React Server Component) at build time.
+		- This avoids unnecessary HTML render cycles and data fetches.
+		- The cache persists until the related data cache is revalidated.
+		
+	Router Cache
+		
+		- NextJS stores the RSC payload in memory in the browser.
+		- This ensures extremely fast page transitions since no server request is needed.
+		
+		
+Few theory examples:
+
+	Memoization:
+		
+		Here memoization will not be used since we have a different configuration:
+		
+			export default async function MessagesPage() {
+				
+				const response = await fetch('http://localhost:8080/messages', {
+					headers: {
+						'X-ID': 'page',
+					},
+				});
+				
+				...
+			}
+			
+			export default async function MessagesLayout({ children }) {
+				const response = await fetch('http://localhost:8080/messages', {
+					headers: {
+						'X-ID': 'layout',
+					},
+				});
+		
+				...
+			}
+		
+		Here memoization will be used:
+			
+			export default async function MessagesPage() {
+				
+				const response = await fetch('http://localhost:8080/messages');
+				
+				...
+			}
+			
+			export default async function MessagesLayout({ children }) {
+				
+				const response = await fetch('http://localhost:8080/messages');
+		
+				...
+			}
+		
+	Data Cache
+		
+		When using the fetch function NextJS will store the response data in some internally server managed server side cache
+		and it will keep reusing that data until you tell it to not do that anymore.
+		
+		How can you tell NextJS to stop doing that? How can you tell NextJS do not reuse the data ?
+			
+			- You can use the revalidatePath function to tell NextJS that some page is changing the data.
+			
+			- You can also configure the fetch function. You can do that when using fetch in the client side and on the server side.
+			
+			- On the server side, NextJS is overriding the default built in function that is provided by modern NodeJS and change the cache 
+			  behavior inside your NextJS app.
+			
+			- Default for NextJS 14 is force cache. Most aggressive cache. It will ensure that the response of this fetch request will be cached and
+			  reused across requests until you give an indication for NextJS that the fetch data has changed.
+			
+				const response = await fetch('http://localhost:8080/messages', {
+					cache: 'force-cache'
+				});
+				
+			- Default for NextJS 15 is no-store. No aggressive cache behavior.
+				
+				const response = await fetch('http://localhost:8080/messages', {
+					cache: 'no-store'
+				});
+				
+			- Other option: Define a number which will be the number of seconds NextJS should continue reusing the cache 
+			  until it will revalidate and throw away the cache. It gives you some caching advantages but you are not caching data forever.
+				
+				const response = await fetch('http://localhost:8080/messages', {
+					next: {
+						revalidate: 5
+					}
+				});
+			
+			- Configuration for all the file
+			
+				- Revalidate Constant: No need to pass an object for the fetch function.
+					
+					import Messages from '@/components/messages';
+
+					export const revalidate = 5;
+
+					export default async function MessagesPage() {
+						 
+						const response = await fetch('http://localhost:8080/messages');
+
+						const messages = await response.json();
+
+						if (!messages || messages.length === 0) {
+							return <p>No messages found</p>;
+						}
+
+						return <Messages messages={messages} />;
+					}
+				
+				- Dynamic constant: 
+					
+					- If using the 'force-dynamic' value is the same as using cache: 'no-store'.
+					
+					- 'force-static' is another option. It will never fetch any new data.
+				
+					import Messages from '@/components/messages';
+
+					export const dynamic = 'force-dynamic';
+
+					export default async function MessagesPage() {
+					  
+						const response = await fetch('http://localhost:8080/messages');
+
+						const messages = await response.json();
+
+						if (!messages || messages.length === 0) {
+							return <p>No messages found</p>;
+						}
+
+						return <Messages messages={messages} />;
+					}
+
+				- unstable_noStore (NextJS 14) or noStore (NextJS 15+) 
+				
+					In this example we are disabling caching for this specific component.
+					
+						import { unstable_noStore } from 'next/cache';
+
+						import Messages from '@/components/messages';
+
+						export default async function MessagesPage() {
+
+							unstable_noStore();
+							
+							const response = await fetch('http://localhost:8080/messages');
+
+							const messages = await response.json();
+
+							if (!messages || messages.length === 0) {
+								return <p>No messages found</p>;
+							}
+
+							return <Messages messages={messages} />;
+						}
+
+					
+	Full Route Cache
+	
+		We get full route cache by default.
+	
+		npm run build: 
+			
+			- NextJS prerenders all the pages of this application unless the are dynamic pages with dynamic parameters.
+			- When we start the production server with npm start those pre rendered pages that we see out of the box. Those pages are cached by NextJS.
+		
+		Route (app)                              Size     First Load JS
+		┌ ○ /                                    149 B          84.4 kB
+		├ ○ /_not-found                          882 B          85.1 kB
+		├ ○ /icon.png                            0 B                0 B
+		├ ○ /messages                            149 B          84.4 kB		---> Check the difference
+		└ ○ /messages/new                        149 B          84.4 kB
+		+ First Load JS shared by all            84.3 kB
+		  ├ chunks/69-c292296505fe2927.js        29 kB
+		  ├ chunks/fd9d1056-c7082c319cc53ced.js  53.4 kB
+		  └ other shared chunks (total)          1.87 kB
+
+
+		○  (Static)  prerendered as static content
+		
+		When using for example, export const dynamic = 'force-dynamic', we are disabling full route cache.
+		
+		
+		Route (app)                              Size     First Load JS
+		┌ ○ /                                    149 B          84.4 kB
+		├ ○ /_not-found                          882 B          85.1 kB
+		├ ○ /icon.png                            0 B                0 B
+		├ λ /messages                            149 B          84.4 kB		---> Check the difference
+		└ ○ /messages/new                        149 B          84.4 kB
+		+ First Load JS shared by all            84.3 kB
+		  ├ chunks/69-c292296505fe2927.js        29 kB
+		  ├ chunks/fd9d1056-c7082c319cc53ced.js  53.4 kB
+		  └ other shared chunks (total)          1.87 kB
+
+
+		○  (Static)   prerendered as static content
+		λ  (Dynamic)  server-rendered on demand using Node.js
+		
+		
+On demand cache invalidation with revalidatePath and revalidateTag
+
+	When calling revalidatePath we revalidate some piece of the cache ondemand when we tell NextJS to do it.
+	
+		export default function NewMessagePage() {
+		  async function createMessage(formData) {
+			'use server';
+
+			const message = formData.get('message');
+			addMessage(message);
+			revalidatePath('/messages'); 
+			redirect('/messages');
+		  }
+		  
+	All the data and route cache related to this path will be deleted
+	Any nested paths and nested pages will not have their data deleted or revalidated unless you specify a second argument:
+		
+		revalidatePath('/messages', 'layout'); 
+		
+		
+	RevalidateTag
+		
+		You can assign tags to fetch requests!
+			
+			const response = await fetch('http://localhost:8080/messages', {
+				next: {
+					tags: ['msg']
+				}
+			});
+	
+	
+			revalidateTag('msg');
+		
+		
+		
