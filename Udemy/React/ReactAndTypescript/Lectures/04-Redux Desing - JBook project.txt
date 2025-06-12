@@ -253,5 +253,3 @@ This is very complex, that's why we want to use immer
 	root.render(<App />);
 	
 8. Create useAppSelector and useAppDispatch hooks
-
-
