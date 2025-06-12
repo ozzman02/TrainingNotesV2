@@ -278,3 +278,11 @@ npm install blumaswatch
 npm install @babel/parser @babel/traverse monaco-jsx-highlighter
 
 npm install react-resizable @types/react-resizable
+
+npm i @uiw/react-md-editor
+
+npm install @reduxjs/toolkit react-redux
+
+npm install --save-dev @types/react-redux
+
+npm install axios

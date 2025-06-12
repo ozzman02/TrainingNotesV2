@@ -1,0 +1,257 @@
+Redux Design: cells and bundles reducers
+	
+	Action Creators						|					Redux Store													|
+										|																				|
+		updateCell						|					data {[cell id]: Cell}  array of cells						|
+		deleteCell						|		cells		loading boolean 		true/false when fetching data		|	
+		insertCellBefore/After	---->	|					error string | 	 		null errors related to saving cells |
+		moveCell						|					order string[] 			order of cells						|
+		fetchCells						|																				|
+										|		bundles		data {[cell id]: Bundle} 	bundle for each cell			|
+										
+						
+Cells
+
+	State:
+	
+		{
+			loading: false,
+			error: null,
+			data: {
+				'idxxxxx': { id: idxxxxx, type: 'code', content: 'const a = 1;' }
+			}
+		},
+		{	
+			loading: false,
+			error: null,
+			data: {
+				'id2xxxxx': { id: id2xxxxx, type: 'text', content: 'Documentation for this thing...' }
+			}
+		},		
+
+
+
+
+Create this structure:
+
+	C:\USERS\OSANTAMARIA\GIT\REACTANDTYPESCRIPT\JBOOK\SRC\STATE
+	│   cell.ts
+	│   index.ts
+	│   store.ts
+	│
+	├───action-creators
+	│       index.ts
+	│
+	├───action-types
+	│       index.ts
+	│
+	├───actions
+	│       index.ts
+	│
+	└───reducers
+			bundlesReducer.ts
+			cellsReducer.ts
+			index.ts
+
+
+						
+1. Create ActionTypes first
+
+2. Create Actions										
+
+3. Create the reducers
+
+4. Configure the store
+
+5. Wire up everything to the React side (src/index.tsx)
+
+6. Tackle Action Creators
+
+
+Example:
+	
+	import { ActionType } from "../action-types";
+	import { Action } from "../actions";
+	import { Cell } from "../cell";
+
+	interface CellsState {
+		loading: boolean;
+		error: string | null;
+		order: string[];
+		data: {
+			[key: string]: Cell;
+		};
+	}
+
+	const initialState: CellsState = {
+		loading: false,
+		error: null,
+		order: [],
+		data: {},
+	};
+
+	/*
+		case ActionType.UPDATE_CELL: Update the content of a cell—identified by its id—in the data object of the state without mutating the original state.
+
+			case ActionType.UPDATE_CELL:
+				return {
+					...state,
+					data: {
+						...state.data,
+						[action.payload.id]: {
+							...state.data[action.payload.id],
+							content: action.payload.content,
+						},
+					},
+				};
+
+				refactor:
+
+					case ActionType.UPDATE_CELL:
+						const { id, content } = action.payload;
+							return {
+								...state,
+								data: {
+									...state.data,
+									[id]: {
+										...state.data[id],
+										content
+									},
+								},
+							};
+
+
+		- return {
+			...state,
+	 
+			You're returning a new state object. Using the spread operator ...state ensures you're copying everything from the current state 
+			(like loading, error, and order) into the new one.
+
+		- data: {
+			...state.data,
+			
+			You're copying all existing cells in the data object—this maintains immutability (you’re not modifying the original object directly).
+
+		- [action.payload.id]: {
+				...state.data[action.payload.id],
+				content: action.payload.content,
+			}
+
+			Now here’s where the update happens:
+
+				1. [action.payload.id]: This dynamically selects the cell by ID.
+
+				2. ...state.data[action.payload.id]: Copies the existing properties of that cell (like id, type, etc.).
+
+				3. content: action.payload.content: Overrides the existing content with the new content from the action.
+
+		Example: 
+		
+			Let’s say your state looks like this:
+		
+				data: {
+					"abc123": { id: "abc123", type: "code", content: "old content" }
+				}
+
+			And your action is:
+
+				{
+					type: "update_cell",
+					payload: { id: "abc123", content: "new content" }
+				}
+
+			After this reducer runs, the updated state will be:
+
+				data: {
+					"abc123": { id: "abc123", type: "code", content: "new content" }
+				}
+
+		
+
+	*/
+	const reducer = (
+		state: CellsState = initialState,
+		action: Action
+	): CellsState => {
+		switch (action.type) {
+			case ActionType.UPDATE_CELL:
+				const { id, content } = action.payload;
+				return {
+					...state,
+					data: {
+						...state.data,
+						[id]: {
+							...state.data[id],
+							content,
+						},
+					},
+				};
+			case ActionType.DELETE_CELL:
+				return state;
+			case ActionType.MOVE_CELL:
+				return state;
+			case ActionType.INSERT_CELL_BEFORE:
+				return state;
+			default:
+				return state;
+		}
+	};
+
+	export default reducer;
+
+
+This is very complex, that's why we want to use immer
+
+	const reducer = (
+		state: CellsState = initialState,
+		action: Action
+	): CellsState => {
+		switch (action.type) {
+			case ActionType.UPDATE_CELL: {
+				const { id, content } = action.payload;
+				// using immer
+				state.data[id].content = content;
+				return state;
+			}
+				
+					
+			case ActionType.DELETE_CELL:
+				return state;
+			case ActionType.MOVE_CELL:
+				return state;
+			case ActionType.INSERT_CELL_BEFORE:
+				return state;
+			default:
+				return state;
+		}
+	};
+	
+7. Use the store with a Provider in your App
+	
+	import "bulmaswatch/superhero/bulmaswatch.min.css";
+	import ReactDOM from "react-dom/client";
+	//import CodeCell from "./components/code-cell";
+	//import TextEditor from "./components/text-editor";
+	import { Provider } from "react-redux";
+	import { store } from "./state";
+	import CellList from "./components/cell-list";
+
+	const root = ReactDOM.createRoot(
+		document.getElementById("root") as HTMLElement
+	);
+
+	const App = () => {
+		return (
+			<Provider store={store}>
+				<div>
+					<CellList />
+				</div>
+			</Provider>
+		);
+	};
+
+	root.render(<App />);
+	
+8. Create useAppSelector and useAppDispatch hooks
+
+
