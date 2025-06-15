@@ -263,4 +263,78 @@ On demand cache invalidation with revalidatePath and revalidateTag
 			revalidateTag('msg');
 		
 		
+When using custom data sources
+	
+	- No fetch function calls
+	
+	- We do have some caching like full route cache but we do not have data cache or request de duplication.
+	
+	- If we use a custom data source we can use a cache react function as a wrapper.
 		
+		import { cache } from 'react';
+		
+		export const getMessages =  cache(function getMessages() {
+			console.log('Fetching messages from db');
+			return db.prepare('SELECT * FROM messages').all();
+		});
+		
+	- Also we can use unstable_cache function to make the returning code cachable by NextJS data cache.
+		
+		
+		import { unstable_cache } from 'next/cache';
+		
+		export const getMessages = unstable_cache(cache(function getMessages() {
+			console.log('Fetching messages from db');
+			return db.prepare('SELECT * FROM messages').all();
+		}), ['messages']);
+		
+		
+		When using this you can call revalidatePath
+			
+			export default function NewMessagePage() {
+				async function createMessage(formData) {
+					'use server';
+
+					const message = formData.get('message');
+					addMessage(message);
+					revalidatePath('/messages');
+					redirect('/messages');
+				}
+
+				return (
+					<>
+					</>
+				);
+			}
+			
+	- You can also pass a third argument as a tag and use revalidateTag
+	
+		export const getMessages = unstable_cache(
+			cache(function getMessages() {
+				console.log('Fetching messages from db');
+				return db.prepare('SELECT * FROM messages').all();
+			}), ['messages'], { tags: ['msg'] }
+		); 
+		
+		export default function NewMessagePage() {
+			async function createMessage(formData) {
+				'use server';
+
+				const message = formData.get('message');
+				addMessage(message);
+				revalidateTag('msg');
+				redirect('/messages');
+			}
+
+			return (
+				<>
+				</>
+			);
+		}
+	
+		
+					
+
+				
+				
+				
