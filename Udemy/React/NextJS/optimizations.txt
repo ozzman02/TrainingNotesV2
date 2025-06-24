@@ -1,55 +1,136 @@
 Optimizations
 
-Local images like logo. Use the Image component. You can use width and height but use sizes and priority props instead. 
-	
-	import logo from '@/assets/logo.png';
-	import Image from 'next/image';
-	import Link from 'next/link';
+Images
 
-	export default function Header() {
-		return (
-			<header id="main-header">
-				<Link href="/">
-					<Image 
-						src={logo}  
-						sizes='10vw'
-						priority
-						alt="Mobile phone with posts feed on it" 
-					/>
-				</Link>
-				<nav>
-					<ul>
-						<li>
-							<Link href="/feed">Feed</Link>
-						</li>
-						<li>
-							<Link className='cta-link' href="/new-post">New Post</Link>
-						</li>
-					</ul>
-				</nav>
-			</header>
-		);
-	}
-
-
-Loading images loaded by users
-	
-	You might want to use an external site la cloudinary to store the images. When using the Image component there is also
-	some extra configuration that is needed.
+	Local images like logo. Use the Image component. You can use width and height but use sizes and priority props instead. 
 		
-	next.config.mjs
+		import logo from '@/assets/logo.png';
+		import Image from 'next/image';
+		import Link from 'next/link';
+
+		export default function Header() {
+			return (
+				<header id="main-header">
+					<Link href="/">
+						<Image 
+							src={logo}  
+							sizes='10vw'
+							priority
+							alt="Mobile phone with posts feed on it" 
+						/>
+					</Link>
+					<nav>
+						<ul>
+							<li>
+								<Link href="/feed">Feed</Link>
+							</li>
+							<li>
+								<Link className='cta-link' href="/new-post">New Post</Link>
+							</li>
+						</ul>
+					</nav>
+				</header>
+			);
+		}
+
+
+	Loading images loaded by users
 		
-		/** @type {import('next').NextConfig} */
-		const nextConfig = {
-			images: {
-				remotePatterns: [{ hostname: 'res.cloudinary.com' }]
+		You might want to use an external site la cloudinary to store the images. When using the Image component there is also
+		some extra configuration that is needed.
+			
+		next.config.mjs
+			
+			/** @type {import('next').NextConfig} */
+			const nextConfig = {
+				images: {
+					remotePatterns: [{ hostname: 'res.cloudinary.com' }]
+				}
+			};
+
+			export default nextConfig;
+
+		You can then use Image component and some css for the container element. Use the fill property.
+			
+			<div className="post-image">
+				<Image src={post.image} alt={post.title} fill />
+			</div>
+			
+		Use a loader function
+			
+			function imageLoader(config) {
+				const urlStart = config.src.split('upload/')[0];
+				const urlEnd = config.src.split('upload/')[1];
+				const transformations = `w_200,q_${config.quality}`;
+				return `${urlStart}upload/${transformations}/${urlEnd}`;
 			}
+
+			function Post({ post, action }) {
+				return (
+					<article className="post">
+						<div className="post-image">
+							<Image src={post.image} alt={post.title} fill loader={imageLoader} quality={50} />
+						</div>
+						...
+					</article>
+				)
+			}
+			
+Page Metadata
+
+	Static
+		
+		import { Suspense } from 'react';
+
+		import Posts from '@/components/posts';
+		import { getPosts } from '@/lib/posts';
+
+		export const metadata = {
+			title: 'Latest Posts',
+			description: 'Browse our latest post'
 		};
 
-		export default nextConfig;
 
-	You can then use Image component and some css for the container element. Use the fill property.
+		async function LatestPosts() {
+			const latestPosts = await getPosts(2);
+			return <Posts posts={latestPosts} />;
+		}
+
+		export default async function Home() {
+			return (
+				<>
+					<h1>Welcome back!</h1>
+					<p>Here's what you might've missed.</p>
+					<section id="latest-posts">
+						<Suspense fallback={<p>Loading recent posts...</p>}>
+							<LatestPosts />
+						</Suspense>
+					</section>
+				</>
+			);
+		}
+	
+	Dynamic
 		
-		<div className="post-image">
-			<Image src={post.image} alt={post.title} fill />
-		</div>
+		import Posts from '@/components/posts';
+		import { getPosts } from '@/lib/posts';
+
+		export async function generateMetadata() {
+			const posts = await getPosts();
+			const numberOfPosts = posts.length;
+
+			return {
+				title: `Browse all our ${numberOfPosts} posts.`,
+				description: 'Browser all our posts.'
+			}
+		}
+
+		export default async function FeedPage() {
+			const posts = await getPosts();
+			return (
+				<>
+					<h1>All posts by all users</h1>
+					<Posts posts={posts} />
+				</>
+			);
+		}
