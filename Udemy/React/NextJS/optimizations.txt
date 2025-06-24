@@ -1,0 +1,55 @@
+Optimizations
+
+Local images like logo. Use the Image component. You can use width and height but use sizes and priority props instead. 
+	
+	import logo from '@/assets/logo.png';
+	import Image from 'next/image';
+	import Link from 'next/link';
+
+	export default function Header() {
+		return (
+			<header id="main-header">
+				<Link href="/">
+					<Image 
+						src={logo}  
+						sizes='10vw'
+						priority
+						alt="Mobile phone with posts feed on it" 
+					/>
+				</Link>
+				<nav>
+					<ul>
+						<li>
+							<Link href="/feed">Feed</Link>
+						</li>
+						<li>
+							<Link className='cta-link' href="/new-post">New Post</Link>
+						</li>
+					</ul>
+				</nav>
+			</header>
+		);
+	}
+
+
+Loading images loaded by users
+	
+	You might want to use an external site la cloudinary to store the images. When using the Image component there is also
+	some extra configuration that is needed.
+		
+	next.config.mjs
+		
+		/** @type {import('next').NextConfig} */
+		const nextConfig = {
+			images: {
+				remotePatterns: [{ hostname: 'res.cloudinary.com' }]
+			}
+		};
+
+		export default nextConfig;
+
+	You can then use Image component and some css for the container element. Use the fill property.
+		
+		<div className="post-image">
+			<Image src={post.image} alt={post.title} fill />
+		</div>
