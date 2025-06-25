@@ -1,0 +1,13 @@
+Pages Router
+	
+	- Has been around for many years.
+	- Very stable.
+	- Used in many existing NextJS projects.
+	- Allows you to build feature rich fullstack apps with React.
+	
+App Router	
+
+	- Introduced with NextJS 13.
+	- Marked as stable but still relatively new and partially buggy.
+	- Supports modern Next and React features.
+	- The future of NextJS.
