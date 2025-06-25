@@ -253,3 +253,40 @@ This is very complex, that's why we want to use immer
 	root.render(<App />);
 	
 8. Create useAppSelector and useAppDispatch hooks
+
+
+Next steps in the project:
+
+- The user will type a command from terminal like npx jbook serve. 
+
+- I need some kind of cli that will start a local node api (server). 
+
+- This server has 3 jobs: 
+	
+	1. Allow the user to go to localhost:4050 and get our build react project files. 
+	2. Write any changes that the user makes to any cells to a file on a users machine (notebook.js)
+	3. Load up that file and provide a list of all the cells over to the react app
+	
+	
+CLI: 	
+	- Needs to know how to start up the local API.
+	- Needs to know how to publish a notebook to the public API.
+	- jbook
+
+Local Express API
+		
+	- Needs to serve up the react app.
+	- Needs to be able to save/load cells from a file.
+	- @jbook/local-api
+	
+Public Express API
+		
+	- Needs to serve up the react app.
+	- Needs to be able to save/load cells from a DB.
+	- Needs to handle auth/permissions etc.
+	- @jbook/public-api
+	
+React App	
+
+	- Needs to make its production assets available to either the local API or the Public API
+	- @jbook/local-client
