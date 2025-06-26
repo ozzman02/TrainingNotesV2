@@ -290,3 +290,39 @@ React App
 
 	- Needs to make its production assets available to either the local API or the Public API
 	- @jbook/local-client
+	
+Lerna: Tool for managing multipackage projects.
+	
+	1. Install lerna: npm install -g --save-exact lerna@3.22.1
+	1. Rename the jbook project folder to local-client
+	2. Create another jbook folder.
+	3. Inside the new jbook run the command:
+		
+		lerna init
+		
+		output:
+		
+			lerna notice cli v3.22.1
+			lerna info Creating package.json
+			lerna info Creating lerna.json
+			lerna info Creating packages directory
+			lerna success Initialized Lerna files
+			
+	4. Move the local-client folder inside jbook/packages folder
+	
+	5. Inside jbook folder:
+		
+		mkdir cli
+		mkdir local-api
+		
+	6. Inside cli foler
+		
+		npm init -y
+		
+	7. Inside local-api
+		
+		npm init -y
+		
+		lerna add commander --scope=cli  // popular Node.js library for building command-line interfaces (CLIs)
+			
+		
