@@ -323,6 +323,239 @@ Lerna: Tool for managing multipackage projects.
 		
 		npm init -y
 		
-		lerna add commander --scope=cli  // popular Node.js library for building command-line interfaces (CLIs)
+		
+	8. lerna add commander --scope=cli  // popular Node.js library for building command-line interfaces (CLIs)
+	
+	9. Inside local-api create an index.js and add
+		
+		module.exports = () => {
+			console.log('Server started');
+		};
+		
+	10. learna add local-api --scope=cli
+	
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\local-api> lerna add local-api --scope=cli
+		lerna notice cli v3.22.1
+		lerna notice filter including "cli"
+		lerna info filter [ 'cli' ]
+		lerna info Adding local-api in 1 package
+		lerna info Bootstrapping 3 packages
+		lerna info Symlinking packages and binaries
+		lerna success Bootstrapped 3 packages
+
+	11. Inside cli create and index.js with this:
+		
+			const serve = require('local-api');
+			serve();
 			
+	12. Run the command: 
+		
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli> node index.js
+		Server started
+		
+	13. lerna add typescript --dev --scope=local-api
+	
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli> lerna add typescript --dev --scope=local-api
+		lerna notice cli v3.22.1
+		lerna notice filter including "local-api"
+		lerna info filter [ 'local-api' ]
+		lerna info Adding typescript in 1 package
+		lerna info Bootstrapping 3 packages
+		lerna info Installing external dependencies
+		lerna info Symlinking packages and binaries
+		lerna success Bootstrapped 3 packages
+	
+	14. PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\local-api> npx tsc --init
+
+		Created a new tsconfig.json with:
+																															 TS
+		  target: es2016
+		  module: commonjs
+		  strict: true
+		  esModuleInterop: true
+		  skipLibCheck: true
+		  forceConsistentCasingInFileNames: true
+	
+	15. Delete local-api\index.js
+	
+	16. Create an src folder inside local-api and then an index.ts
+		
+		export default () => {
+			console.log('Server is listening');
+		}	
+	
+	17. Modify tsconfig.json: 
+		
+		"declaration": true,  
+		"outDir": "./dist", 
+
+	18. Add a new script in package.json
+
+		"scripts": {
+			"start": "tsc --watch --preserveWatchOutput",
+			"test": "echo \"Error: no test specified\" && exit 1"
+		},
+		
+	19. Inside local-api run: npm run start
+	
+	20. Inside local-api, edit package.json. This line "main": "dist/index.js". Then add another line: "types": "dist/index.d.ts"
+	
+	21. Inside cli folder create an src and move the index.js into the folder.
+	
+	22. Modify index.js into index.ts with this code:
+		
+		import serve from 'local-api';
+		serve();
+		
+	23. Stop the process running on terminal and switch to cli folder.
+	
+	24. PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli> lerna add typescript --dev --scope=cli
+	
+		lerna notice cli v3.22.1
+		lerna notice filter including "cli"
+		lerna info filter [ 'cli' ]
+		lerna info Adding typescript in 1 package
+		lerna info Bootstrapping 3 packages
+		lerna info Installing external dependencies
+		lerna info Symlinking packages and binaries
+		lerna success Bootstrapped 3 packages
+
+	25. npx tsc --init
+	
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli> npx tsc --init
+
+		Created a new tsconfig.json with:
+																															 TS
+		  target: es2016
+		  module: commonjs
+		  strict: true
+		  esModuleInterop: true
+		  skipLibCheck: true
+		  forceConsistentCasingInFileNames: true
+		  
+	26. Inside cli folder open tsconfig.json -> "outDir": "./dist", 
+	
+	27. Look for package.json and remove main and add script:
+		
+		"scripts": {
+			"start": "tsc --watch --preserveWatchOutput"
+		},
+		
+	28. npm run start
+		
+			PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli> npm run start
+
+			> cli@1.0.0 start
+			> tsc --watch --preserveWatchOutput
+
+			[3:24:25 PM] Starting compilation in watch mode...
+
+			[3:24:25 PM] Found 0 errors. Watching for file changes.
+			
+	29. node index.js
+	
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli> cd .\dist\
+
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli\dist> node index.js
+		Server is listening
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli\dist>
+		
+	30. In jbook\package.json
+		
+		"scripts": {
+			"start": "lerna run start --parallel"
+		}
+		
+	31. PS C:\Users\osantamaria\git\ReactAndTypescript\jbook> npm run start
+
+		> start
+		> lerna run start --parallel
+
+		lerna notice cli v3.22.1
+		lerna info Executing command in 3 packages: "npm run start"
+		(node:11432) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+		(Use `node --trace-deprecation ...` to show where the warning was created)
+		cli: > cli@1.0.0 start
+		cli: > tsc --watch --preserveWatchOutput
+		local-api: > local-api@1.0.0 start
+		local-api: > tsc --watch --preserveWatchOutput
+		jbook: > jbook@0.1.0 start
+		jbook: > react-scripts start
+		cli: 4:06:29 PM - Starting compilation in watch mode...
+		local-api: 4:06:29 PM - Starting compilation in watch mode...
+		cli: 4:06:29 PM - Found 0 errors. Watching for file changes.
+		local-api: 4:06:29 PM - Found 0 errors. Watching for file changes.
+		jbook: Starting the development server...
+		
+	32. Inside the cli\src folder create a commands folder and create a serve.ts file
+	
+	33. Replace index.ts with 
+		
+		import { program } from "commander";
+		import { serveCommand } from "./commands/serve";
+
+		program.addCommand(serveCommand);
+		
+	34. PS C:\Users\osantamaria\git\ReactAndTypescript\jbook> lerna add @types/node --dev --scope=cli
+		lerna notice cli v3.22.1
+		lerna notice filter including "cli"
+		lerna info filter [ 'cli' ]
+		lerna info Adding @types/node in 1 package
+		lerna info Bootstrapping 3 packages
+		lerna info Installing external dependencies
+		lerna info Symlinking packages and binaries
+		lerna success Bootstrapped 3 packages
+		
+	35. Make sure PS C:\Users\osantamaria\git\ReactAndTypescript\jbook> npm run start then
+	
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli\dist> node index.js serve
+		Getting ready to serve a file
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli\dist>	
+		
+	36. Update the command file
+	
+		import { Command } from "commander";
+
+		export const serveCommand = new Command()
+			.command("serve [filename]")
+			.description("Open a file for editing")
+			.option("-p, --port <number>", "port to run server on", "4005")
+			.action(() => {
+				console.log("Getting ready to serve a file");
+			});
+			
+	37. Try PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli\dist> node index.js serve --help
+			
+			Usage: index serve [options] [filename]
+
+			Open a file for editing
+
+			Options:
+			  -p, --port <number>  port to run server on (default: "4005")
+			  -h, --help           display help for command
+			  
+	38. Update the file
+		
+		import { Command } from "commander";
+
+		export const serveCommand = new Command()
+			.command("serve [filename]")
+			.description("Open a file for editing")
+			.option("-p, --port <number>", "port to run server on", "4005")
+			.action((filename = 'notebook.js', options) => {
+				console.log(filename, options);
+			});
+	
+	39. Try:
+		
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli\dist> node index.js serve
+		notebook.js { port: '4005' }
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli\dist> node index.js serve book.js
+		book.js { port: '4005' }
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli\dist> node index.js serve book.js --port 5000
+		book.js { port: '5000' }
+		PS C:\Users\osantamaria\git\ReactAndTypescript\jbook\packages\cli\dist> node index.js serve -p 5000 book.js
+		book.js { port: '5000' }
+		
+
 		
